@@ -43,6 +43,39 @@ namespace ConsoleChess.Pieces
                         }
                     }
                 }
+                // if toSpace is down and left
+                else if (fromSpace.X < toSpace.X && fromSpace.Y > toSpace.Y)
+                {
+                    for (int i = toSpace.X, k = toSpace.Y; i > fromSpace.X && k < fromSpace.Y; i--, k++)
+                    {
+                        if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                // if toSpace is up and right
+                else if (fromSpace.X > toSpace.X && fromSpace.Y < toSpace.Y)
+                {
+                    for (int i = toSpace.X, k = toSpace.Y; i < fromSpace.X && k > fromSpace.Y; i++, k--)
+                    {
+                        if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                // if toSpace is up and left
+                else if (fromSpace.X > toSpace.X && fromSpace.Y > toSpace.Y)
+                {
+                    for (int i = toSpace.X, k = toSpace.Y; i < fromSpace.X && k < fromSpace.Y; i++, k++)
+                    {
+                        if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
+                        {
+                            return false;
+                        }
+                    }
+                }
                 return true;
             }
             return false;
