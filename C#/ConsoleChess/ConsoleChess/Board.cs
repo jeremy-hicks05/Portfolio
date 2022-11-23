@@ -78,9 +78,6 @@ namespace ConsoleChess
         {
             toSpace.Piece = fromSpace.Piece;
             fromSpace.Piece = new Piece("[ ]");
-            
-                
-            //fromSpace.Piece.MoveTo(toSpace);
         }
     }
 }

@@ -18,11 +18,22 @@ namespace ConsoleChess.Pieces
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            if (toSpace.Latitude - fromSpace.Latitude > 1 || toSpace.Longitude - fromSpace.Longitude > 1)
+            
+            if (
+                    (   // move like a rook
+                    (fromSpace.Latitude == toSpace.Latitude) ||
+                    (fromSpace.Longitude == toSpace.Longitude)
+                    )
+                    ||
+                    (   // move like a bishop
+                    (fromSpace.Latitude + 1 == toSpace.Latitude && fromSpace.Longitude + 1 == toSpace.Longitude) ||
+                    (fromSpace.Latitude - 1 == toSpace.Latitude && fromSpace.Longitude + 1 == toSpace.Longitude)
+                    )
+                )
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
     }
 }

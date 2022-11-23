@@ -12,7 +12,6 @@ namespace ConsoleChess.Pieces
         public override void MoveTo(Space spaceMovedTo)
         {
             // move like a rook
-            //if(this.)
             spaceMovedTo.Piece.Name = Name;
             Name = "[ ]";
         }
