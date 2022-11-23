@@ -5,8 +5,8 @@ namespace ConsoleChess
 {
     internal class Space
     {
-        public int Latitude { get; set; }
-        public int Longitude { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
         public Piece Piece { get; set; }
 
         public string PrintSpace()

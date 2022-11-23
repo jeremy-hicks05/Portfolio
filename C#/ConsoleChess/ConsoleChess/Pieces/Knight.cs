@@ -20,8 +20,8 @@ namespace ConsoleChess.Pieces
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
             // if one of the differences is 1, and one of the differences is 2... clever!
-            if((Math.Abs(fromSpace.Latitude - toSpace.Latitude) == 1 && Math.Abs(fromSpace.Longitude - toSpace.Longitude) == 2) ||
-                (Math.Abs(fromSpace.Longitude - toSpace.Longitude) == 1 && Math.Abs(fromSpace.Latitude - toSpace.Latitude) == 2))
+            if((Math.Abs(fromSpace.X - toSpace.X) == 1 && Math.Abs(fromSpace.Y - toSpace.Y) == 2) ||
+                (Math.Abs(fromSpace.Y - toSpace.Y) == 1 && Math.Abs(fromSpace.X - toSpace.X) == 2))
             {
                 return true;
             }

@@ -8,7 +8,8 @@
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Chess!");
-            Match myMatch = new Match();
+            //Match myMatch = new Match();
+            Board.InitBoard();
 
             System.ConsoleKey playing = ConsoleKey.Y;
             while (playing == ConsoleKey.Y)
@@ -36,11 +37,11 @@
                             string enLong = Console.ReadLine();
                             if (Int32.TryParse(enLong, out endLong))
                             {
-                                if (myMatch.Board.spaces[startLat][startLong].Piece.CanMoveFromSpaceToSpace(
-                                    myMatch.Board.spaces[startLat][startLong],
-                                    myMatch.Board.spaces[endLat][endLong]))
+                                if (Board.spaces[startLat][startLong].Piece.CanMoveFromSpaceToSpace(
+                                    Board.spaces[startLat][startLong],
+                                    Board.spaces[endLat][endLong]))
                                 {
-                                    myMatch.Board.MovePieceFromSpaceToSpace(myMatch.Board.spaces[startLat][startLong], myMatch.Board.spaces[endLat][endLong]);
+                                    Board.MovePieceFromSpaceToSpace(Board.spaces[startLat][startLong], Board.spaces[endLat][endLong]);
                                 }
                             }
                         }
@@ -61,7 +62,7 @@
 
                 Console.Clear();
 
-                myMatch.Board.PrintBoard();
+                Board.PrintBoard();
 
                 Console.Write("Keep playing?  Y or N:");
                 playing = Console.ReadKey().Key;

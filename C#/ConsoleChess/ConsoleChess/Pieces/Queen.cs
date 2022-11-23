@@ -22,13 +22,13 @@ namespace ConsoleChess.Pieces
             
             if (
                     (   // move like a rook
-                    (fromSpace.Latitude == toSpace.Latitude) ||
-                    (fromSpace.Longitude == toSpace.Longitude)
+                    (fromSpace.X == toSpace.X) ||
+                    (fromSpace.Y == toSpace.Y)
                     )
                     ||
                     (   // move like a bishop
-                    (fromSpace.Latitude + 1 == toSpace.Latitude && fromSpace.Longitude + 1 == toSpace.Longitude) ||
-                    (fromSpace.Latitude - 1 == toSpace.Latitude && fromSpace.Longitude + 1 == toSpace.Longitude)
+                    (fromSpace.X + 1 == toSpace.X && fromSpace.Y + 1 == toSpace.Y) ||
+                    (fromSpace.X - 1 == toSpace.X && fromSpace.Y + 1 == toSpace.Y)
                     )
                 )
             {

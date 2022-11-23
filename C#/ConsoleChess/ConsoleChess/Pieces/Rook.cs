@@ -19,8 +19,23 @@ namespace ConsoleChess.Pieces
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            if(fromSpace.Latitude == toSpace.Latitude || fromSpace.Longitude == toSpace.Longitude)
+            if(fromSpace.X == toSpace.X || fromSpace.Y == toSpace.Y)
             {
+                for(int i = fromSpace.X + 1; i <= toSpace.X; i++)
+                {
+                    if (Board.spaces[i][toSpace.Y].Piece.belongsToPlayer != Player.None)
+                    {
+                        return false;
+                    }
+                }
+
+                for (int i = fromSpace.Y + 1; i < toSpace.Y; i++)
+                {
+                    if (Board.spaces[toSpace.X][i].Piece.belongsToPlayer != Player.None)
+                    {
+                        return false;
+                    }
+                }
                 return true;
             }
             return false;

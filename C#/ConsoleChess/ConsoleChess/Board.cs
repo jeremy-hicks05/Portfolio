@@ -4,11 +4,37 @@ using ConsoleChess.Players;
 
 namespace ConsoleChess
 {
-    internal class Board
+    internal static class Board
     {
-        public Space[][] spaces = new Space[8][];
+        public static Space[][] spaces { get; set; } = new Space[8][];
 
-        public Board()
+        //public Board()
+        //{
+        //    spaces[0][7].Piece = new Rook("[r]", Player.Black);
+
+        //    for (int i = 0; i < 8; i++)
+        //    {
+        //        spaces[1][i].Piece = new Pawn("[p]", Player.Black);
+        //    }
+
+        //    for (int i = 0; i < 8; i++)
+        //    {
+        //        spaces[6][i].Piece = new Pawn("[P]", Player.White);
+        //    }
+
+        //    spaces[7][0].Piece = new Rook("[R]", Player.White);
+        //    spaces[7][1].Piece = new Knight("[N]", Player.White);
+        //    spaces[7][2].Piece = new Bishop("[B]", Player.White);
+        //    spaces[7][3].Piece = new King("[K]", Player.White);
+        //    spaces[7][4].Piece = new Queen("[Q]", Player.White);
+        //    spaces[7][5].Piece = new Bishop("[B]", Player.White);
+        //    spaces[7][6].Piece = new Knight("[N]", Player.White);
+        //    spaces[7][7].Piece = new Rook("[R]", Player.White);
+
+        //    PrintBoard();
+        //}
+
+        public static void InitBoard()
         {
             for (int i = 0; i < 8; i++)
             {
@@ -24,8 +50,8 @@ namespace ConsoleChess
                 for(int j = 0; j < 8; j ++)
                 {
                     Space space = new Space();
-                    space.Latitude = i;
-                    space.Longitude = j;
+                    space.X = i;
+                    space.Y = j;
                     space.Piece = new Piece(name: "[ ]", Player.None);
                     spaces[i][j] = space;
                 }
@@ -62,7 +88,7 @@ namespace ConsoleChess
             PrintBoard();
         }
 
-        public void PrintBoard()
+        public static void PrintBoard()
         {
 
             for (int i = 0; i < 8; i++)
@@ -75,7 +101,7 @@ namespace ConsoleChess
             }
         }
 
-        public void MovePieceFromSpaceToSpace(Space fromSpace, Space toSpace)
+        public static void MovePieceFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
             toSpace.Piece = fromSpace.Piece;
             fromSpace.Piece = new Piece("[ ]", Player.None);

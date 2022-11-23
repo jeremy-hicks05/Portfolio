@@ -22,13 +22,13 @@ namespace ConsoleChess.Pieces
         {
             if (!hasMoved)
             {
-                if (toSpace.Longitude == fromSpace.Longitude && fromSpace.Latitude - toSpace.Latitude < 3)
+                if (toSpace.Y == fromSpace.Y && fromSpace.X - toSpace.X < 3)
                 {
                     hasMoved = true;
                     return true;
                 }
             }
-            if (fromSpace.Longitude == toSpace.Longitude && Math.Abs(fromSpace.Latitude - toSpace.Latitude) < 2)
+            if (fromSpace.Y == toSpace.Y && Math.Abs(fromSpace.X - toSpace.X) < 2)
             {
                 hasMoved = true;
                 return true;

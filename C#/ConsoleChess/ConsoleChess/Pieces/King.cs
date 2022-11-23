@@ -25,7 +25,7 @@ namespace ConsoleChess.Pieces
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            if (toSpace.Latitude - fromSpace.Latitude > 1 || toSpace.Longitude - fromSpace.Longitude > 1)
+            if (toSpace.X - fromSpace.X > 1 || toSpace.Y - fromSpace.Y > 1)
             {
                 return false;
             }

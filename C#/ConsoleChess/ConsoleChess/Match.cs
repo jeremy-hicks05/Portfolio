@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ConsoleChess
 {
-    internal class Match
+    internal static class Match
     {
-        public Board Board { get; set; } = new Board();
-        public bool Playing { get; set; }
+        //public static Board Board { get; set; } = new Board();
+        //public static bool Playing { get; set; }
     }
 }

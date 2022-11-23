@@ -29,7 +29,7 @@ namespace ConsoleChess.Pieces
             // difference / difference == 1?
 
 
-            if((Math.Abs(fromSpace.Latitude - toSpace.Latitude)) / (Math.Abs(fromSpace.Longitude - toSpace.Longitude)) == 1)
+            if((Math.Abs(fromSpace.X - toSpace.X)) / (Math.Abs(fromSpace.Y - toSpace.Y)) == 1)
             {
                 return true;
             }
