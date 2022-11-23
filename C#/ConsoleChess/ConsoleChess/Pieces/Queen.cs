@@ -19,7 +19,6 @@ namespace ConsoleChess.Pieces
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            
             if (
                     (   // move like a rook
                     (fromSpace.X == toSpace.X) ||
