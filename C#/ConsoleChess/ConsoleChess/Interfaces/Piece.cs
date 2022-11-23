@@ -5,7 +5,7 @@ namespace ConsoleChess.Interfaces
     internal class Piece : IPiece
     {
         public string Name { get; set; }
-        public Player belongsToPlayer;
+        public Player belongsToPlayer = Player.None;
 
         //public Piece(string name, Player belongsTo)
         //{

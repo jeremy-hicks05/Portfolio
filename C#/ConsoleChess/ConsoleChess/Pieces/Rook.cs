@@ -21,21 +21,53 @@ namespace ConsoleChess.Pieces
         {
             if(fromSpace.X == toSpace.X || fromSpace.Y == toSpace.Y)
             {
-                for(int i = fromSpace.X + 1; i <= toSpace.X; i++)
+                // if space is to the right
+                if (fromSpace.X > toSpace.X)
                 {
-                    if (Board.spaces[i][toSpace.Y].Piece.belongsToPlayer != Player.None)
+                    for (int i = fromSpace.X - 1; i >= toSpace.X; i--)
                     {
-                        return false;
+                        if (Board.spaces[i][toSpace.Y].Piece.belongsToPlayer != Player.None)
+                        {
+                            return false;
+                        }
                     }
                 }
+                else if (fromSpace.X < toSpace.X)
+                {
+                    // if space is to the left
+                    for (int i = fromSpace.X + 1; i <= toSpace.X; i++)
+                    {
+                        if (Board.spaces[i][toSpace.Y].Piece.belongsToPlayer != Player.None)
+                        {
+                            return false;
+                        }
+                    }
 
-                for (int i = fromSpace.Y + 1; i < toSpace.Y; i++)
+
+                }
+                // if space is above
+                else if (fromSpace.Y > toSpace.Y)
                 {
-                    if (Board.spaces[toSpace.X][i].Piece.belongsToPlayer != Player.None)
+                    for (int i = fromSpace.Y + 1; i <= toSpace.Y; i++)
                     {
-                        return false;
+                        if (Board.spaces[toSpace.X][i].Piece.belongsToPlayer != Player.None)
+                        {
+                            return false;
+                        }
                     }
                 }
+                else if (fromSpace.Y < toSpace.Y)
+                {
+                    // if space is below
+                    for (int i = fromSpace.Y - 1; i >= toSpace.Y; i--)
+                    {
+                        if (Board.spaces[toSpace.X][i].Piece.belongsToPlayer != Player.None)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                // success
                 return true;
             }
             return false;
