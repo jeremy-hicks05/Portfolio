@@ -20,14 +20,7 @@ namespace ConsoleChess.Pieces
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            // +1 +1
-            // +2 +2
-            // -1 -1
-            // -2 -2
-            // +3 +3
-            // -3 -3
             // difference / difference == 1?
-
 
             if((Math.Abs(fromSpace.X - toSpace.X)) / (Math.Abs(fromSpace.Y - toSpace.Y)) == 1)
             {
