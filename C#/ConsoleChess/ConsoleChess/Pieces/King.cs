@@ -17,12 +17,6 @@ namespace ConsoleChess.Pieces
             Name = "[ ]";
         }
 
-        //public override Space[] GetSpacesAvaiableToMoveTo()
-        //{
-        //    Space[] spaces = new Space[8];
-        //    spaces[0] = this.
-        //}
-
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
             if (toSpace.X - fromSpace.X > 1 || toSpace.Y - fromSpace.Y > 1)

@@ -23,6 +23,10 @@ namespace ConsoleChess.Pieces
             if((Math.Abs(fromSpace.X - toSpace.X) == 1 && Math.Abs(fromSpace.Y - toSpace.Y) == 2) ||
                 (Math.Abs(fromSpace.Y - toSpace.Y) == 1 && Math.Abs(fromSpace.X - toSpace.X) == 2))
             {
+                if(toSpace.Piece.belongsToPlayer != Player.None)
+                {
+                    return false;
+                }
                 return true;
             }
             return false;

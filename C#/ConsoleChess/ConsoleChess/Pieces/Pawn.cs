@@ -24,14 +24,20 @@ namespace ConsoleChess.Pieces
             {
                 if (toSpace.Y == fromSpace.Y && fromSpace.X - toSpace.X < 3)
                 {
+                    if (toSpace.Piece.belongsToPlayer == Player.None)
+                    {
+                        hasMoved = true;
+                        return true;
+                    }
+                }
+            }
+            else if (fromSpace.Y == toSpace.Y && Math.Abs(fromSpace.X - toSpace.X) < 2)
+            {
+                if (toSpace.Piece.belongsToPlayer == Player.None)
+                {
                     hasMoved = true;
                     return true;
                 }
-            }
-            if (fromSpace.Y == toSpace.Y && Math.Abs(fromSpace.X - toSpace.X) < 2)
-            {
-                hasMoved = true;
-                return true;
             }
             return false;
         }
