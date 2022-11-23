@@ -1,11 +1,12 @@
 ﻿using ConsoleChess.Interfaces;
+using ConsoleChess.Players;
 using System.Xml.Linq;
 
 namespace ConsoleChess.Pieces
 {
     internal class Bishop : Piece
     {
-        public Bishop(string name) : base(name)
+        public Bishop(string name, Player belongsTo) : base(name, belongsTo)
         {
 
         }

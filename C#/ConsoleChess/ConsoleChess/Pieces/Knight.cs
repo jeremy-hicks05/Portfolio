@@ -1,10 +1,11 @@
 ﻿using ConsoleChess.Interfaces;
+using ConsoleChess.Players;
 
 namespace ConsoleChess.Pieces
 {
     internal class Knight : Piece
     {
-        public Knight(string name) : base(name)
+        public Knight(string name, Player belongsTo) : base(name, belongsTo)
         {
 
         }

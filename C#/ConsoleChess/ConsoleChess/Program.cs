@@ -1,8 +1,7 @@
 ﻿namespace ConsoleChess
 {
     /* TODO:
-     * 1. render board more clearly with empty spaces like [ ] and [_]
-     * 2. build individual piece classes (pawn, knight, etc.)
+     * 1. Prevent pieces from moving when they are blocked
     */
     internal class Program
     {

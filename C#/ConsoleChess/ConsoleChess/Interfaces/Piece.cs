@@ -1,18 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ConsoleChess.Players;
 
 namespace ConsoleChess.Interfaces
 {
     internal class Piece : IPiece
     {
         public string Name { get; set; }
+        public Player belongsToPlayer;
 
-        public Piece(string name)
+        //public Piece(string name, Player belongsTo)
+        //{
+        //    Name = name;
+        //    this.belongsToPlayer = belongsTo;
+        //}
+
+        public Piece(string name, Player belongsTo)
         {
             Name = name;
+            belongsToPlayer = belongsTo;
         }
 
         public virtual void MoveTo(Space spaceMovedTo)
@@ -31,10 +35,5 @@ namespace ConsoleChess.Interfaces
         {
             return false;
         }
-
-        //public void Clear()
-        //{
-        //    this.Name = "[ ]";
-        //}
     }
 }

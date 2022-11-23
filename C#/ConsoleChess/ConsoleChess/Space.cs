@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ConsoleChess.Interfaces;
+﻿using ConsoleChess.Interfaces;
+using ConsoleChess.Players;
 
 namespace ConsoleChess
 {
@@ -17,18 +13,18 @@ namespace ConsoleChess
         {
             if(Piece == null)
             {
-                return " ";
+                return "[ ]";
             }
             else
             {
-                return Piece.ToString();
+                return Piece.Name;
             }
         }
 
         public void MoveTo(Space spaceMovedTo)
         {
             spaceMovedTo.Piece = Piece;
-            Piece = new Piece("[ ]");
+            ClearSpace();
         }
 
         public void MovePieceFromMeToSpace(Space toSpace)
@@ -39,9 +35,9 @@ namespace ConsoleChess
             }
         }
 
-        public void Clear()
+        public void ClearSpace()
         {
-            this.Piece = new Piece("[ ]");
+            Piece = new Piece("[ ]", Player.None);
         }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using ConsoleChess.Interfaces;
+using ConsoleChess.Players;
 
 namespace ConsoleChess.Pieces
 {
     internal class Pawn : Piece
     {
         public bool hasMoved;
-        public Pawn(string name) : base(name)
+        public Pawn(string name, Player belongsTo) : base(name, belongsTo)
         {
             hasMoved = false;
         }
