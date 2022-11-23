@@ -3,25 +3,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleChess.Interfaces;
 
 namespace ConsoleChess
 {
     internal class Space
     {
-        public int Latitude;
-        public int Longitude;
-        public Piece piece;
+        public int Latitude { get; set; }
+        public int Longitude { get; set; }
+        public Piece Piece { get; set; }
 
         public string PrintSpace()
         {
-            if(piece == null)
+            if(Piece == null)
             {
                 return " ";
             }
             else
             {
-                return piece.ToString();
+                return Piece.ToString();
             }
+        }
+
+        public void MoveTo(Space spaceMovedTo)
+        {
+            spaceMovedTo.Piece = Piece;
+            Piece = new Piece("[ ]");
+        }
+
+        public void MovePieceFromMeToSpace(Space toSpace)
+        {
+            if(Piece.CanMoveFromSpaceToSpace(this, toSpace))
+            {
+
+            }
+        }
+
+        public void Clear()
+        {
+            this.Piece = new Piece("[ ]");
         }
     }
 }

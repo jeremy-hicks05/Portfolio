@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ConsoleChess.Interfaces;
+using ConsoleChess.Pieces;
 
 namespace ConsoleChess
 {
@@ -28,38 +25,38 @@ namespace ConsoleChess
                     Space space = new Space();
                     space.Latitude = i;
                     space.Longitude = j;
-                    space.piece = new Piece(name: "");
+                    space.Piece = new Piece(name: "[ ]");
                     spaces[i][j] = space;
                 }
             }
 
-            spaces[0][0].piece.Name = "r";
-            spaces[0][1].piece.Name = "n";
-            spaces[0][2].piece.Name = "b";
-            spaces[0][3].piece.Name = "k";
-            spaces[0][4].piece.Name = "q";
-            spaces[0][5].piece.Name = "b";
-            spaces[0][6].piece.Name = "n";
-            spaces[0][7].piece.Name = "r";
+            spaces[0][0].Piece = new Rook("[r]");
+            spaces[0][1].Piece = new Knight("[n]");
+            spaces[0][2].Piece = new Bishop("[b]");
+            spaces[0][3].Piece = new King("[k]");
+            spaces[0][4].Piece = new Queen("[q]");
+            spaces[0][5].Piece = new Bishop("[b]");
+            spaces[0][6].Piece = new Knight("[n]");
+            spaces[0][7].Piece = new Rook("[r]");
 
             for (int i = 0; i < 8; i++)
             {
-                spaces[1][i].piece.Name = "p";
+                spaces[1][i].Piece = new Pawn("[p]");
             }
 
             for (int i = 0; i < 8; i++)
             {
-                spaces[6][i].piece.Name = "P";
+                spaces[6][i].Piece = new Pawn("[P]");
             }
 
-            spaces[7][0].piece.Name = "R";
-            spaces[7][1].piece.Name = "N";
-            spaces[7][2].piece.Name = "B";
-            spaces[7][3].piece.Name = "K";
-            spaces[7][4].piece.Name = "Q";
-            spaces[7][5].piece.Name = "B";
-            spaces[7][6].piece.Name = "N";
-            spaces[7][7].piece.Name = "R";
+            spaces[7][0].Piece = new Rook("[R]");
+            spaces[7][1].Piece = new Knight("[N]");
+            spaces[7][2].Piece = new Bishop("[B]");
+            spaces[7][3].Piece = new King("[K]");
+            spaces[7][4].Piece = new Queen("[Q]");
+            spaces[7][5].Piece = new Bishop("[B]");
+            spaces[7][6].Piece = new Knight("[N]");
+            spaces[7][7].Piece = new Rook("[R]");
 
             PrintBoard();
         }
@@ -71,10 +68,19 @@ namespace ConsoleChess
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    Console.Write(spaces[i][j].piece.Name);
+                    Console.Write(spaces[i][j].Piece.Name);
                 }
                 Console.WriteLine();
             }
+        }
+
+        public void MovePieceFromSpaceToSpace(Space fromSpace, Space toSpace)
+        {
+            toSpace.Piece = fromSpace.Piece;
+            fromSpace.Piece = new Piece("[ ]");
+            
+                
+            //fromSpace.Piece.MoveTo(toSpace);
         }
     }
 }
