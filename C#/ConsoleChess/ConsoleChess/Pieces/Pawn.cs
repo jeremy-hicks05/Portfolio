@@ -3,6 +3,10 @@ using ConsoleChess.Players;
 
 namespace ConsoleChess.Pieces
 {
+    /* ToDo
+     * 1. Stop pawns from moving backwards
+     * 
+     */
     internal class Pawn : Piece
     {
         public bool hasMoved;
@@ -20,8 +24,22 @@ namespace ConsoleChess.Pieces
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
+            // if this is a white piece - don't allow it to move down
+            if (belongsToPlayer == Player.White && toSpace.X > fromSpace.X)
+            {
+                return false;
+            }
+
+            // if this is a black piece - don't allow it to move up (Y-)
+            if(belongsToPlayer == Player.Black && toSpace.X < fromSpace.X)
+            {
+                return false;
+            }
             if (!hasMoved)
             {
+                
+                
+                
                 if (toSpace.Y == fromSpace.Y && fromSpace.X - toSpace.X < 3)
                 {
                     if (toSpace.Piece.belongsToPlayer == Player.None)
