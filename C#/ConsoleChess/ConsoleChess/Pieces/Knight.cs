@@ -1,5 +1,5 @@
 ﻿using ConsoleChess.Interfaces;
-using ConsoleChess.Players;
+using ConsoleChess.Enums;
 
 namespace ConsoleChess.Pieces
 {

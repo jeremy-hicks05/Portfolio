@@ -1,14 +1,17 @@
-﻿namespace ConsoleChess
+﻿using ConsoleChess.Enums;
+
+namespace ConsoleChess
 {
     /* TODO:
      * 1. Prevent pieces from moving when they are blocked
+     * 2. Switch from [0, 0] notation to A8 D2 etc.
+     * 3. 
     */
     internal class Program
     {
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Chess!");
-            //Match myMatch = new Match();
             Board.InitBoard();
 
             System.ConsoleKey playing = ConsoleKey.Y;
@@ -22,20 +25,20 @@
                 
                 Console.Write("Enter Lat and Long for Piece to be moved:");
                 string stLat = Console.ReadLine();
-                if (Int32.TryParse(stLat, out startLat))
+                if (int.TryParse(stLat, out startLat))
                 {
                     //Console.WriteLine("Accepted input");
                     string stLong = Console.ReadLine();
-                    if (Int32.TryParse(stLong, out startLong))
+                    if (int.TryParse(stLong, out startLong))
                     {
                         //Console.WriteLine("Accepted input");
                         Console.Write("Enter Lat and Long for destination Space:");
                         string enLat = Console.ReadLine();
-                        if (Int32.TryParse(enLat, out endLat))
+                        if (int.TryParse(enLat, out endLat))
                         {
                             //Console.WriteLine("Accepted input");
                             string enLong = Console.ReadLine();
-                            if (Int32.TryParse(enLong, out endLong))
+                            if (int.TryParse(enLong, out endLong))
                             {
                                 if (Board.spaces[startLat][startLong].Piece.CanMoveFromSpaceToSpace(
                                     Board.spaces[startLat][startLong],

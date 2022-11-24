@@ -1,5 +1,5 @@
 ﻿using ConsoleChess.Interfaces;
-using ConsoleChess.Players;
+using ConsoleChess.Enums;
 
 namespace ConsoleChess.Pieces
 {
@@ -37,10 +37,8 @@ namespace ConsoleChess.Pieces
             }
             if (!hasMoved)
             {
-                
-                
-                
-                if (toSpace.Y == fromSpace.Y && fromSpace.X - toSpace.X < 3)
+                // added absolute value here - not sure why it wasn't there before
+                if (toSpace.Y == fromSpace.Y && Math.Abs(fromSpace.X - toSpace.X) < 3)
                 {
                     if (toSpace.Piece.belongsToPlayer == Player.None)
                     {

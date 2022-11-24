@@ -1,4 +1,4 @@
-﻿using ConsoleChess.Players;
+﻿using ConsoleChess.Enums;
 
 namespace ConsoleChess.Interfaces
 {

@@ -1,5 +1,5 @@
 ﻿using ConsoleChess.Interfaces;
-using ConsoleChess.Players;
+using ConsoleChess.Enums;
 
 namespace ConsoleChess.Pieces
 {
@@ -26,6 +26,12 @@ namespace ConsoleChess.Pieces
                 {
                     for (int i = fromSpace.X - 1; i >= toSpace.X; i--)
                     {
+                        if ((toSpace.Piece.belongsToPlayer != Player.None) && (i == toSpace.X && belongsToPlayer != toSpace.Piece.belongsToPlayer))
+                        {
+                            // capture piece
+                            return true;
+                        }
+
                         if (Board.spaces[i][toSpace.Y].Piece.belongsToPlayer != Player.None)
                         {
                             return false;
@@ -37,19 +43,29 @@ namespace ConsoleChess.Pieces
                     // if space is to the left
                     for (int i = fromSpace.X + 1; i <= toSpace.X; i++)
                     {
+                        if ((toSpace.Piece.belongsToPlayer != Player.None) && (i == toSpace.X && belongsToPlayer != toSpace.Piece.belongsToPlayer))
+                        {
+                            // capture piece
+                            return true;
+                        }
+
                         if (Board.spaces[i][toSpace.Y].Piece.belongsToPlayer != Player.None)
                         {
                             return false;
                         }
                     }
-
-
                 }
                 // if space is above
                 else if (fromSpace.Y > toSpace.Y)
                 {
-                    for (int i = fromSpace.Y + 1; i <= toSpace.Y; i++)
+                    for (int i = fromSpace.Y - 1; i <= toSpace.Y; i++)
                     {
+                        if ((toSpace.Piece.belongsToPlayer != Player.None) && (i == toSpace.Y && belongsToPlayer != toSpace.Piece.belongsToPlayer))
+                        {
+                            // capture piece
+                            return true;
+                        }
+
                         if (Board.spaces[toSpace.X][i].Piece.belongsToPlayer != Player.None)
                         {
                             return false;
@@ -59,8 +75,14 @@ namespace ConsoleChess.Pieces
                 else if (fromSpace.Y < toSpace.Y)
                 {
                     // if space is below
-                    for (int i = fromSpace.Y - 1; i >= toSpace.Y; i--)
+                    for (int i = fromSpace.Y + 1; i >= toSpace.Y; i--)
                     {
+                        if ((i == toSpace.Y && belongsToPlayer != toSpace.Piece.belongsToPlayer))
+                        {
+                            // move to blank space or capture piece
+                            return true;
+                        }
+
                         if (Board.spaces[toSpace.X][i].Piece.belongsToPlayer != Player.None)
                         {
                             return false;

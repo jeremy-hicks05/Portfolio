@@ -1,6 +1,6 @@
 ﻿using ConsoleChess.Interfaces;
 using ConsoleChess.Pieces;
-using ConsoleChess.Players;
+using ConsoleChess.Enums;
 
 namespace ConsoleChess
 {
@@ -90,15 +90,21 @@ namespace ConsoleChess
 
         public static void PrintBoard()
         {
-
+            
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
                 {
+                    if(j == 0)
+                    {
+                        Console.Write(8 - i);
+                    }
                     Console.Write(spaces[i][j].Piece.Name);
                 }
+                
                 Console.WriteLine();
             }
+            Console.WriteLine("  A  B  C  D  E  F  G  H");
         }
 
         public static void MovePieceFromSpaceToSpace(Space fromSpace, Space toSpace)
