@@ -34,8 +34,8 @@ namespace ConsoleChess
             spaces[0][0].Piece = new Rook("[r]", Player.Black);
             spaces[0][1].Piece = new Knight("[n]", Player.Black);
             spaces[0][2].Piece = new Bishop("[b]", Player.Black);
-            spaces[0][3].Piece = new King("[k]", Player.Black);
-            spaces[0][4].Piece = new Queen("[q]", Player.Black);
+            spaces[0][3].Piece = new Queen("[q]", Player.Black);
+            spaces[0][4].Piece = new King("[k]", Player.Black);
             spaces[0][5].Piece = new Bishop("[b]", Player.Black);
             spaces[0][6].Piece = new Knight("[n]", Player.Black);
             spaces[0][7].Piece = new Rook("[r]", Player.Black);
@@ -53,8 +53,8 @@ namespace ConsoleChess
             spaces[7][0].Piece = new Rook("[R]", Player.White);
             spaces[7][1].Piece = new Knight("[N]", Player.White);
             spaces[7][2].Piece = new Bishop("[B]", Player.White);
-            spaces[7][3].Piece = new King("[K]", Player.White);
-            spaces[7][4].Piece = new Queen("[Q]", Player.White);
+            spaces[7][3].Piece = new Queen("[Q]", Player.White);
+            spaces[7][4].Piece = new King("[K]", Player.White);
             spaces[7][5].Piece = new Bishop("[B]", Player.White);
             spaces[7][6].Piece = new Knight("[N]", Player.White);
             spaces[7][7].Piece = new Rook("[R]", Player.White);

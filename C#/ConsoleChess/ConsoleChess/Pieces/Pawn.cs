@@ -35,6 +35,43 @@ namespace ConsoleChess.Pieces
             {
                 return false;
             }
+
+            // if piece is white and attacking a space up and left
+            if((belongsToPlayer == Player.White) && 
+                (toSpace.X == fromSpace.X - 1 && toSpace.Y == fromSpace.Y - 1) &&
+                (toSpace.Piece.belongsToPlayer != Player.None && toSpace.Piece.belongsToPlayer != belongsToPlayer))
+            {
+                // capture piece
+                return true;
+            }
+
+            // if piece is white and attacking a space up and right
+            if ((belongsToPlayer == Player.White) &&
+                (toSpace.X == fromSpace.X - 1 && toSpace.Y == fromSpace.Y + 1) &&
+                (toSpace.Piece.belongsToPlayer != Player.None && toSpace.Piece.belongsToPlayer != belongsToPlayer))
+            {
+                // capture piece
+                return true;
+            }
+
+            // if piece is black and attacking a space down and right
+            if ((belongsToPlayer == Player.Black) &&
+                (toSpace.X == fromSpace.X + 1 && toSpace.Y == fromSpace.Y + 1) &&
+                (toSpace.Piece.belongsToPlayer != Player.None && toSpace.Piece.belongsToPlayer != belongsToPlayer))
+            {
+                // capture piece
+                return true;
+            }
+
+            // if piece is black and attacking a space down and left
+            if ((belongsToPlayer == Player.Black) &&
+                (toSpace.X == fromSpace.X + 1 && toSpace.Y == fromSpace.Y - 1) &&
+                (toSpace.Piece.belongsToPlayer != Player.None && toSpace.Piece.belongsToPlayer != belongsToPlayer))
+            {
+                // capture piece
+                return true;
+            }
+
             if (!hasMoved)
             {
                 // added absolute value here - not sure why it wasn't there before
