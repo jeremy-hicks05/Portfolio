@@ -21,48 +21,27 @@ namespace ConsoleChess
                 int endLat;
                 int startLong;
                 int endLong;
-                
-                Console.Write("Enter Lat and Long for Piece to be moved:");
-                string stLat = Console.ReadLine();
+
                 // if input is 'A' -> translate to 7 for X value
                 // if input is '1' -> translate to 0 for Y value (may need to swap these?)
-                if (int.TryParse(stLat, out startLat))
+
+                Console.Write("Enter Lat and Long for Piece to be moved:");
+                int stLong = Board.NotationToInt(Console.ReadLine());
+                int stLat = Board.NotationToInt(Console.ReadLine());
+                
+                
+
+                Console.Write("Enter Lat and Long for destination Space:");
+                int enLong = Board.NotationToInt(Console.ReadLine());
+                int enLat = Board.NotationToInt(Console.ReadLine());
+                
+                if (Board.spaces[stLat][stLong].Piece.CanMoveFromSpaceToSpace(
+                    Board.spaces[stLat][stLong],
+                    Board.spaces[enLat][enLong]))
                 {
-                    //Console.WriteLine("Accepted input");
-                    string stLong = Console.ReadLine();
-                    if (int.TryParse(stLong, out startLong))
-                    {
-                        //Console.WriteLine("Accepted input");
-                        Console.Write("Enter Lat and Long for destination Space:");
-                        string enLat = Console.ReadLine();
-                        if (int.TryParse(enLat, out endLat))
-                        {
-                            //Console.WriteLine("Accepted input");
-                            string enLong = Console.ReadLine();
-                            if (int.TryParse(enLong, out endLong))
-                            {
-                                if (Board.spaces[startLat][startLong].Piece.CanMoveFromSpaceToSpace(
-                                    Board.spaces[startLat][startLong],
-                                    Board.spaces[endLat][endLong]))
-                                {
-                                    Board.MovePieceFromSpaceToSpace(Board.spaces[startLat][startLong], Board.spaces[endLat][endLong]);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Try again");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Try again");
-                    }
+                    Board.MovePieceFromSpaceToSpace(Board.spaces[stLat][stLong], Board.spaces[enLat][enLong]);
                 }
-                else
-                {
-                    Console.WriteLine("Try again");
-                }
+
 
                 Console.Clear();
 
@@ -70,7 +49,6 @@ namespace ConsoleChess
 
                 Console.Write("Keep playing?  Y or N:");
                 playing = Console.ReadKey().Key;
-                //Console.Clear();
             }
         }
     }

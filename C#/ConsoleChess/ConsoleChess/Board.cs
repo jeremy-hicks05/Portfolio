@@ -8,32 +8,6 @@ namespace ConsoleChess
     {
         public static Space[][] spaces { get; set; } = new Space[8][];
 
-        //public Board()
-        //{
-        //    spaces[0][7].Piece = new Rook("[r]", Player.Black);
-
-        //    for (int i = 0; i < 8; i++)
-        //    {
-        //        spaces[1][i].Piece = new Pawn("[p]", Player.Black);
-        //    }
-
-        //    for (int i = 0; i < 8; i++)
-        //    {
-        //        spaces[6][i].Piece = new Pawn("[P]", Player.White);
-        //    }
-
-        //    spaces[7][0].Piece = new Rook("[R]", Player.White);
-        //    spaces[7][1].Piece = new Knight("[N]", Player.White);
-        //    spaces[7][2].Piece = new Bishop("[B]", Player.White);
-        //    spaces[7][3].Piece = new King("[K]", Player.White);
-        //    spaces[7][4].Piece = new Queen("[Q]", Player.White);
-        //    spaces[7][5].Piece = new Bishop("[B]", Player.White);
-        //    spaces[7][6].Piece = new Knight("[N]", Player.White);
-        //    spaces[7][7].Piece = new Rook("[R]", Player.White);
-
-        //    PrintBoard();
-        //}
-
         public static void InitBoard()
         {
             for (int i = 0; i < 8; i++)
@@ -45,9 +19,9 @@ namespace ConsoleChess
                 }
             }
 
-            for (int i = 0; i < 8; i ++)
+            for (int i = 0; i < 8; i++)
             {
-                for(int j = 0; j < 8; j ++)
+                for (int j = 0; j < 8; j++)
                 {
                     Space space = new Space();
                     space.X = i;
@@ -90,18 +64,18 @@ namespace ConsoleChess
 
         public static void PrintBoard()
         {
-            
+
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    if(j == 0)
+                    if (j == 0)
                     {
                         Console.Write(8 - i);
                     }
                     Console.Write(spaces[i][j].Piece.Name);
                 }
-                
+
                 Console.WriteLine();
             }
             Console.WriteLine("  A  B  C  D  E  F  G  H");
@@ -111,6 +85,48 @@ namespace ConsoleChess
         {
             toSpace.Piece = fromSpace.Piece;
             fromSpace.Piece = new Piece("[ ]", Player.None);
+        }
+
+        public static int NotationToInt(string notation)
+        {
+            int translatedNotaion = -1;
+
+            switch (notation.ToUpper())
+            {
+                case "A":
+                case "8":
+                    translatedNotaion = 0;
+                    break;
+                case "B":
+                case "7":
+                    translatedNotaion = 1;
+                    break;
+                case "C":
+                case "6":
+                    translatedNotaion = 2;
+                    break;
+                case "D":
+                case "5":
+                    translatedNotaion = 3;
+                    break;
+                case "E":
+                case "4":
+                    translatedNotaion = 4;
+                    break;
+                case "F":
+                case "3":
+                    translatedNotaion = 5;
+                    break;
+                case "2":
+                case "G": 
+                    translatedNotaion = 6;
+                    break;
+                case "H":
+                case "1":
+                    translatedNotaion = 7;
+                    break;
+            }
+            return translatedNotaion;
         }
     }
 }

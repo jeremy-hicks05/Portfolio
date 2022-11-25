@@ -21,7 +21,7 @@ namespace ConsoleChess.Pieces
         {
             if(fromSpace.X == toSpace.X || fromSpace.Y == toSpace.Y)
             {
-                // if space is to the right
+                // if space is to the right -> above?
                 if (fromSpace.X > toSpace.X)
                 {
                     for (int i = fromSpace.X - 1; i >= toSpace.X; i--)
@@ -40,7 +40,7 @@ namespace ConsoleChess.Pieces
                 }
                 else if (fromSpace.X < toSpace.X)
                 {
-                    // if space is to the left
+                    // if space is to the left -> below?
                     for (int i = fromSpace.X + 1; i <= toSpace.X; i++)
                     {
                         if ((toSpace.Piece.belongsToPlayer != Player.None) && (i == toSpace.X && belongsToPlayer != toSpace.Piece.belongsToPlayer))
@@ -55,7 +55,7 @@ namespace ConsoleChess.Pieces
                         }
                     }
                 }
-                // if space is above
+                // if space is above -> to the left?
                 else if (fromSpace.Y > toSpace.Y)
                 {
                     for (int i = fromSpace.Y - 1; i <= toSpace.Y; i++)
@@ -74,7 +74,7 @@ namespace ConsoleChess.Pieces
                 }
                 else if (fromSpace.Y < toSpace.Y)
                 {
-                    // if space is below
+                    // if space is below -> to the right?
                     for (int i = fromSpace.Y + 1; i >= toSpace.Y; i--)
                     {
                         if ((i == toSpace.Y && belongsToPlayer != toSpace.Piece.belongsToPlayer))

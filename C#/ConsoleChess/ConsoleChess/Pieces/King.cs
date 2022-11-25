@@ -23,11 +23,10 @@ namespace ConsoleChess.Pieces
             {
                 return false;
             }
-            else if (toSpace.Piece.belongsToPlayer != Player.None)
+            else if (toSpace.Piece.belongsToPlayer == belongsToPlayer)
             {
                 return false;
             }
-
             return true;
         }
     }
