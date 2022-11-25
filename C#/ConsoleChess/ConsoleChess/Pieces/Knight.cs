@@ -10,12 +10,12 @@ namespace ConsoleChess.Pieces
 
         }
 
-        public override void MoveTo(Space spaceMovedTo)
-        {
-            // move like a knight
-            spaceMovedTo.Piece.Name = Name;
-            Name = "[ ]";
-        }
+        //public override void MoveTo(Space spaceMovedTo)
+        //{
+        //    // move like a knight
+        //    spaceMovedTo.Piece.Name = Name;
+        //    Name = "[ ]";
+        //}
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
@@ -23,7 +23,7 @@ namespace ConsoleChess.Pieces
             if((Math.Abs(fromSpace.X - toSpace.X) == 1 && Math.Abs(fromSpace.Y - toSpace.Y) == 2) ||
                 (Math.Abs(fromSpace.Y - toSpace.Y) == 1 && Math.Abs(fromSpace.X - toSpace.X) == 2))
             {
-                if(toSpace.Piece.belongsToPlayer == belongsToPlayer)
+                if(toSpace.Piece?.belongsToPlayer == belongsToPlayer)
                 {
                     return false;
                 }

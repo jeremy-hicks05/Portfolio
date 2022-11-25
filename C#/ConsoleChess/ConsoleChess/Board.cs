@@ -73,7 +73,7 @@ namespace ConsoleChess
                     {
                         Console.Write(8 - i);
                     }
-                    Console.Write(spaces[i][j].Piece.Name);
+                    Console.Write(spaces[i][j].Piece?.Name);
                 }
 
                 Console.WriteLine();
@@ -87,44 +87,48 @@ namespace ConsoleChess
             fromSpace.Piece = new Piece("[ ]", Player.None);
         }
 
-        public static int NotationToInt(string notation)
+        public static int NotationToInt(string? notation)
         {
             int translatedNotaion = -1;
 
-            switch (notation.ToUpper())
+            if (notation is not null)
             {
-                case "A":
-                case "8":
-                    translatedNotaion = 0;
-                    break;
-                case "B":
-                case "7":
-                    translatedNotaion = 1;
-                    break;
-                case "C":
-                case "6":
-                    translatedNotaion = 2;
-                    break;
-                case "D":
-                case "5":
-                    translatedNotaion = 3;
-                    break;
-                case "E":
-                case "4":
-                    translatedNotaion = 4;
-                    break;
-                case "F":
-                case "3":
-                    translatedNotaion = 5;
-                    break;
-                case "2":
-                case "G": 
-                    translatedNotaion = 6;
-                    break;
-                case "H":
-                case "1":
-                    translatedNotaion = 7;
-                    break;
+
+                switch (notation.ToUpper())
+                {
+                    case "A":
+                    case "8":
+                        translatedNotaion = 0;
+                        break;
+                    case "B":
+                    case "7":
+                        translatedNotaion = 1;
+                        break;
+                    case "C":
+                    case "6":
+                        translatedNotaion = 2;
+                        break;
+                    case "D":
+                    case "5":
+                        translatedNotaion = 3;
+                        break;
+                    case "E":
+                    case "4":
+                        translatedNotaion = 4;
+                        break;
+                    case "F":
+                    case "3":
+                        translatedNotaion = 5;
+                        break;
+                    case "2":
+                    case "G":
+                        translatedNotaion = 6;
+                        break;
+                    case "H":
+                    case "1":
+                        translatedNotaion = 7;
+                        break;
+                }
             }
             return translatedNotaion;
         }

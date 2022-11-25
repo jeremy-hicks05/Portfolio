@@ -17,10 +17,10 @@ namespace ConsoleChess
             System.ConsoleKey playing = ConsoleKey.Y;
             while (playing == ConsoleKey.Y)
             {
-                int startLat;
-                int endLat;
-                int startLong;
-                int endLong;
+                //int startLat;
+                //int endLat;
+                //int startLong;
+                //int endLong;
 
                 // if input is 'A' -> translate to 7 for X value
                 // if input is '1' -> translate to 0 for Y value (may need to swap these?)

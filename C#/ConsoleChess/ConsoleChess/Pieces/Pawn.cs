@@ -5,7 +5,7 @@ namespace ConsoleChess.Pieces
 {
     /* ToDo
      * 1. Stop pawns from moving backwards
-     * 
+     * 2. Allow en passant rule
      */
     internal class Pawn : Piece
     {
@@ -15,12 +15,12 @@ namespace ConsoleChess.Pieces
             hasMoved = false;
         }
 
-        public override void MoveTo(Space spaceMovedTo)
-        {
-            // move like a pawn
-            spaceMovedTo.Piece.Name = Name;
-            Name = "[ ]";
-        }
+        //public override void MoveTo(Space spaceMovedTo)
+        //{
+        //    // move like a pawn
+        //    spaceMovedTo.Piece.Name = Name;
+        //    Name = "[ ]";
+        //}
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {

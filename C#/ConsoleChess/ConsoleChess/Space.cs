@@ -9,6 +9,13 @@ namespace ConsoleChess
         public int Y { get; set; }
         public Piece Piece { get; set; }
 
+        public Space()
+        {
+            X = -1;
+            Y = -1;
+            Piece = new Piece(" ", Player.None);
+        }
+
         public string PrintSpace()
         {
             if(Piece == null)
@@ -29,9 +36,12 @@ namespace ConsoleChess
 
         public void MovePieceFromMeToSpace(Space toSpace)
         {
-            if(Piece.CanMoveFromSpaceToSpace(this, toSpace))
+            if (Piece != null)
             {
+                if (Piece.CanMoveFromSpaceToSpace(this, toSpace))
+                {
 
+                }
             }
         }
 
