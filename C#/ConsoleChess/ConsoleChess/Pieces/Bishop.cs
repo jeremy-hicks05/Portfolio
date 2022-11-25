@@ -26,8 +26,13 @@ namespace ConsoleChess.Pieces
                 // if toSpace is down and right
                 if (fromSpace.X < toSpace.X && fromSpace.Y < toSpace.Y)
                 {
-                    for (int i = toSpace.X, k = toSpace.Y; i >= fromSpace.X && k > fromSpace.Y; i--, k--)
+                    for (int i = fromSpace.X + 1, k = fromSpace.Y + 1; i <= toSpace.X && k <= toSpace.Y; i++, k++)
                     {
+                        if((i == toSpace.X || k == toSpace.Y) && Board.spaces[i][k].Piece.belongsToPlayer != belongsToPlayer)
+                        {
+                            // capture or move to empty space
+                            return true;
+                        }
                         if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
                         {
                             return false;
@@ -37,8 +42,13 @@ namespace ConsoleChess.Pieces
                 // if toSpace is down and left
                 else if (fromSpace.X < toSpace.X && fromSpace.Y > toSpace.Y)
                 {
-                    for (int i = toSpace.X, k = toSpace.Y; i > fromSpace.X && k < fromSpace.Y; i--, k++)
+                    for (int i = fromSpace.X + 1, k = fromSpace.Y - 1; i <= toSpace.X && k >= toSpace.Y; i++, k--)
                     {
+                        if ((i == toSpace.X || k == toSpace.Y) && Board.spaces[i][k].Piece.belongsToPlayer != belongsToPlayer)
+                        {
+                            // capture or move to empty space
+                            return true;
+                        }
                         if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
                         {
                             return false;
@@ -48,8 +58,13 @@ namespace ConsoleChess.Pieces
                 // if toSpace is up and right
                 else if (fromSpace.X > toSpace.X && fromSpace.Y < toSpace.Y)
                 {
-                    for (int i = toSpace.X, k = toSpace.Y; i < fromSpace.X && k > fromSpace.Y; i++, k--)
+                    for (int i = fromSpace.X - 1, k = fromSpace.Y + 1; i >= toSpace.X && k <= toSpace.Y; i--, k++)
                     {
+                        if ((i == toSpace.X || k == toSpace.Y) && Board.spaces[i][k].Piece.belongsToPlayer != belongsToPlayer)
+                        {
+                            // capture or move to empty space
+                            return true;
+                        }
                         if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
                         {
                             return false;
@@ -59,8 +74,13 @@ namespace ConsoleChess.Pieces
                 // if toSpace is up and left
                 else if (fromSpace.X > toSpace.X && fromSpace.Y > toSpace.Y)
                 {
-                    for (int i = toSpace.X, k = toSpace.Y; i < fromSpace.X && k < fromSpace.Y; i++, k++)
+                    for (int i = fromSpace.X - 1, k = fromSpace.Y - 1; i >= toSpace.X && k >= toSpace.Y; i--, k--)
                     {
+                        if ((i == toSpace.X || k == toSpace.Y) && Board.spaces[i][k].Piece.belongsToPlayer != belongsToPlayer)
+                        {
+                            // capture or move to empty space
+                            return true;
+                        }
                         if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
                         {
                             return false;
