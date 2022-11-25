@@ -32,10 +32,10 @@ namespace ConsoleChess.Pieces
             // if king hasn't moved - perform castle king side for black
             if((!hasMoved && belongsToPlayer == Player.Black) && (fromSpace.X == toSpace.X) && toSpace.Y - fromSpace.Y == 2)
             {
-                //allow king to move two spaces toward the rook
-                return true;
-
-                //perform castle
+                // perform castle
+                Board.CastleKingSideBlack();
+                return false;
+                //return true;
             }
 
             if (toSpace.X - fromSpace.X > 1 || toSpace.Y - fromSpace.Y > 1)

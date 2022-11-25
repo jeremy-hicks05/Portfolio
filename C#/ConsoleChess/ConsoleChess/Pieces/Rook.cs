@@ -5,19 +5,21 @@ namespace ConsoleChess.Pieces
 {
     internal class Rook : Piece
     {
+        public bool hasMoved;
+
         /*  TODO: 
          *  1. Enable castling K side
          *  2. Enable castling Q side
          */
 
         /// <summary>
-        /// /bool hasMoved;
+
         /// </summary>
         /// <param name="name"></param>
         /// <param name="belongsTo"></param>
         public Rook(string name, Player belongsTo) : base(name, belongsTo)
         {
-            //hasMoved = false;
+            hasMoved = false;
         }
 
         //public override void MoveTo(Space spaceMovedTo)
@@ -39,7 +41,7 @@ namespace ConsoleChess.Pieces
                         if ((toSpace.Piece.belongsToPlayer != Player.None) && (i == toSpace.X && belongsToPlayer != toSpace.Piece.belongsToPlayer))
                         {
                             // move to blank space or capture piece
-                            //hasMoved = true;
+                            hasMoved = true;
                             return true;
                         }
 
@@ -57,7 +59,7 @@ namespace ConsoleChess.Pieces
                         if ((toSpace.Piece.belongsToPlayer != Player.None) && (i == toSpace.X && belongsToPlayer != toSpace.Piece.belongsToPlayer))
                         {
                             // move to blank space or capture piece
-                            //hasMoved = true;
+                            hasMoved = true;
                             return true;
                         }
 
@@ -75,7 +77,7 @@ namespace ConsoleChess.Pieces
                         if ((toSpace.Piece.belongsToPlayer != Player.None) && (i == toSpace.Y && belongsToPlayer != toSpace.Piece.belongsToPlayer))
                         {
                             // move to blank space or capture piece
-                            //hasMoved = true;
+                            hasMoved = true;
                             return true;
                         }
 
@@ -93,7 +95,7 @@ namespace ConsoleChess.Pieces
                         if ((i == toSpace.Y && belongsToPlayer != toSpace.Piece.belongsToPlayer))
                         {
                             // move to blank space or capture piece
-                            //hasMoved = true;
+                            hasMoved = true;
                             return true;
                         }
 
@@ -104,7 +106,7 @@ namespace ConsoleChess.Pieces
                     }
                 }
                 // success
-                //hasMoved = true;
+                hasMoved = true;
                 return true;
             }
             return false;

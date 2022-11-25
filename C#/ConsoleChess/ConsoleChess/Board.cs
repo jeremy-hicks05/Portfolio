@@ -73,7 +73,7 @@ namespace ConsoleChess
                     {
                         Console.Write(8 - i);
                     }
-                    Console.Write(spaces[i][j].Piece?.Name);
+                    Console.Write(spaces[i][j].Piece.Name);
                 }
 
                 Console.WriteLine();
@@ -131,6 +131,41 @@ namespace ConsoleChess
                 }
             }
             return translatedNotaion;
+        }
+
+        public static void CastleKingSideWhite()
+        {
+            //king on e1, rook on h1
+            spaces[NotationToInt("E")][NotationToInt("1")].Piece = new Piece("[ ]", Player.None);
+            spaces[NotationToInt("H")][NotationToInt("1")].Piece = new Piece("[ ]", Player.None);
+        }
+
+        public static void CastleQueenSideWhite()
+        {
+
+        }
+
+        public static void CastleKingSideBlack()
+        {
+            
+            if (spaces[NotationToInt("8")][NotationToInt("F")].Piece.belongsToPlayer == Player.None &&
+                spaces[NotationToInt("8")][NotationToInt("G")].Piece.belongsToPlayer == Player.None)
+            {
+                Rook myRook = (Rook)spaces[NotationToInt("8")][NotationToInt("H")].Piece;
+                if (!myRook.hasMoved)
+                {
+                    spaces[NotationToInt("8")][NotationToInt("E")].Piece = new Piece("[ ]", Player.None);
+                    spaces[NotationToInt("8")][NotationToInt("H")].Piece = new Piece("[ ]", Player.None);
+
+                    spaces[NotationToInt("8")][NotationToInt("G")].Piece = new King("[k]", Player.Black);
+                    spaces[NotationToInt("8")][NotationToInt("F")].Piece = new Rook("[r]", Player.Black);
+                }
+            }
+        }
+
+        public static void CastleQueenSideBlack()
+        {
+
         }
     }
 }
