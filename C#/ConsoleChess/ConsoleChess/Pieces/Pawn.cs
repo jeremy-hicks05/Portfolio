@@ -4,7 +4,7 @@ using ConsoleChess.Enums;
 namespace ConsoleChess.Pieces
 {
     /* ToDo
-     * 1. Stop pawns from moving backwards
+     * 1. Stop pawns from jumping over pieces during first move
      * 2. Allow en passant rule
      */
     internal class Pawn : Piece
@@ -74,9 +74,18 @@ namespace ConsoleChess.Pieces
 
             if (!hasMoved)
             {
-                // added absolute value here - not sure why it wasn't there before
                 if (toSpace.Y == fromSpace.Y && Math.Abs(fromSpace.X - toSpace.X) < 3)
                 {
+                    // if player is white and space next to pawn (above) is occupied, return false
+                    if(fromSpace.Piece.belongsToPlayer == Player.White && Board.spaces[fromSpace.X - 1][fromSpace.Y].Piece.belongsToPlayer != Player.None)
+                    {
+                        return false;
+                    }
+                    // if player is black and space next to pawn (above) is occupied, return false
+                    else if (fromSpace.Piece.belongsToPlayer == Player.Black && Board.spaces[fromSpace.X + 1][fromSpace.Y].Piece.belongsToPlayer != Player.None)
+                    {
+                        return false;
+                    }
                     if (toSpace.Piece.belongsToPlayer == Player.None)
                     {
                         hasMoved = true;
