@@ -46,18 +46,18 @@ namespace ConsoleChess.Pieces
                 //return true;
             }
 
-            else if ((!hasMoved && belongsToPlayer == Player.White) && (fromSpace.X == toSpace.X) && toSpace.Y - fromSpace.Y == 2)
+            else if ((!hasMoved && belongsToPlayer == Player.White) && (fromSpace.X == toSpace.X) && fromSpace.Y - toSpace.Y == 2)
             {
                 // perform castle
-                Board.CastleKingSideWhite();
+                Board.CastleQueenSideWhite();
                 return false;
                 //return true;
             }
 
-            else if ((!hasMoved && belongsToPlayer == Player.Black) && (fromSpace.X == toSpace.X) && toSpace.Y + fromSpace.Y == 2)
+            else if ((!hasMoved && belongsToPlayer == Player.Black) && (fromSpace.X == toSpace.X) && fromSpace.Y - toSpace.Y == 2)
             {
                 // perform castle
-                Board.CastleQueenSideBlack();
+                Board.CastleKingSideWhite();
                 return false;
                 //return true;
             }
