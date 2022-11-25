@@ -9,6 +9,7 @@ namespace ConsoleChess.Pieces
      */
     internal class Pawn : Piece
     {
+        //public bool movedTwoLastTurn;
         public bool hasMoved;
         public Pawn(string name, Player belongsTo) : base(name, belongsTo)
         {

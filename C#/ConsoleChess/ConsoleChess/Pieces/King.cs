@@ -9,10 +9,10 @@ namespace ConsoleChess.Pieces
      */
     internal class King : Piece
     {
-        //bool hasMoved;
+        bool hasMoved;
         public King(string name, Player belongsTo) : base(name, belongsTo)
         {
-            //hasMoved = false;
+            hasMoved = false;
         }
 
         //public override void MoveTo(Space spaceMovedTo)
@@ -28,6 +28,16 @@ namespace ConsoleChess.Pieces
             // if neither king nor king side rook has moved, and toSpace is a specific spot
             // and the king will not 'move through check' or end up in check
             // perform a castle
+
+            // if king hasn't moved - perform castle king side for black
+            if((!hasMoved && belongsToPlayer == Player.Black) && (fromSpace.X == toSpace.X) && toSpace.Y - fromSpace.Y == 2)
+            {
+                //allow king to move two spaces toward the rook
+                return true;
+
+                //perform castle
+            }
+
             if (toSpace.X - fromSpace.X > 1 || toSpace.Y - fromSpace.Y > 1)
             {
                 return false;
@@ -36,7 +46,7 @@ namespace ConsoleChess.Pieces
             {
                 return false;
             }
-            //hasMoved = true;
+            hasMoved = true;
             return true;
         }
     }
