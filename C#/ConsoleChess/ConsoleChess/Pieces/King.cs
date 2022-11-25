@@ -9,7 +9,7 @@ namespace ConsoleChess.Pieces
      */
     internal class King : Piece
     {
-        bool hasMoved;
+        public bool hasMoved;
         public King(string name, Player belongsTo) : base(name, belongsTo)
         {
             hasMoved = false;
@@ -38,7 +38,7 @@ namespace ConsoleChess.Pieces
                 //return true;
             }
 
-            else if ((!hasMoved && belongsToPlayer == Player.Black) && (fromSpace.X == toSpace.X) && toSpace.Y + fromSpace.Y == 2)
+            else if ((!hasMoved && belongsToPlayer == Player.Black) && (fromSpace.X == toSpace.X) && fromSpace.Y - toSpace.Y == 2)
             {
                 // perform castle
                 Board.CastleQueenSideBlack();
@@ -54,7 +54,7 @@ namespace ConsoleChess.Pieces
                 //return true;
             }
 
-            else if ((!hasMoved && belongsToPlayer == Player.Black) && (fromSpace.X == toSpace.X) && fromSpace.Y - toSpace.Y == 2)
+            else if ((!hasMoved && belongsToPlayer == Player.White) && (fromSpace.X == toSpace.X) && toSpace.Y - fromSpace.Y == 2)
             {
                 // perform castle
                 Board.CastleKingSideWhite();

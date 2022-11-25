@@ -135,12 +135,13 @@ namespace ConsoleChess
 
         public static void CastleKingSideWhite()
         {
-            //king on e1, rook on h1
+            //testing
             if (spaces[NotationToInt("1")][NotationToInt("F")].Piece.belongsToPlayer == Player.None &&
                 spaces[NotationToInt("1")][NotationToInt("G")].Piece.belongsToPlayer == Player.None)
             {
                 Rook myRook = (Rook)spaces[NotationToInt("1")][NotationToInt("H")].Piece;
-                if (!myRook.hasMoved)
+                King myKing = (King)spaces[NotationToInt("1")][NotationToInt("E")].Piece;
+                if (!myRook.hasMoved && !myKing.hasMoved)
                 {
                     spaces[NotationToInt("1")][NotationToInt("E")].Piece = new Piece("[ ]", Player.None);
                     spaces[NotationToInt("1")][NotationToInt("H")].Piece = new Piece("[ ]", Player.None);
@@ -153,12 +154,14 @@ namespace ConsoleChess
 
         public static void CastleQueenSideWhite()
         {
+            // works
             if (spaces[NotationToInt("1")][NotationToInt("B")].Piece.belongsToPlayer == Player.None &&
                 spaces[NotationToInt("1")][NotationToInt("C")].Piece.belongsToPlayer == Player.None &&
                 spaces[NotationToInt("1")][NotationToInt("D")].Piece.belongsToPlayer == Player.None)
             {
                 Rook myRook = (Rook)spaces[NotationToInt("1")][NotationToInt("A")].Piece;
-                if (!myRook.hasMoved)
+                King myKing = (King)spaces[NotationToInt("1")][NotationToInt("E")].Piece;
+                if (!myRook.hasMoved && !myKing.hasMoved)
                 {
                     spaces[NotationToInt("1")][NotationToInt("A")].Piece = new Piece("[ ]", Player.None);
                     spaces[NotationToInt("1")][NotationToInt("E")].Piece = new Piece("[ ]", Player.None);
@@ -171,12 +174,13 @@ namespace ConsoleChess
 
         public static void CastleKingSideBlack()
         {
-            
+            // works
             if (spaces[NotationToInt("8")][NotationToInt("F")].Piece.belongsToPlayer == Player.None &&
                 spaces[NotationToInt("8")][NotationToInt("G")].Piece.belongsToPlayer == Player.None)
             {
                 Rook myRook = (Rook)spaces[NotationToInt("8")][NotationToInt("H")].Piece;
-                if (!myRook.hasMoved)
+                King myKing = (King)spaces[NotationToInt("8")][NotationToInt("E")].Piece;
+                if (!myRook.hasMoved && !myKing.hasMoved)
                 {
                     spaces[NotationToInt("8")][NotationToInt("E")].Piece = new Piece("[ ]", Player.None);
                     spaces[NotationToInt("8")][NotationToInt("H")].Piece = new Piece("[ ]", Player.None);
@@ -189,17 +193,20 @@ namespace ConsoleChess
 
         public static void CastleQueenSideBlack()
         {
-            if (spaces[NotationToInt("8")][NotationToInt("F")].Piece.belongsToPlayer == Player.None &&
-                spaces[NotationToInt("8")][NotationToInt("G")].Piece.belongsToPlayer == Player.None)
+            // works
+            if (spaces[NotationToInt("8")][NotationToInt("B")].Piece.belongsToPlayer == Player.None &&
+                spaces[NotationToInt("8")][NotationToInt("C")].Piece.belongsToPlayer == Player.None &&
+                spaces[NotationToInt("8")][NotationToInt("D")].Piece.belongsToPlayer == Player.None)
             {
-                Rook myRook = (Rook)spaces[NotationToInt("8")][NotationToInt("H")].Piece;
-                if (!myRook.hasMoved)
+                Rook myRook = (Rook)spaces[NotationToInt("8")][NotationToInt("A")].Piece;
+                King myKing = (King)spaces[NotationToInt("8")][NotationToInt("E")].Piece;
+                if (!myRook.hasMoved && !myKing.hasMoved)
                 {
                     spaces[NotationToInt("8")][NotationToInt("E")].Piece = new Piece("[ ]", Player.None);
-                    spaces[NotationToInt("8")][NotationToInt("H")].Piece = new Piece("[ ]", Player.None);
+                    spaces[NotationToInt("8")][NotationToInt("A")].Piece = new Piece("[ ]", Player.None);
 
-                    spaces[NotationToInt("8")][NotationToInt("G")].Piece = new King("[k]", Player.Black);
-                    spaces[NotationToInt("8")][NotationToInt("F")].Piece = new Rook("[r]", Player.Black);
+                    spaces[NotationToInt("8")][NotationToInt("C")].Piece = new King("[k]", Player.Black);
+                    spaces[NotationToInt("8")][NotationToInt("D")].Piece = new Rook("[r]", Player.Black);
                 }
             }
         }
