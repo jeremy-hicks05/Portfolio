@@ -21,10 +21,11 @@ namespace ConsoleChess
                 int endLat;
                 int startLong;
                 int endLong;
-
                 
                 Console.Write("Enter Lat and Long for Piece to be moved:");
                 string stLat = Console.ReadLine();
+                // if input is 'A' -> translate to 7 for X value
+                // if input is '1' -> translate to 0 for Y value (may need to swap these?)
                 if (int.TryParse(stLat, out startLat))
                 {
                     //Console.WriteLine("Accepted input");

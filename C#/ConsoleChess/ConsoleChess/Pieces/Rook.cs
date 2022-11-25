@@ -28,7 +28,7 @@ namespace ConsoleChess.Pieces
                     {
                         if ((toSpace.Piece.belongsToPlayer != Player.None) && (i == toSpace.X && belongsToPlayer != toSpace.Piece.belongsToPlayer))
                         {
-                            // capture piece
+                            // move to blank space or capture piece
                             return true;
                         }
 
@@ -45,7 +45,7 @@ namespace ConsoleChess.Pieces
                     {
                         if ((toSpace.Piece.belongsToPlayer != Player.None) && (i == toSpace.X && belongsToPlayer != toSpace.Piece.belongsToPlayer))
                         {
-                            // capture piece
+                            // move to blank space or capture piece
                             return true;
                         }
 
@@ -62,7 +62,7 @@ namespace ConsoleChess.Pieces
                     {
                         if ((toSpace.Piece.belongsToPlayer != Player.None) && (i == toSpace.Y && belongsToPlayer != toSpace.Piece.belongsToPlayer))
                         {
-                            // capture piece
+                            // move to blank space or capture piece
                             return true;
                         }
 
