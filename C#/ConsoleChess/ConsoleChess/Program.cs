@@ -1,11 +1,10 @@
 ﻿using ConsoleChess.Enums;
+using ConsoleChess.Interfaces;
 
 namespace ConsoleChess
 {
-    /* TODO:
-     * 1. Prevent pieces from moving when they are blocked
-     * 2. Switch from [0, 0] notation to A8 D2 etc.
-     * 3. 
+    /* TODO
+     *  
     */
     internal class Program
     {
@@ -17,31 +16,29 @@ namespace ConsoleChess
             System.ConsoleKey playing = ConsoleKey.Y;
             while (playing == ConsoleKey.Y)
             {
-                //int startLat;
-                //int endLat;
-                //int startLong;
-                //int endLong;
-
                 // if input is 'A' -> translate to 7 for X value
                 // if input is '1' -> translate to 0 for Y value (may need to swap these?)
 
-                Console.Write("Enter Lat and Long for Piece to be moved:");
+                Console.Write("Enter Letter for Piece to be moved:");
                 int stLong = Board.NotationToInt(Console.ReadLine());
+                Console.Write("Enter Number for Piece to be moved:");
                 int stLat = Board.NotationToInt(Console.ReadLine());
-                
-                
 
-                Console.Write("Enter Lat and Long for destination Space:");
+                Console.Write("Enter Letter for Space to be moved to:");
                 int enLong = Board.NotationToInt(Console.ReadLine());
+                Console.Write("Enter Number for Space to be moved to:");
                 int enLat = Board.NotationToInt(Console.ReadLine());
-                
-                if (Board.spaces[stLat][stLong].Piece.CanMoveFromSpaceToSpace(
-                    Board.spaces[stLat][stLong],
-                    Board.spaces[enLat][enLong]))
-                {
-                    Board.MovePieceFromSpaceToSpace(Board.spaces[stLat][stLong], Board.spaces[enLat][enLong]);
-                }
 
+                Piece selectedPiece = Board.spaces[stLat][stLong].Piece;
+                Space startingSpace = Board.spaces[stLat][stLong];
+                Space destinationSpace = Board.spaces[enLat][enLong];
+
+                if (selectedPiece.CanMoveFromSpaceToSpace(
+                    startingSpace,
+                    destinationSpace))
+                {
+                    Board.MovePieceFromSpaceToSpace(startingSpace, destinationSpace);
+                }
 
                 Console.Clear();
 
