@@ -23,14 +23,23 @@ namespace ConsoleChess.Pieces
         //    hasMoved = false;
         //}
 
+        public override bool CanAttackSpace(Space fromSpace, Space toSpace)
+        {
+            return CanMoveFromSpaceToSpace(fromSpace, toSpace);
+        }
+
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
+            if (fromSpace == toSpace)
+            {
+                return false;
+            }
             // if neither king nor king side rook has moved, and toSpace is a specific spot
             // and the king will not 'move through check' or end up in check
             // perform a castle
 
             // if king hasn't moved - perform castle king side for black
-            if((!hasMoved && belongsToPlayer == Player.Black) && (fromSpace.X == toSpace.X) && toSpace.Y - fromSpace.Y == 2)
+            if ((!hasMoved && belongsToPlayer == Player.Black) && (fromSpace.X == toSpace.X) && toSpace.Y - fromSpace.Y == 2)
             {
                 // perform castle
                 Board.CastleKingSideBlack();
@@ -62,7 +71,7 @@ namespace ConsoleChess.Pieces
                 //return true;
             }
 
-            if (toSpace.X - fromSpace.X > 1 || toSpace.Y - fromSpace.Y > 1)
+            if (Math.Abs(toSpace.X - fromSpace.X) > 1 || Math.Abs(toSpace.Y - fromSpace.Y) > 1)
             {
                 return false;
             }

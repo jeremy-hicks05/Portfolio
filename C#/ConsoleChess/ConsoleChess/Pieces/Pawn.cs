@@ -23,8 +23,30 @@ namespace ConsoleChess.Pieces
         //    Name = "[ ]";
         //}
 
+        public override bool CanAttackSpace(Space fromSpace, Space toSpace)
+        {
+            // if this is a white piece - let it attack up and right and up and left (check for edge pieces on A and H)
+            if (fromSpace.X > toSpace.X)
+            {
+                if(belongsToPlayer == Player.White && (fromSpace.X == toSpace.X + 1 && fromSpace.Y == toSpace.Y - 1))
+                {
+                    return true;
+                }
+
+                if (belongsToPlayer == Player.White && (fromSpace.X == toSpace.X + 1 && fromSpace.Y == toSpace.Y + 1))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
+            if (fromSpace == toSpace)
+            {
+                return false;
+            }
             // if this is a white piece - don't allow it to move down
             if (belongsToPlayer == Player.White && toSpace.X > fromSpace.X)
             {

@@ -29,5 +29,10 @@ namespace ConsoleChess.Interfaces
         {
             return false;
         }
+
+        public virtual bool CanAttackSpace(Space fromSpace, Space toSpace)
+        {
+            return false;
+        }
     }
 }

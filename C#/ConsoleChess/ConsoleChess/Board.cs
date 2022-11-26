@@ -59,12 +59,15 @@ namespace ConsoleChess
             spaces[7][6].Piece = new Knight("[N]", Player.White);
             spaces[7][7].Piece = new Rook("[R]", Player.White);
 
+            FindAllSpacesAttacked();
+
             PrintBoard();
         }
 
         public static void PrintBoard()
         {
-
+            Console.Clear();
+            
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
@@ -79,6 +82,34 @@ namespace ConsoleChess
                 Console.WriteLine();
             }
             Console.WriteLine("  A  B  C  D  E  F  G  H");
+        }
+
+        public static void FindAllSpacesAttacked()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (spaces[i][j].Piece.belongsToPlayer == Player.White)
+                    {
+                        for (int k = 0; k < 8; k++)
+                        {
+                            for (int m = 0; m < 8; m++)
+                            {
+                                if (spaces[i][j].Piece.CanAttackSpace(spaces[i][j], spaces[k][m]))
+                                {
+                                    spaces[k][m].IsUnderAttackByWhite = true;
+                                    if (spaces[k][m].Piece.belongsToPlayer != Player.White)
+                                    {
+                                        spaces[k][m].Piece.Name = "[*]";
+                                        PrintBoard();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public static void MovePieceFromSpaceToSpace(Space fromSpace, Space toSpace)

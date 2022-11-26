@@ -14,9 +14,22 @@ namespace ConsoleChess.Pieces
 
         }
 
+        public override bool CanAttackSpace(Space fromSpace, Space toSpace)
+        {
+            return CanMoveFromSpaceToSpace(fromSpace, toSpace);
+        }
+
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            if((Math.Abs(fromSpace.X - toSpace.X)) / (Math.Abs(fromSpace.Y - toSpace.Y)) == 1)
+            if (fromSpace == toSpace)
+            {
+                return false;
+            }
+            if (fromSpace.X == toSpace.X || fromSpace.Y == toSpace.Y)
+            {
+                return false;
+            }
+            if ((float)(Math.Abs(fromSpace.X - toSpace.X)) / (float)(Math.Abs(fromSpace.Y - toSpace.Y)) == 1)
             {
                 // from toSpace up to fromSpace - if any spaces contain pieces, return false
                 // if toSpace is down and right

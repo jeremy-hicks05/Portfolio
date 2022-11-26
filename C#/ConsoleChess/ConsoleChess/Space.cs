@@ -9,6 +9,9 @@ namespace ConsoleChess
         public int Y { get; set; }
         public Piece Piece { get; set; }
 
+        public bool IsUnderAttackByBlack = false;
+        public bool IsUnderAttackByWhite = false;
+
         public Space()
         {
             X = -1;

@@ -16,8 +16,17 @@ namespace ConsoleChess.Pieces
         //    Name = "[ ]";
         //}
 
+        public override bool CanAttackSpace(Space fromSpace, Space toSpace)
+        {
+            return CanMoveFromSpaceToSpace(fromSpace, toSpace);
+        }
+
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
+            if (fromSpace == toSpace)
+            {
+                return false;
+            }
             // if MOVE LIKE A ROOK
             if ((fromSpace.X == toSpace.X) || (fromSpace.Y == toSpace.Y))
             {
@@ -90,8 +99,9 @@ namespace ConsoleChess.Pieces
                 // success
                 //return true;
             } // end MOVE LIKE A ROOK
+
             // MOVE LIKE A BISHOP
-            else if ((Math.Abs(fromSpace.X - toSpace.X)) / (Math.Abs(fromSpace.Y - toSpace.Y)) == 1)
+            if ((float)(Math.Abs(fromSpace.X - toSpace.X)) / (float)(Math.Abs(fromSpace.Y - toSpace.Y)) == 1)
             {
                 // from toSpace up to fromSpace - if any spaces contain pieces, return false
                 // if toSpace is down and right

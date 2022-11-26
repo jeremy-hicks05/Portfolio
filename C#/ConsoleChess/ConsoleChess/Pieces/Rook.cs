@@ -29,8 +29,17 @@ namespace ConsoleChess.Pieces
         //    Name = "[ ]";
         //}
 
+        public override bool CanAttackSpace(Space fromSpace, Space toSpace)
+        {
+            return CanMoveFromSpaceToSpace(fromSpace, toSpace);
+        }
+
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
+            if(fromSpace == toSpace)
+            {
+                return false;
+            }
             if(fromSpace.X == toSpace.X || fromSpace.Y == toSpace.Y)
             {
                 // if space is above

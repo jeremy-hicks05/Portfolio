@@ -10,15 +10,16 @@ namespace ConsoleChess
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to Chess!");
+            //Console.WriteLine("Welcome to Chess!");
             Board.InitBoard();
 
             System.ConsoleKey playing = ConsoleKey.Y;
             while (playing == ConsoleKey.Y)
             {
+                //Board.FindAllSpacesAttacked();
                 // if input is 'A' -> translate to 7 for X value
                 // if input is '1' -> translate to 0 for Y value (may need to swap these?)
-
+                Console.WriteLine();
                 Console.Write("Enter Letter for Piece to be moved:");
                 int stLong = Board.NotationToInt(Console.ReadLine());
                 Console.Write("Enter Number for Piece to be moved:");
@@ -41,8 +42,9 @@ namespace ConsoleChess
                 }
 
                 Console.Clear();
-
+                Board.FindAllSpacesAttacked();
                 Board.PrintBoard();
+                //Console.WriteLine();
 
                 Console.Write("Keep playing?  Y or N:");
                 playing = Console.ReadKey().Key;
