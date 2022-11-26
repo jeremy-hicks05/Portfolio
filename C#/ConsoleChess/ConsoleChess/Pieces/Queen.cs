@@ -18,7 +18,8 @@ namespace ConsoleChess.Pieces
 
         public override bool CanAttackSpace(Space fromSpace, Space toSpace)
         {
-            return CanMoveFromSpaceToSpace(fromSpace, toSpace);
+            return false;
+            //return CanMoveFromSpaceToSpace(fromSpace, toSpace);
         }
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)

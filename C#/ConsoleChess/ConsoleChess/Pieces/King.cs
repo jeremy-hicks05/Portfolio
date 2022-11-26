@@ -3,29 +3,25 @@ using ConsoleChess.Enums;
 
 namespace ConsoleChess.Pieces
 {
-    /*  TODO: 
-     * 1. Enable castling K side
-     * 2. Enable castling Q side
-     */
     internal class King : Piece
     {
-        public bool hasMoved;
         public King(string name, Player belongsTo) : base(name, belongsTo)
         {
             hasMoved = false;
         }
 
-        //public override void MoveTo(Space spaceMovedTo)
-        //{
-        //    // move like a king
-        //    spaceMovedTo.Piece.Name = Name;
-        //    Name = "[ ]";
-        //    hasMoved = false;
-        //}
-
         public override bool CanAttackSpace(Space fromSpace, Space toSpace)
         {
-            return CanMoveFromSpaceToSpace(fromSpace, toSpace);
+            //return CanMoveFromSpaceToSpace(fromSpace, toSpace);
+            //if(fromSpace.X == toSpace.X && fromSpace.Y == toSpace.Y)
+            //{
+            //    return false;
+            //}
+            //else if (Math.Abs(toSpace.X - fromSpace.X) <= 1 && Math.Abs(toSpace.Y - fromSpace.Y) <= 1)
+            //{
+            //    return true;
+            //}
+            return false;
         }
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)

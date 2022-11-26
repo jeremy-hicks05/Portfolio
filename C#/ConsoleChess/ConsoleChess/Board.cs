@@ -109,11 +109,11 @@ namespace ConsoleChess
                                 if (spaces[i][j].Piece.CanAttackSpace(spaces[i][j], spaces[k][m]))
                                 {
                                     spaces[k][m].IsUnderAttackByWhite = true;
-                                    if (spaces[k][m].Piece.belongsToPlayer != Player.White)
-                                    {
-                                        //spaces[k][m].Piece.Name = "[*]";
-                                        //PrintBoard();
-                                    }
+                                    //if (spaces[k][m].Piece.belongsToPlayer != Player.White)
+                                    //{
+                                    //spaces[k][m].Piece.Name = "[*]";
+                                    //PrintBoard();
+                                    //}
                                 }
                             }
                         }
@@ -144,6 +144,7 @@ namespace ConsoleChess
         public static void MovePieceFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
             toSpace.Piece = fromSpace.Piece;
+            toSpace.Piece.hasMoved = true;
             fromSpace.Piece = new Piece("[ ]", Player.None);
         }
 

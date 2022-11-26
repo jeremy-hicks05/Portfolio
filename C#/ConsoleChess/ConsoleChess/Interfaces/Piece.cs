@@ -6,18 +6,14 @@ namespace ConsoleChess.Interfaces
     {
         public string Name { get; set; }
         public Player belongsToPlayer = Player.None;
+        public bool hasMoved;
 
         public Piece(string name, Player belongsTo)
         {
             Name = name;
             belongsToPlayer = belongsTo;
+            hasMoved = false;
         }
-
-        //public virtual void MoveTo(Space spaceMovedTo)
-        //{
-        //    spaceMovedTo.Piece.Name = Name;
-        //    Name = "[ ]";
-        //}
 
         public virtual Space[]? GetSpacesAvaiableToMoveTo()
         {
