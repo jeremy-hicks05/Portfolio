@@ -84,11 +84,11 @@ namespace ConsoleChess.Pieces
             {
                 return false;
             }
-            else if (toSpace.Piece?.belongsToPlayer == belongsToPlayer)
+            else if (toSpace.Piece.belongsToPlayer == belongsToPlayer)
             {
                 return false;
             }
-            hasMoved = true;
+            //hasMoved = true;
             return true;
         }
     }

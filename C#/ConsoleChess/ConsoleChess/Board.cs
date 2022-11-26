@@ -236,8 +236,8 @@ namespace ConsoleChess
                         spaces[NotationToInt("1")][NotationToInt("A")].Piece = new Piece("[ ]", Player.None);
                         spaces[NotationToInt("1")][NotationToInt("E")].Piece = new Piece("[ ]", Player.None);
 
-                        spaces[NotationToInt("1")][NotationToInt("C")].Piece = new King("[k]", Player.Black);
-                        spaces[NotationToInt("1")][NotationToInt("D")].Piece = new Rook("[r]", Player.Black);
+                        spaces[NotationToInt("1")][NotationToInt("C")].Piece = new King("[K]", Player.Black);
+                        spaces[NotationToInt("1")][NotationToInt("D")].Piece = new Rook("[R]", Player.Black);
                     }
                 }
             }

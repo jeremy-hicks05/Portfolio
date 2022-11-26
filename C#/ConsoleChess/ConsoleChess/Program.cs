@@ -17,8 +17,8 @@ namespace ConsoleChess
             //Console.WriteLine("Welcome to Chess!");
             Board.InitBoard();
 
-            System.ConsoleKey playing = ConsoleKey.Y;
-            while (playing == ConsoleKey.Y)
+            //System.ConsoleKey playing = ConsoleKey.Y;
+            while (true)
             {
                 //Board.FindAllSpacesAttacked();
                 // if input is 'A' -> translate to 7 for X value
@@ -56,8 +56,8 @@ namespace ConsoleChess
                 Board.PrintBoard();
                 //Console.WriteLine();
 
-                Console.Write("Keep playing?  Y or N:");
-                playing = Console.ReadKey().Key;
+                //Console.Write("Keep playing?  Y or N:");
+                //playing = Console.ReadKey().Key;
             }
         }
     }
