@@ -36,7 +36,7 @@ namespace ConsoleChess.Pieces
                 {
                     for (int i = fromSpace.X + 1, k = fromSpace.Y + 1; i <= toSpace.X && k <= toSpace.Y; i++, k++)
                     {
-                        if ((i == toSpace.X || k == toSpace.Y) && toSpace.Piece.belongsToPlayer != Player.None)
+                        if (i == toSpace.X || k == toSpace.Y)
                         {
                             return true;
                         }
@@ -51,7 +51,7 @@ namespace ConsoleChess.Pieces
                 {
                     for (int i = fromSpace.X + 1, k = fromSpace.Y - 1; i <= toSpace.X && k >= toSpace.Y; i++, k--)
                     {
-                        if ((i == toSpace.X || k == toSpace.Y) && toSpace.Piece.belongsToPlayer != Player.None)
+                        if ((i == toSpace.X || k == toSpace.Y))
                         {
                             // capture or move to empty space
                             return true;
@@ -67,12 +67,12 @@ namespace ConsoleChess.Pieces
                 {
                     for (int i = fromSpace.X - 1, k = fromSpace.Y + 1; i >= toSpace.X && k <= toSpace.Y; i--, k++)
                     {
-                        if ((i == toSpace.X || k == toSpace.Y) && toSpace.Piece.belongsToPlayer != Player.None)
+                        if ((i == toSpace.X || k == toSpace.Y))
                         {
                             // capture or move to empty space
                             return true;
                         }
-                        if (Board.spaces[i][k].Piece?.belongsToPlayer != Player.None)
+                        if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
                         {
                             return false;
                         }
@@ -83,12 +83,12 @@ namespace ConsoleChess.Pieces
                 {
                     for (int i = fromSpace.X - 1, k = fromSpace.Y - 1; i >= toSpace.X && k >= toSpace.Y; i--, k--)
                     {
-                        if ((i == toSpace.X || k == toSpace.Y) && toSpace.Piece.belongsToPlayer != Player.None)
+                        if ((i == toSpace.X || k == toSpace.Y))
                         {
                             // capture or move to empty space
                             return true;
                         }
-                        if (Board.spaces[i][k].Piece?.belongsToPlayer != Player.None)
+                        if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
                         {
                             return false;
                         }
@@ -117,12 +117,12 @@ namespace ConsoleChess.Pieces
                 {
                     for (int i = fromSpace.X + 1, k = fromSpace.Y + 1; i <= toSpace.X && k <= toSpace.Y; i++, k++)
                     {
-                        if ((i == toSpace.X || k == toSpace.Y) && Board.spaces[i][k].Piece?.belongsToPlayer != belongsToPlayer)
+                        if ((i == toSpace.X || k == toSpace.Y) && Board.spaces[i][k].Piece.belongsToPlayer != belongsToPlayer)
                         {
                             // capture or move to empty space
                             return true;
                         }
-                        if (Board.spaces[i][k].Piece?.belongsToPlayer != Player.None)
+                        if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
                         {
                             return false;
                         }
@@ -133,12 +133,12 @@ namespace ConsoleChess.Pieces
                 {
                     for (int i = fromSpace.X + 1, k = fromSpace.Y - 1; i <= toSpace.X && k >= toSpace.Y; i++, k--)
                     {
-                        if ((i == toSpace.X || k == toSpace.Y) && Board.spaces[i][k].Piece?.belongsToPlayer != belongsToPlayer)
+                        if ((i == toSpace.X || k == toSpace.Y) && Board.spaces[i][k].Piece.belongsToPlayer != belongsToPlayer)
                         {
                             // capture or move to empty space
                             return true;
                         }
-                        if (Board.spaces[i][k].Piece?.belongsToPlayer != Player.None)
+                        if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
                         {
                             return false;
                         }
@@ -149,12 +149,12 @@ namespace ConsoleChess.Pieces
                 {
                     for (int i = fromSpace.X - 1, k = fromSpace.Y + 1; i >= toSpace.X && k <= toSpace.Y; i--, k++)
                     {
-                        if ((i == toSpace.X || k == toSpace.Y) && Board.spaces[i][k].Piece?.belongsToPlayer != belongsToPlayer)
+                        if ((i == toSpace.X || k == toSpace.Y) && Board.spaces[i][k].Piece.belongsToPlayer != belongsToPlayer)
                         {
                             // capture or move to empty space
                             return true;
                         }
-                        if (Board.spaces[i][k].Piece?.belongsToPlayer != Player.None)
+                        if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
                         {
                             return false;
                         }
@@ -165,12 +165,12 @@ namespace ConsoleChess.Pieces
                 {
                     for (int i = fromSpace.X - 1, k = fromSpace.Y - 1; i >= toSpace.X && k >= toSpace.Y; i--, k--)
                     {
-                        if ((i == toSpace.X || k == toSpace.Y) && Board.spaces[i][k].Piece?.belongsToPlayer != belongsToPlayer)
+                        if ((i == toSpace.X || k == toSpace.Y) && Board.spaces[i][k].Piece.belongsToPlayer != belongsToPlayer)
                         {
                             // capture or move to empty space
                             return true;
                         }
-                        if (Board.spaces[i][k].Piece?.belongsToPlayer != Player.None)
+                        if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
                         {
                             return false;
                         }

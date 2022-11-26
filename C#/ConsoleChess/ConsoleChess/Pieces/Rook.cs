@@ -141,7 +141,7 @@ namespace ConsoleChess.Pieces
                     // if space is below
                     for (int i = fromSpace.X + 1; i <= toSpace.X; i++)
                     {
-                        if ((toSpace.Piece.belongsToPlayer != Player.None) && (i == toSpace.X && belongsToPlayer != toSpace.Piece.belongsToPlayer))
+                        if (i == toSpace.X && belongsToPlayer != toSpace.Piece.belongsToPlayer)
                         {
                             // move to blank space or capture piece
                             hasMoved = true;
@@ -159,7 +159,7 @@ namespace ConsoleChess.Pieces
                 {
                     for (int i = fromSpace.Y - 1; i >= toSpace.Y; i++)
                     {
-                        if ((toSpace.Piece.belongsToPlayer != Player.None) && (i == toSpace.Y && belongsToPlayer != toSpace.Piece.belongsToPlayer))
+                        if (i == toSpace.Y && (belongsToPlayer != toSpace.Piece.belongsToPlayer))
                         {
                             // move to blank space or capture piece
                             hasMoved = true;
