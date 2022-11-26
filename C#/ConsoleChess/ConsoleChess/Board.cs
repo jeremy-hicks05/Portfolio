@@ -102,7 +102,7 @@ namespace ConsoleChess
                                     if (spaces[k][m].Piece.belongsToPlayer != Player.White)
                                     {
                                         spaces[k][m].Piece.Name = "[*]";
-                                        PrintBoard();
+                                        //PrintBoard();
                                     }
                                 }
                             }
@@ -121,7 +121,7 @@ namespace ConsoleChess
                                     if (spaces[k][m].Piece.belongsToPlayer != Player.Black)
                                     {
                                         spaces[k][m].Piece.Name = "[*]";
-                                        PrintBoard();
+                                        //PrintBoard();
                                     }
                                 }
                             }
