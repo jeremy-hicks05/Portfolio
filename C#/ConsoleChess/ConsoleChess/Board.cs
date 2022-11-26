@@ -67,7 +67,7 @@ namespace ConsoleChess
         public static void PrintBoard()
         {
             Console.Clear();
-            
+
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
@@ -90,6 +90,16 @@ namespace ConsoleChess
             {
                 for (int j = 0; j < 8; j++)
                 {
+                    // reset being attacked flags
+                    spaces[i][j].IsUnderAttackByBlack = false;
+                    spaces[i][j].IsUnderAttackByWhite = false;
+                }
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
                     if (spaces[i][j].Piece.belongsToPlayer == Player.White)
                     {
                         for (int k = 0; k < 8; k++)
@@ -101,7 +111,7 @@ namespace ConsoleChess
                                     spaces[k][m].IsUnderAttackByWhite = true;
                                     if (spaces[k][m].Piece.belongsToPlayer != Player.White)
                                     {
-                                        spaces[k][m].Piece.Name = "[*]";
+                                        //spaces[k][m].Piece.Name = "[*]";
                                         //PrintBoard();
                                     }
                                 }
@@ -120,7 +130,7 @@ namespace ConsoleChess
                                     spaces[k][m].IsUnderAttackByBlack = true;
                                     if (spaces[k][m].Piece.belongsToPlayer != Player.Black)
                                     {
-                                        spaces[k][m].Piece.Name = "[*]";
+                                        //spaces[k][m].Piece.Name = "[*]";
                                         //PrintBoard();
                                     }
                                 }

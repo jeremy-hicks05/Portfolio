@@ -34,6 +34,17 @@ namespace ConsoleChess.Pieces
             {
                 return false;
             }
+
+            //if space is being attacked by opposition, do not move there
+            if(belongsToPlayer == Player.Black && toSpace.IsUnderAttackByWhite)
+            {
+                return false;
+            }
+            else if(belongsToPlayer == Player.White && toSpace.IsUnderAttackByBlack)
+            {
+                return false;
+            }
+
             // if neither king nor king side rook has moved, and toSpace is a specific spot
             // and the king will not 'move through check' or end up in check
             // perform a castle
