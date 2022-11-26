@@ -16,19 +16,14 @@ namespace ConsoleChess.Pieces
             hasMoved = false;
         }
 
-        //public override void MoveTo(Space spaceMovedTo)
-        //{
-        //    // move like a pawn
-        //    spaceMovedTo.Piece.Name = Name;
-        //    Name = "[ ]";
-        //}
-
         public override bool CanAttackSpace(Space fromSpace, Space toSpace)
         {
-            // if this is a white piece - let it attack up and right and up and left (check for edge pieces on A and H)
+            // done
+
+            // if this is a white piece - let it attack up and right and up and left
             //if (fromSpace.X > toSpace.X)
             //{
-            //    if(belongsToPlayer == Player.White && (fromSpace.X == toSpace.X + 1 && fromSpace.Y == toSpace.Y - 1))
+            //    if (belongsToPlayer == Player.White && (fromSpace.X == toSpace.X + 1 && fromSpace.Y == toSpace.Y - 1))
             //    {
             //        return true;
             //    }
@@ -38,7 +33,7 @@ namespace ConsoleChess.Pieces
             //        return true;
             //    }
             //}
-            //else if(fromSpace.X < toSpace.X)
+            //else if (fromSpace.X < toSpace.X)
             //{
             //    if (belongsToPlayer == Player.Black && (fromSpace.X == toSpace.X - 1 && fromSpace.Y == toSpace.Y + 1))
             //    {
