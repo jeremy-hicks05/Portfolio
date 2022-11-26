@@ -108,6 +108,25 @@ namespace ConsoleChess
                             }
                         }
                     }
+
+                    if (spaces[i][j].Piece.belongsToPlayer == Player.Black)
+                    {
+                        for (int k = 0; k < 8; k++)
+                        {
+                            for (int m = 0; m < 8; m++)
+                            {
+                                if (spaces[i][j].Piece.CanAttackSpace(spaces[i][j], spaces[k][m]))
+                                {
+                                    spaces[k][m].IsUnderAttackByBlack = true;
+                                    if (spaces[k][m].Piece.belongsToPlayer != Player.Black)
+                                    {
+                                        spaces[k][m].Piece.Name = "[*]";
+                                        PrintBoard();
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
