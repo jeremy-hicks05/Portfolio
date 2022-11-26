@@ -15,14 +15,14 @@ namespace ConsoleChess.Pieces
             //done
 
             //return CanMoveFromSpaceToSpace(fromSpace, toSpace);
-            //if (fromSpace.X == toSpace.X && fromSpace.Y == toSpace.Y)
-            //{
-            //    return false;
-            //}
-            //else if (Math.Abs(toSpace.X - fromSpace.X) <= 1 && Math.Abs(toSpace.Y - fromSpace.Y) <= 1)
-            //{
-            //    return true;
-            //}
+            if (fromSpace.X == toSpace.X && fromSpace.Y == toSpace.Y)
+            {
+                return false;
+            }
+            else if (Math.Abs(toSpace.X - fromSpace.X) <= 1 && Math.Abs(toSpace.Y - fromSpace.Y) <= 1)
+            {
+                return true;
+            }
             return false;
         }
 

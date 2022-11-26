@@ -22,16 +22,16 @@ namespace ConsoleChess.Pieces
             // done
 
             //return CanMoveFromSpaceToSpace(fromSpace, toSpace);
-            //if (fromSpace == toSpace)
-            //{
-            //    return false;
-            //}
-            //// if one of the differences is 1, and one of the differences is 2... clever!
-            //if ((Math.Abs(fromSpace.X - toSpace.X) == 1 && Math.Abs(fromSpace.Y - toSpace.Y) == 2) ||
-            //    (Math.Abs(fromSpace.Y - toSpace.Y) == 1 && Math.Abs(fromSpace.X - toSpace.X) == 2))
-            //{
-            //    return true;
-            //}
+            if (fromSpace == toSpace)
+            {
+                return false;
+            }
+            // if one of the differences is 1, and one of the differences is 2... clever!
+            if ((Math.Abs(fromSpace.X - toSpace.X) == 1 && Math.Abs(fromSpace.Y - toSpace.Y) == 2) ||
+                (Math.Abs(fromSpace.Y - toSpace.Y) == 1 && Math.Abs(fromSpace.X - toSpace.X) == 2))
+            {
+                return true;
+            }
             return false;
         }
 

@@ -21,30 +21,30 @@ namespace ConsoleChess.Pieces
             // done
 
             // if this is a white piece - let it attack up and right and up and left
-            //if (fromSpace.X > toSpace.X)
-            //{
-            //    if (belongsToPlayer == Player.White && (fromSpace.X == toSpace.X + 1 && fromSpace.Y == toSpace.Y - 1))
-            //    {
-            //        return true;
-            //    }
+            if (fromSpace.X > toSpace.X)
+            {
+                if (belongsToPlayer == Player.White && (fromSpace.X == toSpace.X + 1 && fromSpace.Y == toSpace.Y - 1))
+                {
+                    return true;
+                }
 
-            //    if (belongsToPlayer == Player.White && (fromSpace.X == toSpace.X + 1 && fromSpace.Y == toSpace.Y + 1))
-            //    {
-            //        return true;
-            //    }
-            //}
-            //else if (fromSpace.X < toSpace.X)
-            //{
-            //    if (belongsToPlayer == Player.Black && (fromSpace.X == toSpace.X - 1 && fromSpace.Y == toSpace.Y + 1))
-            //    {
-            //        return true;
-            //    }
+                if (belongsToPlayer == Player.White && (fromSpace.X == toSpace.X + 1 && fromSpace.Y == toSpace.Y + 1))
+                {
+                    return true;
+                }
+            }
+            else if (fromSpace.X < toSpace.X)
+            {
+                if (belongsToPlayer == Player.Black && (fromSpace.X == toSpace.X - 1 && fromSpace.Y == toSpace.Y + 1))
+                {
+                    return true;
+                }
 
-            //    if (belongsToPlayer == Player.Black && (fromSpace.X == toSpace.X - 1 && fromSpace.Y == toSpace.Y - 1))
-            //    {
-            //        return true;
-            //    }
-            //}
+                if (belongsToPlayer == Player.Black && (fromSpace.X == toSpace.X - 1 && fromSpace.Y == toSpace.Y - 1))
+                {
+                    return true;
+                }
+            }
             return false;
         }
 
