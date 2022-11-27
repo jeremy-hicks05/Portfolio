@@ -31,23 +31,6 @@ namespace ConsoleChess
             }
         }
 
-        public void MoveTo(Space spaceMovedTo)
-        {
-            spaceMovedTo.Piece = Piece;
-            ClearSpace();
-        }
-
-        public void MovePieceFromMeToSpace(Space toSpace)
-        {
-            if (Piece != null)
-            {
-                if (Piece.CanMoveFromSpaceToSpace(this, toSpace))
-                {
-
-                }
-            }
-        }
-
         public void ClearSpace()
         {
             Piece = new Piece("[ ]", Player.None);

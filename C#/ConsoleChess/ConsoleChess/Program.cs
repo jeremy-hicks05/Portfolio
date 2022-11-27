@@ -18,7 +18,8 @@ namespace ConsoleChess
      * 5. King can castle both sides
      * 6. Pieces can capture opponent pieces
      * 7. Pieces cannot move through pieces (except knight, duh)
-     * 8. 
+     * 8. Inputs can only be A-H and 1-8
+     * 9. 
      * 
      */
 
@@ -32,10 +33,8 @@ namespace ConsoleChess
      *  7. Implement pawn promotion
      *  8. Prevent pieces from moving if they would put your king in check (covered by reverting moves / returning false if king is in check at the end of the turn)
      *  9. Refactor, compress, and condense code using functions
-     *  10. Fix rook - it cannot move more than 1 space at a time
-     *  11. Check input inside while loops to ensure user only enters A-H and 1-8
-     *  12. Allow resignation
-     *  13. Show all available moves for selected piece
+     *  10. Allow resignation
+     *  11. Show all available moves for selected piece
     */
     internal class Program
     {
@@ -118,6 +117,9 @@ namespace ConsoleChess
                 Console.Clear();
                 Board.FindAllSpacesAttacked();
                 Board.PrintBoard();
+
+                // check if move was successful?
+
                 //Console.WriteLine();
 
                 //Console.Write("Keep playing?  Y or N:");

@@ -118,7 +118,7 @@ namespace ConsoleChess.Pieces
                     }
                     if (toSpace.Piece.belongsToPlayer == Player.None)
                     {
-                        hasMoved = true;
+                        //hasMoved = true;
                         return true;
                     }
                 }
@@ -127,7 +127,7 @@ namespace ConsoleChess.Pieces
             {
                 if (toSpace.Piece.belongsToPlayer == Player.None)
                 {
-                    hasMoved = true;
+                    //hasMoved = true;
                     return true;
                 }
             }

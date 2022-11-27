@@ -7,9 +7,12 @@ namespace ConsoleChess
     internal static class Board
     {
         public static Space[][] spaces { get; set; } = new Space[8][];
+        public static Player turn;
 
         public static void InitBoard()
         {
+
+            // Build 2D Spaces Array
             for (int i = 0; i < 8; i++)
             {
                 spaces[i] = new Space[8];
@@ -19,6 +22,7 @@ namespace ConsoleChess
                 }
             }
 
+            // Populate empty spaces, declare X and Y coordinates for each space
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
@@ -31,6 +35,7 @@ namespace ConsoleChess
                 }
             }
 
+            // populate Black back row
             spaces[0][0].Piece = new Rook("[r]", Player.Black);
             spaces[0][1].Piece = new Knight("[n]", Player.Black);
             spaces[0][2].Piece = new Bishop("[b]", Player.Black);
@@ -40,16 +45,19 @@ namespace ConsoleChess
             spaces[0][6].Piece = new Knight("[n]", Player.Black);
             spaces[0][7].Piece = new Rook("[r]", Player.Black);
 
+            // populate Black pawns
             for (int i = 0; i < 8; i++)
             {
                 spaces[1][i].Piece = new Pawn("[p]", Player.Black);
             }
 
+            // populate White pawns
             for (int i = 0; i < 8; i++)
             {
                 spaces[6][i].Piece = new Pawn("[P]", Player.White);
             }
 
+            // populate White back row
             spaces[7][0].Piece = new Rook("[R]", Player.White);
             spaces[7][1].Piece = new Knight("[N]", Player.White);
             spaces[7][2].Piece = new Bishop("[B]", Player.White);
@@ -62,6 +70,7 @@ namespace ConsoleChess
             FindAllSpacesAttacked();
 
             PrintBoard();
+            turn = Player.White;
         }
 
         public static void PrintBoard()
@@ -133,9 +142,22 @@ namespace ConsoleChess
 
         public static void MovePieceFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            toSpace.Piece = fromSpace.Piece;
-            toSpace.Piece.hasMoved = true;
-            fromSpace.Piece = new Piece("[ ]", Player.None);
+            if (fromSpace.Piece.belongsToPlayer == turn)
+            {
+                toSpace.Piece = fromSpace.Piece;
+                toSpace.Piece.hasMoved = true;
+                fromSpace.Piece = new Piece("[ ]", Player.None);
+
+                // change turns
+                if (Board.turn == Player.White)
+                {
+                    Board.turn = Player.Black;
+                }
+                else
+                {
+                    Board.turn = Player.White;
+                }
+            }
         }
 
         public static int NotationToInt(string? notation)
