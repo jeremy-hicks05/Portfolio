@@ -10,16 +10,8 @@ namespace ConsoleChess.Pieces
 
         }
 
-        //public override void MoveTo(Space spaceMovedTo)
-        //{
-        //    spaceMovedTo.Piece.Name = Name;
-        //    Name = "[ ]";
-        //}
-
         public override bool CanAttackSpace(Space fromSpace, Space toSpace)
         {
-            //return CanMoveFromSpaceToSpace(fromSpace, toSpace);
-
             if (fromSpace == toSpace)
             {
                 return false;

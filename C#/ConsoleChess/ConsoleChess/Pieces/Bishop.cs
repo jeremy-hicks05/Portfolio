@@ -6,9 +6,6 @@ namespace ConsoleChess.Pieces
 {
     internal class Bishop : Piece
     {
-        /* TODO:
-         * 1. Fix allowing input to result in dividing by 0 by mistake (f1 f2)
-         */
         public Bishop(string name, Player belongsTo) : base(name, belongsTo)
         {
 
@@ -16,8 +13,6 @@ namespace ConsoleChess.Pieces
 
         public override bool CanAttackSpace(Space fromSpace, Space toSpace)
         {
-            // done
-
             //return CanMoveFromSpaceToSpace(fromSpace, toSpace);
             if (fromSpace == toSpace)
             {

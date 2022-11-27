@@ -19,22 +19,22 @@ namespace ConsoleChess
      * 6. Pieces can capture opponent pieces
      * 7. Pieces cannot move through pieces (except knight, duh)
      * 8. Inputs can only be A-H and 1-8
-     * 9. 
+     * 9. Implemented changing turns
+     * 10.
      * 
      */
 
     /* TODO
-     *  1. Change 'hasMoved' to a Move() function that checks CanMoveToSpace first
-     *  2. Implement en passant
-     *  3. Implement changing turns
-     *  4. Force King to not be in check at end of turn
-     *  5. Check for stalemate
-     *  6. Check for checkmate
-     *  7. Implement pawn promotion
-     *  8. Prevent pieces from moving if they would put your king in check (covered by reverting moves / returning false if king is in check at the end of the turn)
-     *  9. Refactor, compress, and condense code using functions
-     *  10. Allow resignation
-     *  11. Show all available moves for selected piece
+     *  1. Implement en passant
+     *  2. Force King to not be in check at end of turn
+     *  3. Check for stalemate
+     *  4. Check for checkmate
+     *  5. Implement pawn promotion
+     *  6. Prevent pieces from moving if they would put your king in check (may be covered by reverting moves / returning false if king is in check at the end of the turn)
+     *  7. Refactor, compress, and condense code using functions
+     *  8. Allow resignation
+     *  9. Show all available moves for selected piece
+     *  10. Stop pawns from multiplying when moving as black
     */
     internal class Program
     {
@@ -46,6 +46,15 @@ namespace ConsoleChess
             //System.ConsoleKey playing = ConsoleKey.Y;
             while (true) // White is not in checkmate/stalemate and Black is not in checkmate/stalemate and neither has resigned
             {
+                // get player input for move
+
+                //Piece selectedPiece = PlayerSelectsPiece();
+                // check if Piece is owned by a player Black or White
+                // may put this ^ inside PlayerSelectSpace(); below
+
+                //Space startingSpace = PlayerSelectSpace();
+                //Space destinationSpace = PlayerSelectDestination();
+
                 int startLongitude = -1;
                 
                 // if input is 'A' -> translate to 7 for X value
@@ -76,11 +85,9 @@ namespace ConsoleChess
                 Piece selectedPiece = Board.spaces[startLatitude][startLongitude].Piece;
 
                 //TODO: show all spaces selected piece can move to, or capture
-
-
-                //Console.WriteLine("Piece info: ");
-                //Console.WriteLine(selectedPiece.Name + " on space " + stLat + " " + stLong + " belongs to player " + selectedPiece.belongsToPlayer);
-                //Console.WriteLine("Space info: \nIs Under Attack by White: " + Board.spaces[stLat][stLong].IsUnderAttackByWhite + "\n Is Under Attack by Black: " + Board.spaces[stLat][stLong].IsUnderAttackByBlack);
+                // showPossibleMoves(selectedPiece);
+                // OR
+                // showPossibleMoves(startingSpace);
 
                 int endLongitude = -1;
 
@@ -104,26 +111,30 @@ namespace ConsoleChess
                         Console.WriteLine("Please enter a number 1-8");
                     }
                 }
+
+                // set space references
                 Space startingSpace = Board.spaces[startLatitude][startLongitude];
                 Space destinationSpace = Board.spaces[endLatitude][endLongitude];
 
+                // check piece's ability to move to selected space
                 if (selectedPiece.CanMoveFromSpaceToSpace(
                     startingSpace,
                     destinationSpace))
                 {
+                    // move selected piece from its space to the destination space
                     Board.MovePieceFromSpaceToSpace(startingSpace, destinationSpace);
                 }
 
+                // clear console
                 Console.Clear();
+
+                // refresh spaces' AttackedbyWhite/Black property
                 Board.FindAllSpacesAttacked();
+
+                // re-print board
                 Board.PrintBoard();
 
-                // check if move was successful?
-
-                //Console.WriteLine();
-
-                //Console.Write("Keep playing?  Y or N:");
-                //playing = Console.ReadKey().Key;
+                // check for stalemate / checkmate
             }
         }
     }

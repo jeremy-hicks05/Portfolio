@@ -3,14 +3,8 @@ using ConsoleChess.Enums;
 
 namespace ConsoleChess.Pieces
 {
-    /* ToDo
-     * 1. Stop pawns from jumping over pieces during first move
-     * 2. Allow en passant rule
-     */
     internal class Pawn : Piece
     {
-        //public bool movedTwoLastTurn;
-        //public bool hasMoved;
         public Pawn(string name, Player belongsTo) : base(name, belongsTo)
         {
             hasMoved = false;
@@ -18,7 +12,8 @@ namespace ConsoleChess.Pieces
 
         public override bool CanAttackSpace(Space fromSpace, Space toSpace)
         {
-            // done
+
+            // check for en passant here?
 
             // if this is a white piece - let it attack up and right and up and left
             if (fromSpace.X > toSpace.X)

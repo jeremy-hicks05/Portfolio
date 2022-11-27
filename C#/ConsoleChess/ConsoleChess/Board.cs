@@ -145,9 +145,51 @@ namespace ConsoleChess
             if (fromSpace.Piece.belongsToPlayer == turn)
             {
                 toSpace.Piece = fromSpace.Piece;
-                toSpace.Piece.hasMoved = true;
-                fromSpace.Piece = new Piece("[ ]", Player.None);
+                // check if piece is white pawn on row 8
+                if (fromSpace.Piece.GetType() == typeof(Pawn) && fromSpace.Piece.belongsToPlayer == Player.White && toSpace.X == 0)
+                {
+                    // offer piece selection and transform into selected piece
+                    Console.WriteLine("Promotion!");
+                    Console.WriteLine("Select a piece to promote to:");
+                    Console.WriteLine("N: Knight");
+                    Console.WriteLine("B: Bishop");
+                    Console.WriteLine("R: Rook");
+                    Console.WriteLine("Q: Queen");
+                    string? promotionSelection = Console.ReadLine();
 
+                    switch (promotionSelection)
+                    {
+                        case "N":
+                            toSpace.Piece = new Knight("[N]", Player.White);
+                            break;
+                        case "B":
+                            toSpace.Piece = new Bishop("[B]", Player.White);
+                            break;
+                        case "R":
+                            toSpace.Piece = new Rook("[R]", Player.White);
+                            break;
+                        case "Q":
+                            toSpace.Piece = new Queen("[Q]", Player.White);
+                            break;
+                    }
+                }
+                // check if piece is black pawn on row 8
+                else if (fromSpace.Piece.GetType() == typeof(Pawn) && fromSpace.Piece.belongsToPlayer == Player.Black && toSpace.X == 7)
+                {
+                    // offer piece selection and transform into selected piece
+                    Console.WriteLine("Promotion!");
+                    Console.WriteLine("Select a piece to promote to:");
+                    Console.WriteLine("N: Knight");
+                    Console.WriteLine("B: Bishop");
+                    Console.WriteLine("R: Rook");
+                    Console.WriteLine("Q: Queen");
+                    string? promotionSelection = Console.ReadLine();
+                }
+                else
+                {
+                    toSpace.Piece.hasMoved = true;
+                    fromSpace.Piece = new Piece("[ ]", Player.None);
+                }
                 // change turns
                 if (Board.turn == Player.White)
                 {
