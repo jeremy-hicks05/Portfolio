@@ -34,7 +34,8 @@ namespace ConsoleChess
      *  9. Refactor, compress, and condense code using functions
      *  10. Fix rook - it cannot move more than 1 space at a time
      *  11. Check input inside while loops to ensure user only enters A-H and 1-8
-     *  
+     *  12. Allow resignation
+     *  13. Show all available moves for selected piece
     */
     internal class Program
     {
@@ -44,51 +45,68 @@ namespace ConsoleChess
             Board.InitBoard();
 
             //System.ConsoleKey playing = ConsoleKey.Y;
-            while (true)
+            while (true) // White is not in checkmate/stalemate and Black is not in checkmate/stalemate and neither has resigned
             {
-                //Board.FindAllSpacesAttacked();
+                int startLongitude = -1;
+                
                 // if input is 'A' -> translate to 7 for X value
                 // if input is '1' -> translate to 0 for Y value
                 Console.WriteLine();
-                Console.Write("Enter Letter for Piece to be moved (A-H):");
-                int stLong = Board.NotationToInt(Console.ReadLine());
-                if(!(stLong >= 0 && stLong <= 7))
+                while (!(startLongitude >= 0 && startLongitude <= 7))
                 {
-                    Console.WriteLine("Please enter a letter A-H");
+                    Console.Write("Enter Letter for Piece to be moved (A-H):");
+                    startLongitude = Board.NotationToInt(Console.ReadLine());
+                    if (!(startLongitude >= 0 && startLongitude <= 7))
+                    {
+                        Console.WriteLine("Please enter a letter A-H");
+                    }
                 }
 
-                Console.Write("Enter Number for Piece to be moved (1-8):");
-                int stLat = Board.NotationToInt(Console.ReadLine());
-                if (!(stLat >= 0 && stLat <= 7))
+                int startLatitude = -1;                
+                
+                while (!(startLatitude >= 0 && startLatitude <= 7))
                 {
-                    Console.WriteLine("Please enter a number 1-8");
+                    Console.Write("Enter Number for Piece to be moved (1-8):");
+                    startLatitude = Board.NotationToInt(Console.ReadLine());
+                    if (!(startLatitude >= 0 && startLatitude <= 7))
+                    {
+                        Console.WriteLine("Please enter a number 1-8");
+                    }
                 }
 
-                Piece selectedPiece = Board.spaces[stLat][stLong].Piece;
+                Piece selectedPiece = Board.spaces[startLatitude][startLongitude].Piece;
 
                 //TODO: show all spaces selected piece can move to, or capture
+
 
                 //Console.WriteLine("Piece info: ");
                 //Console.WriteLine(selectedPiece.Name + " on space " + stLat + " " + stLong + " belongs to player " + selectedPiece.belongsToPlayer);
                 //Console.WriteLine("Space info: \nIs Under Attack by White: " + Board.spaces[stLat][stLong].IsUnderAttackByWhite + "\n Is Under Attack by Black: " + Board.spaces[stLat][stLong].IsUnderAttackByBlack);
 
-                Console.Write("Enter Letter for Space to be moved to (A-H):");
-                
-                int enLong = Board.NotationToInt(Console.ReadLine());
-                if (!(enLong >= 0 && enLong <= 7))
+                int endLongitude = -1;
+
+                while (!(endLongitude >= 0 && endLongitude <= 7))
                 {
-                    Console.WriteLine("Please enter a letter A-H");
+                    Console.Write("Enter Letter for Space to be moved to (A-H):");
+                    endLongitude = Board.NotationToInt(Console.ReadLine());
+                    if (!(endLongitude >= 0 && endLongitude <= 7))
+                    {
+                        Console.WriteLine("Please enter a letter A-H");
+                    }
                 }
 
-                Console.Write("Enter Number for Space to be moved to (1-8):");
-                int enLat = Board.NotationToInt(Console.ReadLine());
-                if (!(enLat >= 0 && enLat <= 7))
+                int endLatitude = -1;
+                while (!(endLatitude >= 0 && endLatitude <= 7))
                 {
-                    Console.WriteLine("Please enter a number 1-8");
+                    Console.Write("Enter Number for Space to be moved to (1-8):");
+                    endLatitude = Board.NotationToInt(Console.ReadLine());
+                    if (!(endLatitude >= 0 && endLatitude <= 7))
+                    {
+                        Console.WriteLine("Please enter a number 1-8");
+                    }
                 }
-
-                Space startingSpace = Board.spaces[stLat][stLong];
-                Space destinationSpace = Board.spaces[enLat][enLong];
+                Space startingSpace = Board.spaces[startLatitude][startLongitude];
+                Space destinationSpace = Board.spaces[endLatitude][endLongitude];
 
                 if (selectedPiece.CanMoveFromSpaceToSpace(
                     startingSpace,

@@ -109,11 +109,6 @@ namespace ConsoleChess
                                 if (spaces[i][j].Piece.CanAttackSpace(spaces[i][j], spaces[k][m]))
                                 {
                                     spaces[k][m].IsUnderAttackByWhite = true;
-                                    //if (spaces[k][m].Piece.belongsToPlayer != Player.White)
-                                    //{
-                                    //spaces[k][m].Piece.Name = "[*]";
-                                    //PrintBoard();
-                                    //}
                                 }
                             }
                         }
@@ -128,11 +123,6 @@ namespace ConsoleChess
                                 if (spaces[i][j].Piece.CanAttackSpace(spaces[i][j], spaces[k][m]))
                                 {
                                     spaces[k][m].IsUnderAttackByBlack = true;
-                                    if (spaces[k][m].Piece.belongsToPlayer != Player.Black)
-                                    {
-                                        //spaces[k][m].Piece.Name = "[*]";
-                                        //PrintBoard();
-                                    }
                                 }
                             }
                         }
