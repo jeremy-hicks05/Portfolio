@@ -1,8 +1,15 @@
-﻿using ConsoleChess.Enums;
-using ConsoleChess.Interfaces;
+﻿/************************************************
+ *                                              *
+ * Chess - By Jeremy Hicks (c) 2022             *
+ * Tested by - Kari Seitz                       *
+ * Early Review(s) - Shaun Lake                 *
+ *                                              *
+ ************************************************/
+
 
 namespace ConsoleChess
 {
+    using ConsoleChess.Interfaces;
     /* Current Rules Employed:
      * 1. Pawn up 2 on first move
      * 2. King cannot move into check
@@ -24,7 +31,9 @@ namespace ConsoleChess
      *  6. Check for checkmate
      *  7. Implement pawn promotion
      *  8. Prevent pieces from moving if they would put your king in check (covered by reverting moves / returning false if king is in check at the end of the turn)
-     *  9. 
+     *  9. Refactor, compress, and condense code using functions
+     *  10. Fix rook - it cannot move more than 1 space at a time
+     *  11. Check input inside while loops to ensure user only enters A-H and 1-8
      *  
     */
     internal class Program
@@ -39,7 +48,7 @@ namespace ConsoleChess
             {
                 //Board.FindAllSpacesAttacked();
                 // if input is 'A' -> translate to 7 for X value
-                // if input is '1' -> translate to 0 for Y value (may need to swap these?)
+                // if input is '1' -> translate to 0 for Y value
                 Console.WriteLine();
                 Console.Write("Enter Letter for Piece to be moved (A-H):");
                 int stLong = Board.NotationToInt(Console.ReadLine());
@@ -64,6 +73,7 @@ namespace ConsoleChess
                 //Console.WriteLine("Space info: \nIs Under Attack by White: " + Board.spaces[stLat][stLong].IsUnderAttackByWhite + "\n Is Under Attack by Black: " + Board.spaces[stLat][stLong].IsUnderAttackByBlack);
 
                 Console.Write("Enter Letter for Space to be moved to (A-H):");
+                
                 int enLong = Board.NotationToInt(Console.ReadLine());
                 if (!(enLong >= 0 && enLong <= 7))
                 {

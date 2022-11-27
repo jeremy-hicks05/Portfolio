@@ -123,7 +123,7 @@ namespace ConsoleChess.Pieces
                 {
                     for (int i = fromSpace.X - 1; i >= toSpace.X; i--)
                     {
-                        if ((toSpace.Piece.belongsToPlayer != Player.None) && (i == toSpace.X && belongsToPlayer != toSpace.Piece.belongsToPlayer))
+                        if (i == toSpace.X && belongsToPlayer != toSpace.Piece.belongsToPlayer)
                         {
                             // move to blank space or capture piece
                             //hasMoved = true;
@@ -157,7 +157,7 @@ namespace ConsoleChess.Pieces
                 // if space is to the left
                 else if (fromSpace.Y > toSpace.Y)
                 {
-                    for (int i = fromSpace.Y - 1; i >= toSpace.Y; i++)
+                    for (int i = fromSpace.Y - 1; i >= toSpace.Y; i--)
                     {
                         if (i == toSpace.Y && (belongsToPlayer != toSpace.Piece.belongsToPlayer))
                         {
@@ -175,7 +175,7 @@ namespace ConsoleChess.Pieces
                 else if (fromSpace.Y < toSpace.Y)
                 {
                     // if space is to the right
-                    for (int i = fromSpace.Y + 1; i <= toSpace.Y; i--)
+                    for (int i = fromSpace.Y + 1; i <= toSpace.Y; i++)
                     {
                         if ((i == toSpace.Y && belongsToPlayer != toSpace.Piece.belongsToPlayer))
                         {
