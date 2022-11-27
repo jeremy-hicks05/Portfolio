@@ -184,12 +184,29 @@ namespace ConsoleChess
                     Console.WriteLine("R: Rook");
                     Console.WriteLine("Q: Queen");
                     string? promotionSelection = Console.ReadLine();
+
+                    switch (promotionSelection)
+                    {
+                        case "N":
+                            toSpace.Piece = new Knight("[n]", Player.Black);
+                            break;
+                        case "B":
+                            toSpace.Piece = new Bishop("[b]", Player.Black);
+                            break;
+                        case "R":
+                            toSpace.Piece = new Rook("[r]", Player.Black);
+                            break;
+                        case "Q":
+                            toSpace.Piece = new Queen("[q]", Player.Black);
+                            break;
+                    }
                 }
                 else
                 {
                     toSpace.Piece.hasMoved = true;
-                    fromSpace.Piece = new Piece("[ ]", Player.None);
+                    //fromSpace.Piece = new Piece("[ ]", Player.None);
                 }
+                fromSpace.Piece = new Piece("[ ]", Player.None);
                 // change turns
                 if (Board.turn == Player.White)
                 {
