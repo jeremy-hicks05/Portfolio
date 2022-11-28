@@ -136,27 +136,27 @@ namespace ConsoleChess
 
             while (!(endLongitude >= 0 && endLongitude <= 7))
             {
-                Console.Write("Enter Letter for Space to be moved to (A-H):");
+                Console.Write("Enter Number for Space to be moved to (1-8):");
                 endLongitude = NotationToInt(Console.ReadLine());
                 if (!(endLongitude >= 0 && endLongitude <= 7))
                 {
-                    Console.WriteLine("Please enter a letter A-H");
+                    Console.WriteLine("Please enter a number 1-8");
                 }
             }
             return endLongitude;
         }
 
         public static int GetRowForDestinationSpace()
-        { 
+        {
 
             int endLatitude = -1;
             while (!(endLatitude >= 0 && endLatitude <= 7))
             {
-                Console.Write("Enter Number for Space to be moved to (1-8):");
+                Console.Write("Enter Letter for Space to be moved to (A-H):");
                 endLatitude = NotationToInt(Console.ReadLine());
                 if (!(endLatitude >= 0 && endLatitude <= 7))
                 {
-                    Console.WriteLine("Please enter a number 1-8");
+                    Console.WriteLine("Please enter a letter A-H");
                 }
             }
             return endLatitude;
@@ -229,129 +229,46 @@ namespace ConsoleChess
             }
         }
 
-        public static void MovePieceFromSpaceToSpace(Space fromSpace, Space toSpace)
+        public static void MovePieceFromSpaceToSpace(bool canMove, Space fromSpace, Space toSpace)
         {
-            if (fromSpace.Piece.belongsToPlayer == turn)
+            if (canMove)
             {
-                // "copy" piece from starting space to ending space
-                // then test conditions to check for
-                // promotion
-                // king check
-                //
-                // if king is in check, "undo move" and keep fromSpace, clear toSpace
-                toSpace.Piece = fromSpace.Piece;
-
-                // check if piece is white pawn on row 8 - pawn promotion
-                if (fromSpace.Piece.GetType() == typeof(Pawn) && fromSpace.Piece.belongsToPlayer == Player.White && toSpace.X == 0)
+                // check player ownership
+                if (fromSpace.Piece.belongsToPlayer == turn)
                 {
-                    // offer piece selection and transform into selected piece
-                    Console.WriteLine("Promotion!");
-                    Console.WriteLine("Select a piece to promote to:");
-                    Console.WriteLine("N: Knight");
-                    Console.WriteLine("B: Bishop");
-                    Console.WriteLine("R: Rook");
-                    Console.WriteLine("Q: Queen");
-                    string? promotionSelection = Console.ReadLine();
-
-                    switch (promotionSelection)
-                    {
-                        case "N":
-                            toSpace.Piece = new Knight("[N]", Player.White);
-                            break;
-                        case "B":
-                            toSpace.Piece = new Bishop("[B]", Player.White);
-                            break;
-                        case "R":
-                            toSpace.Piece = new Rook("[R]", Player.White);
-                            break;
-                        case "Q":
-                            toSpace.Piece = new Queen("[Q]", Player.White);
-                            break;
-                    }
-                }
-                // check if piece is black pawn on row 8
-                else if (fromSpace.Piece.GetType() == typeof(Pawn) && fromSpace.Piece.belongsToPlayer == Player.Black && toSpace.X == 7)
-                {
-                    // offer piece selection and transform into selected piece
-                    Console.WriteLine("Promotion!");
-                    Console.WriteLine("Select a piece to promote to:");
-                    Console.WriteLine("N: Knight");
-                    Console.WriteLine("B: Bishop");
-                    Console.WriteLine("R: Rook");
-                    Console.WriteLine("Q: Queen");
-                    string? promotionSelection = Console.ReadLine();
-
-                    switch (promotionSelection)
-                    {
-                        case "N":
-                            toSpace.Piece = new Knight("[n]", Player.Black);
-                            break;
-                        case "B":
-                            toSpace.Piece = new Bishop("[b]", Player.Black);
-                            break;
-                        case "R":
-                            toSpace.Piece = new Rook("[r]", Player.Black);
-                            break;
-                        case "Q":
-                            toSpace.Piece = new Queen("[q]", Player.Black);
-                            break;
-                    }
-                } // end pawn promotion
-
-                // check if King is the piece being moved
-                //if (fromSpace.Piece.GetType() == typeof(King) && turn == Player.White)
-                //{
-                //    // update King space for White
-                //    WhiteKingSpace = toSpace;
-                //}
-                //else if (fromSpace.Piece.GetType() == typeof(King) && turn == Player.Black)
-                //{
-                //    // update King space for Black
-                //    BlackKingSpace = toSpace;
-                //}
-
-                //if (BlackKingSpace is not null && BlackKingSpace.IsUnderAttackByWhite)
-                //{
-                //    // cancel move
-                //    toSpace.Piece = new Piece("[ ]", Player.None);
-                //}
-                //else if (WhiteKingSpace is not null && WhiteKingSpace.IsUnderAttackByBlack)
-                //{
-                //    // cancel move
-                //    toSpace.Piece = new Piece("[ ]", Player.None);
-                //}
-                else
-                {
-                    // try moving the piece
-                    Piece tempFromPiece = fromSpace.Piece;
-
                     if (fromSpace.Piece.CanAttackSpace(fromSpace, toSpace))
                     {
+                        // "copy" piece -> it will be in two different locations now
+                        toSpace.Piece = fromSpace.Piece;
+
+                        // store temporary piece
+                        Piece tempFromSpacePiece = fromSpace.Piece;
+                        Piece tempToSpacePiece = toSpace.Piece;
+
+                        // try moving the piece (removing piece from starting space)
                         fromSpace.Piece = new Piece("[ ]", Player.None);
 
-                        // test if still in check after toSpace is also gone
-                        Piece tempToSpacePiece = toSpace.Piece;
-                        toSpace.Piece = new Piece("[ ]", Player.None);
-
+                        // check spaces attacked with piece temporarily moved
                         FindAllSpacesAttacked();
 
+                        // check if own king is in check
                         if (turn == Player.White && WhiteKingIsInCheck())
                         {
                             // cancel move
                             toSpace.Piece = tempToSpacePiece;
-                            fromSpace.Piece = tempFromPiece;
+                            fromSpace.Piece = tempFromSpacePiece;
                         }
                         else if (turn == Player.Black && BlackKingIsInCheck())
                         {
                             // cancel move
                             toSpace.Piece = tempToSpacePiece;
-                            fromSpace.Piece = tempFromPiece;
+                            fromSpace.Piece = tempFromSpacePiece;
                         }
                         else
                         {
                             // successful move
-                            toSpace.Piece.hasMoved = true;
                             toSpace.Piece = tempToSpacePiece;
+                            toSpace.Piece.hasMoved = true;
 
                             // change turns
                             if (turn == Player.White)
@@ -364,28 +281,37 @@ namespace ConsoleChess
                             }
                         }
                     }
-                    else
+                    else // piece cannot attack space, but may still be able to move
+                         // to it?  used for pawns and castling only?
                     {
-                        fromSpace.Piece = new Piece("[ ]", Player.None);
-                        toSpace.Piece = tempFromPiece;
+                        // check if piece moving to space puts self in check
+                        // "copy" piece -> it will be in two different locations now
+                        toSpace.Piece = fromSpace.Piece;
 
+                        // store temporary piece
+                        Piece tempFromSpacePiece = fromSpace.Piece;
+
+                        // try moving the piece (removing piece from starting space)
+                        fromSpace.Piece = new Piece("[ ]", Player.None);
+
+                        // check spaces attacked with piece temporarily moved
                         FindAllSpacesAttacked();
 
+                        // check if own king is in check
                         if (turn == Player.White && WhiteKingIsInCheck())
                         {
                             // cancel move
-                            toSpace.Piece = new Piece("[ ]", Player.None);
-                            fromSpace.Piece = tempFromPiece;
+                            fromSpace.Piece = tempFromSpacePiece;
                         }
                         else if (turn == Player.Black && BlackKingIsInCheck())
                         {
                             // cancel move
-                            toSpace.Piece = new Piece("[ ]", Player.None);
-                            fromSpace.Piece = tempFromPiece;
+                            fromSpace.Piece = tempFromSpacePiece;
                         }
                         else
                         {
                             // successful move
+                            //toSpace.Piece = tempToSpacePiece;
                             toSpace.Piece.hasMoved = true;
 
                             // change turns
@@ -398,6 +324,67 @@ namespace ConsoleChess
                                 turn = Player.White;
                             }
                         }
+
+                        // check if piece is white pawn on row 8 - pawn promotion
+                        // offer piece selection and transform into selected piece
+                        if (fromSpace.Piece.GetType() == typeof(Pawn) &&
+                            fromSpace.Piece.belongsToPlayer == Player.White &&
+                            toSpace.X == 0)
+                        {
+
+                            Console.WriteLine("Promotion!");
+                            Console.WriteLine("Select a piece to promote to:");
+                            Console.WriteLine("N: Knight");
+                            Console.WriteLine("B: Bishop");
+                            Console.WriteLine("R: Rook");
+                            Console.WriteLine("Q: Queen");
+                            string? promotionSelection = Console.ReadLine();
+
+                            switch (promotionSelection)
+                            {
+                                case "N":
+                                    toSpace.Piece = new Knight("[N]", Player.White);
+                                    break;
+                                case "B":
+                                    toSpace.Piece = new Bishop("[B]", Player.White);
+                                    break;
+                                case "R":
+                                    toSpace.Piece = new Rook("[R]", Player.White);
+                                    break;
+                                case "Q":
+                                    toSpace.Piece = new Queen("[Q]", Player.White);
+                                    break;
+                            }
+                        }
+                        // check if piece is black pawn on row 8
+                        // offer piece selection and transform into selected piece
+                        else if (fromSpace.Piece.GetType() == typeof(Pawn) && fromSpace.Piece.belongsToPlayer == Player.Black && toSpace.X == 7)
+                        {
+
+                            Console.WriteLine("Promotion!");
+                            Console.WriteLine("Select a piece to promote to:");
+                            Console.WriteLine("N: Knight");
+                            Console.WriteLine("B: Bishop");
+                            Console.WriteLine("R: Rook");
+                            Console.WriteLine("Q: Queen");
+                            string? promotionSelection = Console.ReadLine();
+
+                            switch (promotionSelection)
+                            {
+                                case "N":
+                                    toSpace.Piece = new Knight("[n]", Player.Black);
+                                    break;
+                                case "B":
+                                    toSpace.Piece = new Bishop("[b]", Player.Black);
+                                    break;
+                                case "R":
+                                    toSpace.Piece = new Rook("[r]", Player.Black);
+                                    break;
+                                case "Q":
+                                    toSpace.Piece = new Queen("[q]", Player.Black);
+                                    break;
+                            }
+                        } // end pawn promotion
                     }
                 }
             }

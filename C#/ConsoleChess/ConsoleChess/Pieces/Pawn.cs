@@ -18,24 +18,32 @@ namespace ConsoleChess.Pieces
             // if this is a white piece - let it attack up and right and up and left
             if (fromSpace.X > toSpace.X)
             {
-                if (belongsToPlayer == Player.White && (fromSpace.X == toSpace.X + 1 && fromSpace.Y == toSpace.Y - 1))
+                if (belongsToPlayer == Player.White && 
+                    (fromSpace.X == toSpace.X + 1 && 
+                    fromSpace.Y == toSpace.Y - 1))
                 {
                     return true;
                 }
 
-                if (belongsToPlayer == Player.White && (fromSpace.X == toSpace.X + 1 && fromSpace.Y == toSpace.Y + 1))
+                if (belongsToPlayer == Player.White && 
+                    (fromSpace.X == toSpace.X + 1 && 
+                    fromSpace.Y == toSpace.Y + 1))
                 {
                     return true;
                 }
             }
             else if (fromSpace.X < toSpace.X)
             {
-                if (belongsToPlayer == Player.Black && (fromSpace.X == toSpace.X - 1 && fromSpace.Y == toSpace.Y + 1))
+                if (belongsToPlayer == Player.Black && 
+                    (fromSpace.X == toSpace.X - 1 && 
+                    fromSpace.Y == toSpace.Y + 1))
                 {
                     return true;
                 }
 
-                if (belongsToPlayer == Player.Black && (fromSpace.X == toSpace.X - 1 && fromSpace.Y == toSpace.Y - 1))
+                if (belongsToPlayer == Player.Black && 
+                    (fromSpace.X == toSpace.X - 1 && 
+                    fromSpace.Y == toSpace.Y - 1))
                 {
                     return true;
                 }
@@ -45,7 +53,7 @@ namespace ConsoleChess.Pieces
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            if (fromSpace == toSpace)
+            if (belongsToPlayer == toSpace.Piece.belongsToPlayer)
             {
                 return false;
             }
@@ -55,7 +63,7 @@ namespace ConsoleChess.Pieces
                 return false;
             }
 
-            // if this is a black piece - don't allow it to move up (Y-)
+            // if this is a black piece - don't allow it to move up
             if(belongsToPlayer == Player.Black && toSpace.X < fromSpace.X)
             {
                 return false;
@@ -64,7 +72,7 @@ namespace ConsoleChess.Pieces
             // if piece is white and attacking a space up and left
             if((belongsToPlayer == Player.White) && 
                 (toSpace.X == fromSpace.X - 1 && toSpace.Y == fromSpace.Y - 1) &&
-                (toSpace.Piece.belongsToPlayer != Player.None && toSpace.Piece.belongsToPlayer != belongsToPlayer))
+                (toSpace.Piece.belongsToPlayer != Player.None))
             {
                 // capture piece
                 return true;
@@ -73,7 +81,7 @@ namespace ConsoleChess.Pieces
             // if piece is white and attacking a space up and right
             if ((belongsToPlayer == Player.White) &&
                 (toSpace.X == fromSpace.X - 1 && toSpace.Y == fromSpace.Y + 1) &&
-                (toSpace.Piece.belongsToPlayer != Player.None && toSpace.Piece.belongsToPlayer != belongsToPlayer))
+                (toSpace.Piece.belongsToPlayer != Player.None))
             {
                 // capture piece
                 return true;
@@ -82,7 +90,7 @@ namespace ConsoleChess.Pieces
             // if piece is black and attacking a space down and right
             if ((belongsToPlayer == Player.Black) &&
                 (toSpace.X == fromSpace.X + 1 && toSpace.Y == fromSpace.Y + 1) &&
-                (toSpace.Piece.belongsToPlayer != Player.None && toSpace.Piece.belongsToPlayer != belongsToPlayer))
+                (toSpace.Piece.belongsToPlayer != Player.None))
             {
                 // capture piece
                 return true;
@@ -91,23 +99,32 @@ namespace ConsoleChess.Pieces
             // if piece is black and attacking a space down and left
             if ((belongsToPlayer == Player.Black) &&
                 (toSpace.X == fromSpace.X + 1 && toSpace.Y == fromSpace.Y - 1) &&
-                (toSpace.Piece.belongsToPlayer != Player.None && toSpace.Piece.belongsToPlayer != belongsToPlayer))
+                (toSpace.Piece.belongsToPlayer != Player.None))
             {
                 // capture piece
                 return true;
             }
 
+            // allow 2 spaces on first move
             if (!hasMoved)
             {
                 if (toSpace.Y == fromSpace.Y && Math.Abs(fromSpace.X - toSpace.X) < 3)
                 {
-                    // if player is white and space next to pawn (above) is occupied, return false
-                    if(fromSpace.Piece.belongsToPlayer == Player.White && Board.spaces[fromSpace.X - 1][fromSpace.Y].Piece.belongsToPlayer != Player.None)
+                    // if player is white and space next to pawn (above) is
+                    // occupied, return false
+                    if(fromSpace.Piece.belongsToPlayer == 
+                        Player.White && 
+                        Board.spaces[fromSpace.X - 1][fromSpace.Y]
+                        .Piece.belongsToPlayer != Player.None)
                     {
                         return false;
                     }
-                    // if player is black and space next to pawn (above) is occupied, return false
-                    else if (fromSpace.Piece.belongsToPlayer == Player.Black && Board.spaces[fromSpace.X + 1][fromSpace.Y].Piece.belongsToPlayer != Player.None)
+                    // if player is black and space next to pawn (above) is
+                    // occupied, return false
+                    else if (fromSpace.Piece.belongsToPlayer == 
+                        Player.Black && 
+                        Board.spaces[fromSpace.X + 1][fromSpace.Y]
+                        .Piece.belongsToPlayer != Player.None)
                     {
                         return false;
                     }
@@ -118,7 +135,9 @@ namespace ConsoleChess.Pieces
                     }
                 }
             }
-            else if (fromSpace.Y == toSpace.Y && Math.Abs(fromSpace.X - toSpace.X) < 2)
+            // if pawn has moved - restrict to one space
+            else if (fromSpace.Y == toSpace.Y && 
+                Math.Abs(fromSpace.X - toSpace.X) < 2)
             {
                 if (toSpace.Piece.belongsToPlayer == Player.None)
                 {
@@ -126,6 +145,8 @@ namespace ConsoleChess.Pieces
                     return true;
                 }
             }
+
+            // if no criteria is met, refuse pawn move
             return false;
         }
     }

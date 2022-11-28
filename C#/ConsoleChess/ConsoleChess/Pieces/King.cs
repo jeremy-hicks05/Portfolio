@@ -12,7 +12,7 @@ namespace ConsoleChess.Pieces
 
         public override bool CanAttackSpace(Space fromSpace, Space toSpace)
         {
-            if (fromSpace.X == toSpace.X && fromSpace.Y == toSpace.Y)
+            if (fromSpace == toSpace)
             {
                 return false;
             }
@@ -25,13 +25,18 @@ namespace ConsoleChess.Pieces
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            if (fromSpace == toSpace)
+            if (toSpace.Piece.belongsToPlayer == belongsToPlayer)
+            {
+                return false;
+            }
+
+            if (Math.Abs(toSpace.X - fromSpace.X) > 1 || Math.Abs(toSpace.Y - fromSpace.Y) > 1)
             {
                 return false;
             }
 
             //if space is being attacked by opposition, do not move there
-            if(belongsToPlayer == Player.Black && toSpace.IsUnderAttackByWhite)
+            if (belongsToPlayer == Player.Black && toSpace.IsUnderAttackByWhite)
             {
                 return false;
             }
@@ -77,15 +82,9 @@ namespace ConsoleChess.Pieces
                 //return true;
             }
 
-            if (Math.Abs(toSpace.X - fromSpace.X) > 1 || Math.Abs(toSpace.Y - fromSpace.Y) > 1)
-            {
-                return false;
-            }
-            else if (toSpace.Piece.belongsToPlayer == belongsToPlayer)
-            {
-                return false;
-            }
-            //hasMoved = true;
+            
+
+
             return true;
         }
     }

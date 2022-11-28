@@ -42,10 +42,8 @@ namespace ConsoleChess
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("Welcome to Chess!");
             Board.InitBoard();
 
-            //System.ConsoleKey playing = ConsoleKey.Y;
             while (true) // White is not in checkmate/stalemate and
                          // Black is not in checkmate/stalemate and
                          // neither has resigned
@@ -59,13 +57,11 @@ namespace ConsoleChess
                 Space destinationSpace = Board.GetDestinationSpace();
 
                 // check piece's ability to move to selected space
-                if (startingSpace.Piece.CanMoveFromSpaceToSpace(
-                    startingSpace,
-                    destinationSpace))
-                {
-                    // move selected piece from its space to the destination space
-                    Board.MovePieceFromSpaceToSpace(startingSpace, destinationSpace);
-                }
+                Board.MovePieceFromSpaceToSpace(
+                    startingSpace.Piece.CanMoveFromSpaceToSpace(
+                        startingSpace,
+                        destinationSpace),
+                    startingSpace, destinationSpace);
 
                 // clear console
                 Console.Clear();
