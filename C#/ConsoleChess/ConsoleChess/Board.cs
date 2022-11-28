@@ -270,6 +270,69 @@ namespace ConsoleChess
                             toSpace.Piece = tempToSpacePiece;
                             toSpace.Piece.hasMoved = true;
 
+                            // check if piece is white pawn on row 8 - pawn promotion
+                            // offer piece selection and transform into selected piece
+                            if (toSpace.Piece.GetType() == typeof(Pawn) &&
+                                toSpace.Piece.belongsToPlayer == Player.White &&
+                                toSpace.X == 0)
+                            {
+
+                                Console.WriteLine("Promotion!");
+                                Console.WriteLine("Select a piece to promote to:");
+                                Console.WriteLine("N: Knight");
+                                Console.WriteLine("B: Bishop");
+                                Console.WriteLine("R: Rook");
+                                Console.WriteLine("Q: Queen");
+                                string? promotionSelection = Console.ReadLine();
+
+                                switch (promotionSelection)
+                                {
+                                    case "N":
+                                        toSpace.Piece = new Knight("[N]", Player.White);
+                                        break;
+                                    case "B":
+                                        toSpace.Piece = new Bishop("[B]", Player.White);
+                                        break;
+                                    case "R":
+                                        toSpace.Piece = new Rook("[R]", Player.White);
+                                        break;
+                                    case "Q":
+                                        toSpace.Piece = new Queen("[Q]", Player.White);
+                                        break;
+                                }
+                            }
+                            // check if piece is black pawn on row 8
+                            // offer piece selection and transform into selected piece
+                            else if (toSpace.Piece.GetType() == typeof(Pawn) &&
+                                toSpace.Piece.belongsToPlayer == Player.Black &&
+                                toSpace.X == 7)
+                            {
+
+                                Console.WriteLine("Promotion!");
+                                Console.WriteLine("Select a piece to promote to:");
+                                Console.WriteLine("N: Knight");
+                                Console.WriteLine("B: Bishop");
+                                Console.WriteLine("R: Rook");
+                                Console.WriteLine("Q: Queen");
+                                string? promotionSelection = Console.ReadLine();
+
+                                switch (promotionSelection)
+                                {
+                                    case "N":
+                                        toSpace.Piece = new Knight("[n]", Player.Black);
+                                        break;
+                                    case "B":
+                                        toSpace.Piece = new Bishop("[b]", Player.Black);
+                                        break;
+                                    case "R":
+                                        toSpace.Piece = new Rook("[r]", Player.Black);
+                                        break;
+                                    case "Q":
+                                        toSpace.Piece = new Queen("[q]", Player.Black);
+                                        break;
+                                }
+                            } // end pawn promotion
+
                             // change turns
                             if (turn == Player.White)
                             {
@@ -280,6 +343,8 @@ namespace ConsoleChess
                                 turn = Player.White;
                             }
                         }
+
+                        
                     }
                     else // piece cannot attack space, but may still be able to move
                          // to it?  used for pawns and castling only?
@@ -311,8 +376,70 @@ namespace ConsoleChess
                         else
                         {
                             // successful move
-                            //toSpace.Piece = tempToSpacePiece;
                             toSpace.Piece.hasMoved = true;
+
+                            // check if piece is white pawn on row 8 - pawn promotion
+                            // offer piece selection and transform into selected piece
+                            if (toSpace.Piece.GetType() == typeof(Pawn) &&
+                                toSpace.Piece.belongsToPlayer == Player.White &&
+                                toSpace.X == 0)
+                            {
+
+                                Console.WriteLine("Promotion!");
+                                Console.WriteLine("Select a piece to promote to:");
+                                Console.WriteLine("N: Knight");
+                                Console.WriteLine("B: Bishop");
+                                Console.WriteLine("R: Rook");
+                                Console.WriteLine("Q: Queen");
+                                string? promotionSelection = Console.ReadLine();
+
+                                switch (promotionSelection)
+                                {
+                                    case "N":
+                                        toSpace.Piece = new Knight("[N]", Player.White);
+                                        break;
+                                    case "B":
+                                        toSpace.Piece = new Bishop("[B]", Player.White);
+                                        break;
+                                    case "R":
+                                        toSpace.Piece = new Rook("[R]", Player.White);
+                                        break;
+                                    case "Q":
+                                        toSpace.Piece = new Queen("[Q]", Player.White);
+                                        break;
+                                }
+                            }
+                            // check if piece is black pawn on row 8
+                            // offer piece selection and transform into selected piece
+                            else if (toSpace.Piece.GetType() == typeof(Pawn) &&
+                                toSpace.Piece.belongsToPlayer == Player.Black &&
+                                toSpace.X == 7)
+                            {
+
+                                Console.WriteLine("Promotion!");
+                                Console.WriteLine("Select a piece to promote to:");
+                                Console.WriteLine("N: Knight");
+                                Console.WriteLine("B: Bishop");
+                                Console.WriteLine("R: Rook");
+                                Console.WriteLine("Q: Queen");
+                                string? promotionSelection = Console.ReadLine();
+
+                                switch (promotionSelection)
+                                {
+                                    case "N":
+                                        toSpace.Piece = new Knight("[n]", Player.Black);
+                                        break;
+                                    case "B":
+                                        toSpace.Piece = new Bishop("[b]", Player.Black);
+                                        break;
+                                    case "R":
+                                        toSpace.Piece = new Rook("[r]", Player.Black);
+                                        break;
+                                    case "Q":
+                                        toSpace.Piece = new Queen("[q]", Player.Black);
+                                        break;
+                                }
+                            } // end pawn promotion
 
                             // change turns
                             if (turn == Player.White)
@@ -324,67 +451,6 @@ namespace ConsoleChess
                                 turn = Player.White;
                             }
                         }
-
-                        // check if piece is white pawn on row 8 - pawn promotion
-                        // offer piece selection and transform into selected piece
-                        if (fromSpace.Piece.GetType() == typeof(Pawn) &&
-                            fromSpace.Piece.belongsToPlayer == Player.White &&
-                            toSpace.X == 0)
-                        {
-
-                            Console.WriteLine("Promotion!");
-                            Console.WriteLine("Select a piece to promote to:");
-                            Console.WriteLine("N: Knight");
-                            Console.WriteLine("B: Bishop");
-                            Console.WriteLine("R: Rook");
-                            Console.WriteLine("Q: Queen");
-                            string? promotionSelection = Console.ReadLine();
-
-                            switch (promotionSelection)
-                            {
-                                case "N":
-                                    toSpace.Piece = new Knight("[N]", Player.White);
-                                    break;
-                                case "B":
-                                    toSpace.Piece = new Bishop("[B]", Player.White);
-                                    break;
-                                case "R":
-                                    toSpace.Piece = new Rook("[R]", Player.White);
-                                    break;
-                                case "Q":
-                                    toSpace.Piece = new Queen("[Q]", Player.White);
-                                    break;
-                            }
-                        }
-                        // check if piece is black pawn on row 8
-                        // offer piece selection and transform into selected piece
-                        else if (fromSpace.Piece.GetType() == typeof(Pawn) && fromSpace.Piece.belongsToPlayer == Player.Black && toSpace.X == 7)
-                        {
-
-                            Console.WriteLine("Promotion!");
-                            Console.WriteLine("Select a piece to promote to:");
-                            Console.WriteLine("N: Knight");
-                            Console.WriteLine("B: Bishop");
-                            Console.WriteLine("R: Rook");
-                            Console.WriteLine("Q: Queen");
-                            string? promotionSelection = Console.ReadLine();
-
-                            switch (promotionSelection)
-                            {
-                                case "N":
-                                    toSpace.Piece = new Knight("[n]", Player.Black);
-                                    break;
-                                case "B":
-                                    toSpace.Piece = new Bishop("[b]", Player.Black);
-                                    break;
-                                case "R":
-                                    toSpace.Piece = new Rook("[r]", Player.Black);
-                                    break;
-                                case "Q":
-                                    toSpace.Piece = new Queen("[q]", Player.Black);
-                                    break;
-                            }
-                        } // end pawn promotion
                     }
                 }
             }

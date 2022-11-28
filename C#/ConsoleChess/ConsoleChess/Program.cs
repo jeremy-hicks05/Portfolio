@@ -36,7 +36,7 @@ namespace ConsoleChess
      *          and not restore it if I am not careful
      *  6. Refactor, compress, and condense code using functions
      *  7. Allow resignation
-     *  8. Change to the Copy-Delete pattern
+     *  8. 
     */
     internal class Program
     {
