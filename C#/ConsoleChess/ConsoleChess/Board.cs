@@ -79,6 +79,89 @@ namespace ConsoleChess
             turn = Player.White;
         }
 
+        public static Space GetStartingSpace()
+        {
+            int y = GetRowForStartingSpace();
+            int x = GetColumnForStartingSpace();
+
+            return spaces[x][y];
+        }
+
+        public static Space GetDestinationSpace()
+        {
+            int y = GetRowForDestinationSpace();
+            int x = GetColumnForDestinationSpace();
+
+            return spaces[x][y];
+        }
+
+        public static int GetColumnForStartingSpace()
+        {
+            int startLongitude = -1;
+
+            Console.WriteLine();
+            while (!(startLongitude >= 0 && startLongitude <= 7))
+            {
+                Console.Write("Enter Number for " + turn + " Piece to be moved (1-8):");
+                startLongitude = NotationToInt(Console.ReadLine());
+                if (!(startLongitude >= 0 && startLongitude <= 7))
+                {
+                    Console.WriteLine("Please enter a letter A-H");
+                }
+            }
+            return startLongitude;
+        }
+
+        public static int GetRowForStartingSpace()
+        {
+
+            int startLatitude = -1;
+
+            while (!(startLatitude >= 0 && startLatitude <= 7))
+            {
+                Console.Write("Enter Letter for " + turn + " Piece to be moved (A-H):");
+                startLatitude = NotationToInt(Console.ReadLine());
+                if (!(startLatitude >= 0 && startLatitude <= 7))
+                {
+                    Console.WriteLine("Please enter a number 1-8");
+                }
+            }
+            return startLatitude;
+        }
+
+        public static int GetColumnForDestinationSpace()
+        {
+
+            int endLongitude = -1;
+
+            while (!(endLongitude >= 0 && endLongitude <= 7))
+            {
+                Console.Write("Enter Letter for Space to be moved to (A-H):");
+                endLongitude = NotationToInt(Console.ReadLine());
+                if (!(endLongitude >= 0 && endLongitude <= 7))
+                {
+                    Console.WriteLine("Please enter a letter A-H");
+                }
+            }
+            return endLongitude;
+        }
+
+        public static int GetRowForDestinationSpace()
+        { 
+
+            int endLatitude = -1;
+            while (!(endLatitude >= 0 && endLatitude <= 7))
+            {
+                Console.Write("Enter Number for Space to be moved to (1-8):");
+                endLatitude = NotationToInt(Console.ReadLine());
+                if (!(endLatitude >= 0 && endLatitude <= 7))
+                {
+                    Console.WriteLine("Please enter a number 1-8");
+                }
+            }
+            return endLatitude;
+        }
+
         public static void PrintBoard()
         {
             Console.Clear();

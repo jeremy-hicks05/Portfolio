@@ -36,7 +36,7 @@ namespace ConsoleChess
      *          and not restore it if I am not careful
      *  6. Refactor, compress, and condense code using functions
      *  7. Allow resignation
-     *  8. Allow capture of piece putting your king in check *
+     *  8. Change to the Copy-Delete pattern
     */
     internal class Program
     {
@@ -50,78 +50,16 @@ namespace ConsoleChess
                          // Black is not in checkmate/stalemate and
                          // neither has resigned
             {
-                // get player input for move - abstract into function
 
-                //Piece selectedPiece = PlayerSelectsPiece();
-                // check if Piece is owned by a player Black or White
-                // may put this ^ inside PlayerSelectSpace(); below
+                Space startingSpace = Board.GetStartingSpace();
 
-                //Space startingSpace = PlayerSelectSpace();
-                //Space destinationSpace = PlayerSelectDestination();
+                //Console.WriteLine("Piece " + startingSpace.Piece + " on space " +
+                //    startingSpace.X + ", " + startingSpace.Y + " selected.");
 
-                int startLongitude = -1;
-                
-                // if input is 'A' -> translate to 7 for X value
-                // if input is '1' -> translate to 0 for Y value
-                Console.WriteLine();
-                while (!(startLongitude >= 0 && startLongitude <= 7))
-                {
-                    Console.Write("Enter Letter for " + Board.turn + " Piece to be moved (A-H):");
-                    startLongitude = Board.NotationToInt(Console.ReadLine());
-                    if (!(startLongitude >= 0 && startLongitude <= 7))
-                    {
-                        Console.WriteLine("Please enter a letter A-H");
-                    }
-                }
-
-                int startLatitude = -1;                
-                
-                while (!(startLatitude >= 0 && startLatitude <= 7))
-                {
-                    Console.Write("Enter Number for " + Board.turn + " Piece to be moved (1-8):");
-                    startLatitude = Board.NotationToInt(Console.ReadLine());
-                    if (!(startLatitude >= 0 && startLatitude <= 7))
-                    {
-                        Console.WriteLine("Please enter a number 1-8");
-                    }
-                }
-
-                Piece selectedPiece = Board.spaces[startLatitude][startLongitude].Piece;
-
-                //TODO: show all spaces selected piece can move to, or capture
-                // showPossibleMoves(selectedPiece);
-                // OR
-                // showPossibleMoves(startingSpace);
-
-                int endLongitude = -1;
-
-                while (!(endLongitude >= 0 && endLongitude <= 7))
-                {
-                    Console.Write("Enter Letter for Space to be moved to (A-H):");
-                    endLongitude = Board.NotationToInt(Console.ReadLine());
-                    if (!(endLongitude >= 0 && endLongitude <= 7))
-                    {
-                        Console.WriteLine("Please enter a letter A-H");
-                    }
-                }
-
-                int endLatitude = -1;
-                while (!(endLatitude >= 0 && endLatitude <= 7))
-                {
-                    Console.Write("Enter Number for Space to be moved to (1-8):");
-                    endLatitude = Board.NotationToInt(Console.ReadLine());
-                    if (!(endLatitude >= 0 && endLatitude <= 7))
-                    {
-                        Console.WriteLine("Please enter a number 1-8");
-                    }
-                }
-
-                // set space references
-                Space startingSpace = Board.spaces[startLatitude][startLongitude];
-                Space destinationSpace = Board.spaces[endLatitude][endLongitude];
+                Space destinationSpace = Board.GetDestinationSpace();
 
                 // check piece's ability to move to selected space
-                if (selectedPiece.CanMoveFromSpaceToSpace(
+                if (startingSpace.Piece.CanMoveFromSpaceToSpace(
                     startingSpace,
                     destinationSpace))
                 {
@@ -134,22 +72,6 @@ namespace ConsoleChess
 
                 // refresh spaces' AttackedbyWhite/Black property
                 Board.FindAllSpacesAttacked();
-
-                Console.WriteLine("White King is on " + Board.WhiteKingSpace?.X + 
-                    ", " + Board.WhiteKingSpace?.Y);
-                Console.WriteLine("Black King is on " + Board.BlackKingSpace?.X +
-                    ", " + Board.BlackKingSpace?.Y);
-
-                // check if either king is in check
-                if (Board.WhiteKingIsInCheck())
-                {
-                    Console.WriteLine("White King in check!");
-                }
-
-                if (Board.BlackKingIsInCheck())
-                {
-                    Console.WriteLine("Black King in check!");
-                }
 
                 // re-print board
                 Board.PrintBoard();
