@@ -20,7 +20,8 @@ namespace ConsoleChess
      * 7. Pieces cannot move through pieces (except knight, duh)
      * 8. Inputs can only be A-H and 1-8
      * 9. Implemented changing turns
-     * 10.
+     * 10. Implemented pawn promotion
+     * 11. Pieces can now block check, and cannot move if that piece is pinned
      * 
      */
 
@@ -29,12 +30,13 @@ namespace ConsoleChess
      *  2. Force King to not be in check at end of turn
      *  3. Check for stalemate
      *  4. Check for checkmate
-     *  5. Implement pawn promotion
-     *  6. Prevent pieces from moving if they would put your king in check (may be covered by reverting moves / returning false if king is in check at the end of the turn)
-     *  7. Refactor, compress, and condense code using functions
-     *  8. Allow resignation
-     *  9. Show all available moves for selected piece
-     *  10. Stop pawns from multiplying when moving as black
+     *  5. Prevent pieces from moving if they would put your king in check (may be covered by reverting moves / returning false if king is in check at the end of the turn)
+     *      5a. Need to hold 3? temporary values - put the destination piece back if 
+     *          the king is in check - if it is a capture, this might capture the piece
+     *          and not restore it if I am not careful
+     *  6. Refactor, compress, and condense code using functions
+     *  7. Allow resignation
+     *  8. Allow capture of piece putting your king in check *
     */
     internal class Program
     {
@@ -44,9 +46,11 @@ namespace ConsoleChess
             Board.InitBoard();
 
             //System.ConsoleKey playing = ConsoleKey.Y;
-            while (true) // White is not in checkmate/stalemate and Black is not in checkmate/stalemate and neither has resigned
+            while (true) // White is not in checkmate/stalemate and
+                         // Black is not in checkmate/stalemate and
+                         // neither has resigned
             {
-                // get player input for move
+                // get player input for move - abstract into function
 
                 //Piece selectedPiece = PlayerSelectsPiece();
                 // check if Piece is owned by a player Black or White
@@ -62,7 +66,7 @@ namespace ConsoleChess
                 Console.WriteLine();
                 while (!(startLongitude >= 0 && startLongitude <= 7))
                 {
-                    Console.Write("Enter Letter for Piece to be moved (A-H):");
+                    Console.Write("Enter Letter for " + Board.turn + " Piece to be moved (A-H):");
                     startLongitude = Board.NotationToInt(Console.ReadLine());
                     if (!(startLongitude >= 0 && startLongitude <= 7))
                     {
@@ -74,7 +78,7 @@ namespace ConsoleChess
                 
                 while (!(startLatitude >= 0 && startLatitude <= 7))
                 {
-                    Console.Write("Enter Number for Piece to be moved (1-8):");
+                    Console.Write("Enter Number for " + Board.turn + " Piece to be moved (1-8):");
                     startLatitude = Board.NotationToInt(Console.ReadLine());
                     if (!(startLatitude >= 0 && startLatitude <= 7))
                     {
@@ -130,6 +134,22 @@ namespace ConsoleChess
 
                 // refresh spaces' AttackedbyWhite/Black property
                 Board.FindAllSpacesAttacked();
+
+                Console.WriteLine("White King is on " + Board.WhiteKingSpace?.X + 
+                    ", " + Board.WhiteKingSpace?.Y);
+                Console.WriteLine("Black King is on " + Board.BlackKingSpace?.X +
+                    ", " + Board.BlackKingSpace?.Y);
+
+                // check if either king is in check
+                if (Board.WhiteKingIsInCheck())
+                {
+                    Console.WriteLine("White King in check!");
+                }
+
+                if (Board.BlackKingIsInCheck())
+                {
+                    Console.WriteLine("Black King in check!");
+                }
 
                 // re-print board
                 Board.PrintBoard();

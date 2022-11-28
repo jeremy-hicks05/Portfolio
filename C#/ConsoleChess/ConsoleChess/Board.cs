@@ -8,6 +8,8 @@ namespace ConsoleChess
     {
         public static Space[][] spaces { get; set; } = new Space[8][];
         public static Player turn;
+        public static Space? WhiteKingSpace;
+        public static Space? BlackKingSpace;
 
         public static void InitBoard()
         {
@@ -45,6 +47,8 @@ namespace ConsoleChess
             spaces[0][6].Piece = new Knight("[n]", Player.Black);
             spaces[0][7].Piece = new Rook("[r]", Player.Black);
 
+            BlackKingSpace = spaces[0][4];
+
             // populate Black pawns
             for (int i = 0; i < 8; i++)
             {
@@ -66,6 +70,8 @@ namespace ConsoleChess
             spaces[7][5].Piece = new Bishop("[B]", Player.White);
             spaces[7][6].Piece = new Knight("[N]", Player.White);
             spaces[7][7].Piece = new Rook("[R]", Player.White);
+
+            WhiteKingSpace = spaces[7][4];
 
             FindAllSpacesAttacked();
 
@@ -144,8 +150,15 @@ namespace ConsoleChess
         {
             if (fromSpace.Piece.belongsToPlayer == turn)
             {
+                // "copy" piece from starting space to ending space
+                // then test conditions to check for
+                // promotion
+                // king check
+                //
+                // if king is in check, "undo move" and keep fromSpace, clear toSpace
                 toSpace.Piece = fromSpace.Piece;
-                // check if piece is white pawn on row 8
+
+                // check if piece is white pawn on row 8 - pawn promotion
                 if (fromSpace.Piece.GetType() == typeof(Pawn) && fromSpace.Piece.belongsToPlayer == Player.White && toSpace.X == 0)
                 {
                     // offer piece selection and transform into selected piece
@@ -200,21 +213,66 @@ namespace ConsoleChess
                             toSpace.Piece = new Queen("[q]", Player.Black);
                             break;
                     }
-                }
+                } // end pawn promotion
+
+                // check if King is the piece being moved
+                //if (fromSpace.Piece.GetType() == typeof(King) && turn == Player.White)
+                //{
+                //    // update King space for White
+                //    WhiteKingSpace = toSpace;
+                //}
+                //else if (fromSpace.Piece.GetType() == typeof(King) && turn == Player.Black)
+                //{
+                //    // update King space for Black
+                //    BlackKingSpace = toSpace;
+                //}
+
+                //if (BlackKingSpace is not null && BlackKingSpace.IsUnderAttackByWhite)
+                //{
+                //    // cancel move
+                //    toSpace.Piece = new Piece("[ ]", Player.None);
+                //}
+                //else if (WhiteKingSpace is not null && WhiteKingSpace.IsUnderAttackByBlack)
+                //{
+                //    // cancel move
+                //    toSpace.Piece = new Piece("[ ]", Player.None);
+                //}
                 else
                 {
-                    toSpace.Piece.hasMoved = true;
-                    //fromSpace.Piece = new Piece("[ ]", Player.None);
-                }
-                fromSpace.Piece = new Piece("[ ]", Player.None);
-                // change turns
-                if (Board.turn == Player.White)
-                {
-                    Board.turn = Player.Black;
-                }
-                else
-                {
-                    Board.turn = Player.White;
+                    // try moving the piece
+                    Piece tempFromPiece = fromSpace.Piece;
+                    fromSpace.Piece = new Piece("[ ]", Player.None);
+                    toSpace.Piece = tempFromPiece;
+
+                    FindAllSpacesAttacked();
+
+                    if (turn == Player.White && WhiteKingIsInCheck())
+                    {
+                        // cancel move
+                        toSpace.Piece = new Piece("[ ]", Player.None);
+                        fromSpace.Piece = tempFromPiece;
+                    }
+                    else if(turn == Player.Black && BlackKingIsInCheck())
+                    {
+                        // cancel move
+                        toSpace.Piece = new Piece("[ ]", Player.None);
+                        fromSpace.Piece = tempFromPiece;
+                    }
+                    else
+                    {
+                        // successful move
+                        toSpace.Piece.hasMoved = true;
+
+                        // change turns
+                        if (turn == Player.White)
+                        {
+                            turn = Player.Black;
+                        }
+                        else
+                        {
+                            turn = Player.White;
+                        }
+                    }
                 }
             }
         }
@@ -284,6 +342,8 @@ namespace ConsoleChess
 
                         spaces[NotationToInt("1")][NotationToInt("G")].Piece = new King("[K]", Player.White);
                         spaces[NotationToInt("1")][NotationToInt("F")].Piece = new Rook("[R]", Player.White);
+
+                        WhiteKingSpace = spaces[NotationToInt("1")][NotationToInt("G")];
                     }
                 }
             }
@@ -309,6 +369,8 @@ namespace ConsoleChess
 
                         spaces[NotationToInt("1")][NotationToInt("C")].Piece = new King("[K]", Player.Black);
                         spaces[NotationToInt("1")][NotationToInt("D")].Piece = new Rook("[R]", Player.Black);
+
+                        WhiteKingSpace = spaces[NotationToInt("1")][NotationToInt("C")];
                     }
                 }
             }
@@ -333,6 +395,8 @@ namespace ConsoleChess
 
                         spaces[NotationToInt("8")][NotationToInt("G")].Piece = new King("[k]", Player.Black);
                         spaces[NotationToInt("8")][NotationToInt("F")].Piece = new Rook("[r]", Player.Black);
+
+                        BlackKingSpace = spaces[NotationToInt("8")][NotationToInt("G")];
                     }
                 }
             }
@@ -358,9 +422,33 @@ namespace ConsoleChess
 
                         spaces[NotationToInt("8")][NotationToInt("C")].Piece = new King("[k]", Player.Black);
                         spaces[NotationToInt("8")][NotationToInt("D")].Piece = new Rook("[r]", Player.Black);
+
+                        BlackKingSpace = spaces[NotationToInt("8")][NotationToInt("C")];
                     }
                 }
             }
+        }
+
+        public static bool WhiteKingIsInCheck()
+        {
+            // if white king's space is under attack by black
+            if (WhiteKingSpace is not null && WhiteKingSpace.IsUnderAttackByBlack)
+            {
+                Console.WriteLine("White king in check!");
+                return true;
+            }
+            return false;
+        }
+
+        public static bool BlackKingIsInCheck()
+        {
+            // if black king's space is under attack by white
+            if (BlackKingSpace is not null && BlackKingSpace.IsUnderAttackByWhite)
+            {
+                Console.WriteLine("Black king in check!");
+                return true;
+            }
+            return false;
         }
     }
 }
