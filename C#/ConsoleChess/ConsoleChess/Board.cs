@@ -241,36 +241,79 @@ namespace ConsoleChess
                 {
                     // try moving the piece
                     Piece tempFromPiece = fromSpace.Piece;
-                    fromSpace.Piece = new Piece("[ ]", Player.None);
-                    toSpace.Piece = tempFromPiece;
 
-                    FindAllSpacesAttacked();
-
-                    if (turn == Player.White && WhiteKingIsInCheck())
+                    if (fromSpace.Piece.CanAttackSpace(fromSpace, toSpace))
                     {
-                        // cancel move
+                        fromSpace.Piece = new Piece("[ ]", Player.None);
+
+                        // test if still in check after toSpace is also gone
+                        Piece tempToSpacePiece = toSpace.Piece;
                         toSpace.Piece = new Piece("[ ]", Player.None);
-                        fromSpace.Piece = tempFromPiece;
-                    }
-                    else if(turn == Player.Black && BlackKingIsInCheck())
-                    {
-                        // cancel move
-                        toSpace.Piece = new Piece("[ ]", Player.None);
-                        fromSpace.Piece = tempFromPiece;
-                    }
-                    else
-                    {
-                        // successful move
-                        toSpace.Piece.hasMoved = true;
 
-                        // change turns
-                        if (turn == Player.White)
+                        FindAllSpacesAttacked();
+
+                        if (turn == Player.White && WhiteKingIsInCheck())
                         {
-                            turn = Player.Black;
+                            // cancel move
+                            toSpace.Piece = tempToSpacePiece;
+                            fromSpace.Piece = tempFromPiece;
+                        }
+                        else if (turn == Player.Black && BlackKingIsInCheck())
+                        {
+                            // cancel move
+                            toSpace.Piece = tempToSpacePiece;
+                            fromSpace.Piece = tempFromPiece;
                         }
                         else
                         {
-                            turn = Player.White;
+                            // successful move
+                            toSpace.Piece.hasMoved = true;
+                            toSpace.Piece = tempToSpacePiece;
+
+                            // change turns
+                            if (turn == Player.White)
+                            {
+                                turn = Player.Black;
+                            }
+                            else
+                            {
+                                turn = Player.White;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        fromSpace.Piece = new Piece("[ ]", Player.None);
+                        toSpace.Piece = tempFromPiece;
+
+                        FindAllSpacesAttacked();
+
+                        if (turn == Player.White && WhiteKingIsInCheck())
+                        {
+                            // cancel move
+                            toSpace.Piece = new Piece("[ ]", Player.None);
+                            fromSpace.Piece = tempFromPiece;
+                        }
+                        else if (turn == Player.Black && BlackKingIsInCheck())
+                        {
+                            // cancel move
+                            toSpace.Piece = new Piece("[ ]", Player.None);
+                            fromSpace.Piece = tempFromPiece;
+                        }
+                        else
+                        {
+                            // successful move
+                            toSpace.Piece.hasMoved = true;
+
+                            // change turns
+                            if (turn == Player.White)
+                            {
+                                turn = Player.Black;
+                            }
+                            else
+                            {
+                                turn = Player.White;
+                            }
                         }
                     }
                 }
