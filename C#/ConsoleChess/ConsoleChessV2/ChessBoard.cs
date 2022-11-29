@@ -7,7 +7,7 @@ namespace ConsoleChessV2
     internal static class ChessBoard // single instance of chess board
     {
         public static Space[][]? Spaces { get; set; }
-        private static Player turn;
+        public static Player turn;
 
         public static void InitBoard()
         {
@@ -117,22 +117,6 @@ namespace ConsoleChessV2
             Piece? tempFromSpacePiece = fromSpace.Piece;
             toSpace.Piece = fromSpace.Piece;
             fromSpace.Clear();
-            //toSpace.Piece.Name = "[!]";
-        }
-
-        public static bool TryToMove(Space fromSpace, Space toSpace)
-        {
-            return fromSpace.Piece.CanTryToMoveFromSpaceToSpace(fromSpace, toSpace);
-                // copy piece from space to space
-                //Piece? tempFromSpacePiece = fromSpace.Piece;
-                //Piece? tempToSpacePiece = toSpace.Piece;
-
-                //toSpace.Piece = fromSpace.Piece;
-                //fromSpace.Clear();
-
-                // refresh attacked spaces
-
-                // ensure your own king is not in check
         }
 
         public static void FindAllSpacesAttacked()

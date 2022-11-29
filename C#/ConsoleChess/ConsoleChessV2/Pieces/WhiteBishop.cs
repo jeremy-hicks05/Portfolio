@@ -1,20 +1,64 @@
 ﻿namespace ConsoleChessV2.Pieces
 {
+    using static Notation;
     internal class WhiteBishop : Piece
     {
+        
         public WhiteBishop()
         {
             Name = "[B]";
             PointValue = 3;
             BelongsTo = Player.White;
         }
-        public override bool CanTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
+
+        public override bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            if (Math.Abs(fromSpace.Column - toSpace.Column) / Math.Abs(fromSpace.Row - toSpace.Row) == 1)
+            if (fromSpace.Column != toSpace.Column && fromSpace.Row != toSpace.Row)
             {
-                return true;
+                if ((float)Math.Abs(fromSpace.Column - toSpace.Column) / (float)Math.Abs(fromSpace.Row - toSpace.Row) == 1)
+                {
+                    //fromSpace.Piece!.spacesThisPieceCanMoveTo!.Add(toSpace);
+                    return true;
+                }
             }
             return false;
+        }
+
+        public override void CreateListOfPiecesToInspect(Space fromSpace, Space toSpace)
+        {
+            spacesThisPieceCanMoveTo?.Clear();
+            if (toSpace.Column > fromSpace.Column && toSpace.Row > fromSpace.Row)
+            {
+                // attacking up and right
+                for(int column = fromSpace.Column + 1, row = fromSpace.Row + 1; column <= toSpace.Column && row <= toSpace.Row; column++, row++)
+                {
+                    spacesThisPieceCanMoveTo!.Add(ChessBoard.Spaces![column][row]);
+                }
+            }
+            else if(toSpace.Column > fromSpace.Column && toSpace.Row < fromSpace.Row)
+            {
+                // attacking down and right
+                for (int column = fromSpace.Column + 1, row = fromSpace.Row - 1; column <= toSpace.Column && row >= toSpace.Row; column++, row--)
+                {
+                    spacesThisPieceCanMoveTo!.Add(ChessBoard.Spaces![column][row]);
+                }
+            }
+            else if(toSpace.Column < fromSpace.Column && toSpace.Row < fromSpace.Row)
+            {
+                // attacking down and left
+                for (int column = fromSpace.Column - 1, row = fromSpace.Row - 1; column >= toSpace.Column && row >= toSpace.Row; column--, row--)
+                {
+                    spacesThisPieceCanMoveTo!.Add(ChessBoard.Spaces![column][row]);
+                }
+            }
+            else if(toSpace.Column < fromSpace.Column && toSpace.Row > fromSpace.Row)
+            {
+                // attacking up and left
+                for (int column = fromSpace.Column - 1, row = fromSpace.Row + 1; column >= toSpace.Column && row <= toSpace.Row; column--, row++)
+                {
+                    spacesThisPieceCanMoveTo!.Add(ChessBoard.Spaces![column][row]);
+                }
+            }
         }
     }
 }
