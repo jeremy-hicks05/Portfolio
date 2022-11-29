@@ -17,33 +17,33 @@ namespace ConsoleChess.Pieces
             {
                 return false;
             }
-            if (Math.Abs(toSpace.X - fromSpace.X) <= 1 && Math.Abs(toSpace.Y - fromSpace.Y) <= 1)
+            if (Math.Abs(toSpace.Letter - fromSpace.Letter) <= 1 && Math.Abs(toSpace.Number - fromSpace.Number) <= 1)
             {
                 return true;
             }
 
             // check for castle attempt
             // castling move(s)
-            if (fromSpace == Board.spaces[Board.NotationToInt("1")][Board.NotationToInt("E")] &&
-                toSpace == Board.spaces[Board.NotationToInt("1")][Board.NotationToInt("G")])
+            if (fromSpace == Board.spaces[Board.NumberToNotation("1")][Board.LetterToNotation("E")] &&
+                toSpace == Board.spaces[Board.NumberToNotation("1")][Board.LetterToNotation("G")])
             {
                 return true;
             }
 
-            if (fromSpace == Board.spaces[Board.NotationToInt("8")][Board.NotationToInt("E")] &&
-                toSpace == Board.spaces[Board.NotationToInt("8")][Board.NotationToInt("G")])
+            if (fromSpace == Board.spaces[Board.NumberToNotation("8")][Board.LetterToNotation("E")] &&
+                toSpace == Board.spaces[Board.NumberToNotation("8")][Board.LetterToNotation("G")])
             {
                 return true;
             }
 
-            if (fromSpace == Board.spaces[Board.NotationToInt("1")][Board.NotationToInt("E")] &&
-                toSpace == Board.spaces[Board.NotationToInt("1")][Board.NotationToInt("C")])
+            if (fromSpace == Board.spaces[Board.NumberToNotation("1")][Board.LetterToNotation("E")] &&
+                toSpace == Board.spaces[Board.NumberToNotation("1")][Board.LetterToNotation("C")])
             {
                 return true;
             }
 
-            if (fromSpace == Board.spaces[Board.NotationToInt("8")][Board.NotationToInt("E")] &&
-                toSpace == Board.spaces[Board.NotationToInt("8")][Board.NotationToInt("C")])
+            if (fromSpace == Board.spaces[Board.NumberToNotation("8")][Board.LetterToNotation("E")] &&
+                toSpace == Board.spaces[Board.NumberToNotation("8")][Board.LetterToNotation("C")])
             {
                 return true;
             }
@@ -66,51 +66,52 @@ namespace ConsoleChess.Pieces
 
         public override bool CanTryToCapture(Space fromSpace, Space toSpace)
         {
-            if (fromSpace == toSpace)
-            {
-                return false;
-            }
-            else if (Math.Abs(toSpace.X - fromSpace.X) <= 1 && Math.Abs(toSpace.Y - fromSpace.Y) <= 1)
-            {
-                return true;
-            }
-
-            // if king hasn't moved - perform castle king side for black
-            if (!Board.BlackKingIsInCheck() && 
-                (!hasMoved && belongsToPlayer == Player.Black) &&
-                (fromSpace.X == toSpace.X) &&
-                toSpace.Y - fromSpace.Y == 2) // TODO: check if rook has moved
-            {
-                // attempt castle
-                return true;
-            }
-            else if (!Board.BlackKingIsInCheck() &&
-                    (!hasMoved && belongsToPlayer == Player.Black) &&
-                    (fromSpace.X == toSpace.X) && 
-                    fromSpace.Y - toSpace.Y == 2) // TODO: check if rook has moved
-            {
-                // attempt castle
-                return true;
-            }
-            else if (!Board.WhiteKingIsInCheck() &&
-                    (!hasMoved && belongsToPlayer == Player.White) &&
-                    (fromSpace.X == toSpace.X) && 
-                    fromSpace.Y - toSpace.Y == 2) // TODO: check if rook has moved
-            {
-                // attempt castle
-                return true;
-            }
-            else if (!Board.WhiteKingIsInCheck() &&
-                    (!hasMoved && belongsToPlayer == Player.White) &&
-                    (fromSpace.X == toSpace.X) &&
-                    toSpace.Y - fromSpace.Y == 2) // TODO: check if rook has moved
-            {
-                // attempt castle
-                return true;
-            }
-
-            // fallout false
             return false;
+            //if (fromSpace == toSpace)
+            //{
+            //    return false;
+            //}
+            //else if (Math.Abs(toSpace.Letter - fromSpace.Letter) <= 1 && Math.Abs(toSpace.Number - fromSpace.Number) <= 1)
+            //{
+            //    return true;
+            //}
+
+            //// if king hasn't moved - perform castle king side for black
+            //if (!Board.BlackKingIsInCheck() && 
+            //    (!hasMoved && belongsToPlayer == Player.Black) &&
+            //    (fromSpace.Letter == toSpace.Letter) &&
+            //    toSpace.Number - fromSpace.Number == 2) // TODO: check if rook has moved
+            //{
+            //    // attempt castle
+            //    return true;
+            //}
+            //else if (!Board.BlackKingIsInCheck() &&
+            //        (!hasMoved && belongsToPlayer == Player.Black) &&
+            //        (fromSpace.Letter == toSpace.Letter) && 
+            //        fromSpace.Number - toSpace.Number == 2) // TODO: check if rook has moved
+            //{
+            //    // attempt castle
+            //    return true;
+            //}
+            //else if (!Board.WhiteKingIsInCheck() &&
+            //        (!hasMoved && belongsToPlayer == Player.White) &&
+            //        (fromSpace.Letter == toSpace.Letter) && 
+            //        fromSpace.Number - toSpace.Number == 2) // TODO: check if rook has moved
+            //{
+            //    // attempt castle
+            //    return true;
+            //}
+            //else if (!Board.WhiteKingIsInCheck() &&
+            //        (!hasMoved && belongsToPlayer == Player.White) &&
+            //        (fromSpace.Letter == toSpace.Letter) &&
+            //        toSpace.Number - fromSpace.Number == 2) // TODO: check if rook has moved
+            //{
+            //    // attempt castle
+            //    return true;
+            //}
+
+            //// fallout false
+            //return false;
         }
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
@@ -136,8 +137,8 @@ namespace ConsoleChess.Pieces
 
             // if king hasn't moved - perform castle king side for black
             if (!Board.BlackKingIsInCheck() && (!hasMoved && belongsToPlayer == Player.Black) && 
-                (fromSpace.X == toSpace.X) && 
-                toSpace.Y - fromSpace.Y == 2)
+                (fromSpace.Letter == toSpace.Letter) && 
+                toSpace.Number - fromSpace.Number == 2)
             {
                 // perform castle
                 Board.CastleKingSideBlack();
@@ -147,7 +148,7 @@ namespace ConsoleChess.Pieces
 
             else if (!Board.BlackKingIsInCheck() && 
                     (!hasMoved && belongsToPlayer == Player.Black) && 
-                    (fromSpace.X == toSpace.X) && fromSpace.Y - toSpace.Y == 2)
+                    (fromSpace.Letter == toSpace.Letter) && fromSpace.Number - toSpace.Number == 2)
             {
                 // perform castle
                 Board.CastleQueenSideBlack();
@@ -157,7 +158,7 @@ namespace ConsoleChess.Pieces
 
             else if (!Board.WhiteKingIsInCheck() && 
                     (!hasMoved && belongsToPlayer == Player.White) && 
-                    (fromSpace.X == toSpace.X) && fromSpace.Y - toSpace.Y == 2)
+                    (fromSpace.Letter == toSpace.Letter) && fromSpace.Number - toSpace.Number == 2)
             {
                 // perform castle
                 Board.CastleQueenSideWhite();
@@ -166,8 +167,8 @@ namespace ConsoleChess.Pieces
             }
             else if (!Board.WhiteKingIsInCheck() && 
                     (!hasMoved && belongsToPlayer == Player.White) && 
-                    (fromSpace.X == toSpace.X) && 
-                    toSpace.Y - fromSpace.Y == 2)
+                    (fromSpace.Letter == toSpace.Letter) && 
+                    toSpace.Number - fromSpace.Number == 2)
             {
                 // perform castle
                 Board.CastleKingSideWhite();
@@ -175,7 +176,7 @@ namespace ConsoleChess.Pieces
                 //return true;
             }
 
-            if (Math.Abs(toSpace.X - fromSpace.X) > 1 || Math.Abs(toSpace.Y - fromSpace.Y) > 1)
+            if (Math.Abs(toSpace.Letter - fromSpace.Letter) > 1 || Math.Abs(toSpace.Number - fromSpace.Number) > 1)
             {
                 return false;
             }

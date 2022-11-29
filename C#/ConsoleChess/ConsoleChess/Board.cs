@@ -1,11 +1,21 @@
-﻿using ConsoleChess.Interfaces;
-using ConsoleChess.Pieces;
-using ConsoleChess.Enums;
+﻿
 
 namespace ConsoleChess
 {
+    using ConsoleChess.Interfaces;
+    using ConsoleChess.Pieces;
+    using ConsoleChess.Enums;
+
+    using static Enums.Column;
+    using static Enums.Row;
+
     internal static class Board
     {
+        // A1 needs to be 0 0
+        // A2 needs to be 0 1
+        // B2 needs to be 1 1
+
+
         public static Space[][] spaces { get; set; } = new Space[8][];
         public static Player turn;
         public static Space? WhiteKingSpace;
@@ -16,27 +26,26 @@ namespace ConsoleChess
 
         public static void InitBoard()
         {
-
             // Build 2D Spaces Array
-            for (int i = 0; i < 8; i++)
+            for (Column column = A; column <= H ; column++)
             {
-                spaces[i] = new Space[8];
-                for (int j = 0; j < 8; j++)
+                spaces[(int)column] = new Space[8];
+                for (Row row = _8; row <= _1; row++)
                 {
-                    spaces[i][j] = new Space();
+                    spaces[(int)column][(int)row] = new Space();
                 }
             }
 
-            // Populate empty spaces, declare X and Y coordinates for each space
-            for (int i = 0; i < 8; i++)
+            // Populate empty spaces, declare Letter and Number coordinates for each space
+            for (Column column = A; column <= H; column++)
             {
-                for (int j = 0; j < 8; j++)
+                for (Row row = _8; row <= _1; row++)
                 {
                     Space space = new Space();
-                    space.X = i;
-                    space.Y = j;
+                    space.Column = (int)column;
+                    space.Row = (int)row;
                     space.Piece = new Piece(name: "[ ]", Player.None);
-                    spaces[i][j] = space;
+                    spaces[(int)column][(int)row].SetSpace(space);
                 }
             }
 
@@ -82,20 +91,21 @@ namespace ConsoleChess
             turn = Player.White;
         }
 
+
         public static Space GetStartingSpace()
         {
-            int y = GetRowForStartingSpace();
-            int x = GetColumnForStartingSpace();
+            int Number = GetRowForStartingSpace();
+            int Letter = GetColumnForStartingSpace();
 
-            return spaces[x][y];
+            return spaces[Letter][Number];
         }
 
         public static Space GetDestinationSpace()
         {
             int y = GetRowForDestinationSpace();
-            int x = GetColumnForDestinationSpace();
+            int Letter = GetColumnForDestinationSpace();
 
-            return spaces[x][y];
+            return spaces[Letter][y];
         }
 
         public static int GetColumnForStartingSpace()
@@ -106,10 +116,10 @@ namespace ConsoleChess
             while (!(startLongitude >= 0 && startLongitude <= 7))
             {
                 Console.Write("Enter Number for " + turn + " Piece to be moved (1-8):");
-                startLongitude = NotationToInt(Console.ReadLine());
+                startLongitude = NumberToNotation(Console.ReadLine());
                 if (!(startLongitude >= 0 && startLongitude <= 7))
                 {
-                    Console.WriteLine("Please enter a letter A-H");
+                    Console.WriteLine("Please enter a Number 1-8");
                 }
             }
             return startLongitude;
@@ -123,10 +133,10 @@ namespace ConsoleChess
             while (!(startLatitude >= 0 && startLatitude <= 7))
             {
                 Console.Write("Enter Letter for " + turn + " Piece to be moved (A-H):");
-                startLatitude = NotationToInt(Console.ReadLine());
+                startLatitude = LetterToNotation(Console.ReadLine());
                 if (!(startLatitude >= 0 && startLatitude <= 7))
                 {
-                    Console.WriteLine("Please enter a number 1-8");
+                    Console.WriteLine("Please enter a letter A-H");
                 }
             }
             return startLatitude;
@@ -140,7 +150,7 @@ namespace ConsoleChess
             while (!(endLongitude >= 0 && endLongitude <= 7))
             {
                 Console.Write("Enter Number for Space to be moved to (1-8):");
-                endLongitude = NotationToInt(Console.ReadLine());
+                endLongitude = NumberToNotation(Console.ReadLine());
                 if (!(endLongitude >= 0 && endLongitude <= 7))
                 {
                     Console.WriteLine("Please enter a number 1-8");
@@ -156,7 +166,7 @@ namespace ConsoleChess
             while (!(endLatitude >= 0 && endLatitude <= 7))
             {
                 Console.Write("Enter Letter for Space to be moved to (A-H):");
-                endLatitude = NotationToInt(Console.ReadLine());
+                endLatitude = LetterToNotation(Console.ReadLine());
                 if (!(endLatitude >= 0 && endLatitude <= 7))
                 {
                     Console.WriteLine("Please enter a letter A-H");
@@ -165,24 +175,33 @@ namespace ConsoleChess
             return endLatitude;
         }
 
+        public static Space GetSpace(string letter, string number)
+        {
+            Console.WriteLine("Getting space on ["  +
+                NumberToNotation(number) + 
+                "][" + LetterToNotation(letter) + "]");
+            return spaces[NumberToNotation(number)]
+                         [LetterToNotation(letter)];
+        }
+
         public static void ChangeTurns()
         {
             if (turn == Player.Black)
             {
                 turn = Player.White;
                 Console.WriteLine("It is now White's turn");
-                Console.ReadLine();
             }
             else
             {
                 turn = Player.Black;
                 Console.WriteLine("It is now Black's turn");
-                Console.ReadLine();
             }
         }
 
         public static void PrintBoard()
         {
+            Console.WriteLine("Press enter to draw board");
+            Console.ReadLine();
             Console.Clear();
 
             for (int i = 0; i < 8; i++)
@@ -226,6 +245,7 @@ namespace ConsoleChess
                                 if (spaces[i][j].Piece.CanTryToCapture(spaces[i][j], spaces[k][m]))
                                 {
                                     spaces[k][m].IsUnderAttackByWhite = true;
+                                    //spaces[k][m].Piece.Name = "[*]";
                                 }
                             }
                         }
@@ -260,7 +280,19 @@ namespace ConsoleChess
 
             FindAllSpacesAttacked();
 
-            if(turn == Player.White && WhiteKingIsInCheck())
+            if (toSpace.Piece.GetType() == typeof(King))
+            {
+                if (turn == Player.Black)
+                {
+                    BlackKingSpace = toSpace;
+                }
+                else if (turn == Player.White)
+                {
+                    WhiteKingSpace = toSpace;
+                }
+            }
+
+            if (turn == Player.White && WhiteKingIsInCheck())
             {
                 // cancel move
                 Console.WriteLine("White King is still in check!");
@@ -335,7 +367,7 @@ namespace ConsoleChess
             //        // offer piece selection and transform into selected piece
             //        if (toSpace.Piece.GetType() == typeof(Pawn) &&
             //            toSpace.Piece.belongsToPlayer == Player.White &&
-            //            toSpace.X == 0)
+            //            toSpace.Letter == 0)
             //        {
             //            Console.WriteLine("Promotion!");
             //            Console.WriteLine("Select a piece to promote to:");
@@ -365,7 +397,7 @@ namespace ConsoleChess
             //        // offer piece selection and transform into selected piece
             //        else if (toSpace.Piece.GetType() == typeof(Pawn) &&
             //            toSpace.Piece.belongsToPlayer == Player.Black &&
-            //            toSpace.X == 7)
+            //            toSpace.Letter == 7)
             //        {
 
             //            Console.WriteLine("Promotion!");
@@ -455,7 +487,7 @@ namespace ConsoleChess
             //        // offer piece selection and transform into selected piece
             //        if (toSpace.Piece.GetType() == typeof(Pawn) &&
             //            toSpace.Piece.belongsToPlayer == Player.White &&
-            //            toSpace.X == 0)
+            //            toSpace.Letter == 0)
             //        {
 
             //            Console.WriteLine("Promotion!");
@@ -486,7 +518,7 @@ namespace ConsoleChess
             //        // offer piece selection and transform into selected piece
             //        else if (toSpace.Piece.GetType() == typeof(Pawn) &&
             //            toSpace.Piece.belongsToPlayer == Player.Black &&
-            //            toSpace.X == 7)
+            //            toSpace.Letter == 7)
             //        {
 
             //            Console.WriteLine("Promotion!");
@@ -530,12 +562,14 @@ namespace ConsoleChess
         public static void MovePieceFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
             toSpace.Piece = fromSpace.Piece;
-            fromSpace.Piece = new Piece("[ ]", Player.None);
+            ClearSpace(fromSpace);
             toSpace.Piece.hasMoved = true;
+
+            //FindAllSpacesAttacked();
 
             ChangeTurns();
         }
-            public static int NotationToInt(string? notation)
+        public static int LetterToNotation(string? notation)
         {
             int translatedNotaion = -1;
 
@@ -545,34 +579,64 @@ namespace ConsoleChess
                 switch (notation.ToUpper())
                 {
                     case "A":
-                    case "8":
                         translatedNotaion = 0;
                         break;
                     case "B":
-                    case "7":
                         translatedNotaion = 1;
                         break;
                     case "C":
-                    case "6":
                         translatedNotaion = 2;
                         break;
                     case "D":
-                    case "5":
                         translatedNotaion = 3;
                         break;
                     case "E":
-                    case "4":
                         translatedNotaion = 4;
                         break;
                     case "F":
+                        translatedNotaion = 5;
+                        break;
+                    case "2":
+                        translatedNotaion = 6;
+                        break;
+                    case "H":
+                        translatedNotaion = 7;
+                        break;
+                }
+            }
+            return translatedNotaion;
+        }
+
+        public static int NumberToNotation(string? notation)
+        {
+            int translatedNotaion = -1;
+
+            if (notation is not null)
+            {
+
+                switch (notation.ToUpper())
+                {
+                    case "8":
+                        translatedNotaion = 0;
+                        break;
+                    case "7":
+                        translatedNotaion = 1;
+                        break;
+                    case "6":
+                        translatedNotaion = 2;
+                        break;
+                    case "5":
+                        translatedNotaion = 3;
+                        break;
+                    case "4":
+                        translatedNotaion = 4;
+                        break;
                     case "3":
                         translatedNotaion = 5;
                         break;
                     case "2":
-                    case "G":
                         translatedNotaion = 6;
                         break;
-                    case "H":
                     case "1":
                         translatedNotaion = 7;
                         break;
@@ -581,26 +645,96 @@ namespace ConsoleChess
             return translatedNotaion;
         }
 
+        public static string IntToNotationLetter(int integer)
+        {
+            string translatedNotaion = "Z";
+
+            switch (integer)
+            {
+                case 0:
+                    translatedNotaion = "H";
+                    break;
+                case 1:
+                    translatedNotaion = "G";
+                    break;
+                case 2:
+                    translatedNotaion = "F";
+                    break;
+                case 3:
+                    translatedNotaion = "E";
+                    break;
+                case 4:
+                    translatedNotaion = "D";
+                    break;
+                case 5:
+                    translatedNotaion = "C";
+                    break;
+                case 6:
+                    translatedNotaion = "B";
+                    break;
+                case 7:
+                    translatedNotaion = "A";
+                    break;
+            }
+
+            return translatedNotaion;
+        }
+
+        public static string IntToNotationNumber(int integer)
+        {
+            string translatedNotaion = "0";
+
+            switch (integer)
+            {
+                case 0:
+                    translatedNotaion = "8";
+                    break;
+                case 1:
+                    translatedNotaion = "7";
+                    break;
+                case 2:
+                    translatedNotaion = "6";
+                    break;
+                case 3:
+                    translatedNotaion = "5";
+                    break;
+                case 4:
+                    translatedNotaion = "4";
+                    break;
+                case 5:
+                    translatedNotaion = "3";
+                    break;
+                case 6:
+                    translatedNotaion = "2";
+                    break;
+                case 7:
+                    translatedNotaion = "1";
+                    break;
+            }
+
+            return translatedNotaion;
+        }
+
         public static void CastleKingSideWhite()
         {
-            if (spaces[NotationToInt("1")][NotationToInt("F")].Piece.belongsToPlayer == Player.None &&
-                spaces[NotationToInt("1")][NotationToInt("G")].Piece.belongsToPlayer == Player.None)
+            if (spaces[NumberToNotation("1")][LetterToNotation("F")].Piece.belongsToPlayer == Player.None &&
+                spaces[NumberToNotation("1")][LetterToNotation("G")].Piece.belongsToPlayer == Player.None)
             {
-                Rook myRook = (Rook)spaces[NotationToInt("1")][NotationToInt("H")].Piece;
-                King myKing = (King)spaces[NotationToInt("1")][NotationToInt("E")].Piece;
-                if (!myRook.hasMoved && !myKing.hasMoved)
+                Rook myRook = (Rook)spaces[NumberToNotation("1")][LetterToNotation("H")].Piece;
+                King myKing = (King)spaces[NumberToNotation("1")][LetterToNotation("E")].Piece;
+                if (!myRook.hasMoved && !myKing.hasMoved && !WhiteKingIsInCheck())
                 {
                     // check if spaces between the k and r are attacked by black
-                    if (spaces[NotationToInt("1")][NotationToInt("F")].IsUnderAttackByBlack == false &&
-                        spaces[NotationToInt("1")][NotationToInt("G")].IsUnderAttackByBlack == false)
+                    if (spaces[NumberToNotation("1")][LetterToNotation("F")].IsUnderAttackByBlack == false &&
+                        spaces[NumberToNotation("1")][LetterToNotation("G")].IsUnderAttackByBlack == false)
                     {
-                        spaces[NotationToInt("1")][NotationToInt("E")].Piece = new Piece("[ ]", Player.None);
-                        spaces[NotationToInt("1")][NotationToInt("H")].Piece = new Piece("[ ]", Player.None);
+                        spaces[NumberToNotation("1")][LetterToNotation("E")].Piece = new Piece("[ ]", Player.None);
+                        spaces[NumberToNotation("1")][LetterToNotation("H")].Piece = new Piece("[ ]", Player.None);
 
-                        spaces[NotationToInt("1")][NotationToInt("G")].Piece = new King("[K]", Player.White);
-                        spaces[NotationToInt("1")][NotationToInt("F")].Piece = new Rook("[R]", Player.White);
+                        spaces[NumberToNotation("1")][LetterToNotation("G")].Piece = new King("[K]", Player.White);
+                        spaces[NumberToNotation("1")][LetterToNotation("F")].Piece = new Rook("[R]", Player.White);
 
-                        WhiteKingSpace = spaces[NotationToInt("1")][NotationToInt("G")];
+                        WhiteKingSpace = spaces[NumberToNotation("1")][LetterToNotation("G")];
 
                         //ChangeTurns();
                     }
@@ -610,25 +744,25 @@ namespace ConsoleChess
 
         public static void CastleQueenSideWhite()
         {
-            if (spaces[NotationToInt("1")][NotationToInt("B")].Piece.belongsToPlayer == Player.None &&
-                spaces[NotationToInt("1")][NotationToInt("C")].Piece.belongsToPlayer == Player.None &&
-                spaces[NotationToInt("1")][NotationToInt("D")].Piece.belongsToPlayer == Player.None)
+            if (spaces[NumberToNotation("1")][LetterToNotation("B")].Piece.belongsToPlayer == Player.None &&
+                spaces[NumberToNotation("1")][LetterToNotation("C")].Piece.belongsToPlayer == Player.None &&
+                spaces[NumberToNotation("1")][LetterToNotation("D")].Piece.belongsToPlayer == Player.None)
             {
-                Rook myRook = (Rook)spaces[NotationToInt("1")][NotationToInt("A")].Piece;
-                King myKing = (King)spaces[NotationToInt("1")][NotationToInt("E")].Piece;
-                if (!myRook.hasMoved && !myKing.hasMoved)
+                Rook myRook = (Rook)spaces[NumberToNotation("1")][LetterToNotation("A")].Piece;
+                King myKing = (King)spaces[NumberToNotation("1")][LetterToNotation("E")].Piece;
+                if (!myRook.hasMoved && !myKing.hasMoved && !WhiteKingIsInCheck())
                 {
                     // check if spaces between the k and r are attacked by black
-                    if (spaces[NotationToInt("1")][NotationToInt("C")].IsUnderAttackByBlack == false &&
-                        spaces[NotationToInt("1")][NotationToInt("D")].IsUnderAttackByBlack == false)
+                    if (spaces[NumberToNotation("1")][LetterToNotation("C")].IsUnderAttackByBlack == false &&
+                        spaces[NumberToNotation("1")][LetterToNotation("D")].IsUnderAttackByBlack == false)
                     {
-                        spaces[NotationToInt("1")][NotationToInt("A")].Piece = new Piece("[ ]", Player.None);
-                        spaces[NotationToInt("1")][NotationToInt("E")].Piece = new Piece("[ ]", Player.None);
+                        spaces[NumberToNotation("1")][LetterToNotation("A")].Piece = new Piece("[ ]", Player.None);
+                        spaces[NumberToNotation("1")][LetterToNotation("E")].Piece = new Piece("[ ]", Player.None);
 
-                        spaces[NotationToInt("1")][NotationToInt("C")].Piece = new King("[K]", Player.Black);
-                        spaces[NotationToInt("1")][NotationToInt("D")].Piece = new Rook("[R]", Player.Black);
+                        spaces[NumberToNotation("1")][LetterToNotation("C")].Piece = new King("[K]", Player.Black);
+                        spaces[NumberToNotation("1")][LetterToNotation("D")].Piece = new Rook("[R]", Player.Black);
 
-                        WhiteKingSpace = spaces[NotationToInt("1")][NotationToInt("C")];
+                        WhiteKingSpace = spaces[NumberToNotation("1")][LetterToNotation("C")];
 
                         //ChangeTurns();
                     }
@@ -638,24 +772,24 @@ namespace ConsoleChess
 
         public static void CastleKingSideBlack()
         {
-            if (spaces[NotationToInt("8")][NotationToInt("F")].Piece.belongsToPlayer == Player.None &&
-                spaces[NotationToInt("8")][NotationToInt("G")].Piece.belongsToPlayer == Player.None)
+            if (spaces[NumberToNotation("8")][LetterToNotation("F")].Piece.belongsToPlayer == Player.None &&
+                spaces[NumberToNotation("8")][LetterToNotation("G")].Piece.belongsToPlayer == Player.None)
             {
-                Rook myRook = (Rook)spaces[NotationToInt("8")][NotationToInt("H")].Piece;
-                King myKing = (King)spaces[NotationToInt("8")][NotationToInt("E")].Piece;
-                if (!myRook.hasMoved && !myKing.hasMoved)
+                Rook myRook = (Rook)spaces[NumberToNotation("8")][LetterToNotation("H")].Piece;
+                King myKing = (King)spaces[NumberToNotation("8")][LetterToNotation("E")].Piece;
+                if (!myRook.hasMoved && !myKing.hasMoved && !BlackKingIsInCheck())
                 {
                     // check if spaces between the k and r are attacked by white
-                    if (spaces[NotationToInt("8")][NotationToInt("F")].IsUnderAttackByWhite == false &&
-                        spaces[NotationToInt("8")][NotationToInt("G")].IsUnderAttackByWhite == false)
+                    if (spaces[NumberToNotation("8")][LetterToNotation("F")].IsUnderAttackByWhite == false &&
+                        spaces[NumberToNotation("8")][LetterToNotation("G")].IsUnderAttackByWhite == false)
                     {
-                        spaces[NotationToInt("8")][NotationToInt("E")].Piece = new Piece("[ ]", Player.None);
-                        spaces[NotationToInt("8")][NotationToInt("H")].Piece = new Piece("[ ]", Player.None);
+                        spaces[NumberToNotation("8")][LetterToNotation("E")].Piece = new Piece("[ ]", Player.None);
+                        spaces[NumberToNotation("8")][LetterToNotation("H")].Piece = new Piece("[ ]", Player.None);
 
-                        spaces[NotationToInt("8")][NotationToInt("G")].Piece = new King("[k]", Player.Black);
-                        spaces[NotationToInt("8")][NotationToInt("F")].Piece = new Rook("[r]", Player.Black);
+                        spaces[NumberToNotation("8")][LetterToNotation("G")].Piece = new King("[k]", Player.Black);
+                        spaces[NumberToNotation("8")][LetterToNotation("F")].Piece = new Rook("[r]", Player.Black);
 
-                        BlackKingSpace = spaces[NotationToInt("8")][NotationToInt("G")];
+                        BlackKingSpace = spaces[NumberToNotation("8")][LetterToNotation("G")];
 
                         //ChangeTurns();
                     }
@@ -665,25 +799,25 @@ namespace ConsoleChess
 
         public static void CastleQueenSideBlack()
         {
-            if (spaces[NotationToInt("8")][NotationToInt("B")].Piece.belongsToPlayer == Player.None &&
-                spaces[NotationToInt("8")][NotationToInt("C")].Piece.belongsToPlayer == Player.None &&
-                spaces[NotationToInt("8")][NotationToInt("D")].Piece.belongsToPlayer == Player.None)
+            if (spaces[NumberToNotation("8")][LetterToNotation("B")].Piece.belongsToPlayer == Player.None &&
+                spaces[NumberToNotation("8")][LetterToNotation("C")].Piece.belongsToPlayer == Player.None &&
+                spaces[NumberToNotation("8")][LetterToNotation("D")].Piece.belongsToPlayer == Player.None)
             {
-                Rook myRook = (Rook)spaces[NotationToInt("8")][NotationToInt("A")].Piece;
-                King myKing = (King)spaces[NotationToInt("8")][NotationToInt("E")].Piece;
-                if (!myRook.hasMoved && !myKing.hasMoved)
+                Rook myRook = (Rook)spaces[NumberToNotation("8")][LetterToNotation("A")].Piece;
+                King myKing = (King)spaces[NumberToNotation("8")][LetterToNotation("E")].Piece;
+                if (!myRook.hasMoved && !myKing.hasMoved && !BlackKingIsInCheck())
                 {
                     // check if spaces between the k and r are attacked by white
-                    if (spaces[NotationToInt("8")][NotationToInt("C")].IsUnderAttackByWhite == false &&
-                        spaces[NotationToInt("8")][NotationToInt("D")].IsUnderAttackByWhite == false)
+                    if (spaces[NumberToNotation("8")][LetterToNotation("C")].IsUnderAttackByWhite == false &&
+                        spaces[NumberToNotation("8")][LetterToNotation("D")].IsUnderAttackByWhite == false)
                     {
-                        spaces[NotationToInt("8")][NotationToInt("E")].Piece = new Piece("[ ]", Player.None);
-                        spaces[NotationToInt("8")][NotationToInt("A")].Piece = new Piece("[ ]", Player.None);
+                        spaces[NumberToNotation("8")][LetterToNotation("E")].Piece = new Piece("[ ]", Player.None);
+                        spaces[NumberToNotation("8")][LetterToNotation("A")].Piece = new Piece("[ ]", Player.None);
 
-                        spaces[NotationToInt("8")][NotationToInt("C")].Piece = new King("[k]", Player.Black);
-                        spaces[NotationToInt("8")][NotationToInt("D")].Piece = new Rook("[r]", Player.Black);
+                        spaces[NumberToNotation("8")][LetterToNotation("C")].Piece = new King("[k]", Player.Black);
+                        spaces[NumberToNotation("8")][LetterToNotation("D")].Piece = new Rook("[r]", Player.Black);
 
-                        BlackKingSpace = spaces[NotationToInt("8")][NotationToInt("C")];
+                        BlackKingSpace = spaces[NumberToNotation("8")][LetterToNotation("C")];
 
                         // change turns
                         //ChangeTurns();
@@ -697,7 +831,7 @@ namespace ConsoleChess
             // if white king's space is under attack by black
             if (WhiteKingSpace is not null && WhiteKingSpace.IsUnderAttackByBlack)
             {
-                //Console.WriteLine("White king in check on space " + WhiteKingSpace.X + ", " + WhiteKingSpace.Y);
+                //Console.WriteLine("White king in check on space " + WhiteKingSpace.Letter + ", " + WhiteKingSpace.Number);
                 return true;
             }
             return false;
@@ -712,6 +846,11 @@ namespace ConsoleChess
                 return true;
             }
             return false;
+        }
+
+        public static void ClearSpace(Space space)
+        {
+            space.Piece = new Piece("[ ]", Player.None);
         }
     }
 }

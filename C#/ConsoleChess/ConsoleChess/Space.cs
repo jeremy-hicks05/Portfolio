@@ -5,8 +5,8 @@ namespace ConsoleChess
 {
     internal class Space
     {
-        public int X { get; set; }
-        public int Y { get; set; }
+        public int Row { get; set; }
+        public int Column { get; set; }
         public Piece Piece { get; set; }
 
         public bool IsUnderAttackByBlack = false;
@@ -14,9 +14,18 @@ namespace ConsoleChess
 
         public Space()
         {
-            X = -1;
-            Y = -1;
-            Piece = new Piece(" ", Player.None);
+            Row = -1;
+            Column = -1;
+            Piece = new Piece("[ ]", Player.None);
+        }
+
+        public void PrintInfo()
+        {
+            Console.WriteLine("Piece: " + Piece);
+            Console.WriteLine("Controlled by: " + Piece.belongsToPlayer);
+            Console.WriteLine("Space: " + Row + ", " + Column);
+            Console.WriteLine("Is under attack by White: " + IsUnderAttackByWhite);
+            Console.WriteLine("Is under attack by Black: " + IsUnderAttackByWhite);
         }
 
         public string PrintSpace()
@@ -31,9 +40,13 @@ namespace ConsoleChess
             }
         }
 
-        public void ClearSpace()
+        public void SetSpace(Space space)
         {
-            Piece = new Piece("[ ]", Player.None);
+            Row = space.Row;
+            Column = space.Column;
+            Piece = space.Piece;
+            IsUnderAttackByBlack = space.IsUnderAttackByBlack;
+            IsUnderAttackByWhite = space.IsUnderAttackByWhite;
         }
     }
 }

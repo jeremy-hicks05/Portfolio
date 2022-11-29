@@ -1,6 +1,5 @@
 ﻿using ConsoleChess.Interfaces;
 using ConsoleChess.Enums;
-using System.Xml.Linq;
 
 namespace ConsoleChess.Pieces
 {
@@ -18,11 +17,11 @@ namespace ConsoleChess.Pieces
             {
                 return false;
             }
-            else if (fromSpace.X == toSpace.X || fromSpace.Y == toSpace.Y)
+            else if (fromSpace.Letter == toSpace.Letter || fromSpace.Number == toSpace.Number)
             {
                 return false;
             }
-            else if ((float)(Math.Abs(fromSpace.X - toSpace.X)) / (float)(Math.Abs(fromSpace.Y - toSpace.Y)) == 1)
+            else if ((float)(Math.Abs(fromSpace.Letter - toSpace.Letter)) / (float)(Math.Abs(fromSpace.Number - toSpace.Number)) == 1)
             {
                 return true;
             }
@@ -32,11 +31,11 @@ namespace ConsoleChess.Pieces
         public override bool HasPiecesBlockingMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
             // if toSpace is down and right
-            if (fromSpace.X < toSpace.X && fromSpace.Y < toSpace.Y)
+            if (fromSpace.Letter < toSpace.Letter && fromSpace.Number < toSpace.Number)
             {
-                for (int i = fromSpace.X + 1, k = fromSpace.Y + 1; i <= toSpace.X && k <= toSpace.Y; i++, k++)
+                for (int i = fromSpace.Letter + 1, k = fromSpace.Number + 1; i <= toSpace.Letter && k <= toSpace.Number; i++, k++)
                 {
-                    if (i == toSpace.X && k == toSpace.Y)
+                    if (i == toSpace.Letter && k == toSpace.Number)
                     {
                         // is not blocked
                         return false;
@@ -49,11 +48,11 @@ namespace ConsoleChess.Pieces
                 }
             }
             // if toSpace is down and left
-            else if (fromSpace.X < toSpace.X && fromSpace.Y > toSpace.Y)
+            else if (fromSpace.Letter < toSpace.Letter && fromSpace.Number > toSpace.Number)
             {
-                for (int i = fromSpace.X + 1, k = fromSpace.Y - 1; i <= toSpace.X && k >= toSpace.Y; i++, k--)
+                for (int i = fromSpace.Letter + 1, k = fromSpace.Number - 1; i <= toSpace.Letter && k >= toSpace.Number; i++, k--)
                 {
-                    if ((i == toSpace.X && k == toSpace.Y))
+                    if ((i == toSpace.Letter && k == toSpace.Number))
                     {
                         // is not blocked
                         return false;
@@ -66,11 +65,11 @@ namespace ConsoleChess.Pieces
                 }
             }
             // if toSpace is up and right
-            else if (fromSpace.X > toSpace.X && fromSpace.Y < toSpace.Y)
+            else if (fromSpace.Letter > toSpace.Letter && fromSpace.Number < toSpace.Number)
             {
-                for (int i = fromSpace.X - 1, k = fromSpace.Y + 1; i >= toSpace.X && k <= toSpace.Y; i--, k++)
+                for (int i = fromSpace.Letter - 1, k = fromSpace.Number + 1; i >= toSpace.Letter && k <= toSpace.Number; i--, k++)
                 {
-                    if ((i == toSpace.X && k == toSpace.Y))
+                    if ((i == toSpace.Letter && k == toSpace.Number))
                     {
                         // is not blocked
                         return false;
@@ -83,11 +82,11 @@ namespace ConsoleChess.Pieces
                 }
             }
             // if toSpace is up and left
-            else if (fromSpace.X > toSpace.X && fromSpace.Y > toSpace.Y)
+            else if (fromSpace.Letter > toSpace.Letter && fromSpace.Number > toSpace.Number)
             {
-                for (int i = fromSpace.X - 1, k = fromSpace.Y - 1; i >= toSpace.X && k >= toSpace.Y; i--, k--)
+                for (int i = fromSpace.Letter - 1, k = fromSpace.Number - 1; i >= toSpace.Letter && k >= toSpace.Number; i--, k--)
                 {
-                    if ((i == toSpace.X && k == toSpace.Y))
+                    if ((i == toSpace.Letter && k == toSpace.Number))
                     {
                         // is not blocked
                         return false;
@@ -105,24 +104,30 @@ namespace ConsoleChess.Pieces
 
         public override bool CanTryToCapture(Space fromSpace, Space toSpace)
         {
+            //return false;
             if (fromSpace == toSpace)
             {
                 return false;
             }
-            if (fromSpace.X == toSpace.X || fromSpace.Y == toSpace.Y)
+            if (fromSpace.Letter == toSpace.Letter || fromSpace.Number == toSpace.Number)
             {
                 return false;
             }
-            if ((float)(Math.Abs(fromSpace.X - toSpace.X)) / (float)(Math.Abs(fromSpace.Y - toSpace.Y)) == 1)
+            if ((float)(Math.Abs(fromSpace.Letter - toSpace.Letter)) / (float)(Math.Abs(fromSpace.Number - toSpace.Number)) == 1)
             {
                 // if toSpace is down and right
-                if (fromSpace.X < toSpace.X && fromSpace.Y < toSpace.Y)
+                if (fromSpace.Letter < toSpace.Letter && fromSpace.Number < toSpace.Number)
                 {
-                    for (int i = fromSpace.X + 1, k = fromSpace.Y + 1; i <= toSpace.X && k <= toSpace.Y; i++, k++)
+                    for (int i = fromSpace.Letter + 1, k = fromSpace.Number + 1; i <= toSpace.Letter && k <= toSpace.Number; i++, k++)
                     {
-                        if (i == toSpace.X || k == toSpace.Y)
+                        if (i == toSpace.Letter || k == toSpace.Number)
                         {
                             // capture or move to empty space
+                            Console.WriteLine("Space:");
+                            fromSpace.PrintInfo();
+                            Console.WriteLine();
+                            Console.WriteLine("Can capture");
+                            toSpace.PrintInfo();
                             return true;
                         }
                         if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
@@ -132,13 +137,18 @@ namespace ConsoleChess.Pieces
                     }
                 }
                 // if toSpace is down and left
-                else if (fromSpace.X < toSpace.X && fromSpace.Y > toSpace.Y)
+                else if (fromSpace.Letter < toSpace.Letter && fromSpace.Number > toSpace.Number)
                 {
-                    for (int i = fromSpace.X + 1, k = fromSpace.Y - 1; i <= toSpace.X && k >= toSpace.Y; i++, k--)
+                    for (int i = fromSpace.Letter + 1, k = fromSpace.Number - 1; i <= toSpace.Letter && k >= toSpace.Number; i++, k--)
                     {
-                        if ((i == toSpace.X || k == toSpace.Y))
+                        if ((i == toSpace.Letter || k == toSpace.Number))
                         {
                             // capture or move to empty space
+                            Console.WriteLine("Space:");
+                            fromSpace.PrintInfo();
+                            Console.WriteLine();
+                            Console.WriteLine("Can capture");
+                            toSpace.PrintInfo();
                             return true;
                         }
                         if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
@@ -148,13 +158,18 @@ namespace ConsoleChess.Pieces
                     }
                 }
                 // if toSpace is up and right
-                else if (fromSpace.X > toSpace.X && fromSpace.Y < toSpace.Y)
+                else if (fromSpace.Letter > toSpace.Letter && fromSpace.Number < toSpace.Number)
                 {
-                    for (int i = fromSpace.X - 1, k = fromSpace.Y + 1; i >= toSpace.X && k <= toSpace.Y; i--, k++)
+                    for (int i = fromSpace.Letter - 1, k = fromSpace.Number + 1; i >= toSpace.Letter && k <= toSpace.Number; i--, k++)
                     {
-                        if ((i == toSpace.X || k == toSpace.Y))
+                        if ((i == toSpace.Letter || k == toSpace.Number))
                         {
                             // capture or move to empty space
+                            Console.WriteLine("Space:");
+                            fromSpace.PrintInfo();
+                            Console.WriteLine();
+                            Console.WriteLine("Can capture");
+                            toSpace.PrintInfo();
                             return true;
                         }
                         if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
@@ -164,13 +179,18 @@ namespace ConsoleChess.Pieces
                     }
                 }
                 // if toSpace is up and left
-                else if (fromSpace.X > toSpace.X && fromSpace.Y > toSpace.Y)
+                else if (fromSpace.Letter > toSpace.Letter && fromSpace.Number > toSpace.Number)
                 {
-                    for (int i = fromSpace.X - 1, k = fromSpace.Y - 1; i >= toSpace.X && k >= toSpace.Y; i--, k--)
+                    for (int i = fromSpace.Letter - 1, k = fromSpace.Number - 1; i >= toSpace.Letter && k >= toSpace.Number; i--, k--)
                     {
-                        if ((i == toSpace.X || k == toSpace.Y))
+                        if ((i == toSpace.Letter || k == toSpace.Number))
                         {
                             // capture or move to empty space
+                            Console.WriteLine("Space:");
+                            fromSpace.PrintInfo();
+                            Console.WriteLine();
+                            Console.WriteLine("Can capture");
+                            toSpace.PrintInfo();
                             return true;
                         }
                         if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)

@@ -16,7 +16,7 @@ namespace ConsoleChess
      * 4. King cannot castle through check
      * 5. King can castle both sides
      * 6. Pieces can capture opponent pieces
-     * 7. Pieces cannot move through pieces (except knight, duh)
+     * 7. Pieces cannot move through pieces (eColumncept knight, duh)
      * 8. Inputs can only be A-H and 1-8
      * 9. Implemented changing turns
      * 10. Implemented pawn promotion
@@ -35,8 +35,8 @@ namespace ConsoleChess
      *          and not restore it if I am not careful
      *  6. Refactor, compress, and condense code using functions
      *  7. Allow resignation
-     *  8. Fix double check bug - taking a piece attacking allows for staying in check
-     *  9. Fix King duplicating when it escapes check - Move "King Space" as well
+     *  8. FiColumn double check bug - taking a piece attacking allows for staying in check
+     *  9. FiColumn King duplicating when it escapes check - Move "King Space" as well
      *  10. Change to 'canTryToMoveTo' and 'canActuallyMoveTo'
      *  11. Change to 'canTryToCapture' and 'canActuallyCapture'
     */
@@ -65,48 +65,52 @@ namespace ConsoleChess
                          // neither has resigned
             {
 
-                Space startingSpace = Board.GetStartingSpace();
+                Space mySpace = Board.GetSpace("A", "1");
 
-                Console.WriteLine("Piece " + startingSpace.Piece + " on space " +
-                    startingSpace.X + ", " + startingSpace.Y + " selected.");
+                mySpace.PrintInfo();
 
-                Space destinationSpace = Board.GetDestinationSpace();
+                //Space startingSpace = Board.GetStartingSpace();
 
-                Console.WriteLine("Destination space " +
-                    destinationSpace.X + ", " + destinationSpace.Y + " selected.");
+                //startingSpace.PrintInfo();
 
-                if (startingSpace.Piece.CanTryToMoveFromSpaceToSpace(startingSpace, destinationSpace))
-                {
-                    Console.WriteLine("Chess rules followed!");
-                    if (startingSpace.Piece.HasPiecesBlockingMoveFromSpaceToSpace(startingSpace, destinationSpace))
-                    {
-                        Console.WriteLine("That piece is blocked!");
-                        Console.ReadLine();
-                    }
-                    else
-                    {
-                        Console.WriteLine("That piece is not blocked!");
-                        Console.ReadLine();
+                //Space destinationSpace = Board.GetDestinationSpace();
 
-                        // move piece from startingSpace to destinationSpace
-                        if (startingSpace.Piece.CanCaptureFromSpaceToSpace(startingSpace, destinationSpace))
-                        {
-                            Console.WriteLine("That piece can capture the piece on the destination space!");
-                            Console.ReadLine();
-                            Board.TryMovePieceFromSpaceToSpace(startingSpace, destinationSpace);
-                        }
-                        else
-                        {
-                            Console.WriteLine("That piece can't capture the piece on the destination space!");
-                            Console.ReadLine();
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Chess rules broken!");
-                    Console.ReadLine();
-                }
+                //destinationSpace.PrintInfo();
+
+                //if (startingSpace.Piece.belongsToPlayer == Board.turn)
+                //{
+                //    if (startingSpace.Piece.CanTryToMoveFromSpaceToSpace(startingSpace, destinationSpace))
+                //    {
+                //        Console.WriteLine("Chess rules followed!");
+                //        if (startingSpace.Piece.HasPiecesBlockingMoveFromSpaceToSpace(startingSpace, destinationSpace))
+                //        {
+                //            Console.WriteLine("That piece is blocked!");
+                //            Console.ReadLine();
+                //        }
+                //        else
+                //        {
+                //            Console.WriteLine("That piece is not blocked!");
+                //            Console.ReadLine();
+
+                //            // move piece from startingSpace to destinationSpace
+                //            if (startingSpace.Piece.CanCaptureFromSpaceToSpace(startingSpace, destinationSpace))
+                //            {
+                //                Console.WriteLine("That piece can capture the piece on the destination space!");
+                //                Console.ReadLine();
+                //                Board.TryMovePieceFromSpaceToSpace(startingSpace, destinationSpace);
+                //            }
+                //            else
+                //            {
+                //                Console.WriteLine("That piece can't capture the piece on the destination space!");
+                //                Console.ReadLine();
+                //            }
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    Console.WriteLine("It is " + Board.turn + "'s turn!");
+                //}
 
                 // check piece's ability to move to selected space
                 //Board.MovePieceFromSpaceToSpace(

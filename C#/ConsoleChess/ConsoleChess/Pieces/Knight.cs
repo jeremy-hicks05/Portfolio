@@ -18,8 +18,8 @@ namespace ConsoleChess.Pieces
             {
                 return false;
             }
-            if ((Math.Abs(fromSpace.X - toSpace.X) == 1 && Math.Abs(fromSpace.Y - toSpace.Y) == 2) ||
-                (Math.Abs(fromSpace.Y - toSpace.Y) == 1 && Math.Abs(fromSpace.X - toSpace.X) == 2))
+            if ((Math.Abs(fromSpace.Letter - toSpace.Letter) == 1 && Math.Abs(fromSpace.Number - toSpace.Number) == 2) ||
+                (Math.Abs(fromSpace.Number - toSpace.Number) == 1 && Math.Abs(fromSpace.Letter - toSpace.Letter) == 2))
             {
                 return true;
             }
@@ -33,17 +33,18 @@ namespace ConsoleChess.Pieces
 
         public override bool CanTryToCapture(Space fromSpace, Space toSpace)
         {
-            if (fromSpace == toSpace)
-            {
-                return false;
-            }
-            // if one of the differences is 1, and one of the differences is 2... clever!
-            if ((Math.Abs(fromSpace.X - toSpace.X) == 1 && Math.Abs(fromSpace.Y - toSpace.Y) == 2) ||
-                (Math.Abs(fromSpace.Y - toSpace.Y) == 1 && Math.Abs(fromSpace.X - toSpace.X) == 2))
-            {
-                return true;
-            }
             return false;
+            //if (fromSpace == toSpace)
+            //{
+            //    return false;
+            //}
+            //// if one of the differences is 1, and one of the differences is 2... clever!
+            //if ((Math.Abs(fromSpace.Letter - toSpace.Letter) == 1 && Math.Abs(fromSpace.Number - toSpace.Number) == 2) ||
+            //    (Math.Abs(fromSpace.Number - toSpace.Number) == 1 && Math.Abs(fromSpace.Letter - toSpace.Letter) == 2))
+            //{
+            //    return true;
+            //}
+            //return false;
         }
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)

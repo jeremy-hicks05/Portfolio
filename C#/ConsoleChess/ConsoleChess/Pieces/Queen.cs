@@ -18,12 +18,12 @@ namespace ConsoleChess.Pieces
                 return false;
             }
             // if move like bishop
-            if ((float)(Math.Abs(fromSpace.X - toSpace.X)) / (float)(Math.Abs(fromSpace.Y - toSpace.Y)) == 1)
+            if ((float)(Math.Abs(fromSpace.Letter - toSpace.Letter)) / (float)(Math.Abs(fromSpace.Number - toSpace.Number)) == 1)
             {
                 return true;
             }
             // if move like rook
-            if (fromSpace.X == toSpace.X || fromSpace.Y == toSpace.Y)
+            if (fromSpace.Letter == toSpace.Letter || fromSpace.Number == toSpace.Number)
             {
                 return true;
             }
@@ -35,11 +35,11 @@ namespace ConsoleChess.Pieces
         {
             // MOVE AS BISHOP
             // if toSpace is down and right
-            if (fromSpace.X < toSpace.X && fromSpace.Y < toSpace.Y)
+            if (fromSpace.Letter < toSpace.Letter && fromSpace.Number < toSpace.Number)
             {
-                for (int i = fromSpace.X + 1, k = fromSpace.Y + 1; i <= toSpace.X && k <= toSpace.Y; i++, k++)
+                for (int i = fromSpace.Letter + 1, k = fromSpace.Number + 1; i <= toSpace.Letter && k <= toSpace.Number; i++, k++)
                 {
-                    if (i == toSpace.X && k == toSpace.Y)
+                    if (i == toSpace.Letter && k == toSpace.Number)
                     {
                         // is not blocked
                         return false;
@@ -52,11 +52,11 @@ namespace ConsoleChess.Pieces
                 }
             }
             // if toSpace is down and left
-            else if (fromSpace.X < toSpace.X && fromSpace.Y > toSpace.Y)
+            else if (fromSpace.Letter < toSpace.Letter && fromSpace.Number > toSpace.Number)
             {
-                for (int i = fromSpace.X + 1, k = fromSpace.Y - 1; i <= toSpace.X && k >= toSpace.Y; i++, k--)
+                for (int i = fromSpace.Letter + 1, k = fromSpace.Number - 1; i <= toSpace.Letter && k >= toSpace.Number; i++, k--)
                 {
-                    if ((i == toSpace.X && k == toSpace.Y))
+                    if ((i == toSpace.Letter && k == toSpace.Number))
                     {
                         // is not blocked
                         return false;
@@ -69,11 +69,11 @@ namespace ConsoleChess.Pieces
                 }
             }
             // if toSpace is up and right
-            else if (fromSpace.X > toSpace.X && fromSpace.Y < toSpace.Y)
+            else if (fromSpace.Letter > toSpace.Letter && fromSpace.Number < toSpace.Number)
             {
-                for (int i = fromSpace.X - 1, k = fromSpace.Y + 1; i >= toSpace.X && k <= toSpace.Y; i--, k++)
+                for (int i = fromSpace.Letter - 1, k = fromSpace.Number + 1; i >= toSpace.Letter && k <= toSpace.Number; i--, k++)
                 {
-                    if ((i == toSpace.X && k == toSpace.Y))
+                    if ((i == toSpace.Letter && k == toSpace.Number))
                     {
                         // is not blocked
                         return false;
@@ -86,11 +86,11 @@ namespace ConsoleChess.Pieces
                 }
             }
             // if toSpace is up and left
-            else if (fromSpace.X > toSpace.X && fromSpace.Y > toSpace.Y)
+            else if (fromSpace.Letter > toSpace.Letter && fromSpace.Number > toSpace.Number)
             {
-                for (int i = fromSpace.X - 1, k = fromSpace.Y - 1; i >= toSpace.X && k >= toSpace.Y; i--, k--)
+                for (int i = fromSpace.Letter - 1, k = fromSpace.Number - 1; i >= toSpace.Letter && k >= toSpace.Number; i--, k--)
                 {
-                    if ((i == toSpace.X && k == toSpace.Y))
+                    if ((i == toSpace.Letter && k == toSpace.Number))
                     {
                         // is not blocked
                         return false;
@@ -104,17 +104,17 @@ namespace ConsoleChess.Pieces
             }
             // MOVE AS ROOK
             // if space is above
-            if (fromSpace.X > toSpace.X)
+            if (fromSpace.Letter > toSpace.Letter)
             {
-                for (int i = fromSpace.X - 1; i >= toSpace.X; i--)
+                for (int i = fromSpace.Letter - 1; i >= toSpace.Letter; i--)
                 {
-                    if (i == toSpace.X)
+                    if (i == toSpace.Letter)
                     {
                         // not blocked
                         return false;
                     }
 
-                    if (Board.spaces[i][toSpace.Y].Piece.belongsToPlayer !=
+                    if (Board.spaces[i][toSpace.Number].Piece.belongsToPlayer !=
                         Player.None)
                     {
                         // blocked
@@ -122,18 +122,18 @@ namespace ConsoleChess.Pieces
                     }
                 }
             }
-            else if (fromSpace.X < toSpace.X)
+            else if (fromSpace.Letter < toSpace.Letter)
             {
                 // if space is below
-                for (int i = fromSpace.X + 1; i <= toSpace.X; i++)
+                for (int i = fromSpace.Letter + 1; i <= toSpace.Letter; i++)
                 {
-                    if (i == toSpace.X)
+                    if (i == toSpace.Letter)
                     {
                         // not blocked
                         return false;
                     }
 
-                    if (Board.spaces[i][toSpace.Y].Piece.belongsToPlayer !=
+                    if (Board.spaces[i][toSpace.Number].Piece.belongsToPlayer !=
                         Player.None)
                     {
                         // blocked
@@ -142,17 +142,17 @@ namespace ConsoleChess.Pieces
                 }
             }
             // if space is to the left
-            else if (fromSpace.Y > toSpace.Y)
+            else if (fromSpace.Number > toSpace.Number)
             {
-                for (int i = fromSpace.Y - 1; i >= toSpace.Y; i--)
+                for (int i = fromSpace.Number - 1; i >= toSpace.Number; i--)
                 {
-                    if (i == toSpace.Y)
+                    if (i == toSpace.Number)
                     {
                         // not blocked
                         return false;
                     }
 
-                    if (Board.spaces[toSpace.X][i].Piece.belongsToPlayer !=
+                    if (Board.spaces[toSpace.Letter][i].Piece.belongsToPlayer !=
                         Player.None)
                     {
                         // blocked
@@ -160,18 +160,18 @@ namespace ConsoleChess.Pieces
                     }
                 }
             }
-            else if (fromSpace.Y < toSpace.Y)
+            else if (fromSpace.Number < toSpace.Number)
             {
                 // if space is to the right
-                for (int i = fromSpace.Y + 1; i <= toSpace.Y; i++)
+                for (int i = fromSpace.Number + 1; i <= toSpace.Number; i++)
                 {
-                    if (i == toSpace.Y)
+                    if (i == toSpace.Number)
                     {
                         // not blocked
                         return false;
                     }
 
-                    if (Board.spaces[toSpace.X][i].Piece.belongsToPlayer !=
+                    if (Board.spaces[toSpace.Letter][i].Piece.belongsToPlayer !=
                         Player.None)
                     {
                         // blocked
@@ -185,156 +185,157 @@ namespace ConsoleChess.Pieces
 
         public override bool CanTryToCapture(Space fromSpace, Space toSpace)
         {
-            if (fromSpace == toSpace)
-            {
-                return false;
-            }
-            // if MOVE LIKE A ROOK
-            if ((fromSpace.X == toSpace.X) || (fromSpace.Y == toSpace.Y))
-            {
-                // if space is to the right -> above?
-                if (fromSpace.X > toSpace.X && fromSpace.Y == toSpace.Y)
-                {
-                    for (int i = fromSpace.X - 1; i >= toSpace.X; i--)
-                    {
-                        if (i == toSpace.X)
-                        {
-                            // capture or move to empty space
-                            return true;
-                        }
-                        if (Board.spaces[i][toSpace.Y].Piece.belongsToPlayer != Player.None)
-                        {
-                            return false;
-                        }
-                    }
-                }
-                else if (fromSpace.X < toSpace.X && fromSpace.Y == toSpace.Y)
-                {
-                    // if space is to the left -> below?
-                    for (int i = fromSpace.X + 1; i <= toSpace.X; i++)
-                    {
-                        if (i == toSpace.X)
-                        {
-                            // capture or move to empty space
-                            return true;
-                        }
-                        if (Board.spaces[i][toSpace.Y].Piece.belongsToPlayer != Player.None)
-                        {
-                            return false;
-                        }
-                    }
-
-
-                }
-                // if space is above -> to the left?
-                else if (fromSpace.Y > toSpace.Y && fromSpace.X == toSpace.X)
-                {
-                    for (int i = fromSpace.Y - 1; i >= toSpace.Y; i--)
-                    {
-                        if (i == toSpace.Y)
-                        {
-                            // capture or move to empty space
-                            return true;
-                        }
-                        if (Board.spaces[toSpace.X][i].Piece.belongsToPlayer != Player.None)
-                        {
-                            return false;
-                        }
-                    }
-                }
-                else if (fromSpace.Y < toSpace.Y && fromSpace.X == toSpace.X)
-                {
-                    // if space is below -> to the right??
-                    for (int i = fromSpace.Y + 1; i <= toSpace.Y; i++)
-                    {
-                        if (i == toSpace.Y)
-                        {
-                            // capture or move to empty space
-                            return true;
-                        }
-                        if (Board.spaces[toSpace.X][i].Piece.belongsToPlayer != Player.None)
-                        {
-                            return false;
-                        }
-                    }
-                }
-            } // end MOVE LIKE A ROOK
-
-            // MOVE LIKE A BISHOP
-            if ((float)(Math.Abs(fromSpace.X - toSpace.X)) / (float)(Math.Abs(fromSpace.Y - toSpace.Y)) == 1)
-            {
-                // from toSpace up to fromSpace - if any spaces contain pieces, return false
-                // if toSpace is down and right
-                if (fromSpace.X < toSpace.X && fromSpace.Y < toSpace.Y)
-                {
-                    for (int i = fromSpace.X + 1, k = fromSpace.Y + 1; i <= toSpace.X && k <= toSpace.Y; i++, k++)
-                    {
-                        if ((i == toSpace.X || k == toSpace.Y))
-                        {
-                            // capture or move to empty space
-                            return true;
-                        }
-                        if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
-                        {
-                            return false;
-                        }
-                    }
-                }
-                // if toSpace is down and left
-                else if (fromSpace.X < toSpace.X && fromSpace.Y > toSpace.Y)
-                {
-                    for (int i = fromSpace.X + 1, k = fromSpace.Y - 1; i <= toSpace.X && k >= toSpace.Y; i++, k--)
-                    {
-                        if ((i == toSpace.X || k == toSpace.Y))
-                        {
-                            // capture or move to empty space
-                            return true;
-                        }
-                        if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
-                        {
-                            return false;
-                        }
-                    }
-                }
-                // if toSpace is up and right
-                else if (fromSpace.X > toSpace.X && fromSpace.Y < toSpace.Y)
-                {
-                    for (int i = fromSpace.X - 1, k = fromSpace.Y + 1; i >= toSpace.X && k <= toSpace.Y; i--, k++)
-                    {
-                        if ((i == toSpace.X || k == toSpace.Y))
-                        {
-                            // capture or move to empty space
-                            return true;
-                        }
-                        if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
-                        {
-                            return false;
-                        }
-                    }
-                }
-                // if toSpace is up and left
-                else if (fromSpace.X > toSpace.X && fromSpace.Y > toSpace.Y)
-                {
-                    for (int i = fromSpace.X - 1, k = fromSpace.Y - 1; i >= toSpace.X && k >= toSpace.Y; i--, k--)
-                    {
-                        if ((i == toSpace.X || k == toSpace.Y))
-                        {
-                            // capture or move to empty space
-                            return true;
-                        }
-                        if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
-                        {
-                            return false;
-                        }
-                    }
-                }
-                // success
-                return true;
-            }
-            // end MOVE LIKE A BISHOP
-
-            // fallout condition
             return false;
+            //if (fromSpace == toSpace)
+            //{
+            //    return false;
+            //}
+            //// if MOVE LIKE A ROOK
+            //if ((fromSpace.Letter == toSpace.Letter) || (fromSpace.Number == toSpace.Number))
+            //{
+            //    // if space is to the right -> above?
+            //    if (fromSpace.Letter > toSpace.Letter && fromSpace.Number == toSpace.Number)
+            //    {
+            //        for (int i = fromSpace.Letter - 1; i >= toSpace.Letter; i--)
+            //        {
+            //            if (i == toSpace.Letter)
+            //            {
+            //                // capture or move to empty space
+            //                return true;
+            //            }
+            //            if (Board.spaces[i][toSpace.Number].Piece.belongsToPlayer != Player.None)
+            //            {
+            //                return false;
+            //            }
+            //        }
+            //    }
+            //    else if (fromSpace.Letter < toSpace.Letter && fromSpace.Number == toSpace.Number)
+            //    {
+            //        // if space is to the left -> below?
+            //        for (int i = fromSpace.Letter + 1; i <= toSpace.Letter; i++)
+            //        {
+            //            if (i == toSpace.Letter)
+            //            {
+            //                // capture or move to empty space
+            //                return true;
+            //            }
+            //            if (Board.spaces[i][toSpace.Number].Piece.belongsToPlayer != Player.None)
+            //            {
+            //                return false;
+            //            }
+            //        }
+
+
+            //    }
+            //    // if space is above -> to the left?
+            //    else if (fromSpace.Number > toSpace.Number && fromSpace.Letter == toSpace.Letter)
+            //    {
+            //        for (int i = fromSpace.Number - 1; i >= toSpace.Number; i--)
+            //        {
+            //            if (i == toSpace.Number)
+            //            {
+            //                // capture or move to empty space
+            //                return true;
+            //            }
+            //            if (Board.spaces[toSpace.Letter][i].Piece.belongsToPlayer != Player.None)
+            //            {
+            //                return false;
+            //            }
+            //        }
+            //    }
+            //    else if (fromSpace.Number < toSpace.Number && fromSpace.Letter == toSpace.Letter)
+            //    {
+            //        // if space is below -> to the right??
+            //        for (int i = fromSpace.Number + 1; i <= toSpace.Number; i++)
+            //        {
+            //            if (i == toSpace.Number)
+            //            {
+            //                // capture or move to empty space
+            //                return true;
+            //            }
+            //            if (Board.spaces[toSpace.Letter][i].Piece.belongsToPlayer != Player.None)
+            //            {
+            //                return false;
+            //            }
+            //        }
+            //    }
+            //} // end MOVE LIKE A ROOK
+
+            //// MOVE LIKE A BISHOP
+            //if ((float)(Math.Abs(fromSpace.Letter - toSpace.Letter)) / (float)(Math.Abs(fromSpace.Number - toSpace.Number)) == 1)
+            //{
+            //    // from toSpace up to fromSpace - if any spaces contain pieces, return false
+            //    // if toSpace is down and right
+            //    if (fromSpace.Letter < toSpace.Letter && fromSpace.Number < toSpace.Number)
+            //    {
+            //        for (int i = fromSpace.Letter + 1, k = fromSpace.Number + 1; i <= toSpace.Letter && k <= toSpace.Number; i++, k++)
+            //        {
+            //            if ((i == toSpace.Letter || k == toSpace.Number))
+            //            {
+            //                // capture or move to empty space
+            //                return true;
+            //            }
+            //            if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
+            //            {
+            //                return false;
+            //            }
+            //        }
+            //    }
+            //    // if toSpace is down and left
+            //    else if (fromSpace.Letter < toSpace.Letter && fromSpace.Number > toSpace.Number)
+            //    {
+            //        for (int i = fromSpace.Letter + 1, k = fromSpace.Number - 1; i <= toSpace.Letter && k >= toSpace.Number; i++, k--)
+            //        {
+            //            if ((i == toSpace.Letter || k == toSpace.Number))
+            //            {
+            //                // capture or move to empty space
+            //                return true;
+            //            }
+            //            if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
+            //            {
+            //                return false;
+            //            }
+            //        }
+            //    }
+            //    // if toSpace is up and right
+            //    else if (fromSpace.Letter > toSpace.Letter && fromSpace.Number < toSpace.Number)
+            //    {
+            //        for (int i = fromSpace.Letter - 1, k = fromSpace.Number + 1; i >= toSpace.Letter && k <= toSpace.Number; i--, k++)
+            //        {
+            //            if ((i == toSpace.Letter || k == toSpace.Number))
+            //            {
+            //                // capture or move to empty space
+            //                return true;
+            //            }
+            //            if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
+            //            {
+            //                return false;
+            //            }
+            //        }
+            //    }
+            //    // if toSpace is up and left
+            //    else if (fromSpace.Letter > toSpace.Letter && fromSpace.Number > toSpace.Number)
+            //    {
+            //        for (int i = fromSpace.Letter - 1, k = fromSpace.Number - 1; i >= toSpace.Letter && k >= toSpace.Number; i--, k--)
+            //        {
+            //            if ((i == toSpace.Letter || k == toSpace.Number))
+            //            {
+            //                // capture or move to empty space
+            //                return true;
+            //            }
+            //            if (Board.spaces[i][k].Piece.belongsToPlayer != Player.None)
+            //            {
+            //                return false;
+            //            }
+            //        }
+            //    }
+            //    // success
+            //    return true;
+            //}
+            //// end MOVE LIKE A BISHOP
+
+            //// fallout condition
+            //return false;
         }
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
