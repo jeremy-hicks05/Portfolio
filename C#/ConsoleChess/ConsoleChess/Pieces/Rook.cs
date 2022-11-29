@@ -10,7 +10,103 @@ namespace ConsoleChess.Pieces
             hasMoved = false;
         }
 
-        public override bool CanAttackSpace(Space fromSpace, Space toSpace)
+        public override bool CanTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
+        {
+            if (fromSpace == toSpace)
+            {
+                return false;
+            }
+            else if (fromSpace.X == toSpace.X || fromSpace.Y == toSpace.Y)
+            {
+                return true;
+            }
+            // fallout false
+            return false;
+        }
+
+        public override bool HasPiecesBlockingMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
+        {
+            // if space is above
+            if (fromSpace.X > toSpace.X)
+            {
+                for (int i = fromSpace.X - 1; i >= toSpace.X; i--)
+                {
+                    if (i == toSpace.X)
+                    {
+                        // not blocked
+                        return false;
+                    }
+
+                    if (Board.spaces[i][toSpace.Y].Piece.belongsToPlayer !=
+                        Player.None)
+                    {
+                        // blocked
+                        return true;
+                    }
+                }
+            }
+            else if (fromSpace.X < toSpace.X)
+            {
+                // if space is below
+                for (int i = fromSpace.X + 1; i <= toSpace.X; i++)
+                {
+                    if (i == toSpace.X)
+                    {
+                        // not blocked
+                        return false;
+                    }
+
+                    if (Board.spaces[i][toSpace.Y].Piece.belongsToPlayer !=
+                        Player.None)
+                    {
+                        // blocked
+                        return true;
+                    }
+                }
+            }
+            // if space is to the left
+            else if (fromSpace.Y > toSpace.Y)
+            {
+                for (int i = fromSpace.Y - 1; i >= toSpace.Y; i--)
+                {
+                    if (i == toSpace.Y)
+                    {
+                        // not blocked
+                        return false;
+                    }
+
+                    if (Board.spaces[toSpace.X][i].Piece.belongsToPlayer !=
+                        Player.None)
+                    {
+                        // blocked
+                        return true;
+                    }
+                }
+            }
+            else if (fromSpace.Y < toSpace.Y)
+            {
+                // if space is to the right
+                for (int i = fromSpace.Y + 1; i <= toSpace.Y; i++)
+                {
+                    if (i == toSpace.Y)
+                    {
+                        // not blocked
+                        return false;
+                    }
+
+                    if (Board.spaces[toSpace.X][i].Piece.belongsToPlayer !=
+                        Player.None)
+                    {
+                        // blocked
+                        return true;
+                    }
+                }
+            }
+            // fallout true
+            return true;
+        }
+
+        public override bool CanTryToCapture(Space fromSpace, Space toSpace)
         {
             if (fromSpace == toSpace)
             {
@@ -96,7 +192,7 @@ namespace ConsoleChess.Pieces
         {
             return fromSpace.Piece.belongsToPlayer != 
                 toSpace.Piece.belongsToPlayer
-                && CanAttackSpace(fromSpace, toSpace);
+                && CanTryToCapture(fromSpace, toSpace);
         }
     }
 }

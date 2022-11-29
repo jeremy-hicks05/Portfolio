@@ -10,7 +10,28 @@ namespace ConsoleChess.Pieces
 
         }
 
-        public override bool CanAttackSpace(Space fromSpace, Space toSpace)
+        public override bool CanTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
+        {
+            // test whether attempted move follows the rules of chess
+
+            if(fromSpace == toSpace)
+            {
+                return false;
+            }
+            if ((Math.Abs(fromSpace.X - toSpace.X) == 1 && Math.Abs(fromSpace.Y - toSpace.Y) == 2) ||
+                (Math.Abs(fromSpace.Y - toSpace.Y) == 1 && Math.Abs(fromSpace.X - toSpace.X) == 2))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public override bool HasPiecesBlockingMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
+        {
+            return false;
+        }
+
+        public override bool CanTryToCapture(Space fromSpace, Space toSpace)
         {
             if (fromSpace == toSpace)
             {
@@ -27,7 +48,7 @@ namespace ConsoleChess.Pieces
 
         public override bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            return CanAttackSpace(fromSpace, toSpace) &&
+            return CanTryToCapture(fromSpace, toSpace) &&
                 fromSpace.Piece.belongsToPlayer != toSpace.Piece.belongsToPlayer;
         }
     }

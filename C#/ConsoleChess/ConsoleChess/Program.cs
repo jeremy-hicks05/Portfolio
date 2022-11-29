@@ -9,7 +9,6 @@
 
 namespace ConsoleChess
 {
-    using ConsoleChess.Interfaces;
     /* Current Rules Employed:
      * 1. Pawn up 2 on first move
      * 2. King cannot move into check
@@ -36,11 +35,28 @@ namespace ConsoleChess
      *          and not restore it if I am not careful
      *  6. Refactor, compress, and condense code using functions
      *  7. Allow resignation
-     *  8. 
+     *  8. Fix double check bug - taking a piece attacking allows for staying in check
+     *  9. Fix King duplicating when it escapes check - Move "King Space" as well
+     *  10. Change to 'canTryToMoveTo' and 'canActuallyMoveTo'
+     *  11. Change to 'canTryToCapture' and 'canActuallyCapture'
     */
+
+    /* Testing
+     * 1. Pawns up 2 - on first move only
+     * 2. Pawns up 1 - on all others
+     * 3. Pawns through pieces - never
+     * 4. Pawn capture - only diagonally "forward"
+     * 5. Pawn promotion - last row, show menu and promote to N, B, R, or Q
+     * 6. Rooks up, down, left, right
+     * 7. Rooks through pieces
+     * 8. Rook capture
+     * 9. Bishop diagonal any direction
+     * 10. 
+     * 
+     */
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Board.InitBoard();
 
@@ -51,23 +67,56 @@ namespace ConsoleChess
 
                 Space startingSpace = Board.GetStartingSpace();
 
-                //Console.WriteLine("Piece " + startingSpace.Piece + " on space " +
-                //    startingSpace.X + ", " + startingSpace.Y + " selected.");
+                Console.WriteLine("Piece " + startingSpace.Piece + " on space " +
+                    startingSpace.X + ", " + startingSpace.Y + " selected.");
 
                 Space destinationSpace = Board.GetDestinationSpace();
 
-                // check piece's ability to move to selected space
-                Board.MovePieceFromSpaceToSpace(
-                    startingSpace.Piece.CanMoveFromSpaceToSpace(
-                        startingSpace,
-                        destinationSpace),
-                    startingSpace, destinationSpace);
+                Console.WriteLine("Destination space " +
+                    destinationSpace.X + ", " + destinationSpace.Y + " selected.");
 
-                // clear console
-                Console.Clear();
+                if (startingSpace.Piece.CanTryToMoveFromSpaceToSpace(startingSpace, destinationSpace))
+                {
+                    Console.WriteLine("Chess rules followed!");
+                    if (startingSpace.Piece.HasPiecesBlockingMoveFromSpaceToSpace(startingSpace, destinationSpace))
+                    {
+                        Console.WriteLine("That piece is blocked!");
+                        Console.ReadLine();
+                    }
+                    else
+                    {
+                        Console.WriteLine("That piece is not blocked!");
+                        Console.ReadLine();
+
+                        // move piece from startingSpace to destinationSpace
+                        if (startingSpace.Piece.CanCaptureFromSpaceToSpace(startingSpace, destinationSpace))
+                        {
+                            Console.WriteLine("That piece can capture the piece on the destination space!");
+                            Console.ReadLine();
+                            Board.TryMovePieceFromSpaceToSpace(startingSpace, destinationSpace);
+                        }
+                        else
+                        {
+                            Console.WriteLine("That piece can't capture the piece on the destination space!");
+                            Console.ReadLine();
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Chess rules broken!");
+                    Console.ReadLine();
+                }
+
+                // check piece's ability to move to selected space
+                //Board.MovePieceFromSpaceToSpace(
+                //    startingSpace.Piece.CanMoveFromSpaceToSpace(
+                //        startingSpace,
+                //        destinationSpace),
+                //    startingSpace, destinationSpace);
 
                 // refresh spaces' AttackedbyWhite/Black property
-                Board.FindAllSpacesAttacked();
+                //Board.FindAllSpacesAttacked();
 
                 // re-print board
                 Board.PrintBoard();
