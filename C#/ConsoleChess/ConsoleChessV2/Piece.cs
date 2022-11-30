@@ -32,6 +32,7 @@
         {
             return fromSpace.Piece!
                         .CanLegallyTryToMoveFromSpaceToSpace(fromSpace, toSpace) &&
+                    toSpace.Piece?.BelongsTo == null &&
                    !(fromSpace.Piece
                         .IsBlocked(fromSpace, toSpace));
         }

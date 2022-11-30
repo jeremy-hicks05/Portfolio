@@ -3,6 +3,7 @@
 namespace ConsoleChessV2
 {
     using ConsoleChessV2.Pieces;
+    using System.Text.RegularExpressions;
     using static Notation;
     internal static class ChessBoard // single instance of chess board
     {
@@ -87,7 +88,7 @@ namespace ConsoleChessV2
                         {
                             Console.WriteLine();
                         }
-                        if(i == C["H"] && j == R["1"])
+                        if (i == C["H"] && j == R["1"])
                         {
                             Console.WriteLine("  A  B  C  D  E  F  G  H");
                         }
@@ -98,15 +99,23 @@ namespace ConsoleChessV2
 
         public static Space UserSelectsSpace()
         {
-            Console.WriteLine("Please enter a letter (A-H)");
-            string? selectedPieceColumn = Console.ReadLine();
+            string? selectedPieceColumn = "Z";
+            string? selectedPieceRow = "0";
+            while (!(Regex.Match(selectedPieceColumn!, "[A-Ha-h]").Success))
+            {
+                Console.WriteLine("Please enter a letter (A-H)");
+                selectedPieceColumn = Console.ReadLine();
+            }
 
-            Console.WriteLine("Please enter a number (1-8)");
-            string? selectedPieceRow = Console.ReadLine();
+            while (!(Regex.Match(selectedPieceRow!, "[1-8]").Success))
+            {
+                Console.WriteLine("Please enter a number (1-8)");
+                selectedPieceRow = Console.ReadLine();
+            }
 
-            Console.WriteLine("Your piece is a " + 
-                Spaces?[C[selectedPieceColumn?.ToUpper()!]]
-                       [R[selectedPieceRow!]].Piece?.Name);
+            Console.WriteLine("Your piece is a " +
+            Spaces?[C[selectedPieceColumn?.ToUpper()!]]
+                   [R[selectedPieceRow!]].Piece?.Name);
 
             return Spaces![C[selectedPieceColumn?.ToUpper()!]]
                           [R[selectedPieceRow!]];
@@ -152,21 +161,21 @@ namespace ConsoleChessV2
                 }
             }
 
-                    //        if (Spaces[i][j].Piece.belongsToPlayer == Player.Black)
-                    //        {
-                    //            for (int k = 0; k < 8; k++)
-                    //            {
-                    //                for (int m = 0; m < 8; m++)
-                    //                {
-                    //                    if (Spaces[i][j].Piece.CanTryToCapture(Spaces[i][j], Spaces[k][m]))
-                    //                    {
-                    //                        Spaces[k][m].IsUnderAttackByBlack = true;
-                    //                    }
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-                    //}
-                }
+            //        if (Spaces[i][j].Piece.belongsToPlayer == Player.Black)
+            //        {
+            //            for (int k = 0; k < 8; k++)
+            //            {
+            //                for (int m = 0; m < 8; m++)
+            //                {
+            //                    if (Spaces[i][j].Piece.CanTryToCapture(Spaces[i][j], Spaces[k][m]))
+            //                    {
+            //                        Spaces[k][m].IsUnderAttackByBlack = true;
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+        }
     }
 }
