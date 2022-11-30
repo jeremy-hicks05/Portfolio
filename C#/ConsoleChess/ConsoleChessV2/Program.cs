@@ -20,46 +20,71 @@ namespace ConsoleChessV2
                 startingSpace.PrintInfo();
                 endingSpace.PrintInfo();
 
-                if(startingSpace.Piece!.CanLegallyTryToMoveFromSpaceToSpace(startingSpace, endingSpace)
-                    ||
-                    startingSpace.Piece!.CanLegallyTryToCaptureFromSpaceToSpace(startingSpace, endingSpace))
+                if (startingSpace.Piece?.BelongsTo == ChessBoard.turn)
                 {
-                    Console.WriteLine($"This move attempt follows {startingSpace.Piece.Name} movement rules!");
-                    Console.ReadLine();
 
-                    startingSpace.Piece.CreateListOfPiecesToInspect(startingSpace, endingSpace);
+                    if (startingSpace.Piece!.CanLegallyTryToMoveFromSpaceToSpace(startingSpace, endingSpace)
+                        ||
+                        startingSpace.Piece!.CanLegallyTryToCaptureFromSpaceToSpace(startingSpace, endingSpace))
+                    {
+                        Console.WriteLine($"This move attempt follows {startingSpace.Piece.Name} movement rules!");
+                        Console.ReadLine();
 
-                    if(startingSpace.Piece.IsBlocked(startingSpace, endingSpace))
-                    {
-                        Console.WriteLine("Piece is blocked");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Piece is not blocked");
-                        if(startingSpace.Piece.CanCaptureFromSpaceToSpace(startingSpace, endingSpace))
+                        startingSpace.Piece.CreateListOfPiecesToInspect(startingSpace, endingSpace);
+
+                        if (startingSpace.Piece.IsBlocked(startingSpace, endingSpace))
                         {
-                            Console.WriteLine("Piece can capture space.");
-                            ChessBoard.Move(startingSpace, endingSpace);
+                            Console.WriteLine("Piece is blocked");
+                            Console.ReadLine();
                         }
                         else
                         {
-                            Console.WriteLine("Piece cannot capture space.");
-                        }
-                        if(startingSpace.Piece.CanMoveFromSpaceToEmptySpace(startingSpace, endingSpace))
-                        {
-                            Console.WriteLine("Piece can move from space to empty space");
-                            ChessBoard.Move(startingSpace, endingSpace);
+                            Console.WriteLine("Piece is not blocked");
+                            Console.ReadLine();
+                            if (startingSpace.Piece.CanCaptureFromSpaceToSpace(startingSpace, endingSpace))
+                            {
+                                Console.WriteLine("Piece can capture space.");
+                                Console.ReadLine();
+                                if (startingSpace.Piece.TryCapture(startingSpace, endingSpace))
+                                {
+                                    ChessBoard.Move(startingSpace, endingSpace);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("King is in check!");
+                                    Console.ReadLine();
+                                }
+                            }
+                            else if (startingSpace.Piece.CanMoveFromSpaceToEmptySpace(startingSpace, endingSpace))
+                            {
+                                Console.WriteLine("Piece can move from space to empty space");
+                                Console.ReadLine();
+                                if (startingSpace.Piece.TryMove(startingSpace, endingSpace))
+                                {
+                                    ChessBoard.Move(startingSpace, endingSpace);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("King is in check!");
+                                    Console.ReadLine();
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Piece cannot capture or move to space.");
+                                Console.ReadLine();
+                            }
+                            
                         }
                     }
-                    Console.ReadLine();
-                }
-                else
-                {
-                    Console.WriteLine($"This move attempt does not follow {startingSpace.Piece.Name} movement rules!");
-                    Console.ReadLine();
-                }
+                    else
+                    {
+                        Console.WriteLine($"This move attempt does not follow {startingSpace.Piece.Name} movement rules!");
+                        Console.ReadLine();
+                    }
 
-                ChessBoard.FindAllSpacesAttacked();
+                    ChessBoard.FindAllSpacesAttacked();
+                }
                 ChessBoard.PrintBoard();
             }
         }

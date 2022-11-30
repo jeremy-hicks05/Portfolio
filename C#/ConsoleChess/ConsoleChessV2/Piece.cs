@@ -16,6 +16,11 @@
             BelongsTo = null;
         }
 
+        public virtual bool IsPiecesTurn()
+        {
+            return ChessBoard.turn == BelongsTo;
+        }
+
         public virtual void CreateListOfPiecesToInspect(Space fromSpace, Space toSpace)
         {
             //Console.WriteLine("Calling wrong method!");
@@ -33,6 +38,65 @@
             return toSpace.Piece?.BelongsTo == null;
         }
 
+        public virtual bool TryMove(Space fromSpace, Space toSpace)
+        {
+            Piece? tempFromSpacePiece = fromSpace.Piece;
+            Piece? tempToSpacePiece = toSpace.Piece;
+
+            toSpace.Piece = fromSpace.Piece;
+            fromSpace.Clear();
+            ChessBoard.FindAllSpacesAttacked();
+
+            // verify your king is not in check
+            if(ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+            {
+                // cancel move
+                fromSpace.Piece = tempFromSpacePiece;
+                toSpace.Piece = tempToSpacePiece;
+                return false;
+            }
+            else if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
+            {
+                // cancel move
+                fromSpace.Piece = tempFromSpacePiece;
+                toSpace.Piece = tempToSpacePiece;
+                return false;
+            }
+            fromSpace.Piece = tempFromSpacePiece;
+            toSpace.Piece = tempToSpacePiece;
+            return true;
+        }
+
+        public virtual bool TryCapture(Space fromSpace, Space toSpace)
+        {
+            Piece? tempFromSpacePiece = fromSpace.Piece;
+            Piece? tempToSpacePiece = toSpace.Piece;
+
+            toSpace.Piece = fromSpace.Piece;
+            fromSpace.Clear();
+            toSpace.Clear();
+            ChessBoard.FindAllSpacesAttacked();
+
+            // verify your king is not in check
+            if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+            {
+                // cancel move
+                fromSpace.Piece = tempFromSpacePiece;
+                toSpace.Piece = tempToSpacePiece;
+                return false;
+            }
+            else if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
+            {
+                // cancel move
+                fromSpace.Piece = tempFromSpacePiece;
+                toSpace.Piece = tempToSpacePiece;
+                return false;
+            }
+            fromSpace.Piece = tempFromSpacePiece;
+            toSpace.Piece = tempToSpacePiece;
+            return true;
+        }
+
         public virtual bool IsBlocked(Space fromSpace, Space toSpace)
         {
             fromSpace.Piece?.CreateListOfPiecesToInspect(fromSpace, toSpace); // added
@@ -47,6 +111,24 @@
                     }
                 }
                 if (s == fromSpace.Piece.spacesToMoveToReview.Last())
+                {
+                    // piece is not blocked
+                    return false;
+                }
+            }
+
+            // capture options
+            foreach (Space s in fromSpace.Piece?.spacesToCaptureReview!)
+            {
+                if (s != fromSpace.Piece.spacesToCaptureReview.Last())
+                {
+                    if (s.Piece?.BelongsTo != null)
+                    {
+                        // piece is blocked
+                        return true;
+                    }
+                }
+                if (s == fromSpace.Piece.spacesToCaptureReview.Last())
                 {
                     // piece is not blocked
                     return false;

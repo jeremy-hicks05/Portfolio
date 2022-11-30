@@ -23,6 +23,7 @@
         public void PrintInfo()
         {
             Console.WriteLine($"Space {Column}, {Row} \n has {Piece} on it and \n" +
+                $"Has Moved: {Piece?.HasMoved}\n" +
                 $"Is Under Attack by White: {IsUnderAttackByWhite} \n" +
                 $"Is Under Attack by Black: {IsUnderAttackByBlack}");
         }

@@ -8,6 +8,8 @@ namespace ConsoleChessV2
     internal static class ChessBoard // single instance of chess board
     {
         public static Space[][]? Spaces { get; set; }
+        public static Space? WhiteKingSpace { get; set; }
+        public static Space? BlackKingSpace { get; set; }
         public static Player turn;
 
         public static void InitBoard()
@@ -123,13 +125,27 @@ namespace ConsoleChessV2
 
         public static void Move(Space fromSpace, Space toSpace)
         {
-            Piece? tempFromSpacePiece = fromSpace.Piece;
             toSpace.Piece = fromSpace.Piece;
+            toSpace.Piece!.HasMoved = true;
             fromSpace.Clear();
+            ChangeTurn();
+        }
+
+        public static void ChangeTurn()
+        {
+            if(turn == Player.White)
+            {
+                turn = Player.Black;
+            }
+            else
+            {
+                turn = Player.White;
+            }
         }
 
         public static void FindAllSpacesAttacked()
         {
+            // reset UnderAttack flags
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
@@ -137,6 +153,16 @@ namespace ConsoleChessV2
                     // reset being attacked flags
                     Spaces![i][j].IsUnderAttackByBlack = false;
                     Spaces![i][j].IsUnderAttackByWhite = false;
+
+                    if(Spaces![i][j].Piece?.GetType() == typeof(BlackKing))
+                    {
+                        BlackKingSpace = Spaces![i][j];
+                    }
+
+                    if (Spaces![i][j].Piece?.GetType() == typeof(WhiteKing))
+                    {
+                        WhiteKingSpace = Spaces![i][j];
+                    }
                 }
             }
 
