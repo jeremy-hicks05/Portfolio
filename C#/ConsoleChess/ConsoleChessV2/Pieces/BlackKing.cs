@@ -116,5 +116,84 @@
                 spacesToMoveToReview?.Add(ChessBoard.Spaces![C["D"]][R["8"]]);
             }
         }
+
+        public override bool TryMove(Space fromSpace, Space toSpace)
+        {
+            Piece? tempFromSpacePiece = fromSpace.Piece;
+            Piece? tempToSpacePiece = toSpace.Piece;
+
+            ChessBoard.BlackKingSpace = toSpace;
+            
+            toSpace.Piece = fromSpace.Piece;
+
+            fromSpace.Clear();
+            ChessBoard.FindAllSpacesAttacked();
+
+            // verify your king is not in check
+            if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+            {
+                // cancel move
+                fromSpace.Piece = tempFromSpacePiece;
+                toSpace.Piece = tempToSpacePiece;
+
+                ChessBoard.BlackKingSpace = fromSpace;
+                return false;
+            }
+            else if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
+            {
+                // cancel move
+                fromSpace.Piece = tempFromSpacePiece;
+                toSpace.Piece = tempToSpacePiece;
+
+                ChessBoard.BlackKingSpace = fromSpace;
+                return false;
+            }
+            fromSpace.Piece = tempFromSpacePiece;
+            toSpace.Piece = tempToSpacePiece;
+
+            ChessBoard.BlackKingSpace = fromSpace;
+            return true;
+        }
+
+        public override bool TryCapture(Space fromSpace, Space toSpace)
+        {
+            Piece? tempFromSpacePiece = fromSpace.Piece;
+            Piece? tempToSpacePiece = toSpace.Piece;
+
+            ChessBoard.BlackKingSpace = toSpace;
+            toSpace.Piece = fromSpace.Piece;
+
+            fromSpace.Clear();
+            toSpace.Clear();
+            ChessBoard.FindAllSpacesAttacked();
+
+            // verify your king is not in check
+            if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+            {
+                // cancel move
+                fromSpace.Piece = tempFromSpacePiece;
+                toSpace.Piece = tempToSpacePiece;
+
+                ChessBoard.BlackKingSpace = fromSpace;
+
+                return false;
+            }
+            else if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
+            {
+                // cancel move
+                fromSpace.Piece = tempFromSpacePiece;
+                toSpace.Piece = tempToSpacePiece;
+
+                ChessBoard.BlackKingSpace = fromSpace;
+
+                return false;
+            }
+            fromSpace.Piece = tempFromSpacePiece;
+            toSpace.Piece = tempToSpacePiece;
+
+            ChessBoard.BlackKingSpace = fromSpace;
+
+            return true;
+        }
     }
 }
