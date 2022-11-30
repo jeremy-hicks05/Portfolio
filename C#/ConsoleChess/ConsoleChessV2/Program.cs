@@ -4,7 +4,6 @@
 
 namespace ConsoleChessV2
 {
-    using static Notation;
     internal class Program
     {
         static void Main()
@@ -25,27 +24,24 @@ namespace ConsoleChessV2
                 {
                     Console.WriteLine($"This move attempt follows {startingSpace.Piece.Name} movement rules!");
                     Console.ReadLine();
-                    Console.WriteLine("This piece can move to...");
 
                     startingSpace.Piece.CreateListOfPiecesToInspect(startingSpace, endingSpace);
-                    foreach (Space s in startingSpace.Piece.spacesThisPieceCanMoveTo!)
+
+                    if(startingSpace.Piece.IsBlocked(startingSpace, endingSpace))
                     {
-                        Console.WriteLine($"{s} on space {s.Column}{s.Row}");
-                        if (s != startingSpace.Piece.spacesThisPieceCanMoveTo.Last())
+                        Console.WriteLine("Piece is blocked");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Piece is not blocked");
+                        if(startingSpace.Piece.CanCaptureOrMoveFromSpaceToSpace(startingSpace, endingSpace))
                         {
-                            if (s.Piece?.BelongsTo != null)
-                            {
-                                // piece is blocked
-                                Console.WriteLine("Piece is blocked");
-                                break;
-                            }
-                        }
-                        else if(s == startingSpace.Piece.spacesThisPieceCanMoveTo.Last() && 
-                            startingSpace.Piece.BelongsTo != endingSpace.Piece.BelongsTo)
-                        {
-                            // piece is not blocked
-                            Console.WriteLine("Piece is not blocked");
+                            Console.WriteLine("Piece can capture or move to space.");
                             ChessBoard.Move(startingSpace, endingSpace);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Piece cannot capture or move to space.");
                         }
                     }
                     Console.ReadLine();

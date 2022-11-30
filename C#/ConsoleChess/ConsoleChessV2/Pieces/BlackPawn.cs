@@ -45,8 +45,26 @@
             {
                 // attacking up and right
                 spacesThisPieceCanMoveTo!.Add(ChessBoard.Spaces![toSpace.Column][toSpace.Row]);
-
             }
+        }
+
+        public override bool CanCaptureOrMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
+        {
+            // we already know move selection is legal and piece is not blocked
+            if (fromSpace.Column == toSpace.Column)
+            {
+                // pawn can move
+                return true;
+            }
+            // if column or row is different, try to capture
+            else if (fromSpace.Column != toSpace.Column &&
+                toSpace.Piece?.BelongsTo != null &&
+                fromSpace.Piece?.BelongsTo != toSpace.Piece?.BelongsTo)
+            {
+                // pawn can capture
+                return true;
+            }
+            return false;
         }
     }
 }
