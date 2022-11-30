@@ -211,7 +211,6 @@
             toSpace.Piece = tempToSpacePiece;
 
             ChessBoard.WhiteKingSpace = fromSpace;
-
             return true;
         }
     }

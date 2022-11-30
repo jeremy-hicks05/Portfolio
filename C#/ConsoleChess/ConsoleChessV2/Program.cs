@@ -15,10 +15,12 @@ namespace ConsoleChessV2
             {
                 ChessBoard.FindAllSpacesAttacked();
                 Space startingSpace = ChessBoard.UserSelectsSpace();
-                Space endingSpace = ChessBoard.UserSelectsSpace();
-
                 startingSpace.PrintInfo();
+
+                Space endingSpace = ChessBoard.UserSelectsSpace();
                 endingSpace.PrintInfo();
+
+                Console.ReadLine();
 
                 if (startingSpace.Piece?.BelongsTo == ChessBoard.turn)
                 {

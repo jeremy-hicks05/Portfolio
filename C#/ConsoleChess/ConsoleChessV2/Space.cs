@@ -26,6 +26,11 @@
                 $"Has Moved: {Piece?.HasMoved}\n" +
                 $"Is Under Attack by White: {IsUnderAttackByWhite} \n" +
                 $"Is Under Attack by Black: {IsUnderAttackByBlack}");
+
+            Console.WriteLine($"White King Space: {ChessBoard.WhiteKingSpace?.Column}" +
+                $"{ChessBoard.WhiteKingSpace?.Row}");
+            Console.WriteLine($"Black King Space: {ChessBoard.BlackKingSpace?.Column}" +
+                $"{ChessBoard.BlackKingSpace?.Column}");
         }
 
         public void Clear()

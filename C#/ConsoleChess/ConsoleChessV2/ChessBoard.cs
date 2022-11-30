@@ -71,6 +71,9 @@ namespace ConsoleChessV2
                 Spaces[C["G"]][R["8"]].Piece = new BlackKnight();
                 Spaces[C["H"]][R["8"]].Piece = new BlackRook();
 
+                WhiteKingSpace = Spaces[C["E"]][R["1"]];
+                BlackKingSpace = Spaces[C["E"]][R["8"]];
+
                 turn = Player.White;
             }
         }
@@ -128,6 +131,40 @@ namespace ConsoleChessV2
             toSpace.Piece = fromSpace.Piece;
             toSpace.Piece!.HasMoved = true;
             fromSpace.Clear();
+
+            // check for castle and update KingSpace
+            if(toSpace.Piece.GetType() == typeof(BlackKing))
+            {
+                if (fromSpace.Column + 2 == toSpace.Column)
+                {
+                    // castle king side black
+                    Spaces![C["F"]][R["8"]].Piece = Spaces[C["H"]][R["8"]].Piece;
+                    Spaces[C["H"]][R["8"]].Clear();
+                }
+                if (fromSpace.Column -3 == toSpace.Column)
+                {
+                    // castle queen side black
+                    Spaces![C["D"]][R["8"]].Piece = Spaces[C["A"]][R["8"]].Piece;
+                    Spaces[C["A"]][R["8"]].Clear();
+                }
+                BlackKingSpace = toSpace;
+            }
+            else if(toSpace.Piece.GetType() == typeof(WhiteKing))
+            {
+                if (fromSpace.Column + 2 == toSpace.Column)
+                {
+                    // castle king side white
+                    Spaces![C["F"]][R["1"]].Piece = Spaces[C["H"]][R["1"]].Piece;
+                    Spaces[C["H"]][R["1"]].Clear();
+                }
+                if (fromSpace.Column - 3 == toSpace.Column)
+                {
+                    // castle queen side black
+                    Spaces![C["D"]][R["1"]].Piece = Spaces[C["A"]][R["1"]].Piece;
+                    Spaces[C["A"]][R["1"]].Clear();
+                }
+                WhiteKingSpace = toSpace;
+            }
             ChangeTurn();
         }
 
@@ -153,16 +190,6 @@ namespace ConsoleChessV2
                     // reset being attacked flags
                     Spaces![i][j].IsUnderAttackByBlack = false;
                     Spaces![i][j].IsUnderAttackByWhite = false;
-
-                    if(Spaces![i][j].Piece?.GetType() == typeof(BlackKing))
-                    {
-                        BlackKingSpace = Spaces![i][j];
-                    }
-
-                    if (Spaces![i][j].Piece?.GetType() == typeof(WhiteKing))
-                    {
-                        WhiteKingSpace = Spaces![i][j];
-                    }
                 }
             }
 
