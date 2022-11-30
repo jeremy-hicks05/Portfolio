@@ -17,7 +17,6 @@
             {
                 if ((float)Math.Abs(fromSpace.Column - toSpace.Column) / (float)Math.Abs(fromSpace.Row - toSpace.Row) == 1)
                 {
-                    //fromSpace.Piece!.spacesThisPieceCanMoveTo!.Add(toSpace);
                     return true;
                 }
             }

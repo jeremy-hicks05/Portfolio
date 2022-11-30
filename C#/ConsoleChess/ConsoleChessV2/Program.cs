@@ -33,17 +33,19 @@ namespace ConsoleChessV2
                         Console.WriteLine($"{s} on space {s.Column}{s.Row}");
                         if (s != startingSpace.Piece.spacesThisPieceCanMoveTo.Last())
                         {
-                            if (s.Piece.BelongsTo != null)
+                            if (s.Piece?.BelongsTo != null)
                             {
                                 // piece is blocked
                                 Console.WriteLine("Piece is blocked");
                                 break;
                             }
                         }
-                        else if(s == startingSpace.Piece.spacesThisPieceCanMoveTo.Last())
+                        else if(s == startingSpace.Piece.spacesThisPieceCanMoveTo.Last() && 
+                            startingSpace.Piece.BelongsTo != endingSpace.Piece.BelongsTo)
                         {
                             // piece is not blocked
                             Console.WriteLine("Piece is not blocked");
+                            ChessBoard.Move(startingSpace, endingSpace);
                         }
                     }
                     Console.ReadLine();
