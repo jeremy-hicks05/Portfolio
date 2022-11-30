@@ -13,7 +13,7 @@ namespace ConsoleChessV2
             ChessBoard.PrintBoard();
             while (true)
             {
-
+                ChessBoard.FindAllSpacesAttacked();
                 Space startingSpace = ChessBoard.UserSelectsSpace();
                 Space endingSpace = ChessBoard.UserSelectsSpace();
 
@@ -45,9 +45,9 @@ namespace ConsoleChessV2
                         {
                             Console.WriteLine("Piece cannot capture space.");
                         }
-                        if(startingSpace.Piece.CanMoveFromSpaceToSpace(startingSpace, endingSpace))
+                        if(startingSpace.Piece.CanMoveFromSpaceToEmptySpace(startingSpace, endingSpace))
                         {
-                            Console.WriteLine("Piece can move from space to space?");
+                            Console.WriteLine("Piece can move from space to empty space");
                             ChessBoard.Move(startingSpace, endingSpace);
                         }
                     }
@@ -59,6 +59,7 @@ namespace ConsoleChessV2
                     Console.ReadLine();
                 }
 
+                ChessBoard.FindAllSpacesAttacked();
                 ChessBoard.PrintBoard();
             }
         }

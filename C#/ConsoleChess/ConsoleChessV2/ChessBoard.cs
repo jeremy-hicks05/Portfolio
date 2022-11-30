@@ -150,32 +150,30 @@ namespace ConsoleChessV2
                         {
                             for (int m = 0; m < 8; m++)
                             {
-                                //if (Spaces[i][j].Piece.CanTryToCapture(Spaces[i][j], Spaces[k][m]))
-                                //{
-                                //    Spaces[k][m].IsUnderAttackByWhite = true;
-                                //    //spaces[k][m].Piece.Name = "[*]";
-                                //}
+                                if (Spaces![i][j].Piece!
+                                    .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m]))
+                                {
+                                    Spaces[k][m].IsUnderAttackByWhite = true;
+                                }
+                            }
+                        }
+                    }
+                    if (Spaces[i][j].Piece!.BelongsTo == Player.Black)
+                    {
+                        for (int k = 0; k < 8; k++)
+                        {
+                            for (int m = 0; m < 8; m++)
+                            {
+                                if (Spaces[i][j].Piece!
+                                    .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m]))
+                                {
+                                    Spaces[k][m].IsUnderAttackByBlack = true;
+                                }
                             }
                         }
                     }
                 }
             }
-
-            //        if (Spaces[i][j].Piece.belongsToPlayer == Player.Black)
-            //        {
-            //            for (int k = 0; k < 8; k++)
-            //            {
-            //                for (int m = 0; m < 8; m++)
-            //                {
-            //                    if (Spaces[i][j].Piece.CanTryToCapture(Spaces[i][j], Spaces[k][m]))
-            //                    {
-            //                        Spaces[k][m].IsUnderAttackByBlack = true;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
         }
     }
 }

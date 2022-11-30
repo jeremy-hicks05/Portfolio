@@ -18,7 +18,7 @@
 
         public virtual void CreateListOfPiecesToInspect(Space fromSpace, Space toSpace)
         {
-
+            //Console.WriteLine("Calling wrong method!");
         }
 
         public virtual bool CanCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
@@ -28,49 +28,43 @@
                 fromSpace.Piece?.BelongsTo != toSpace.Piece?.BelongsTo;
         }
 
-        public virtual bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
+        public virtual bool CanMoveFromSpaceToEmptySpace(Space fromSpace, Space toSpace)
         {
-            return fromSpace.Piece!
-                        .CanLegallyTryToMoveFromSpaceToSpace(fromSpace, toSpace) &&
-                    toSpace.Piece?.BelongsTo == null &&
-                   !(fromSpace.Piece
-                        .IsBlocked(fromSpace, toSpace));
+            return toSpace.Piece?.BelongsTo == null;
         }
 
         public virtual bool IsBlocked(Space fromSpace, Space toSpace)
         {
+            fromSpace.Piece?.CreateListOfPiecesToInspect(fromSpace, toSpace); // added
             foreach (Space s in fromSpace.Piece?.spacesToMoveToReview!)
             {
-                //Console.WriteLine($"{s} on space {s.Column}{s.Row}");
                 if (s != fromSpace.Piece.spacesToMoveToReview.Last())
                 {
                     if (s.Piece?.BelongsTo != null)
                     {
                         // piece is blocked
-                        //Console.WriteLine("Piece is blocked");
                         return true;
                     }
                 }
-                else if (s == fromSpace.Piece.spacesToMoveToReview.Last() &&
-                    fromSpace.Piece.BelongsTo != toSpace.Piece?.BelongsTo)
+                if (s == fromSpace.Piece.spacesToMoveToReview.Last())
                 {
                     // piece is not blocked
-                    //Console.WriteLine("Piece is not blocked");
                     return false;
-
                 }
             }
-            return false;
+            return true;
         }
 
         public virtual bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
+            //Console.WriteLine("Calling wrong method!");
             return false;
         }
 
         public virtual bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            return false;
+            return CanLegallyTryToMoveFromSpaceToSpace(fromSpace, toSpace) &&
+                    !(fromSpace.Piece!.IsBlocked(fromSpace, toSpace));
         }
     }
 }
