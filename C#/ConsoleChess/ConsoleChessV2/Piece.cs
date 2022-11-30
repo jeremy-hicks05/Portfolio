@@ -5,7 +5,9 @@
         public string? Name { get; set; }
         public int PointValue { get; set; }
         public Player? BelongsTo { get; set; }
-        public List<Space>? spacesThisPieceCanMoveTo = new();
+        public List<Space>? spacesToMoveToReview = new();
+        public List<Space>? spacesToCaptureReview = new();
+        public bool HasMoved { get; set; }
 
         public Piece()
         {
@@ -19,17 +21,27 @@
 
         }
 
-        public virtual bool CanCaptureOrMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
+        public virtual bool CanCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            return false;
+            // we already know move selection is legal and piece is not blocked
+            return toSpace.Piece?.BelongsTo != null &&
+                fromSpace.Piece?.BelongsTo != toSpace.Piece?.BelongsTo;
+        }
+
+        public virtual bool CanMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
+        {
+            return fromSpace.Piece!
+                        .CanLegallyTryToMoveFromSpaceToSpace(fromSpace, toSpace) &&
+                   !(fromSpace.Piece
+                        .IsBlocked(fromSpace, toSpace));
         }
 
         public virtual bool IsBlocked(Space fromSpace, Space toSpace)
         {
-            foreach (Space s in fromSpace.Piece?.spacesThisPieceCanMoveTo!)
+            foreach (Space s in fromSpace.Piece?.spacesToMoveToReview!)
             {
                 //Console.WriteLine($"{s} on space {s.Column}{s.Row}");
-                if (s != fromSpace.Piece.spacesThisPieceCanMoveTo.Last())
+                if (s != fromSpace.Piece.spacesToMoveToReview.Last())
                 {
                     if (s.Piece?.BelongsTo != null)
                     {
@@ -38,7 +50,7 @@
                         return true;
                     }
                 }
-                else if (s == fromSpace.Piece.spacesThisPieceCanMoveTo.Last() &&
+                else if (s == fromSpace.Piece.spacesToMoveToReview.Last() &&
                     fromSpace.Piece.BelongsTo != toSpace.Piece?.BelongsTo)
                 {
                     // piece is not blocked
@@ -47,7 +59,7 @@
 
                 }
             }
-            return true;
+            return false;
         }
 
         public virtual bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
@@ -55,12 +67,7 @@
             return false;
         }
 
-        public virtual bool CanTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
-        {
-            return false;
-        }
-
-        public virtual bool CanTryToAttackSpace(Space fromSpace, Space toSpace)
+        public virtual bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
             return false;
         }

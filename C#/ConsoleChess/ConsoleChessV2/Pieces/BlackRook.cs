@@ -23,13 +23,13 @@
 
         public override void CreateListOfPiecesToInspect(Space fromSpace, Space toSpace)
         {
-            spacesThisPieceCanMoveTo?.Clear();
+            spacesToMoveToReview?.Clear();
             if (toSpace.Column > fromSpace.Column && toSpace.Row == fromSpace.Row)
             {
                 // attacking right
                 for (int column = fromSpace.Column + 1; column <= toSpace.Column; column++)
                 {
-                    spacesThisPieceCanMoveTo!.Add(ChessBoard.Spaces![column][fromSpace.Row]);
+                    spacesToMoveToReview!.Add(ChessBoard.Spaces![column][fromSpace.Row]);
                 }
             }
             else if (toSpace.Column < fromSpace.Column && toSpace.Row == fromSpace.Row)
@@ -37,7 +37,7 @@
                 // attacking left
                 for (int column = fromSpace.Column - 1; column >= toSpace.Column; column--)
                 {
-                    spacesThisPieceCanMoveTo!.Add(ChessBoard.Spaces![column][fromSpace.Row]);
+                    spacesToMoveToReview!.Add(ChessBoard.Spaces![column][fromSpace.Row]);
                 }
             }
             else if (toSpace.Column == fromSpace.Column && toSpace.Row < fromSpace.Row)
@@ -45,7 +45,7 @@
                 // attacking down
                 for (int row = fromSpace.Row - 1; row >= toSpace.Row; row--)
                 {
-                    spacesThisPieceCanMoveTo!.Add(ChessBoard.Spaces![fromSpace.Column][row]);
+                    spacesToMoveToReview!.Add(ChessBoard.Spaces![fromSpace.Column][row]);
                 }
             }
             else if (toSpace.Column == fromSpace.Column && toSpace.Row > fromSpace.Row)
@@ -53,7 +53,7 @@
                 // attacking up
                 for (int row = fromSpace.Row + 1; row <= toSpace.Row; row++)
                 {
-                    spacesThisPieceCanMoveTo!.Add(ChessBoard.Spaces![fromSpace.Column][row]);
+                    spacesToMoveToReview!.Add(ChessBoard.Spaces![fromSpace.Column][row]);
                 }
             }
         }

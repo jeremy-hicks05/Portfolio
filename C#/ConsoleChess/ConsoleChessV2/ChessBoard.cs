@@ -135,7 +135,7 @@ namespace ConsoleChessV2
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    if (Spaces[i][j].Piece.BelongsTo == Player.White)
+                    if (Spaces![i][j].Piece?.BelongsTo == Player.White)
                     {
                         for (int k = 0; k < 8; k++)
                         {

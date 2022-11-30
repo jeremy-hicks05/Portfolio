@@ -23,18 +23,18 @@
         }
         public override void CreateListOfPiecesToInspect(Space fromSpace, Space toSpace)
         {
-            spacesThisPieceCanMoveTo?.Clear();
-            spacesThisPieceCanMoveTo?.Add(toSpace);
+            spacesToMoveToReview?.Clear();
+            spacesToMoveToReview?.Add(toSpace);
 
             // fix out of bounds issues
-            //spacesThisPieceCanMoveTo?.Add(ChessBoard.Spaces![fromSpace.Row + 1][fromSpace.Column + 1]);
-            //spacesThisPieceCanMoveTo?.Add(ChessBoard.Spaces![fromSpace.Row + 1][fromSpace.Column - 1]);
-            //spacesThisPieceCanMoveTo?.Add(ChessBoard.Spaces![fromSpace.Row - 1][fromSpace.Column + 1]);
-            //spacesThisPieceCanMoveTo?.Add(ChessBoard.Spaces![fromSpace.Row - 1][fromSpace.Column - 1]);
-            //spacesThisPieceCanMoveTo?.Add(ChessBoard.Spaces![fromSpace.Row + 1][fromSpace.Column]);
-            //spacesThisPieceCanMoveTo?.Add(ChessBoard.Spaces![fromSpace.Row - 1][fromSpace.Column]);
-            //spacesThisPieceCanMoveTo?.Add(ChessBoard.Spaces![fromSpace.Row][fromSpace.Column + 1]);
-            //spacesThisPieceCanMoveTo?.Add(ChessBoard.Spaces![fromSpace.Row][fromSpace.Column - 1]);
+            //spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Row + 1][fromSpace.Column + 1]);
+            //spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Row + 1][fromSpace.Column - 1]);
+            //spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Row - 1][fromSpace.Column + 1]);
+            //spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Row - 1][fromSpace.Column - 1]);
+            //spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Row + 1][fromSpace.Column]);
+            //spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Row - 1][fromSpace.Column]);
+            //spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Row][fromSpace.Column + 1]);
+            //spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Row][fromSpace.Column - 1]);
         }
     }
 }

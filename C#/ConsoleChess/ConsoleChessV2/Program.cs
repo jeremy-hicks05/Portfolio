@@ -20,7 +20,9 @@ namespace ConsoleChessV2
                 startingSpace.PrintInfo();
                 endingSpace.PrintInfo();
 
-                if(startingSpace.Piece!.CanLegallyTryToMoveFromSpaceToSpace(startingSpace, endingSpace))
+                if(startingSpace.Piece!.CanLegallyTryToMoveFromSpaceToSpace(startingSpace, endingSpace)
+                    ||
+                    startingSpace.Piece!.CanLegallyTryToCaptureFromSpaceToSpace(startingSpace, endingSpace))
                 {
                     Console.WriteLine($"This move attempt follows {startingSpace.Piece.Name} movement rules!");
                     Console.ReadLine();
@@ -34,14 +36,19 @@ namespace ConsoleChessV2
                     else
                     {
                         Console.WriteLine("Piece is not blocked");
-                        if(startingSpace.Piece.CanCaptureOrMoveFromSpaceToSpace(startingSpace, endingSpace))
+                        if(startingSpace.Piece.CanCaptureFromSpaceToSpace(startingSpace, endingSpace))
                         {
-                            Console.WriteLine("Piece can capture or move to space.");
+                            Console.WriteLine("Piece can capture space.");
                             ChessBoard.Move(startingSpace, endingSpace);
                         }
                         else
                         {
-                            Console.WriteLine("Piece cannot capture or move to space.");
+                            Console.WriteLine("Piece cannot capture space.");
+                        }
+                        if(startingSpace.Piece.CanMoveFromSpaceToSpace(startingSpace, endingSpace))
+                        {
+                            Console.WriteLine("Piece can move from space to space?");
+                            ChessBoard.Move(startingSpace, endingSpace);
                         }
                     }
                     Console.ReadLine();

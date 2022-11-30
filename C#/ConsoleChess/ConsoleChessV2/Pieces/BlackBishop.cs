@@ -23,13 +23,13 @@
 
         public override void CreateListOfPiecesToInspect(Space fromSpace, Space toSpace)
         {
-            spacesThisPieceCanMoveTo?.Clear();
+            spacesToMoveToReview?.Clear();
             if (toSpace.Column > fromSpace.Column && toSpace.Row > fromSpace.Row)
             {
                 // attacking up and right
                 for (int column = fromSpace.Column + 1, row = fromSpace.Row + 1; column <= toSpace.Column && row <= toSpace.Row; column++, row++)
                 {
-                    spacesThisPieceCanMoveTo!.Add(ChessBoard.Spaces![column][row]);
+                    spacesToMoveToReview!.Add(ChessBoard.Spaces![column][row]);
                 }
             }
             else if (toSpace.Column > fromSpace.Column && toSpace.Row < fromSpace.Row)
@@ -37,7 +37,7 @@
                 // attacking down and right
                 for (int column = fromSpace.Column + 1, row = fromSpace.Row - 1; column <= toSpace.Column && row >= toSpace.Row; column++, row--)
                 {
-                    spacesThisPieceCanMoveTo!.Add(ChessBoard.Spaces![column][row]);
+                    spacesToMoveToReview!.Add(ChessBoard.Spaces![column][row]);
                 }
             }
             else if (toSpace.Column < fromSpace.Column && toSpace.Row < fromSpace.Row)
@@ -45,7 +45,7 @@
                 // attacking down and left
                 for (int column = fromSpace.Column - 1, row = fromSpace.Row - 1; column >= toSpace.Column && row >= toSpace.Row; column--, row--)
                 {
-                    spacesThisPieceCanMoveTo!.Add(ChessBoard.Spaces![column][row]);
+                    spacesToMoveToReview!.Add(ChessBoard.Spaces![column][row]);
                 }
             }
             else if (toSpace.Column < fromSpace.Column && toSpace.Row > fromSpace.Row)
@@ -53,7 +53,7 @@
                 // attacking up and left
                 for (int column = fromSpace.Column - 1, row = fromSpace.Row + 1; column >= toSpace.Column && row <= toSpace.Row; column--, row++)
                 {
-                    spacesThisPieceCanMoveTo!.Add(ChessBoard.Spaces![column][row]);
+                    spacesToMoveToReview!.Add(ChessBoard.Spaces![column][row]);
                 }
             }
         }
