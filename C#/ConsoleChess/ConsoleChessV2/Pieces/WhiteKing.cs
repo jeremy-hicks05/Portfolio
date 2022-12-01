@@ -35,7 +35,6 @@
                 // attemping to castle Queen Side
                 return true;
             }
-
             return false;
         }
 
@@ -138,48 +137,57 @@
 
         public override bool TryMove(Space fromSpace, Space toSpace)
         {
+            //Space? tempFromSpace = fromSpace;
             Piece? tempFromSpacePiece = fromSpace.Piece;
+            //Space? tempToSpace = toSpace;
             Piece? tempToSpacePiece = toSpace.Piece;
 
-            //spacesToMoveToReview!.Clear();
-            //CreateListOfPiecesToInspect(fromSpace, toSpace);
+            // if castling
+            if (Math.Abs(toSpace.Column - fromSpace.Column) == 2)
+            {
+                if (!(CanCastle(fromSpace, toSpace)))
+                {
+                    // cancel move
+                    fromSpace.Piece = tempFromSpacePiece;
+                    toSpace.Piece = tempToSpacePiece;
 
-            //foreach (Space s in spacesToMoveToReview!)
-            //{
-            toSpace.Piece = fromSpace.Piece;
+                    ChessBoard.WhiteKingSpace = fromSpace;
+                    return false;
+                }
+                else
+                {
+                    // revert move
+                    fromSpace.Piece = tempFromSpacePiece;
+                    toSpace.Piece = tempToSpacePiece;
 
+                    ChessBoard.WhiteKingSpace = fromSpace;
+                    return true;
+                }
+            }
+
+            // move king's designated space
             ChessBoard.WhiteKingSpace = toSpace;
-
+            toSpace.Piece = fromSpace.Piece;
             fromSpace.Clear();
             ChessBoard.FindAllSpacesAttacked();
 
             // verify your king is not in check
-            if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+            if (ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
             {
                 // cancel move
                 fromSpace.Piece = tempFromSpacePiece;
                 toSpace.Piece = tempToSpacePiece;
-                //s.Clear();
 
                 ChessBoard.WhiteKingSpace = fromSpace;
                 return false;
             }
-            else if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
-            {
-                // cancel move
-                fromSpace.Piece = tempFromSpacePiece;
-                toSpace.Piece = tempToSpacePiece;
-                //s.Clear();
 
-                ChessBoard.WhiteKingSpace = fromSpace;
-                return false;
-            }
+            // revert move -> do a true move later
             fromSpace.Piece = tempFromSpacePiece;
             toSpace.Piece = tempToSpacePiece;
-            //s.Clear();
 
+            // restore king's location
             ChessBoard.WhiteKingSpace = fromSpace;
-            //}
             return true;
         }
 
@@ -226,47 +234,23 @@
 
         public override void Move(Space fromSpace, Space toSpace)
         {
-            toSpace.Piece = fromSpace.Piece;
-
-            if (CanCastle(fromSpace, toSpace))
+            // check for castle and update KingSpace
+            if (fromSpace.Column + 2 == toSpace.Column)
             {
-                // check for castle and update KingSpace
-                if (fromSpace.Piece?.GetType() == typeof(BlackKing))
-                {
-                    if (fromSpace.Column + 2 == toSpace.Column)
-                    {
-                        // castle king side black
-                        ChessBoard.Spaces![C["F"]][R["8"]].Piece = ChessBoard.Spaces[C["H"]][R["8"]].Piece;
-                        ChessBoard.Spaces![C["H"]][R["8"]].Clear();
-
-                    }
-                    if (fromSpace.Column - 3 == toSpace.Column)
-                    {
-                        // castle queen side black
-                        ChessBoard.Spaces![C["D"]][R["8"]].Piece = ChessBoard.Spaces[C["A"]][R["8"]].Piece;
-                        ChessBoard.Spaces[C["A"]][R["8"]].Clear();
-                    }
-                    ChessBoard.BlackKingSpace = toSpace;
-                }
-                else if (toSpace.Piece?.GetType() == typeof(WhiteKing))
-                {
-                    if (fromSpace.Column + 2 == toSpace.Column)
-                    {
-                        // castle king side white
-                        ChessBoard.Spaces![C["F"]][R["1"]].Piece = ChessBoard.Spaces[C["H"]][R["1"]].Piece;
-                        ChessBoard.Spaces[C["H"]][R["1"]].Clear();
-                    }
-                    if (fromSpace.Column - 3 == toSpace.Column)
-                    {
-                        // castle queen side black
-                        ChessBoard.Spaces![C["D"]][R["1"]].Piece = ChessBoard.Spaces[C["A"]][R["1"]].Piece;
-                        ChessBoard.Spaces[C["A"]][R["1"]].Clear();
-                    }
-                    ChessBoard.WhiteKingSpace = toSpace;
-                }
-                toSpace.Piece!.HasMoved = true;
-                fromSpace.Clear();
+                // castle king side white
+                ChessBoard.Spaces![C["F"]][R["1"]].Piece = ChessBoard.Spaces[C["H"]][R["1"]].Piece;
+                ChessBoard.Spaces[C["H"]][R["1"]].Clear();
             }
+            if (fromSpace.Column - 2 == toSpace.Column)
+            {
+                // castle queen side white
+                ChessBoard.Spaces![C["D"]][R["1"]].Piece = ChessBoard.Spaces[C["A"]][R["1"]].Piece;
+                ChessBoard.Spaces[C["A"]][R["1"]].Clear();
+            }
+            toSpace.Piece = fromSpace.Piece;
+            ChessBoard.WhiteKingSpace = toSpace;
+            toSpace.Piece!.HasMoved = true;
+            fromSpace.Clear();
         }
 
         public bool CanCastle(Space fromSpace, Space toSpace)
@@ -274,6 +258,10 @@
             fromSpace.Piece?.CreateListOfPiecesToInspect(fromSpace, toSpace);
 
             // castle options
+            if ((fromSpace.IsUnderAttackByBlack))
+            {
+                return false;
+            }
             foreach (Space s in fromSpace.Piece?.spacesToMoveToReview!)
             {
                 if (s.IsUnderAttackByBlack)
@@ -284,11 +272,11 @@
 
                 if (s == fromSpace.Piece.spacesToMoveToReview.Last() && !(s.IsUnderAttackByBlack))
                 {
-                    // castle is "blocked"
+                    // castle is not "blocked"
                     return true;
                 }
             }
-            return true;
+            return false;
         }
 
         public override bool TryCapture(Space fromSpace, Space toSpace)
@@ -304,17 +292,7 @@
             ChessBoard.FindAllSpacesAttacked();
 
             // verify your king is not in check
-            if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
-            {
-                // cancel move
-                fromSpace.Piece = tempFromSpacePiece;
-                toSpace.Piece = tempToSpacePiece;
-
-                ChessBoard.WhiteKingSpace = fromSpace;
-
-                return false;
-            }
-            else if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
+            if (ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
             {
                 // cancel move
                 fromSpace.Piece = tempFromSpacePiece;

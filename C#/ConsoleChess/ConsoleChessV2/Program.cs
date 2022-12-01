@@ -7,16 +7,6 @@
  *                                              *
  ************************************************/
 
-/* Things to test:
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- */
-
 namespace ConsoleChessV2
 {
     internal class Program
@@ -101,7 +91,6 @@ namespace ConsoleChessV2
                         //Console.WriteLine($"This move attempt does not follow {startingSpace.Piece.Name} movement rules!");
                         //Console.ReadLine();
                     }
-
                     ChessBoard.FindAllSpacesAttacked();
                 }
                 ChessBoard.PrintBoard();

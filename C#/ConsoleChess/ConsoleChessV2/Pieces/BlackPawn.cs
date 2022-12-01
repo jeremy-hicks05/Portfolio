@@ -75,5 +75,11 @@
             }
             return false;
         }
+
+        public override bool CanMoveFromSpaceToEmptySpace(Space fromSpace, Space toSpace)
+        {
+            return fromSpace.Column == toSpace.Column &&
+                toSpace.Piece?.BelongsTo == null;
+        }
     }
 }
