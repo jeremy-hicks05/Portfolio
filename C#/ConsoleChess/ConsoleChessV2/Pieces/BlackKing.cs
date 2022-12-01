@@ -21,6 +21,21 @@
             {
                 return true;
             }
+            if (HasMoved == false &&
+                fromSpace.Row == toSpace.Row &&
+                fromSpace.Column == C["E"] && toSpace.Column == C["G"])
+            {
+                // attemping to castle King Side
+                return true;
+            }
+
+            if (HasMoved == false &&
+                fromSpace.Row == toSpace.Row &&
+                fromSpace.Column == C["E"] && toSpace.Column == C["C"])
+            {
+                // attemping to castle Queen Side
+                return true;
+            }
             return false;
         }
         public override void CreateListOfPiecesToInspect(Space fromSpace, Space toSpace)
@@ -230,9 +245,9 @@
             {
                 if (s != fromSpace.Piece.spacesToMoveToReview.Last())
                 {
-                    if (s.Piece?.BelongsTo != null)
+                    if (s.Piece?.BelongsTo != null || s.IsUnderAttackByWhite)
                     {
-                        // piece is blocked
+                        // piece is blocked or cannot castle
                         return true;
                     }
                 }

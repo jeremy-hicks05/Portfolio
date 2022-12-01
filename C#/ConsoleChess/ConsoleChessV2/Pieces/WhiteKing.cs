@@ -141,6 +141,11 @@
             Piece? tempFromSpacePiece = fromSpace.Piece;
             Piece? tempToSpacePiece = toSpace.Piece;
 
+            //spacesToMoveToReview!.Clear();
+            //CreateListOfPiecesToInspect(fromSpace, toSpace);
+
+            //foreach (Space s in spacesToMoveToReview!)
+            //{
             toSpace.Piece = fromSpace.Piece;
 
             ChessBoard.WhiteKingSpace = toSpace;
@@ -154,6 +159,7 @@
                 // cancel move
                 fromSpace.Piece = tempFromSpacePiece;
                 toSpace.Piece = tempToSpacePiece;
+                //s.Clear();
 
                 ChessBoard.WhiteKingSpace = fromSpace;
                 return false;
@@ -163,14 +169,58 @@
                 // cancel move
                 fromSpace.Piece = tempFromSpacePiece;
                 toSpace.Piece = tempToSpacePiece;
+                //s.Clear();
 
                 ChessBoard.WhiteKingSpace = fromSpace;
                 return false;
             }
             fromSpace.Piece = tempFromSpacePiece;
             toSpace.Piece = tempToSpacePiece;
+            //s.Clear();
 
             ChessBoard.WhiteKingSpace = fromSpace;
+            //}
+            return true;
+        }
+
+        public override bool IsBlocked(Space fromSpace, Space toSpace)
+        {
+            fromSpace.Piece?.CreateListOfPiecesToInspect(fromSpace, toSpace); // added
+            // move options
+            foreach (Space s in fromSpace.Piece?.spacesToMoveToReview!)
+            {
+                if (s != fromSpace.Piece.spacesToMoveToReview.Last())
+                {
+                    if (s.Piece?.BelongsTo != null || s.IsUnderAttackByBlack)
+                    {
+                        // piece is blocked or cannot castle
+                        return true;
+                    }
+                }
+                if (s == fromSpace.Piece.spacesToMoveToReview.Last())
+                {
+                    // piece is not blocked
+                    return false;
+                }
+            }
+
+            // capture options
+            foreach (Space s in fromSpace.Piece?.spacesToCaptureReview!)
+            {
+                if (s != fromSpace.Piece.spacesToCaptureReview.Last())
+                {
+                    if (s.Piece?.BelongsTo != null)
+                    {
+                        // piece is blocked
+                        return true;
+                    }
+                }
+                if (s == fromSpace.Piece.spacesToCaptureReview.Last())
+                {
+                    // piece is not blocked
+                    return false;
+                }
+            }
             return true;
         }
 
@@ -229,13 +279,13 @@
                 if (s.IsUnderAttackByBlack)
                 {
                     // castle is "blocked"
-                    return true;
+                    return false;
                 }
 
                 if (s == fromSpace.Piece.spacesToMoveToReview.Last() && !(s.IsUnderAttackByBlack))
                 {
                     // castle is "blocked"
-                    return false;
+                    return true;
                 }
             }
             return true;

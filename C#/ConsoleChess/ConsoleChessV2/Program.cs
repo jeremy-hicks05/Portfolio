@@ -66,6 +66,7 @@ namespace ConsoleChessV2
                                 if (startingSpace.Piece.TryCapture(startingSpace, endingSpace))
                                 {
                                     startingSpace.Piece.Move(startingSpace, endingSpace);
+                                    ChessBoard.ChangeTurn();
                                 }
                                 else
                                 {
@@ -80,6 +81,7 @@ namespace ConsoleChessV2
                                 if (startingSpace.Piece.TryMove(startingSpace, endingSpace))
                                 {
                                     startingSpace.Piece.Move(startingSpace, endingSpace);
+                                    ChessBoard.ChangeTurn();
                                 }
                                 else
                                 {
@@ -92,7 +94,6 @@ namespace ConsoleChessV2
                                 //Console.WriteLine("Piece cannot capture or move to space.");
                                 //Console.ReadLine();
                             }
-                            
                         }
                     }
                     else
