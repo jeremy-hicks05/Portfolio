@@ -1,6 +1,5 @@
 ﻿namespace ConsoleChessV2.Pieces
 {
-    using static Notation;
     internal class WhiteBishop : Piece
     {
         

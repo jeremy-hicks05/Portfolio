@@ -50,7 +50,7 @@ namespace ConsoleChessV2
             ChessBoard.FindAllSpacesAttacked();
 
             // verify your king is not in check
-            if(ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+            if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
             {
                 // cancel move
                 fromSpace.Piece = tempFromSpacePiece;
@@ -67,6 +67,13 @@ namespace ConsoleChessV2
             fromSpace.Piece = tempFromSpacePiece;
             toSpace.Piece = tempToSpacePiece;
             return true;
+        }
+
+        public virtual void Move(Space fromSpace, Space toSpace)
+        {
+            toSpace.Piece = fromSpace.Piece;
+            toSpace.Piece!.HasMoved = true;
+            fromSpace.Clear();
         }
 
         public virtual bool TryCapture(Space fromSpace, Space toSpace)
@@ -102,6 +109,7 @@ namespace ConsoleChessV2
         public virtual bool IsBlocked(Space fromSpace, Space toSpace)
         {
             fromSpace.Piece?.CreateListOfPiecesToInspect(fromSpace, toSpace); // added
+            // move options
             foreach (Space s in fromSpace.Piece?.spacesToMoveToReview!)
             {
                 if (s != fromSpace.Piece.spacesToMoveToReview.Last())

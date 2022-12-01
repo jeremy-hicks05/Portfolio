@@ -110,9 +110,9 @@
             if (fromSpace.Column - 1 >= 0 && fromSpace.Row - 1 >= 0)
             {
                 // attacking down and left
-                if(fromSpace.Row - 1 == toSpace.Row &&
+                if (fromSpace.Row - 1 == toSpace.Row &&
                     fromSpace.Column - 1 == toSpace.Column)
-                spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column - 1][fromSpace.Row - 1]);
+                    spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column - 1][fromSpace.Row - 1]);
             }
             // if castling King side
             if (HasMoved == false &&
@@ -171,6 +171,73 @@
             toSpace.Piece = tempToSpacePiece;
 
             ChessBoard.WhiteKingSpace = fromSpace;
+            return true;
+        }
+
+        public override void Move(Space fromSpace, Space toSpace)
+        {
+            toSpace.Piece = fromSpace.Piece;
+
+            if (CanCastle(fromSpace, toSpace))
+            {
+                // check for castle and update KingSpace
+                if (fromSpace.Piece?.GetType() == typeof(BlackKing))
+                {
+                    if (fromSpace.Column + 2 == toSpace.Column)
+                    {
+                        // castle king side black
+                        ChessBoard.Spaces![C["F"]][R["8"]].Piece = ChessBoard.Spaces[C["H"]][R["8"]].Piece;
+                        ChessBoard.Spaces![C["H"]][R["8"]].Clear();
+
+                    }
+                    if (fromSpace.Column - 3 == toSpace.Column)
+                    {
+                        // castle queen side black
+                        ChessBoard.Spaces![C["D"]][R["8"]].Piece = ChessBoard.Spaces[C["A"]][R["8"]].Piece;
+                        ChessBoard.Spaces[C["A"]][R["8"]].Clear();
+                    }
+                    ChessBoard.BlackKingSpace = toSpace;
+                }
+                else if (toSpace.Piece?.GetType() == typeof(WhiteKing))
+                {
+                    if (fromSpace.Column + 2 == toSpace.Column)
+                    {
+                        // castle king side white
+                        ChessBoard.Spaces![C["F"]][R["1"]].Piece = ChessBoard.Spaces[C["H"]][R["1"]].Piece;
+                        ChessBoard.Spaces[C["H"]][R["1"]].Clear();
+                    }
+                    if (fromSpace.Column - 3 == toSpace.Column)
+                    {
+                        // castle queen side black
+                        ChessBoard.Spaces![C["D"]][R["1"]].Piece = ChessBoard.Spaces[C["A"]][R["1"]].Piece;
+                        ChessBoard.Spaces[C["A"]][R["1"]].Clear();
+                    }
+                    ChessBoard.WhiteKingSpace = toSpace;
+                }
+                toSpace.Piece!.HasMoved = true;
+                fromSpace.Clear();
+            }
+        }
+
+        public bool CanCastle(Space fromSpace, Space toSpace)
+        {
+            fromSpace.Piece?.CreateListOfPiecesToInspect(fromSpace, toSpace);
+
+            // castle options
+            foreach (Space s in fromSpace.Piece?.spacesToMoveToReview!)
+            {
+                if (s.IsUnderAttackByBlack)
+                {
+                    // castle is "blocked"
+                    return true;
+                }
+
+                if (s == fromSpace.Piece.spacesToMoveToReview.Last() && !(s.IsUnderAttackByBlack))
+                {
+                    // castle is "blocked"
+                    return false;
+                }
+            }
             return true;
         }
 

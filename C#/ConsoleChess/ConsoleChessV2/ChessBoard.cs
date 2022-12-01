@@ -118,59 +118,25 @@ namespace ConsoleChessV2
                 selectedPieceRow = Console.ReadLine();
             }
 
-            Console.WriteLine("Your piece is a " +
-            Spaces?[C[selectedPieceColumn?.ToUpper()!]]
-                   [R[selectedPieceRow!]].Piece?.Name);
+            //Console.WriteLine("Your piece is a " +
+            //Spaces?[C[selectedPieceColumn?.ToUpper()!]]
+            //       [R[selectedPieceRow!]].Piece?.Name);
 
             return Spaces![C[selectedPieceColumn?.ToUpper()!]]
                           [R[selectedPieceRow!]];
         }
 
-        public static void Move(Space fromSpace, Space toSpace)
-        {
-            toSpace.Piece = fromSpace.Piece;
-            toSpace.Piece!.HasMoved = true;
-            fromSpace.Clear();
-
-            // check for castle and update KingSpace
-            if(toSpace.Piece.GetType() == typeof(BlackKing))
-            {
-                if (fromSpace.Column + 2 == toSpace.Column)
-                {
-                    // castle king side black
-                    Spaces![C["F"]][R["8"]].Piece = Spaces[C["H"]][R["8"]].Piece;
-                    Spaces[C["H"]][R["8"]].Clear();
-                }
-                if (fromSpace.Column -3 == toSpace.Column)
-                {
-                    // castle queen side black
-                    Spaces![C["D"]][R["8"]].Piece = Spaces[C["A"]][R["8"]].Piece;
-                    Spaces[C["A"]][R["8"]].Clear();
-                }
-                BlackKingSpace = toSpace;
-            }
-            else if(toSpace.Piece.GetType() == typeof(WhiteKing))
-            {
-                if (fromSpace.Column + 2 == toSpace.Column)
-                {
-                    // castle king side white
-                    Spaces![C["F"]][R["1"]].Piece = Spaces[C["H"]][R["1"]].Piece;
-                    Spaces[C["H"]][R["1"]].Clear();
-                }
-                if (fromSpace.Column - 3 == toSpace.Column)
-                {
-                    // castle queen side black
-                    Spaces![C["D"]][R["1"]].Piece = Spaces[C["A"]][R["1"]].Piece;
-                    Spaces[C["A"]][R["1"]].Clear();
-                }
-                WhiteKingSpace = toSpace;
-            }
-            ChangeTurn();
-        }
+        //public static void Move(Space fromSpace, Space toSpace)
+        //{
+        //    toSpace.Piece = fromSpace.Piece;
+        //    toSpace.Piece!.HasMoved = true;
+        //    fromSpace.Clear();
+        //    ChangeTurn();
+        //}
 
         public static void ChangeTurn()
         {
-            if(turn == Player.White)
+            if (turn == Player.White)
             {
                 turn = Player.Black;
             }

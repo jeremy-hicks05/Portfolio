@@ -155,6 +155,114 @@
             return true;
         }
 
+        public override void Move(Space fromSpace, Space toSpace)
+        {
+            toSpace.Piece = fromSpace.Piece;
+
+            if (CanCastle(fromSpace, toSpace))
+            {
+                // check for castle and update KingSpace
+                if (fromSpace.Piece?.GetType() == typeof(BlackKing))
+                {
+                    if (fromSpace.Column + 2 == toSpace.Column)
+                    {
+                        // castle king side black
+                        ChessBoard.Spaces![C["F"]][R["8"]].Piece = ChessBoard.Spaces[C["H"]][R["8"]].Piece;
+                        ChessBoard.Spaces![C["H"]][R["8"]].Clear();
+
+                    }
+                    if (fromSpace.Column - 3 == toSpace.Column)
+                    {
+                        // castle queen side black
+                        ChessBoard.Spaces![C["D"]][R["8"]].Piece = ChessBoard.Spaces[C["A"]][R["8"]].Piece;
+                        ChessBoard.Spaces[C["A"]][R["8"]].Clear();
+                    }
+                    ChessBoard.BlackKingSpace = toSpace;
+                }
+                else if (toSpace.Piece?.GetType() == typeof(WhiteKing))
+                {
+                    if (fromSpace.Column + 2 == toSpace.Column)
+                    {
+                        // castle king side white
+                        ChessBoard.Spaces![C["F"]][R["1"]].Piece = ChessBoard.Spaces[C["H"]][R["1"]].Piece;
+                        ChessBoard.Spaces[C["H"]][R["1"]].Clear();
+                    }
+                    if (fromSpace.Column - 3 == toSpace.Column)
+                    {
+                        // castle queen side black
+                        ChessBoard.Spaces![C["D"]][R["1"]].Piece = ChessBoard.Spaces[C["A"]][R["1"]].Piece;
+                        ChessBoard.Spaces[C["A"]][R["1"]].Clear();
+                    }
+                    ChessBoard.WhiteKingSpace = toSpace;
+                }
+                toSpace.Piece!.HasMoved = true;
+                fromSpace.Clear();
+            }
+        }
+
+        public bool CanCastle(Space fromSpace, Space toSpace)
+        {
+            fromSpace.Piece?.CreateListOfPiecesToInspect(fromSpace, toSpace);
+
+            // castle options
+            foreach (Space s in fromSpace.Piece?.spacesToMoveToReview!)
+            {
+                if (s.IsUnderAttackByBlack)
+                {
+                    // castle is "blocked"
+                    return true;
+                }
+
+                if (s == fromSpace.Piece.spacesToMoveToReview.Last() && !(s.IsUnderAttackByBlack))
+                {
+                    // castle is "blocked"
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public override bool IsBlocked(Space fromSpace, Space toSpace)
+        {
+            fromSpace.Piece?.CreateListOfPiecesToInspect(fromSpace, toSpace); // added
+            // move options
+            foreach (Space s in fromSpace.Piece?.spacesToMoveToReview!)
+            {
+                if (s != fromSpace.Piece.spacesToMoveToReview.Last())
+                {
+                    if (s.Piece?.BelongsTo != null)
+                    {
+                        // piece is blocked
+                        return true;
+                    }
+                }
+                if (s == fromSpace.Piece.spacesToMoveToReview.Last())
+                {
+                    // piece is not blocked
+                    return false;
+                }
+            }
+
+            // capture options
+            foreach (Space s in fromSpace.Piece?.spacesToCaptureReview!)
+            {
+                if (s != fromSpace.Piece.spacesToCaptureReview.Last())
+                {
+                    if (s.Piece?.BelongsTo != null)
+                    {
+                        // piece is blocked
+                        return true;
+                    }
+                }
+                if (s == fromSpace.Piece.spacesToCaptureReview.Last())
+                {
+                    // piece is not blocked
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public override bool TryCapture(Space fromSpace, Space toSpace)
         {
             Piece? tempFromSpacePiece = fromSpace.Piece;
