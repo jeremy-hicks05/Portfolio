@@ -30,7 +30,6 @@ namespace ConsoleChessV2
 
                 if (startingSpace.Piece?.BelongsTo == ChessBoard.turn)
                 {
-
                     if (startingSpace.Piece!.CanLegallyTryToMoveFromSpaceToSpace(startingSpace, endingSpace)
                         ||
                         startingSpace.Piece!.CanLegallyTryToCaptureFromSpaceToSpace(startingSpace, endingSpace))

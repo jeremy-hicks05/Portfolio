@@ -81,6 +81,8 @@ namespace ConsoleChessV2
             Piece? tempFromSpacePiece = fromSpace.Piece;
             Piece? tempToSpacePiece = toSpace.Piece;
 
+            // if a pawn up 2 puts you in check, you are not clearing out the 'fromSpace', you are clearing out the pawn next to your pawn
+
             toSpace.Piece = fromSpace.Piece;
             fromSpace.Clear();
             toSpace.Clear();
@@ -108,7 +110,7 @@ namespace ConsoleChessV2
 
         public virtual bool IsBlocked(Space fromSpace, Space toSpace)
         {
-            fromSpace.Piece?.CreateListOfPiecesToInspect(fromSpace, toSpace); // added
+            //fromSpace.Piece?.CreateListOfPiecesToInspect(fromSpace, toSpace); // added
             // move options
             foreach (Space s in fromSpace.Piece?.spacesToMoveToReview!)
             {
@@ -127,7 +129,7 @@ namespace ConsoleChessV2
                 }
             }
 
-            // capture options
+            // capture options  TODO: Remove?
             foreach (Space s in fromSpace.Piece?.spacesToCaptureReview!)
             {
                 if (s != fromSpace.Piece.spacesToCaptureReview.Last())
