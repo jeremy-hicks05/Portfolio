@@ -7,6 +7,14 @@
  *                                              *
  ************************************************/
 
+/* TODO: Bishop allowed own king to be in check after Q took rook
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
 namespace ConsoleChessV2
 {
     internal class Program
@@ -15,84 +23,59 @@ namespace ConsoleChessV2
         {
             // Initialize Board
             ChessBoard.InitBoard();
-            ChessBoard.PrintBoard();
+            //ChessBoard.PrintBoard();
             while (true)
             {
+                ChessBoard.PrintBoard();
                 Console.WriteLine($"-{ChessBoard.turn}'s Turn-");
-                ChessBoard.FindAllSpacesAttacked();
+
+                // get Starting and Ending Spaces from User Input
                 Space startingSpace = ChessBoard.UserSelectsSpace();
-                //startingSpace.PrintInfo();
-
                 Space endingSpace = ChessBoard.UserSelectsSpace();
-                //endingSpace.PrintInfo();
 
-                //Console.ReadLine();
-
+                // check if Player's turn corresponds to the starting piece's owner
                 if (startingSpace.Piece?.BelongsTo == ChessBoard.turn)
                 {
+                    // set "IsUnderAttackBy{Player} for every piece's attacked squares
+                    ChessBoard.FindAllSpacesAttacked();
+
+                    // compare attempted move to basic rules of chess piece movement
                     if (startingSpace.Piece!.CanLegallyTryToMoveFromSpaceToSpace(startingSpace, endingSpace)
                         ||
+                        // compare attempted move to basic rules of chess piece capture
                         startingSpace.Piece!.CanLegallyTryToCaptureFromSpaceToSpace(startingSpace, endingSpace))
                     {
-                        //Console.WriteLine($"This move attempt follows {startingSpace.Piece.Name} movement rules!");
-                        //Console.ReadLine();
-
+                        // generate list of spaces between starting and ending space
                         startingSpace.Piece.CreateListOfPiecesToInspect(startingSpace, endingSpace);
 
-                        if (startingSpace.Piece.IsBlocked(startingSpace, endingSpace))
+                        // determine if piece is able to get to the end of the list without hitting another piece
+                        if (!(startingSpace.Piece.IsBlocked(startingSpace, endingSpace)))
                         {
-                            //Console.WriteLine("Piece is blocked");
-                            //Console.ReadLine();
-                        }
-                        else
-                        {
-                            //Console.WriteLine("Piece is not blocked");
-                            //Console.ReadLine();
+                            // determine if piece can capture ending space
                             if (startingSpace.Piece.CanCaptureFromSpaceToSpace(startingSpace, endingSpace))
                             {
-                                //Console.WriteLine("Piece can capture space.");
-                                //Console.ReadLine();
+                                // try capturing the piece on the ending space, test if rules are followed (not in check)
                                 if (startingSpace.Piece.TryCapture(startingSpace, endingSpace))
                                 {
+                                    // finally move piece to destination
                                     startingSpace.Piece.Move(startingSpace, endingSpace);
                                     ChessBoard.ChangeTurn();
                                 }
-                                else
-                                {
-                                    //Console.WriteLine("King is in check!");
-                                    //Console.ReadLine();
-                                }
                             }
+                            // determine if piece can move to an empty space (not capture)
                             else if (startingSpace.Piece.CanMoveFromSpaceToEmptySpace(startingSpace, endingSpace))
                             {
-                                //Console.WriteLine("Piece can move from space to empty space");
-                                //Console.ReadLine();
+                                // try moving the piece on the starting space, test if rules are followed (not in check)
                                 if (startingSpace.Piece.TryMove(startingSpace, endingSpace))
                                 {
+                                    // finally move piece to destination
                                     startingSpace.Piece.Move(startingSpace, endingSpace);
                                     ChessBoard.ChangeTurn();
                                 }
-                                else
-                                {
-                                    //Console.WriteLine("King is in check!");
-                                    //Console.ReadLine();
-                                }
-                            }
-                            else
-                            {
-                                //Console.WriteLine("Piece cannot capture or move to space.");
-                                //Console.ReadLine();
                             }
                         }
                     }
-                    else
-                    {
-                        //Console.WriteLine($"This move attempt does not follow {startingSpace.Piece.Name} movement rules!");
-                        //Console.ReadLine();
-                    }
-                    ChessBoard.FindAllSpacesAttacked();
                 }
-                ChessBoard.PrintBoard();
             }
         }
     }

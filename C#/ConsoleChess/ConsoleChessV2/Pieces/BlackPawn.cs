@@ -172,6 +172,13 @@
                 HasJustMovedTwo = true;
             }
 
+            // if promotion
+            if (toSpace.Row == 1)
+            {
+                Console.WriteLine("Promotion!");
+            }
+            // end promotion
+
             // if en passant
             // to the left
             if (fromSpace.Column - 1 >= 0)

@@ -5,7 +5,7 @@ namespace ConsoleChessV2
     using ConsoleChessV2.Pieces;
     using System.Text.RegularExpressions;
     using static Notation;
-    internal static class ChessBoard // single instance of chess board
+    internal static class ChessBoard
     {
         public static Space[][]? Spaces { get; set; }
         public static Space? WhiteKingSpace { get; set; }
@@ -126,14 +126,6 @@ namespace ConsoleChessV2
                           [R[selectedPieceRow!]];
         }
 
-        //public static void Move(Space fromSpace, Space toSpace)
-        //{
-        //    toSpace.Piece = fromSpace.Piece;
-        //    toSpace.Piece!.HasMoved = true;
-        //    fromSpace.Clear();
-        //    ChangeTurn();
-        //}
-
         public static void ChangeTurn()
         {
             if (turn == Player.White)
@@ -169,8 +161,10 @@ namespace ConsoleChessV2
                         {
                             for (int m = 0; m < 8; m++)
                             {
-                                if (Spaces![i][j].Piece!
-                                    .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m]))
+                                if ((Spaces![i][j].Piece!
+                                    .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                    !(Spaces![i][j].Piece!
+                                    .IsBlocked(Spaces[i][j], Spaces[k][m])))
                                 {
                                     Spaces[k][m].IsUnderAttackByWhite = true;
                                 }
@@ -183,8 +177,10 @@ namespace ConsoleChessV2
                         {
                             for (int m = 0; m < 8; m++)
                             {
-                                if (Spaces[i][j].Piece!
-                                    .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m]))
+                                if ((Spaces[i][j].Piece!
+                                    .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                    !(Spaces![i][j].Piece!
+                                    .IsBlocked(Spaces[i][j], Spaces[k][m])))
                                 {
                                     Spaces[k][m].IsUnderAttackByBlack = true;
                                 }

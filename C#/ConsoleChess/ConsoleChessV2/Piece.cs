@@ -110,7 +110,7 @@ namespace ConsoleChessV2
 
         public virtual bool IsBlocked(Space fromSpace, Space toSpace)
         {
-            //fromSpace.Piece?.CreateListOfPiecesToInspect(fromSpace, toSpace); // added
+            fromSpace.Piece?.CreateListOfPiecesToInspect(fromSpace, toSpace); // added
             // move options
             foreach (Space s in fromSpace.Piece?.spacesToMoveToReview!)
             {
