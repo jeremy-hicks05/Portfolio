@@ -119,18 +119,15 @@
                 {
                     if (ChessBoard.Spaces?[fromSpace.Column - 1][fromSpace.Row].Piece!.GetType() == typeof(WhitePawn))
                     {
-                        if (fromSpace.Column - 1 == toSpace.Column)
+                        WhitePawn? downcast = ChessBoard.Spaces?[fromSpace.Column - 1][fromSpace.Row].Piece! as WhitePawn;
+                        // if pawn to the left or right has just moved 2 (hasJustMovedTwo boolean?) allow it to capture that piece, and clear it
+                        if (downcast!.HasJustMovedTwo)
                         {
-                            WhitePawn? downcast = ChessBoard.Spaces?[fromSpace.Column - 1][fromSpace.Row].Piece! as WhitePawn;
-                            // if pawn to the left or right has just moved 2 (hasJustMovedTwo boolean?) allow it to capture that piece, and clear it
-                            if (downcast!.HasJustMovedTwo)
-                            {
-                                //clear black pawn to the left
-                                ChessBoard.Spaces?[fromSpace.Column - 1][fromSpace.Row].Clear();
+                            //clear black pawn to the left
+                            ChessBoard.Spaces?[fromSpace.Column - 1][fromSpace.Row].Clear();
 
-                                // capture up and left toward the piece
-                                return true;
-                            }
+                            // capture up and left toward the piece
+                            return true;
                         }
                     }
                 }
@@ -175,6 +172,43 @@
                 HasJustMovedTwo = true;
             }
 
+            // if en passant
+            // to the left
+            if (fromSpace.Column - 1 >= 0)
+            {
+                if (ChessBoard.Spaces?[fromSpace.Column - 1][fromSpace.Row].Piece!.GetType() == typeof(WhitePawn))
+                {
+                    if (fromSpace.Column - 1 == toSpace.Column && fromSpace.Row - 1 == toSpace.Row)
+                    {
+                        // if attacking down and left
+                        WhitePawn? downcast = ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece as WhitePawn;
+                        // if pawn to the left has just moved 2, clear it
+                        if (downcast!.HasJustMovedTwo)
+                        {
+                            ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Clear();
+                        }
+                    }
+                }
+            }
+            if (fromSpace.Column + 1 <= 7)
+            {
+                // to the right
+                if (ChessBoard.Spaces?[fromSpace.Column + 1][fromSpace.Row].Piece!.GetType() == typeof(BlackPawn))
+                {
+                    if (fromSpace.Column + 1 == toSpace.Column && fromSpace.Row - 1 == toSpace.Row)
+                    {
+                        // if attacking down and right
+                        WhitePawn? downcast = ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece as WhitePawn;
+                        // if pawn to the left or right has just moved 2, clear it
+                        if (downcast!.HasJustMovedTwo)
+                        {
+                            ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Clear();
+                        }
+                    }
+                }
+            }
+
+            // finally clear original from space
             toSpace.Piece = fromSpace.Piece;
             toSpace.Piece!.HasMoved = true;
             fromSpace.Clear();
