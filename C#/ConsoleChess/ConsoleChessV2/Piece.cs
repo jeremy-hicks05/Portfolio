@@ -42,31 +42,35 @@ namespace ConsoleChessV2
 
         public virtual bool TryMove(Space fromSpace, Space toSpace)
         {
-            Piece? tempFromSpacePiece = fromSpace.Piece;
-            Piece? tempToSpacePiece = toSpace.Piece;
-
-            toSpace.Piece = fromSpace.Piece;
-            fromSpace.Clear();
-            ChessBoard.FindAllSpacesAttacked();
-
-            // verify your king is not in check
-            if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+            if (fromSpace.Piece?.BelongsTo != toSpace.Piece?.BelongsTo && toSpace.Piece?.BelongsTo == null)
             {
-                // cancel move
+                Piece? tempFromSpacePiece = fromSpace.Piece;
+                Piece? tempToSpacePiece = toSpace.Piece;
+
+                toSpace.Piece = fromSpace.Piece;
+                fromSpace.Clear();
+                ChessBoard.FindAllSpacesAttacked();
+
+                // verify your king is not in check
+                if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+                {
+                    // cancel move
+                    fromSpace.Piece = tempFromSpacePiece;
+                    toSpace.Piece = tempToSpacePiece;
+                    return false;
+                }
+                else if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
+                {
+                    // cancel move
+                    fromSpace.Piece = tempFromSpacePiece;
+                    toSpace.Piece = tempToSpacePiece;
+                    return false;
+                }
                 fromSpace.Piece = tempFromSpacePiece;
                 toSpace.Piece = tempToSpacePiece;
-                return false;
+                return true;
             }
-            else if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
-            {
-                // cancel move
-                fromSpace.Piece = tempFromSpacePiece;
-                toSpace.Piece = tempToSpacePiece;
-                return false;
-            }
-            fromSpace.Piece = tempFromSpacePiece;
-            toSpace.Piece = tempToSpacePiece;
-            return true;
+            return false;
         }
 
         public virtual void Move(Space fromSpace, Space toSpace)

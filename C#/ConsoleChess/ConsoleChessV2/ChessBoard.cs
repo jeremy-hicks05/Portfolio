@@ -190,5 +190,56 @@ namespace ConsoleChessV2
                 }
             }
         }
+
+        // if current turn's king is in check
+        // if piece can move anywhere that results in the current turn's king not being in check, it is not checkmate
+
+        // if current turn's king is not in check
+        // if no piece can move anywhere without putting its own king in check
+        public static bool WhiteIsCheckMated()
+        {
+            if (WhiteKingSpace!.IsUnderAttackByBlack)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (Spaces![i][j].Piece?.BelongsTo == Player.White)
+                        {
+                            for (int k = 0; k < 8; k++)
+                            {
+                                for (int m = 0; m < 8; m++)
+                                {
+                                    if ((Spaces![i][j].Piece!
+                                        .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            Console.WriteLine("White is not checkmated!");
+                                            return false;
+                                        }
+                                    }
+                                    if ((Spaces![i][j].Piece!
+                                        .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece!.TryCapture(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            Console.WriteLine("White is not checkmated!");
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Console.WriteLine("WHITE IS CHECKMATED!");
+                return true;
+            }
+            Console.WriteLine("White is not in check!");
+            return false;
+        }
     }
 }
