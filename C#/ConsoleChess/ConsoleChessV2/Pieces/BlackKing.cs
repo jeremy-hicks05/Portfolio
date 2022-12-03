@@ -139,33 +139,34 @@
 
         public override bool TryMove(Space fromSpace, Space toSpace)
         {
-            //Space? tempFromSpace = fromSpace;
             Piece? tempFromSpacePiece = fromSpace.Piece;
-            //Space? tempToSpace = toSpace;
             Piece? tempToSpacePiece = toSpace.Piece;
 
             // if castling
             if (Math.Abs(toSpace.Column - fromSpace.Column) == 2)
             {
-                if (!(CanCastle(fromSpace, toSpace)))
-                {
-                    // cancel move
-                    fromSpace.Piece = tempFromSpacePiece;
-                    toSpace.Piece = tempToSpacePiece;
+                return CanCastle(fromSpace, toSpace);
+                //if (!(CanCastle(fromSpace, toSpace)))
+                //{
+                //    // cancel move
+                //    //fromSpace.Piece = tempFromSpacePiece;
+                //    //toSpace.Piece = tempToSpacePiece;
 
-                    ChessBoard.BlackKingSpace = fromSpace;
-                    return false;
-                }
-                else
-                {
-                    // revert move
-                    fromSpace.Piece = tempFromSpacePiece;
-                    toSpace.Piece = tempToSpacePiece;
+                //    //ChessBoard.BlackKingSpace = fromSpace;
+                //    return false;
+                //}
+                //else
+                //{
+                //    // revert move
+                //    //fromSpace.Piece = tempFromSpacePiece;
+                //    //toSpace.Piece = tempToSpacePiece;
 
-                    ChessBoard.BlackKingSpace = fromSpace;
-                    return true;
-                }
+                //    //ChessBoard.BlackKingSpace = fromSpace;
+                //    return true;
+                //}
             }
+
+            // not castling
 
             // move king's designated space
             ChessBoard.BlackKingSpace = toSpace;
@@ -214,23 +215,23 @@
                 }
             }
 
-            // capture options
-            foreach (Space s in fromSpace.Piece?.spacesToCaptureReview!)
-            {
-                if (s != fromSpace.Piece.spacesToCaptureReview.Last())
-                {
-                    if (s.Piece?.BelongsTo != null)
-                    {
-                        // piece is blocked
-                        return true;
-                    }
-                }
-                if (s == fromSpace.Piece.spacesToCaptureReview.Last())
-                {
-                    // piece is not blocked
-                    return false;
-                }
-            }
+            //// capture options
+            //foreach (Space s in fromSpace.Piece?.spacesToCaptureReview!)
+            //{
+            //    if (s != fromSpace.Piece.spacesToCaptureReview.Last())
+            //    {
+            //        if (s.Piece?.BelongsTo != null)
+            //        {
+            //            // piece is blocked
+            //            return true;
+            //        }
+            //    }
+            //    if (s == fromSpace.Piece.spacesToCaptureReview.Last())
+            //    {
+            //        // piece is not blocked
+            //        return false;
+            //    }
+            //}
             return true;
         }
 
