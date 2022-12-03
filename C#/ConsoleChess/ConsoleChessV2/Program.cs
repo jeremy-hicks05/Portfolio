@@ -7,8 +7,8 @@
  *                                              *
  ************************************************/
 
-/* TODO: Bishop allowed own king to be in check after Q took rook
- * 
+/* TODO: Add stack of moves for popping to "takeback"
+ * Test more games alongside lichess
  * 
  * 
  * 
@@ -23,7 +23,6 @@ namespace ConsoleChessV2
         {
             // Initialize Board
             ChessBoard.InitBoard();
-            //ChessBoard.PrintBoard();
             while (true)
             {
                 ChessBoard.PrintBoard();
