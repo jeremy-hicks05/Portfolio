@@ -77,6 +77,7 @@
         public override void CreateListOfPiecesToInspect(Space fromSpace, Space toSpace)
         {
             spacesToMoveToReview?.Clear();
+            spacesToCaptureReview?.Clear();
             if (toSpace.Column == fromSpace.Column)
             {
                 // moving down
@@ -88,13 +89,13 @@
             else if (fromSpace.Column + 1 == toSpace.Column &&
                      fromSpace.Row - 1 == toSpace.Row)
             {
-                // attacking down and left
+                // attacking down and right
                 spacesToCaptureReview!.Add(ChessBoard.Spaces![toSpace.Column][toSpace.Row]);
             }
             else if (fromSpace.Column - 1 == toSpace.Column &&
                      fromSpace.Row - 1 == toSpace.Row)
             {
-                // attacking down and right
+                // attacking down and left
                 spacesToCaptureReview!.Add(ChessBoard.Spaces![toSpace.Column][toSpace.Row]);
             }
         }
@@ -173,9 +174,35 @@
             }
 
             // if promotion
-            if (toSpace.Row == 1)
+            if (toSpace.Row == 0)
             {
                 Console.WriteLine("Promotion!");
+
+                Console.WriteLine("Select Piece You Wish to Promote To:");
+                Console.WriteLine("Q: Queen");
+                Console.WriteLine("R: Rook");
+                Console.WriteLine("B: Bishop");
+                Console.WriteLine("N: Knight");
+
+                string? promotion = Console.ReadLine();
+
+                switch(promotion)
+                {
+                    case "Q":
+                        fromSpace.Piece = new BlackQueen();
+                        break;
+                    case "R":
+                        fromSpace.Piece = new BlackRook();
+                        break;
+                    case "B":
+                        fromSpace.Piece = new BlackBishop();
+                        break;
+                    case "N":
+                        fromSpace.Piece = new BlackKnight();
+                        break;
+                    default:
+                        break;
+                }
             }
             // end promotion
 

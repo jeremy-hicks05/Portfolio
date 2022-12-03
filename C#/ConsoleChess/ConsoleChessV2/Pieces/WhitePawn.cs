@@ -274,9 +274,35 @@
             }
 
             // if promotion
-            if(toSpace.Row == 8)
+            if (toSpace.Row == 7)
             {
                 Console.WriteLine("Promotion!");
+
+                Console.WriteLine("Select Piece You Wish to Promote To:");
+                Console.WriteLine("Q: Queen");
+                Console.WriteLine("R: Rook");
+                Console.WriteLine("B: Bishop");
+                Console.WriteLine("N: Knight");
+
+                string? promotion = Console.ReadLine();
+
+                switch (promotion)
+                {
+                    case "Q":
+                        fromSpace.Piece = new WhiteQueen();
+                        break;
+                    case "R":
+                        fromSpace.Piece = new WhiteRook();
+                        break;
+                    case "B":
+                        fromSpace.Piece = new WhiteBishop();
+                        break;
+                    case "N":
+                        fromSpace.Piece = new WhiteKnight();
+                        break;
+                    default:
+                        break;
+                }
             }
             // end promotion
 
