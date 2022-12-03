@@ -273,6 +273,7 @@
                             if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
                             {
                                 // cancel move
+                                toSpace.Clear();
                                 fromSpace.Piece = tempFromSpacePiece;
                                 ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece = tempPawn;
                                 return false;
@@ -280,6 +281,7 @@
                             else
                             {
                                 // revert move
+                                toSpace.Clear();
                                 fromSpace.Piece = tempFromSpacePiece;
                                 ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece = tempPawn;
                                 return true;
@@ -306,6 +308,7 @@
                             if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
                             {
                                 // cancel move
+                                toSpace.Clear();
                                 fromSpace.Piece = tempFromSpacePiece;
                                 ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece = tempPawn;
                                 return false;
@@ -313,6 +316,7 @@
                             else
                             {
                                 // revert move
+                                toSpace.Clear();
                                 fromSpace.Piece = tempFromSpacePiece;
                                 ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece = tempPawn;
                                 return true;
@@ -328,6 +332,7 @@
                 if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
                 {
                     // cancel move
+                    toSpace.Clear();
                     fromSpace.Piece = tempFromSpacePiece;
                     toSpace.Piece = tempToSpacePiece;
                     return false;
@@ -341,11 +346,13 @@
             if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
             {
                 // cancel move
+                toSpace.Clear();
                 fromSpace.Piece = tempFromSpacePiece;
                 toSpace.Piece = tempToSpacePiece;
                 return false;
             }
             // revert move
+            toSpace.Clear();
             fromSpace.Piece = tempFromSpacePiece;
             toSpace.Piece = tempToSpacePiece;
             return true;
