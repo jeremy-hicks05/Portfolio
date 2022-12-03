@@ -23,7 +23,10 @@ namespace ConsoleChessV2
         {
             // Initialize Board
             ChessBoard.InitBoard();
-            while (true)
+            while (!(ChessBoard.WhiteIsCheckMated()) &&
+                    !(ChessBoard.WhiteIsStaleMated()) &&
+                    !(ChessBoard.BlackIsCheckMated()) &&
+                    !(ChessBoard.BlackIsStaleMated()))
             {
                 ChessBoard.PrintBoard();
                 ChessBoard.WhiteIsCheckMated();

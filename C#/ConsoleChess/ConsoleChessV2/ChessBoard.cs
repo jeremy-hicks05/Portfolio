@@ -217,7 +217,7 @@ namespace ConsoleChessV2
                                     {
                                         if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
                                         {
-                                            Console.WriteLine("White is not checkmated!");
+                                            //Console.WriteLine("White is not checkmated!");
                                             return false;
                                         }
                                     }
@@ -227,7 +227,7 @@ namespace ConsoleChessV2
                                     {
                                         if (Spaces[i][j].Piece!.TryCapture(Spaces[i][j], Spaces[k][m]))
                                         {
-                                            Console.WriteLine("White is not checkmated!");
+                                            //Console.WriteLine("White is not checkmated!");
                                             return false;
                                         }
                                     }
@@ -239,7 +239,7 @@ namespace ConsoleChessV2
                 Console.WriteLine("WHITE IS CHECKMATED!");
                 return true;
             }
-            Console.WriteLine("White is not in check!");
+            //Console.WriteLine("White is not in check!");
             return false;
         }
 
@@ -264,7 +264,7 @@ namespace ConsoleChessV2
                                     {
                                         if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
                                         {
-                                            Console.WriteLine("White is not stalemated!");
+                                            //Console.WriteLine("White is not stalemated!");
                                             return false;
                                         }
                                     }
@@ -274,7 +274,7 @@ namespace ConsoleChessV2
                                     {
                                         if (Spaces[i][j].Piece!.TryCapture(Spaces[i][j], Spaces[k][m]))
                                         {
-                                            Console.WriteLine("White is not stalemated!");
+                                            //Console.WriteLine("White is not stalemated!");
                                             return false;
                                         }
                                     }
@@ -286,7 +286,7 @@ namespace ConsoleChessV2
                 Console.WriteLine("WHITE IS STALEMATED!");
                 return true;
             }
-            Console.WriteLine("White is in check!");
+            //Console.WriteLine("White is in check!");
             return false;
         }
 
@@ -311,7 +311,7 @@ namespace ConsoleChessV2
                                     {
                                         if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
                                         {
-                                            Console.WriteLine("Black is not checkmated!");
+                                            //Console.WriteLine("Black is not checkmated!");
                                             return false;
                                         }
                                     }
@@ -321,7 +321,7 @@ namespace ConsoleChessV2
                                     {
                                         if (Spaces[i][j].Piece!.TryCapture(Spaces[i][j], Spaces[k][m]))
                                         {
-                                            Console.WriteLine("Black is not checkmated!");
+                                            //Console.WriteLine("Black is not checkmated!");
                                             return false;
                                         }
                                     }
@@ -333,7 +333,7 @@ namespace ConsoleChessV2
                 Console.WriteLine("BLACK IS CHECKMATED!");
                 return true;
             }
-            Console.WriteLine("Black is not in check!");
+            //Console.WriteLine("Black is not in check!");
             return false;
         }
 
@@ -358,7 +358,7 @@ namespace ConsoleChessV2
                                     {
                                         if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
                                         {
-                                            Console.WriteLine("Black is not stalemated!");
+                                            //Console.WriteLine("Black is not stalemated!");
                                             return false;
                                         }
                                     }
@@ -368,7 +368,7 @@ namespace ConsoleChessV2
                                     {
                                         if (Spaces[i][j].Piece!.TryCapture(Spaces[i][j], Spaces[k][m]))
                                         {
-                                            Console.WriteLine("Black is not stalemated!");
+                                            //Console.WriteLine("Black is not stalemated!");
                                             return false;
                                         }
                                     }
@@ -380,7 +380,7 @@ namespace ConsoleChessV2
                 Console.WriteLine("BLACK IS STALEMATED!");
                 return true;
             }
-            Console.WriteLine("Black is in check!");
+            //Console.WriteLine("Black is in check!");
             return false;
         }
     }
