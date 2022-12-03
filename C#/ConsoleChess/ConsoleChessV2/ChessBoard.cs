@@ -198,6 +198,7 @@ namespace ConsoleChessV2
         // if no piece can move anywhere without putting its own king in check
         public static bool WhiteIsCheckMated()
         {
+            FindAllSpacesAttacked();
             if (WhiteKingSpace!.IsUnderAttackByBlack)
             {
                 for (int i = 0; i < 8; i++)
@@ -242,8 +243,56 @@ namespace ConsoleChessV2
             return false;
         }
 
+        public static bool WhiteIsStaleMated()
+        {
+            FindAllSpacesAttacked();
+            if (!(WhiteKingSpace!.IsUnderAttackByBlack))
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (Spaces![i][j].Piece?.BelongsTo == Player.White)
+                        {
+                            for (int k = 0; k < 8; k++)
+                            {
+                                for (int m = 0; m < 8; m++)
+                                {
+                                    if ((Spaces![i][j].Piece!
+                                        .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            Console.WriteLine("White is not stalemated!");
+                                            return false;
+                                        }
+                                    }
+                                    if ((Spaces![i][j].Piece!
+                                        .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece!.TryCapture(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            Console.WriteLine("White is not stalemated!");
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Console.WriteLine("WHITE IS STALEMATED!");
+                return true;
+            }
+            Console.WriteLine("White is in check!");
+            return false;
+        }
+
         public static bool BlackIsCheckMated()
         {
+            FindAllSpacesAttacked();
             if (BlackKingSpace!.IsUnderAttackByWhite)
             {
                 for (int i = 0; i < 8; i++)
@@ -285,6 +334,53 @@ namespace ConsoleChessV2
                 return true;
             }
             Console.WriteLine("Black is not in check!");
+            return false;
+        }
+
+        public static bool BlackIsStaleMated()
+        {
+            FindAllSpacesAttacked();
+            if (!(BlackKingSpace!.IsUnderAttackByWhite))
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (Spaces![i][j].Piece?.BelongsTo == Player.Black)
+                        {
+                            for (int k = 0; k < 8; k++)
+                            {
+                                for (int m = 0; m < 8; m++)
+                                {
+                                    if ((Spaces![i][j].Piece!
+                                        .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            Console.WriteLine("Black is not stalemated!");
+                                            return false;
+                                        }
+                                    }
+                                    if ((Spaces![i][j].Piece!
+                                        .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece!.TryCapture(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            Console.WriteLine("Black is not stalemated!");
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Console.WriteLine("BLACK IS STALEMATED!");
+                return true;
+            }
+            Console.WriteLine("Black is in check!");
             return false;
         }
     }

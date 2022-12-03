@@ -28,6 +28,8 @@ namespace ConsoleChessV2
                 ChessBoard.PrintBoard();
                 ChessBoard.WhiteIsCheckMated();
                 ChessBoard.BlackIsCheckMated();
+                ChessBoard.WhiteIsStaleMated();
+                ChessBoard.BlackIsStaleMated();
 
                 Console.WriteLine($"-{ChessBoard.turn}'s Turn-");
 
