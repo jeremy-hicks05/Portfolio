@@ -305,6 +305,8 @@
 
                 return false;
             }
+
+            // revert move, return true to make real move later
             fromSpace.Piece = tempFromSpacePiece;
             toSpace.Piece = tempToSpacePiece;
 

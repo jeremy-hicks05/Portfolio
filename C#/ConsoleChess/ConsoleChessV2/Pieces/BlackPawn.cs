@@ -11,10 +11,6 @@
         }
         public override bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            if (fromSpace == toSpace)
-            {
-                return false;
-            }
             if (fromSpace.Column == toSpace.Column &&
                 fromSpace.Row - 1 == toSpace.Row ||
                 (HasMoved == false &&
@@ -35,43 +31,43 @@
             }
             // en passant
             // to the left
-            if (fromSpace.Column - 1 >= 0)
-            {
-                if (fromSpace.Column - 1 == toSpace.Column)
-                {
-                    // check if move is an attack down and left
-                    if (fromSpace.Column - 1 == toSpace.Column && fromSpace.Row - 1 == toSpace.Row)
-                    {
-                        if (ChessBoard.Spaces?[fromSpace.Column - 1][fromSpace.Row].Piece!.GetType() == typeof(WhitePawn))
-                        {
-                            WhitePawn? downcast = ChessBoard.Spaces?[fromSpace.Column - 1][fromSpace.Row].Piece! as WhitePawn;
-                            // if pawn to the left or right has just moved 2 (hasJustMovedTwo boolean?) allow it to capture that piece, and clear it
-                            if (downcast!.HasJustMovedTwo)
-                            {
-                                // capture up and left toward the piece
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-            // to the right
-            if (fromSpace.Column + 1 <= 7)
-            {
-                // check if move is an attack up and right
-                if (fromSpace.Column + 1 == toSpace.Column && fromSpace.Row - 1 == toSpace.Row)
-                {
-                    if (ChessBoard.Spaces?[fromSpace.Column + 1][fromSpace.Row].Piece!.GetType() == typeof(WhitePawn))
-                    {
-                        WhitePawn? downcast = ChessBoard.Spaces?[fromSpace.Column + 1][fromSpace.Row].Piece! as WhitePawn;
-                        // if pawn to the left or right has just moved 2 (hasJustMovedTwo boolean?) allow it to capture that piece, and clear it
-                        if (downcast!.HasJustMovedTwo)
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
+            //if (fromSpace.Column - 1 >= 0)
+            //{
+            //    if (fromSpace.Column - 1 == toSpace.Column)
+            //    {
+            //        // check if move is an attack down and left
+            //        if (fromSpace.Column - 1 == toSpace.Column && fromSpace.Row - 1 == toSpace.Row)
+            //        {
+            //            if (ChessBoard.Spaces?[fromSpace.Column - 1][fromSpace.Row].Piece!.GetType() == typeof(WhitePawn))
+            //            {
+            //                WhitePawn? downcast = ChessBoard.Spaces?[fromSpace.Column - 1][fromSpace.Row].Piece! as WhitePawn;
+            //                // if pawn to the left or right has just moved 2 (hasJustMovedTwo boolean?) allow it to capture that piece, and clear it
+            //                if (downcast!.HasJustMovedTwo)
+            //                {
+            //                    // capture up and left toward the piece
+            //                    return true;
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //// to the right
+            //if (fromSpace.Column + 1 <= 7)
+            //{
+            //    // check if move is an attack up and right
+            //    if (fromSpace.Column + 1 == toSpace.Column && fromSpace.Row - 1 == toSpace.Row)
+            //    {
+            //        if (ChessBoard.Spaces?[fromSpace.Column + 1][fromSpace.Row].Piece!.GetType() == typeof(WhitePawn))
+            //        {
+            //            WhitePawn? downcast = ChessBoard.Spaces?[fromSpace.Column + 1][fromSpace.Row].Piece! as WhitePawn;
+            //            // if pawn to the left or right has just moved 2 (hasJustMovedTwo boolean?) allow it to capture that piece, and clear it
+            //            if (downcast!.HasJustMovedTwo)
+            //            {
+            //                return true;
+            //            }
+            //        }
+            //    }
+            //}
             return false;
         }
         public override void CreateListOfPiecesToInspect(Space fromSpace, Space toSpace)
