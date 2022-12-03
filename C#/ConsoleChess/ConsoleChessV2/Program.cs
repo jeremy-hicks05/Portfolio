@@ -27,7 +27,8 @@ namespace ConsoleChessV2
             {
                 ChessBoard.PrintBoard();
                 ChessBoard.WhiteIsCheckMated();
-                
+                ChessBoard.BlackIsCheckMated();
+
                 Console.WriteLine($"-{ChessBoard.turn}'s Turn-");
 
                 // get Starting and Ending Spaces from User Input

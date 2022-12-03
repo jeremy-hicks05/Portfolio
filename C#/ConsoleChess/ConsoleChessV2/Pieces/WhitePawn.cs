@@ -154,87 +154,103 @@
 
         public override bool TryCapture(Space fromSpace, Space toSpace)
         {
-            Piece? tempFromSpacePiece = fromSpace.Piece;
-            Piece? tempToSpacePiece = toSpace.Piece;
-
-            // if a pawn up 2 puts you in check, you are not clearing out the 'fromSpace', you are clearing out the pawn next to your pawn
-
-            toSpace.Piece = fromSpace.Piece;
-            fromSpace.Clear();
-
-            // if en passant
-            // to the left
-            if (fromSpace.Column - 1 >= 0)
+            if (fromSpace.Piece.BelongsTo != toSpace.Piece.BelongsTo)
             {
-                if (ChessBoard.Spaces?[fromSpace.Column - 1][fromSpace.Row].Piece!.GetType() == typeof(BlackPawn))
+                Piece? tempFromSpacePiece = fromSpace.Piece;
+                Piece? tempToSpacePiece = toSpace.Piece;
+
+                // if a pawn up 2 puts you in check, you are not clearing out the 'fromSpace', you are clearing out the pawn next to your pawn
+
+                toSpace.Piece = fromSpace.Piece;
+                fromSpace.Clear();
+
+                // if en passant
+                // to the left
+                if (fromSpace.Column - 1 >= 0)
                 {
-                    if (fromSpace.Column - 1 == toSpace.Column)
+                    if (ChessBoard.Spaces?[fromSpace.Column - 1][fromSpace.Row].Piece!.GetType() == typeof(BlackPawn))
                     {
-                        BlackPawn? downcast = ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece as BlackPawn;
-                        // if pawn to the left or right has just moved 2 (hasJustMovedTwo boolean?) allow it to capture that piece, and clear it
-                        if (downcast!.HasJustMovedTwo)
+                        if (fromSpace.Column - 1 == toSpace.Column)
                         {
-                            BlackPawn? tempPawn = ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece as BlackPawn;
-                            ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Clear();
-                            // verify your king is not in check
-                            ChessBoard.FindAllSpacesAttacked();
-                            if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+                            BlackPawn? downcast = ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece as BlackPawn;
+                            // if pawn to the left or right has just moved 2 (hasJustMovedTwo boolean?) allow it to capture that piece, and clear it
+                            if (downcast!.HasJustMovedTwo)
                             {
-                                // cancel move
-                                toSpace.Clear();
-                                fromSpace.Piece = tempFromSpacePiece;
-                                ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece = tempPawn;
-                                return false;
-                            }
-                            else
-                            {
-                                // revert move
-                                toSpace.Clear();
-                                fromSpace.Piece = tempFromSpacePiece;
-                                ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece = tempPawn;
-                                return true;
+                                BlackPawn? tempPawn = ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece as BlackPawn;
+                                ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Clear();
+                                // verify your king is not in check
+                                ChessBoard.FindAllSpacesAttacked();
+                                if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+                                {
+                                    // cancel move
+                                    toSpace.Clear();
+                                    fromSpace.Piece = tempFromSpacePiece;
+                                    ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece = tempPawn;
+                                    return false;
+                                }
+                                else
+                                {
+                                    // revert move
+                                    toSpace.Clear();
+                                    fromSpace.Piece = tempFromSpacePiece;
+                                    ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece = tempPawn;
+                                    return true;
+                                }
                             }
                         }
                     }
                 }
-            }
-            if (fromSpace.Column + 1 <= 7)
-            {
-                // to the right
-                if (ChessBoard.Spaces?[fromSpace.Column + 1][fromSpace.Row].Piece!.GetType() == typeof(BlackPawn))
+                if (fromSpace.Column + 1 <= 7)
                 {
-                    if (fromSpace.Column + 1 == toSpace.Column)
+                    // to the right
+                    if (ChessBoard.Spaces?[fromSpace.Column + 1][fromSpace.Row].Piece!.GetType() == typeof(BlackPawn))
                     {
-                        BlackPawn? downcast = ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece as BlackPawn;
-                        // if pawn to the left or right has just moved 2 (hasJustMovedTwo boolean?) allow it to capture that piece, and clear it
-                        if (downcast!.HasJustMovedTwo)
+                        if (fromSpace.Column + 1 == toSpace.Column)
                         {
-                            BlackPawn? tempPawn = ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece as BlackPawn;
-                            ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Clear();
-                            // verify your king is not in check
-                            ChessBoard.FindAllSpacesAttacked();
-                            if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+                            BlackPawn? downcast = ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece as BlackPawn;
+                            // if pawn to the left or right has just moved 2 (hasJustMovedTwo boolean?) allow it to capture that piece, and clear it
+                            if (downcast!.HasJustMovedTwo)
                             {
-                                // cancel move
-                                toSpace.Clear();
-                                fromSpace.Piece = tempFromSpacePiece;
-                                ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece = tempPawn;
-                                return false;
-                            }
-                            else
-                            {
-                                // revert move
-                                toSpace.Clear();
-                                fromSpace.Piece = tempFromSpacePiece;
-                                ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece = tempPawn;
-                                return true;
+                                BlackPawn? tempPawn = ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece as BlackPawn;
+                                ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Clear();
+                                // verify your king is not in check
+                                ChessBoard.FindAllSpacesAttacked();
+                                if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+                                {
+                                    // cancel move
+                                    toSpace.Clear();
+                                    fromSpace.Piece = tempFromSpacePiece;
+                                    ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece = tempPawn;
+                                    return false;
+                                }
+                                else
+                                {
+                                    // revert move
+                                    toSpace.Clear();
+                                    fromSpace.Piece = tempFromSpacePiece;
+                                    ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece = tempPawn;
+                                    return true;
+                                }
                             }
                         }
                     }
                 }
-            }
-            else // if this is not en passant
-            {
+                else // if this is not en passant
+                {
+                    // verify your king is not in check
+                    ChessBoard.FindAllSpacesAttacked();
+                    if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+                    {
+                        // cancel move
+                        toSpace.Clear();
+                        fromSpace.Piece = tempFromSpacePiece;
+                        toSpace.Piece = tempToSpacePiece;
+                        return false;
+                    }
+                    fromSpace.Piece = tempFromSpacePiece;
+                    toSpace.Piece = tempToSpacePiece;
+                    toSpace.Clear();
+                }
                 // verify your king is not in check
                 ChessBoard.FindAllSpacesAttacked();
                 if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
@@ -245,25 +261,13 @@
                     toSpace.Piece = tempToSpacePiece;
                     return false;
                 }
-                fromSpace.Piece = tempFromSpacePiece;
-                toSpace.Piece = tempToSpacePiece;
-                toSpace.Clear();
-            }
-            // verify your king is not in check
-            ChessBoard.FindAllSpacesAttacked();
-            if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
-            {
-                // cancel move
+                // revert move
                 toSpace.Clear();
                 fromSpace.Piece = tempFromSpacePiece;
                 toSpace.Piece = tempToSpacePiece;
-                return false;
+                return true;
             }
-            // revert move
-            toSpace.Clear();
-            fromSpace.Piece = tempFromSpacePiece;
-            toSpace.Piece = tempToSpacePiece;
-            return true;
+            return false;
         }
 
         public override bool CanMoveFromSpaceToEmptySpace(Space fromSpace, Space toSpace)

@@ -241,5 +241,51 @@ namespace ConsoleChessV2
             Console.WriteLine("White is not in check!");
             return false;
         }
+
+        public static bool BlackIsCheckMated()
+        {
+            if (BlackKingSpace!.IsUnderAttackByWhite)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (Spaces![i][j].Piece?.BelongsTo == Player.Black)
+                        {
+                            for (int k = 0; k < 8; k++)
+                            {
+                                for (int m = 0; m < 8; m++)
+                                {
+                                    if ((Spaces![i][j].Piece!
+                                        .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            Console.WriteLine("Black is not checkmated!");
+                                            return false;
+                                        }
+                                    }
+                                    if ((Spaces![i][j].Piece!
+                                        .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece!.TryCapture(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            Console.WriteLine("Black is not checkmated!");
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Console.WriteLine("BLACK IS CHECKMATED!");
+                return true;
+            }
+            Console.WriteLine("Black is not in check!");
+            return false;
+        }
     }
 }
