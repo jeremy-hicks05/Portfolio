@@ -267,7 +267,7 @@
 
         public override bool TryCapture(Space fromSpace, Space toSpace)
         {
-            if (CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace) && !(IsBlocked(fromSpace, toSpace)) && toSpace.Piece?.BelongsTo != Player.White)
+            if (CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace) && !(IsBlocked(fromSpace, toSpace)) && toSpace.Piece?.BelongsTo == Player.Black)
             {
                 Piece? tempFromSpacePiece = fromSpace.Piece;
                 Piece? tempToSpacePiece = toSpace.Piece;
