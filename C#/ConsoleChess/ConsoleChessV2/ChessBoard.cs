@@ -212,11 +212,12 @@ namespace ConsoleChessV2
             // revert fromSpace's piece and "changedSpaces" piece
             if (MovesPlayed.Count > 0)
             {
-                // original space,  ending space, changed space, changed space's piece, has moved?, has moved?
+                // original space,  ending space, changed space, changed space's piece, starting piece has moved, changed piece has moved
                 (Space, Space, Space, Piece, bool, bool) lastMove = MovesPlayed.Pop();
                 lastMove.Item1.Piece = lastMove.Item2.Piece;
                 lastMove.Item2.Clear();
-                //lastMove.Item1.Piece!.HasMoved = lastMove.Item3.Piece!.HasMoved;
+                lastMove.Item1.Piece!.HasMoved = lastMove.Item5;
+                //lastMove.Item1.Piece.HasMoved = lastMove.Item5;
                 //lastMove.Item2.Piece!.HasMoved = lastMove.Item5;
                 //lastMove.Item2.Piece = lastMove.Item4;
                 lastMove.Item3.Piece = lastMove.Item4;
