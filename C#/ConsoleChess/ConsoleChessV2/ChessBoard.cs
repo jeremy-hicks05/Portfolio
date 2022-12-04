@@ -10,6 +10,8 @@ namespace ConsoleChessV2
         public static Space[][]? Spaces { get; set; }
         public static Space? WhiteKingSpace { get; set; }
         public static Space? BlackKingSpace { get; set; }
+
+        public static Stack<(Space, Space, Piece, bool)> MovesPlayed = new(); // would this work?
         public static Player turn;
 
         public static void InitBoard()
@@ -100,6 +102,7 @@ namespace ConsoleChessV2
                     }
                 }
             }
+            Console.WriteLine($"-{ChessBoard.turn}'s Turn-");
         }
 
         public static Space UserSelectsSpace()
@@ -108,8 +111,14 @@ namespace ConsoleChessV2
             string? selectedPieceRow = "0";
             while (!(Regex.Match(selectedPieceColumn!, "[A-Ha-h]").Success))
             {
-                Console.WriteLine("Please enter a letter (A-H)");
+                Console.WriteLine("Please enter a letter (A-H) or T to TakeBack");
                 selectedPieceColumn = Console.ReadLine();
+
+                if(selectedPieceColumn == "T")
+                {
+                    TakeBackLastMove();
+                    PrintBoard();
+                }
             }
 
             while (!(Regex.Match(selectedPieceRow!, "[1-8]").Success))
@@ -118,9 +127,8 @@ namespace ConsoleChessV2
                 selectedPieceRow = Console.ReadLine();
             }
 
-            //Console.WriteLine("Your piece is a " +
-            //Spaces?[C[selectedPieceColumn?.ToUpper()!]]
-            //       [R[selectedPieceRow!]].Piece?.Name);
+            Spaces![C[selectedPieceColumn?.ToUpper()!]]
+                          [R[selectedPieceRow!]].PrintInfo();
 
             return Spaces![C[selectedPieceColumn?.ToUpper()!]]
                           [R[selectedPieceRow!]];
@@ -188,6 +196,27 @@ namespace ConsoleChessV2
                         }
                     }
                 }
+            }
+        }
+
+        public static void ListMovesPlayed()
+        {
+            foreach((Space, Space, Piece, bool) move in MovesPlayed)
+            {
+                Console.WriteLine($"Moved from {move.Item2} to  {move.Item1}, capturing {move.Item3}");
+            }
+        }
+
+        public static void TakeBackLastMove()
+        {
+            if (MovesPlayed.Count > 0)
+            {
+                (Space, Space, Piece, bool) lastMove = MovesPlayed.Pop();
+                lastMove.Item1.Piece = lastMove.Item2.Piece;
+                lastMove.Item1.Piece!.HasMoved = lastMove.Item4;
+                lastMove.Item2.Piece = lastMove.Item3;
+
+                ChangeTurn();
             }
         }
 

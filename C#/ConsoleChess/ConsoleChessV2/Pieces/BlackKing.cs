@@ -3,7 +3,6 @@
     using static Notation;
     internal class BlackKing : Piece
     {
-
         public BlackKing()
         {
             Name = "[k]";
@@ -54,7 +53,7 @@
                     spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column - 1][fromSpace.Row]);
                 }
             }
-            if (fromSpace.Row - 1 >= 0)
+            else if (fromSpace.Row - 1 >= 0)
             {
                 // attacking down
                 if (fromSpace.Row - 1 == toSpace.Row &&
@@ -63,7 +62,7 @@
                     spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column][fromSpace.Row - 1]);
                 }
             }
-            if (fromSpace.Row + 1 <= 7)
+            else if (fromSpace.Row + 1 <= 7)
             {
                 // attacking up
                 if (fromSpace.Row + 1 == toSpace.Row &&
@@ -72,7 +71,7 @@
                     spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column][fromSpace.Row + 1]);
                 }
             }
-            if (fromSpace.Column + 1 <= 7)
+            else if (fromSpace.Column + 1 <= 7)
             {
                 // attacking right
                 if (fromSpace.Column + 1 == toSpace.Column &&
@@ -81,7 +80,7 @@
                     spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column + 1][fromSpace.Row]);
                 }
             }
-            if (fromSpace.Row + 1 <= 7 && fromSpace.Column + 1 <= 7)
+            else if (fromSpace.Row + 1 <= 7 && fromSpace.Column + 1 <= 7)
             {
                 // attacking up and right
                 if (fromSpace.Row + 1 == toSpace.Row &&
@@ -90,7 +89,7 @@
                     spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column + 1][fromSpace.Row + 1]);
                 }
             }
-            if (fromSpace.Row + 1 <= 7 && fromSpace.Column - 1 >= 0)
+            else if (fromSpace.Row + 1 <= 7 && fromSpace.Column - 1 >= 0)
             {
                 // attacking up and left
                 if (fromSpace.Row + 1 == toSpace.Row &&
@@ -99,7 +98,7 @@
                     spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column - 1][fromSpace.Row + 1]);
                 }
             }
-            if (fromSpace.Row - 1 >= 0 && fromSpace.Column + 1 <= 7)
+            else if (fromSpace.Row - 1 >= 0 && fromSpace.Column + 1 <= 7)
             {
                 // attacking down and right
                 if (fromSpace.Row - 1 == toSpace.Row &&
@@ -108,7 +107,7 @@
                     spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column + 1][fromSpace.Row - 1]);
                 }
             }
-            if (fromSpace.Column - 1 >= 0 && fromSpace.Row - 1 >= 0)
+            else if (fromSpace.Column - 1 >= 0 && fromSpace.Row - 1 >= 0)
             {
                 // attacking down and left
                 if (fromSpace.Row - 1 == toSpace.Row &&
@@ -126,7 +125,7 @@
             }
 
             // if castling Queen side
-            if (HasMoved == false &&
+            else if (HasMoved == false &&
                 ChessBoard.Spaces![C["A"]][R["8"]].Piece?.HasMoved == false &&
                 fromSpace.Row == toSpace.Row &&
                 fromSpace.Column == C["E"] && toSpace.Column == C["C"])
@@ -137,9 +136,35 @@
             }
         }
 
+        public override bool IsBlocked(Space fromSpace, Space toSpace)
+        {
+            fromSpace.Piece?.CreateListOfPiecesToInspect(fromSpace, toSpace);
+            // move options
+            foreach (Space s in fromSpace.Piece?.spacesToMoveToReview!)
+            {
+                if (s != fromSpace.Piece.spacesToMoveToReview.Last())
+                {
+                    if (s.Piece?.BelongsTo != null || s.IsUnderAttackByWhite)
+                    {
+                        // piece is blocked or cannot castle
+                        return true;
+                    }
+                }
+                if (s == fromSpace.Piece.spacesToMoveToReview.Last())
+                {
+                    // piece is not blocked
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public override bool TryMove(Space fromSpace, Space toSpace)
         {
-            if (CanLegallyTryToMoveFromSpaceToSpace(fromSpace, toSpace) && !(IsBlocked(fromSpace, toSpace)) && fromSpace.Piece?.BelongsTo != toSpace.Piece?.BelongsTo)
+            if (CanLegallyTryToMoveFromSpaceToSpace(fromSpace, toSpace) && 
+                !(IsBlocked(fromSpace, toSpace)) && 
+                fromSpace.Piece?.BelongsTo != toSpace.Piece?.BelongsTo && 
+                toSpace.Piece?.BelongsTo != null)
             {
                 Piece? tempFromSpacePiece = fromSpace.Piece;
                 Piece? tempToSpacePiece = toSpace.Piece;
@@ -175,49 +200,7 @@
                 ChessBoard.BlackKingSpace = fromSpace;
                 return true;
             }
-            //return true;
             return false;
-        }
-
-        public override bool IsBlocked(Space fromSpace, Space toSpace)
-        {
-            fromSpace.Piece?.CreateListOfPiecesToInspect(fromSpace, toSpace); // added
-            // move options
-            foreach (Space s in fromSpace.Piece?.spacesToMoveToReview!)
-            {
-                if (s != fromSpace.Piece.spacesToMoveToReview.Last())
-                {
-                    if (s.Piece?.BelongsTo != null || s.IsUnderAttackByWhite)
-                    {
-                        // piece is blocked or cannot castle
-                        return true;
-                    }
-                }
-                if (s == fromSpace.Piece.spacesToMoveToReview.Last())
-                {
-                    // piece is not blocked
-                    return false;
-                }
-            }
-
-            //// capture options
-            //foreach (Space s in fromSpace.Piece?.spacesToCaptureReview!)
-            //{
-            //    if (s != fromSpace.Piece.spacesToCaptureReview.Last())
-            //    {
-            //        if (s.Piece?.BelongsTo != null)
-            //        {
-            //            // piece is blocked
-            //            return true;
-            //        }
-            //    }
-            //    if (s == fromSpace.Piece.spacesToCaptureReview.Last())
-            //    {
-            //        // piece is not blocked
-            //        return false;
-            //    }
-            //}
-            return true;
         }
 
         public override void Move(Space fromSpace, Space toSpace)
@@ -240,6 +223,8 @@
             toSpace.Piece!.HasMoved = true;
             fromSpace.Clear();
         }
+
+        // specialized King functions
 
         public bool CanCastle(Space fromSpace, Space toSpace)
         {

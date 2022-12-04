@@ -34,11 +34,17 @@ namespace ConsoleChessV2
                 ChessBoard.WhiteIsStaleMated();
                 ChessBoard.BlackIsStaleMated();
 
-                Console.WriteLine($"-{ChessBoard.turn}'s Turn-");
+
 
                 // get Starting and Ending Spaces from User Input
                 Space startingSpace = ChessBoard.UserSelectsSpace();
                 Space endingSpace = ChessBoard.UserSelectsSpace();
+
+                Piece startingPiece = startingSpace.Piece;
+                Piece endingPiece = endingSpace.Piece;
+
+                bool startingPieceHasMoved = startingSpace.Piece!.HasMoved;
+                bool endingPieceHasMoved = endingSpace.Piece!.HasMoved;
 
                 // check if Player's turn corresponds to the starting piece's owner
                 if (startingSpace.Piece?.BelongsTo == ChessBoard.turn)
@@ -66,6 +72,9 @@ namespace ConsoleChessV2
                                 {
                                     // finally move piece to destination
                                     startingSpace.Piece.Move(startingSpace, endingSpace);
+                                    ChessBoard.MovesPlayed.Push((startingSpace, endingSpace, endingPiece, startingPieceHasMoved));
+                                    ChessBoard.ListMovesPlayed();
+                                    Console.ReadLine();
                                     ChessBoard.ChangeTurn();
                                 }
                             }
@@ -77,12 +86,16 @@ namespace ConsoleChessV2
                                 {
                                     // finally move piece to destination
                                     startingSpace.Piece.Move(startingSpace, endingSpace);
+                                    ChessBoard.MovesPlayed.Push((startingSpace, endingSpace, endingPiece, startingPieceHasMoved));
+                                    ChessBoard.ListMovesPlayed();
+                                    Console.ReadLine();
                                     ChessBoard.ChangeTurn();
                                 }
                             }
                         }
                     }
                 }
+                ChessBoard.PrintBoard();
             }
         }
     }
