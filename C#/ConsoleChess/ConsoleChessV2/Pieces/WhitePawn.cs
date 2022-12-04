@@ -154,7 +154,7 @@
 
         public override bool TryCapture(Space fromSpace, Space toSpace)
         {
-            if (fromSpace.Piece.BelongsTo != toSpace.Piece.BelongsTo && toSpace.Piece.BelongsTo != null)
+            if (fromSpace.Piece?.BelongsTo != toSpace.Piece?.BelongsTo && toSpace.Piece?.BelongsTo != null)
             {
                 Piece? tempFromSpacePiece = fromSpace.Piece;
                 Piece? tempToSpacePiece = toSpace.Piece;

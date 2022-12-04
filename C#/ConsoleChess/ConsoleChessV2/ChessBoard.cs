@@ -127,8 +127,8 @@ namespace ConsoleChessV2
                 selectedPieceRow = Console.ReadLine();
             }
 
-            Spaces![C[selectedPieceColumn?.ToUpper()!]]
-                          [R[selectedPieceRow!]].PrintInfo();
+            //Spaces![C[selectedPieceColumn?.ToUpper()!]]
+            //              [R[selectedPieceRow!]].PrintInfo();
 
             return Spaces![C[selectedPieceColumn?.ToUpper()!]]
                           [R[selectedPieceRow!]];

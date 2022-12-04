@@ -163,7 +163,7 @@
 
         public override bool TryMove(Space fromSpace, Space toSpace)
         {
-            if (CanLegallyTryToMoveFromSpaceToSpace(fromSpace, toSpace) && !(IsBlocked(fromSpace, toSpace)) && fromSpace.Piece.BelongsTo != toSpace.Piece.BelongsTo)
+            if (CanLegallyTryToMoveFromSpaceToSpace(fromSpace, toSpace) && !(IsBlocked(fromSpace, toSpace)) && fromSpace.Piece?.BelongsTo != toSpace.Piece?.BelongsTo)
             {
                 Piece? tempFromSpacePiece = fromSpace.Piece;
                 Piece? tempToSpacePiece = toSpace.Piece;

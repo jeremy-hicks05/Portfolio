@@ -246,14 +246,14 @@
 
         public override bool TryCapture(Space fromSpace, Space toSpace)
         {
-            if (fromSpace.Piece.BelongsTo != toSpace.Piece.BelongsTo)
+            if (fromSpace?.Piece!.BelongsTo != toSpace?.Piece!.BelongsTo)
             {
-                Piece? tempFromSpacePiece = fromSpace.Piece;
-                Piece? tempToSpacePiece = toSpace.Piece;
+                Piece? tempFromSpacePiece = fromSpace?.Piece;
+                Piece? tempToSpacePiece = toSpace?.Piece;
 
                 // if a pawn up 2 puts you in check, you are not clearing out the 'fromSpace', you are clearing out the pawn next to your pawn
 
-                toSpace.Piece = fromSpace.Piece;
+                toSpace!.Piece = fromSpace!.Piece;
                 fromSpace.Clear();
 
                 // if en passant

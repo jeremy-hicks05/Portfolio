@@ -40,8 +40,8 @@ namespace ConsoleChessV2
                 Space startingSpace = ChessBoard.UserSelectsSpace();
                 Space endingSpace = ChessBoard.UserSelectsSpace();
 
-                Piece startingPiece = startingSpace.Piece;
-                Piece endingPiece = endingSpace.Piece;
+                Piece? startingPiece = startingSpace.Piece;
+                Piece? endingPiece = endingSpace.Piece;
 
                 bool startingPieceHasMoved = startingSpace.Piece!.HasMoved;
                 bool endingPieceHasMoved = endingSpace.Piece!.HasMoved;
@@ -72,8 +72,8 @@ namespace ConsoleChessV2
                                 {
                                     // finally move piece to destination
                                     startingSpace.Piece.Move(startingSpace, endingSpace);
-                                    ChessBoard.MovesPlayed.Push((startingSpace, endingSpace, endingPiece, startingPieceHasMoved));
-                                    ChessBoard.ListMovesPlayed();
+                                    ChessBoard.MovesPlayed.Push((startingSpace, endingSpace, endingPiece, startingPieceHasMoved)!);
+                                    //ChessBoard.ListMovesPlayed();
                                     Console.ReadLine();
                                     ChessBoard.ChangeTurn();
                                 }
@@ -86,8 +86,8 @@ namespace ConsoleChessV2
                                 {
                                     // finally move piece to destination
                                     startingSpace.Piece.Move(startingSpace, endingSpace);
-                                    ChessBoard.MovesPlayed.Push((startingSpace, endingSpace, endingPiece, startingPieceHasMoved));
-                                    ChessBoard.ListMovesPlayed();
+                                    ChessBoard.MovesPlayed.Push((startingSpace, endingSpace, endingPiece, startingPieceHasMoved)!);
+                                    //ChessBoard.ListMovesPlayed();
                                     Console.ReadLine();
                                     ChessBoard.ChangeTurn();
                                 }
