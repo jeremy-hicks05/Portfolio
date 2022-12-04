@@ -152,9 +152,9 @@
             return false;
         }
 
-        public override bool TryCapture(Space fromSpace, Space toSpace)
+        public override Space TryCaptureReturnSpace(Space fromSpace, Space toSpace)
         {
-            if (fromSpace.Piece?.BelongsTo != toSpace.Piece?.BelongsTo && toSpace.Piece?.BelongsTo != null)
+            if (fromSpace.Piece?.BelongsTo != toSpace.Piece?.BelongsTo)
             {
                 Piece? tempFromSpacePiece = fromSpace.Piece;
                 Piece? tempToSpacePiece = toSpace.Piece;
@@ -186,7 +186,7 @@
                                     toSpace.Clear();
                                     fromSpace.Piece = tempFromSpacePiece;
                                     ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece = tempPawn;
-                                    return false;
+                                    return ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row];
                                 }
                                 else
                                 {
@@ -194,7 +194,7 @@
                                     toSpace.Clear();
                                     fromSpace.Piece = tempFromSpacePiece;
                                     ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece = tempPawn;
-                                    return true;
+                                    return ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row];
                                 }
                             }
                         }
@@ -221,7 +221,7 @@
                                     toSpace.Clear();
                                     fromSpace.Piece = tempFromSpacePiece;
                                     ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece = tempPawn;
-                                    return false;
+                                    return ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row];
                                 }
                                 else
                                 {
@@ -229,7 +229,7 @@
                                     toSpace.Clear();
                                     fromSpace.Piece = tempFromSpacePiece;
                                     ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece = tempPawn;
-                                    return true;
+                                    return ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row];
                                 }
                             }
                         }
@@ -245,7 +245,7 @@
                         toSpace.Clear();
                         fromSpace.Piece = tempFromSpacePiece;
                         toSpace.Piece = tempToSpacePiece;
-                        return false;
+                        return fromSpace;
                     }
                     fromSpace.Piece = tempFromSpacePiece;
                     toSpace.Piece = tempToSpacePiece;
@@ -259,15 +259,15 @@
                     toSpace.Clear();
                     fromSpace.Piece = tempFromSpacePiece;
                     toSpace.Piece = tempToSpacePiece;
-                    return false;
+                    return fromSpace;
                 }
                 // revert move
                 toSpace.Clear();
                 fromSpace.Piece = tempFromSpacePiece;
                 toSpace.Piece = tempToSpacePiece;
-                return true;
+                return fromSpace;
             }
-            return false;
+            return fromSpace;
         }
 
         public override bool CanMoveFromSpaceToEmptySpace(Space fromSpace, Space toSpace)

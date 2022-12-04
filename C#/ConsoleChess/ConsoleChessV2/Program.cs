@@ -34,14 +34,14 @@ namespace ConsoleChessV2
                 ChessBoard.WhiteIsStaleMated();
                 ChessBoard.BlackIsStaleMated();
 
-
-
                 // get Starting and Ending Spaces from User Input
                 Space startingSpace = ChessBoard.UserSelectsSpace();
                 Space endingSpace = ChessBoard.UserSelectsSpace();
 
                 Piece? startingPiece = startingSpace.Piece;
                 Piece? endingPiece = endingSpace.Piece;
+
+                //Piece? changedPiece = ?;
 
                 bool startingPieceHasMoved = startingSpace.Piece!.HasMoved;
                 bool endingPieceHasMoved = endingSpace.Piece!.HasMoved;
@@ -70,11 +70,16 @@ namespace ConsoleChessV2
                                 // try capturing the piece on the ending space, test if rules are followed (not in check)
                                 if (startingSpace.Piece.TryCapture(startingSpace, endingSpace))
                                 {
+                                    Space? changedSpace = startingPiece?.TryCaptureReturnSpace(startingSpace, endingSpace); // store changed space for en passant
+                                    Piece? changedSpacePiece = changedSpace!.Piece;
+                                    bool changedSpacePieceHasMoved = changedSpacePiece!.HasMoved;
                                     // finally move piece to destination
                                     startingSpace.Piece.Move(startingSpace, endingSpace);
-                                    ChessBoard.MovesPlayed.Push((startingSpace, endingSpace, endingPiece, startingPieceHasMoved)!);
-                                    //ChessBoard.ListMovesPlayed();
-                                    Console.ReadLine();
+
+                                    ChessBoard.MovesPlayed.Push((startingSpace, endingSpace, changedSpace, changedSpacePiece, startingPieceHasMoved, changedSpacePieceHasMoved)!);
+
+                                    //ChessBoard.MovesPlayed.Push((startingSpace, endingSpace, endingPiece, startingPieceHasMoved, endingPieceHasMoved)!);
+
                                     ChessBoard.ChangeTurn();
                                 }
                             }
@@ -84,11 +89,14 @@ namespace ConsoleChessV2
                                 // try moving the piece on the starting space, test if rules are followed (not in check)
                                 if (startingSpace.Piece.TryMove(startingSpace, endingSpace))
                                 {
+                                    Space? changedSpace = startingPiece?.TryCaptureReturnSpace(startingSpace, endingSpace); // store changed space for en passant
+                                    Piece? changedSpacePiece = changedSpace!.Piece;
+                                    bool changedSpacePieceHasMoved = changedSpacePiece!.HasMoved;
                                     // finally move piece to destination
                                     startingSpace.Piece.Move(startingSpace, endingSpace);
-                                    ChessBoard.MovesPlayed.Push((startingSpace, endingSpace, endingPiece, startingPieceHasMoved)!);
+                                    ChessBoard.MovesPlayed.Push((startingSpace, endingSpace, changedSpace, changedSpacePiece, startingPieceHasMoved, changedSpacePieceHasMoved)!);
                                     //ChessBoard.ListMovesPlayed();
-                                    Console.ReadLine();
+                                    //Console.ReadLine();
                                     ChessBoard.ChangeTurn();
                                 }
                             }

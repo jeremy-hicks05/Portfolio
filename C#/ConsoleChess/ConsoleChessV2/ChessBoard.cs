@@ -11,7 +11,7 @@ namespace ConsoleChessV2
         public static Space? WhiteKingSpace { get; set; }
         public static Space? BlackKingSpace { get; set; }
 
-        public static Stack<(Space, Space, Piece, bool)> MovesPlayed = new(); // would this work?
+        public static Stack<(Space, Space, Space, Piece, bool, bool)> MovesPlayed = new(); // would this work?
         public static Player turn;
 
         public static void InitBoard()
@@ -114,7 +114,7 @@ namespace ConsoleChessV2
                 Console.WriteLine("Please enter a letter (A-H) or T to TakeBack");
                 selectedPieceColumn = Console.ReadLine();
 
-                if(selectedPieceColumn == "T")
+                if (selectedPieceColumn == "T")
                 {
                     TakeBackLastMove();
                     PrintBoard();
@@ -201,7 +201,7 @@ namespace ConsoleChessV2
 
         public static void ListMovesPlayed()
         {
-            foreach((Space, Space, Piece, bool) move in MovesPlayed)
+            foreach ((Space, Space, Space, Piece, bool, bool) move in MovesPlayed)
             {
                 Console.WriteLine($"Moved from {move.Item2} to  {move.Item1}, capturing {move.Item3}");
             }
@@ -209,12 +209,17 @@ namespace ConsoleChessV2
 
         public static void TakeBackLastMove()
         {
+            // revert fromSpace's piece and "changedSpaces" piece
             if (MovesPlayed.Count > 0)
             {
-                (Space, Space, Piece, bool) lastMove = MovesPlayed.Pop();
+                // original space,  ending space, changed space, changed space's piece, has moved?, has moved?
+                (Space, Space, Space, Piece, bool, bool) lastMove = MovesPlayed.Pop();
                 lastMove.Item1.Piece = lastMove.Item2.Piece;
-                lastMove.Item1.Piece!.HasMoved = lastMove.Item4;
-                lastMove.Item2.Piece = lastMove.Item3;
+                lastMove.Item2.Clear();
+                //lastMove.Item1.Piece!.HasMoved = lastMove.Item3.Piece!.HasMoved;
+                //lastMove.Item2.Piece!.HasMoved = lastMove.Item5;
+                //lastMove.Item2.Piece = lastMove.Item4;
+                lastMove.Item3.Piece = lastMove.Item4;
 
                 ChangeTurn();
             }
