@@ -77,6 +77,7 @@ namespace ConsoleChessV2
 
                 if (TryMove(fromSpace, toSpace))
                 {
+                    // changedSpace1 == H8 and changedSpace2 == F8
                     ChessBoard.MovesPlayed.Push((fromSpace, toSpace, changedSpace, changedSpacePiece, startingPieceHasMoved, changedSpacePieceHasMoved)!);
                     Move(fromSpace, toSpace);
                     ChessBoard.ChangeTurn();
