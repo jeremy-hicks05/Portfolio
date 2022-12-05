@@ -227,12 +227,11 @@
         {
             if (CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace))
             {
+                Piece? tempFromSpacePiece = fromSpace?.Piece;
+                Piece? tempToSpacePiece = toSpace?.Piece;
                 if (fromSpace?.Piece!.BelongsTo != toSpace?.Piece!.BelongsTo)
                 {
-                    Piece? tempFromSpacePiece = fromSpace?.Piece;
-                    Piece? tempToSpacePiece = toSpace?.Piece;
-
-                    // if a pawn up 2 puts you in check, you are not clearing out the 'fromSpace', you are clearing out the pawn next to your pawn
+                    // if a pawn up 2 puts you in check, you are not clearing out the 'fromSpace' or 'toSpace', you are clearing out the pawn next to your pawn
 
                     toSpace!.Piece = fromSpace!.Piece;
                     fromSpace.Clear();
@@ -310,35 +309,30 @@
                     }
                     else // if this is not en passant
                     {
-                        // verify your king is not in check
-                        ChessBoard.FindAllSpacesAttacked();
-                        if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
+                        if (toSpace.IsOccupied())
                         {
-                            // cancel move
+                            // verify your king is not in check
+                            if (ChessBoard.EitherKingIsInCheck())
+                            {
+                                // cancel move
+                                toSpace.Clear();
+                                fromSpace.Piece = tempFromSpacePiece;
+                                toSpace.Piece = tempToSpacePiece;
+                                return false;
+                            }
+                            // revert move
                             toSpace.Clear();
                             fromSpace.Piece = tempFromSpacePiece;
                             toSpace.Piece = tempToSpacePiece;
-                            return false;
+                            return true;
                         }
-                        fromSpace.Piece = tempFromSpacePiece;
-                        toSpace.Piece = tempToSpacePiece;
-                        toSpace.Clear();
                     }
-                    // verify your king is not in check
-                    if (ChessBoard.EitherKingIsInCheck())
-                    {
-                        // cancel move
-                        toSpace.Clear();
-                        fromSpace.Piece = tempFromSpacePiece;
-                        toSpace.Piece = tempToSpacePiece;
-                        return false;
-                    }
-                    // revert move
-                    toSpace.Clear();
-                    fromSpace.Piece = tempFromSpacePiece;
-                    toSpace.Piece = tempToSpacePiece;
-                    return true;
                 }
+                // cancel move
+                toSpace.Clear();
+                fromSpace.Piece = tempFromSpacePiece;
+                toSpace.Piece = tempToSpacePiece;
+                return false;
             }
             return false;
         }

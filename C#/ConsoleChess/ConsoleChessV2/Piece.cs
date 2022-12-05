@@ -107,39 +107,45 @@ namespace ConsoleChessV2
 
         public virtual Space TryCaptureReturnSpace(Space fromSpace, Space toSpace)
         {
-            Piece? tempFromSpacePiece = fromSpace.Piece;
-            Piece? tempToSpacePiece = toSpace.Piece;
-
-            // if a pawn up 2 puts you in check, you are not clearing out the 'fromSpace', you are clearing out the pawn next to your pawn
-
-            toSpace.Piece = fromSpace.Piece;
-            fromSpace.Clear();
-            toSpace.Clear();
-            ChessBoard.FindAllSpacesAttacked();
-
-            // verify your king is not in check
-            if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+            if (CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace))
             {
-                // cancel move
+                Piece? tempFromSpacePiece = fromSpace.Piece;
+                Piece? tempToSpacePiece = toSpace.Piece;
+
+                // if a pawn up 2 puts you in check, you are not clearing out the 'fromSpace', you are clearing out the pawn next to your pawn
+
+                toSpace.Piece = fromSpace.Piece;
+                fromSpace.Clear();
+                toSpace.Clear();
+                ChessBoard.FindAllSpacesAttacked();
+
+                // verify your king is not in check
+                if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+                {
+                    // cancel move
+                    fromSpace.Piece = tempFromSpacePiece;
+                    toSpace.Piece = tempToSpacePiece;
+                    return fromSpace;
+                }
+                else if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
+                {
+                    // cancel move
+                    fromSpace.Piece = tempFromSpacePiece;
+                    toSpace.Piece = tempToSpacePiece;
+                    return fromSpace;
+                }
+                // revert capture, let calling function finish capture
                 fromSpace.Piece = tempFromSpacePiece;
                 toSpace.Piece = tempToSpacePiece;
-                return fromSpace;
+                return toSpace;
             }
-            else if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
-            {
-                // cancel move
-                fromSpace.Piece = tempFromSpacePiece;
-                toSpace.Piece = tempToSpacePiece;
-                return fromSpace;
-            }
-            fromSpace.Piece = tempFromSpacePiece;
-            toSpace.Piece = tempToSpacePiece;
-            return toSpace;
+            // cancel move
+            return fromSpace;
         }
 
         public virtual bool TryCapture(Space fromSpace, Space toSpace)
         {
-            if (CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace) &&
+            if (CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace) && 
                 !(IsBlocked(fromSpace, toSpace)) &&
                 toSpace.Piece?.BelongsTo != fromSpace.Piece?.BelongsTo)
             {
