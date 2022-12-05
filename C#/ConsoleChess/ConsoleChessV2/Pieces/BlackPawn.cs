@@ -208,7 +208,7 @@
                 toSpace.Piece!.HasMoved = true;
                 fromSpace.Clear();
 
-                ChessBoard.ChangeTurn();
+                //ChessBoard.ChangeTurn();
             }
             else if(TryCapture(fromSpace, toSpace))
             {
@@ -219,7 +219,7 @@
                 toSpace.Piece!.HasMoved = true;
                 fromSpace.Clear();
 
-                ChessBoard.ChangeTurn();
+                //ChessBoard.ChangeTurn();
             }
         }
 

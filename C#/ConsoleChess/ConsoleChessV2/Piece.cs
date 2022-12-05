@@ -65,30 +65,28 @@ namespace ConsoleChessV2
 
         public virtual void ChessMove(Space fromSpace, Space toSpace)
         {
-            Piece? startingPiece = fromSpace.Piece;
-
-            Space? changedSpace = startingPiece?.TryCaptureReturnSpace(fromSpace, toSpace); // store changed space for en passant
-            Piece? changedSpacePiece = changedSpace!.Piece;
-
-            bool startingPieceHasMoved = startingPiece!.HasMoved;
-            bool changedSpacePieceHasMoved = changedSpacePiece!.HasMoved;
-
-            if (TryMove(fromSpace, toSpace))
+            if (ChessBoard.turn == fromSpace.Piece?.BelongsTo)
             {
-                ChessBoard.MovesPlayed.Push((fromSpace, toSpace, changedSpace, changedSpacePiece, startingPieceHasMoved, changedSpacePieceHasMoved)!);
-                //ChessBoard.AddMoveToHistory(fromSpace, toSpace);
-                Move(fromSpace, toSpace);
-                ChessBoard.ChangeTurn();
-            }
-            else if(TryCapture(fromSpace, toSpace))
-            {
-                ChessBoard.MovesPlayed.Push((fromSpace, toSpace, changedSpace, changedSpacePiece, startingPieceHasMoved, changedSpacePieceHasMoved)!);
-                //Space spaceChanged = TryCaptureReturnSpace(fromSpace, toSpace);
-                Capture(fromSpace, toSpace);
+                Piece? startingPiece = fromSpace.Piece;
 
-                //ChessBoard.AddMoveToHistory(fromSpace, spaceChanged);
+                Space? changedSpace = startingPiece?.TryCaptureReturnSpace(fromSpace, toSpace); // store changed space for en passant
+                Piece? changedSpacePiece = changedSpace!.Piece;
 
-                ChessBoard.ChangeTurn();
+                bool startingPieceHasMoved = startingPiece!.HasMoved;
+                bool changedSpacePieceHasMoved = changedSpacePiece!.HasMoved;
+
+                if (TryMove(fromSpace, toSpace))
+                {
+                    ChessBoard.MovesPlayed.Push((fromSpace, toSpace, changedSpace, changedSpacePiece, startingPieceHasMoved, changedSpacePieceHasMoved)!);
+                    Move(fromSpace, toSpace);
+                    ChessBoard.ChangeTurn();
+                }
+                else if (TryCapture(fromSpace, toSpace))
+                {
+                    ChessBoard.MovesPlayed.Push((fromSpace, toSpace, changedSpace, changedSpacePiece, startingPieceHasMoved, changedSpacePieceHasMoved)!);
+                    Capture(fromSpace, toSpace);
+                    ChessBoard.ChangeTurn();
+                }
             }
         }
 

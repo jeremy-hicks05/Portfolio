@@ -223,7 +223,7 @@
                 toSpace.Piece!.HasMoved = true;
                 fromSpace.Clear();
 
-                ChessBoard.ChangeTurn();
+                //ChessBoard.ChangeTurn();
             }
         }
 
