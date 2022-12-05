@@ -53,7 +53,7 @@
                     spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column - 1][fromSpace.Row]);
                 }
             }
-            else if (fromSpace.Row - 1 >= 0)
+            if (fromSpace.Row - 1 >= 0)
             {
                 // attacking down
                 if (fromSpace.Row - 1 == toSpace.Row &&
@@ -62,7 +62,7 @@
                     spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column][fromSpace.Row - 1]);
                 }
             }
-            else if (fromSpace.Row + 1 <= 7)
+            if (fromSpace.Row + 1 <= 7)
             {
                 // attacking up
                 if (fromSpace.Row + 1 == toSpace.Row &&
@@ -71,7 +71,7 @@
                     spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column][fromSpace.Row + 1]);
                 }
             }
-            else if (fromSpace.Column + 1 <= 7)
+            if (fromSpace.Column + 1 <= 7)
             {
                 // attacking right
                 if (fromSpace.Column + 1 == toSpace.Column &&
@@ -80,7 +80,7 @@
                     spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column + 1][fromSpace.Row]);
                 }
             }
-            else if (fromSpace.Row + 1 <= 7 && fromSpace.Column + 1 <= 7)
+            if (fromSpace.Row + 1 <= 7 && fromSpace.Column + 1 <= 7)
             {
                 // attacking up and right
                 if (fromSpace.Row + 1 == toSpace.Row &&
@@ -89,7 +89,7 @@
                     spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column + 1][fromSpace.Row + 1]);
                 }
             }
-            else if (fromSpace.Row + 1 <= 7 && fromSpace.Column - 1 >= 0)
+            if (fromSpace.Row + 1 <= 7 && fromSpace.Column - 1 >= 0)
             {
                 // attacking up and left
                 if (fromSpace.Row + 1 == toSpace.Row &&
@@ -98,7 +98,7 @@
                     spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column - 1][fromSpace.Row + 1]);
                 }
             }
-            else if (fromSpace.Row - 1 >= 0 && fromSpace.Column + 1 <= 7)
+            if (fromSpace.Row - 1 >= 0 && fromSpace.Column + 1 <= 7)
             {
                 // attacking down and right
                 if (fromSpace.Row - 1 == toSpace.Row &&
@@ -107,7 +107,7 @@
                     spacesToMoveToReview?.Add(ChessBoard.Spaces![fromSpace.Column + 1][fromSpace.Row - 1]);
                 }
             }
-            else if (fromSpace.Column - 1 >= 0 && fromSpace.Row - 1 >= 0)
+            if (fromSpace.Column - 1 >= 0 && fromSpace.Row - 1 >= 0)
             {
                 // attacking down and left
                 if (fromSpace.Row - 1 == toSpace.Row &&
@@ -178,20 +178,19 @@
                 ChessBoard.BlackKingSpace = toSpace;
                 toSpace.Piece = fromSpace.Piece;
                 fromSpace.Clear();
-                ChessBoard.FindAllSpacesAttacked();
 
                 // verify your king is not in check
-                if (ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
+                if (ChessBoard.EitherKingIsInCheck())
                 {
                     // cancel move
                     fromSpace.Piece = tempFromSpacePiece;
                     toSpace.Piece = tempToSpacePiece;
 
-                    ChessBoard.WhiteKingSpace = fromSpace;
+                    ChessBoard.BlackKingSpace = fromSpace;
                     return false;
                 }
 
-                // revert move -> do a true move later
+                // revert move -> let calling function perform move
                 fromSpace.Piece = tempFromSpacePiece;
                 toSpace.Piece = tempToSpacePiece;
 
@@ -204,23 +203,28 @@
 
         public override void Move(Space fromSpace, Space toSpace)
         {
-            // check for castle and update KingSpace
-            if (fromSpace.Column + 2 == toSpace.Column)
+            if (TryMove(fromSpace, toSpace))
             {
-                // castle king side white
-                ChessBoard.Spaces![C["F"]][R["8"]].Piece = ChessBoard.Spaces[C["H"]][R["8"]].Piece;
-                ChessBoard.Spaces[C["H"]][R["8"]].Clear();
+                // check for castle and update KingSpace
+                if (fromSpace.Column + 2 == toSpace.Column)
+                {
+                    // castle king side white
+                    ChessBoard.Spaces![C["F"]][R["8"]].Piece = ChessBoard.Spaces[C["H"]][R["8"]].Piece;
+                    ChessBoard.Spaces[C["H"]][R["8"]].Clear();
+                }
+                if (fromSpace.Column - 2 == toSpace.Column)
+                {
+                    // castle queen side white
+                    ChessBoard.Spaces![C["D"]][R["8"]].Piece = ChessBoard.Spaces[C["A"]][R["8"]].Piece;
+                    ChessBoard.Spaces[C["A"]][R["8"]].Clear();
+                }
+                toSpace.Piece = fromSpace.Piece;
+                ChessBoard.BlackKingSpace = toSpace;
+                toSpace.Piece!.HasMoved = true;
+                fromSpace.Clear();
+
+                ChessBoard.ChangeTurn();
             }
-            if (fromSpace.Column - 2 == toSpace.Column)
-            {
-                // castle queen side white
-                ChessBoard.Spaces![C["D"]][R["8"]].Piece = ChessBoard.Spaces[C["A"]][R["8"]].Piece;
-                ChessBoard.Spaces[C["A"]][R["8"]].Clear();
-            }
-            toSpace.Piece = fromSpace.Piece;
-            ChessBoard.BlackKingSpace = toSpace;
-            toSpace.Piece!.HasMoved = true;
-            fromSpace.Clear();
         }
 
         // specialized King functions

@@ -109,7 +109,7 @@ namespace ConsoleChessV2
         {
             string? selectedPieceColumn = "Z";
             string? selectedPieceRow = "0";
-            while (!(Regex.Match(selectedPieceColumn!, "[A-Ha-h]").Success))
+            while (!(Regex.Match(selectedPieceColumn!, "^[A-Ha-h]$").Success))
             {
                 Console.WriteLine("Please enter a letter (A-H) or T to TakeBack");
                 selectedPieceColumn = Console.ReadLine();
@@ -121,7 +121,7 @@ namespace ConsoleChessV2
                 }
             }
 
-            while (!(Regex.Match(selectedPieceRow!, "[1-8]").Success))
+            while (!(Regex.Match(selectedPieceRow!, "^[1-8]$").Success))
             {
                 Console.WriteLine("Please enter a number (1-8)");
                 selectedPieceRow = Console.ReadLine();
@@ -199,6 +199,19 @@ namespace ConsoleChessV2
             }
         }
 
+        public static void AddMoveToHistory(Space fromSpace, Space toSpace)
+        {
+            //Piece? startingPiece = fromSpace.Piece;
+
+            //Space? changedSpace = startingPiece?.TryCaptureReturnSpace(fromSpace, toSpace); // store changed space for en passant
+            //Piece? changedSpacePiece = changedSpace!.Piece;
+
+            //bool startingPieceHasMoved = startingPiece!.HasMoved;
+            //bool changedSpacePieceHasMoved = changedSpacePiece!.HasMoved;
+
+            //ChessBoard.MovesPlayed.Push((fromSpace, toSpace, changedSpace, changedSpacePiece, startingPieceHasMoved, changedSpacePieceHasMoved)!);
+        }
+
         public static void ListMovesPlayed()
         {
             foreach ((Space, Space, Space, Piece, bool, bool) move in MovesPlayed)
@@ -224,6 +237,20 @@ namespace ConsoleChessV2
 
                 ChangeTurn();
             }
+        }
+
+        public static bool EitherKingIsInCheck()
+        {
+            FindAllSpacesAttacked();
+            if (turn == Player.White && WhiteKingSpace!.IsUnderAttackByBlack)
+            {
+                return true;
+            }
+            else if (turn == Player.Black && BlackKingSpace!.IsUnderAttackByWhite)
+            {
+                return true;
+            }
+            return false;
         }
 
         // if current turn's king is in check

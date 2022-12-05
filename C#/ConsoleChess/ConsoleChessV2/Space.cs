@@ -15,6 +15,16 @@
             Piece = piece;
         }
 
+        public bool IsEmpty()
+        {
+            return Piece?.BelongsTo == null;
+        }
+
+        public bool IsOccupied()
+        {
+            return Piece?.BelongsTo != null;
+        }
+
         public override string ToString()
         {
             return $"[{Piece?.Name}]";

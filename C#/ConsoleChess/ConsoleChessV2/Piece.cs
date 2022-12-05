@@ -37,30 +37,25 @@ namespace ConsoleChessV2
 
         public virtual bool TryMove(Space fromSpace, Space toSpace)
         {
-            if (fromSpace.Piece?.BelongsTo != toSpace.Piece?.BelongsTo && toSpace.Piece?.BelongsTo == null)
+            if (CanLegallyTryToMoveFromSpaceToSpace(fromSpace, toSpace) &&
+                !(IsBlocked(fromSpace, toSpace)) &&
+                toSpace.IsEmpty())
             {
                 Piece? tempFromSpacePiece = fromSpace.Piece;
                 Piece? tempToSpacePiece = toSpace.Piece;
 
                 toSpace.Piece = fromSpace.Piece;
                 fromSpace.Clear();
-                ChessBoard.FindAllSpacesAttacked();
 
                 // verify your king is not in check
-                if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+                if (ChessBoard.EitherKingIsInCheck())
                 {
                     // cancel move
                     fromSpace.Piece = tempFromSpacePiece;
                     toSpace.Piece = tempToSpacePiece;
                     return false;
                 }
-                else if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
-                {
-                    // cancel move
-                    fromSpace.Piece = tempFromSpacePiece;
-                    toSpace.Piece = tempToSpacePiece;
-                    return false;
-                }
+                // revert move and let calling function finish it
                 fromSpace.Piece = tempFromSpacePiece;
                 toSpace.Piece = tempToSpacePiece;
                 return true;
@@ -68,7 +63,43 @@ namespace ConsoleChessV2
             return false;
         }
 
+        public virtual void ChessMove(Space fromSpace, Space toSpace)
+        {
+            Piece? startingPiece = fromSpace.Piece;
+
+            Space? changedSpace = startingPiece?.TryCaptureReturnSpace(fromSpace, toSpace); // store changed space for en passant
+            Piece? changedSpacePiece = changedSpace!.Piece;
+
+            bool startingPieceHasMoved = startingPiece!.HasMoved;
+            bool changedSpacePieceHasMoved = changedSpacePiece!.HasMoved;
+
+            if (TryMove(fromSpace, toSpace))
+            {
+                ChessBoard.MovesPlayed.Push((fromSpace, toSpace, changedSpace, changedSpacePiece, startingPieceHasMoved, changedSpacePieceHasMoved)!);
+                //ChessBoard.AddMoveToHistory(fromSpace, toSpace);
+                Move(fromSpace, toSpace);
+                ChessBoard.ChangeTurn();
+            }
+            else if(TryCapture(fromSpace, toSpace))
+            {
+                ChessBoard.MovesPlayed.Push((fromSpace, toSpace, changedSpace, changedSpacePiece, startingPieceHasMoved, changedSpacePieceHasMoved)!);
+                //Space spaceChanged = TryCaptureReturnSpace(fromSpace, toSpace);
+                Capture(fromSpace, toSpace);
+
+                //ChessBoard.AddMoveToHistory(fromSpace, spaceChanged);
+
+                ChessBoard.ChangeTurn();
+            }
+        }
+
         public virtual void Move(Space fromSpace, Space toSpace)
+        {
+            toSpace.Piece = fromSpace.Piece;
+            toSpace.Piece!.HasMoved = true;
+            fromSpace.Clear();
+        }
+
+        public virtual void Capture(Space fromSpace, Space toSpace)
         {
             toSpace.Piece = fromSpace.Piece;
             toSpace.Piece!.HasMoved = true;
@@ -109,34 +140,30 @@ namespace ConsoleChessV2
 
         public virtual bool TryCapture(Space fromSpace, Space toSpace)
         {
-            Piece? tempFromSpacePiece = fromSpace.Piece;
-            Piece? tempToSpacePiece = toSpace.Piece;
-
-            // if a pawn up 2 puts you in check, you are not clearing out the 'fromSpace', you are clearing out the pawn next to your pawn
-
-            toSpace.Piece = fromSpace.Piece;
-            fromSpace.Clear();
-            toSpace.Clear();
-            ChessBoard.FindAllSpacesAttacked();
-
-            // verify your king is not in check
-            if (ChessBoard.turn == Player.White && ChessBoard.WhiteKingSpace!.IsUnderAttackByBlack)
+            if (CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace) &&
+                !(IsBlocked(fromSpace, toSpace)) &&
+                toSpace.Piece?.BelongsTo != fromSpace.Piece?.BelongsTo)
             {
-                // cancel move
+                Piece? tempFromSpacePiece = fromSpace.Piece;
+                Piece? tempToSpacePiece = toSpace.Piece;
+
+                toSpace.Piece = fromSpace.Piece;
+                fromSpace.Clear();
+
+                // verify your king is not in check
+                if (ChessBoard.EitherKingIsInCheck())
+                {
+                    // cancel move
+                    fromSpace.Piece = tempFromSpacePiece;
+                    toSpace.Piece = tempToSpacePiece;
+                    return false;
+                }
+                // revert move and let calling function finish it
                 fromSpace.Piece = tempFromSpacePiece;
                 toSpace.Piece = tempToSpacePiece;
-                return false;
+                return true;
             }
-            else if (ChessBoard.turn == Player.Black && ChessBoard.BlackKingSpace!.IsUnderAttackByWhite)
-            {
-                // cancel move
-                fromSpace.Piece = tempFromSpacePiece;
-                toSpace.Piece = tempToSpacePiece;
-                return false;
-            }
-            fromSpace.Piece = tempFromSpacePiece;
-            toSpace.Piece = tempToSpacePiece;
-            return true;
+            return false;
         }
 
         public virtual bool IsBlocked(Space fromSpace, Space toSpace)
@@ -147,7 +174,7 @@ namespace ConsoleChessV2
             {
                 if (s != fromSpace.Piece.spacesToMoveToReview.Last())
                 {
-                    if (s.Piece?.BelongsTo != null)
+                    if (s.IsOccupied())
                     {
                         // piece is blocked
                         return true;
@@ -160,12 +187,11 @@ namespace ConsoleChessV2
                 }
             }
 
-            // capture options  TODO: Remove?
             foreach (Space s in fromSpace.Piece?.spacesToCaptureReview!)
             {
                 if (s != fromSpace.Piece.spacesToCaptureReview.Last())
                 {
-                    if (s.Piece?.BelongsTo != null)
+                    if (s.IsOccupied())
                     {
                         // piece is blocked
                         return true;
