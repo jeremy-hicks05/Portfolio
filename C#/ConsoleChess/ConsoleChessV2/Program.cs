@@ -9,7 +9,7 @@
 
 /* TODO: Add stack of moves for popping to "takeback"
  * Test more games alongside lichess
- * 
+ * Fix regular pawn capture takeback
  * 
  * 
  * 

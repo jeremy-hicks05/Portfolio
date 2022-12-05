@@ -163,8 +163,7 @@
         {
             if (CanLegallyTryToMoveFromSpaceToSpace(fromSpace, toSpace) && 
                 !(IsBlocked(fromSpace, toSpace)) && 
-                fromSpace.Piece?.BelongsTo != toSpace.Piece?.BelongsTo && 
-                toSpace.Piece?.BelongsTo != null)
+                fromSpace.Piece?.BelongsTo != toSpace.Piece?.BelongsTo)
             {
                 Piece? tempFromSpacePiece = fromSpace.Piece;
                 Piece? tempToSpacePiece = toSpace.Piece;

@@ -259,15 +259,15 @@
                     toSpace.Clear();
                     fromSpace.Piece = tempFromSpacePiece;
                     toSpace.Piece = tempToSpacePiece;
-                    return fromSpace;
+                    return toSpace;
                 }
                 // revert move
                 toSpace.Clear();
                 fromSpace.Piece = tempFromSpacePiece;
                 toSpace.Piece = tempToSpacePiece;
-                return fromSpace;
+                return toSpace;
             }
-            return fromSpace;
+            return toSpace;
         }
 
         public override bool CanMoveFromSpaceToEmptySpace(Space fromSpace, Space toSpace)
