@@ -224,7 +224,6 @@
             return toSpace;
         }
 
-
         public override bool CanMoveFromSpaceToEmptySpace(Space fromSpace, Space toSpace)
         {
             return fromSpace.Column == toSpace.Column &&
