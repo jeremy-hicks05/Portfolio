@@ -18,11 +18,6 @@ namespace ConsoleChessV2
             BelongsTo = null;
         }
 
-        public virtual bool IsPiecesTurn()
-        {
-            return ChessBoard.turn == BelongsTo;
-        }
-
         public virtual void CreateListOfPiecesToInspect(Space fromSpace, Space toSpace)
         {
             //Console.WriteLine("Calling wrong method!");
