@@ -5,7 +5,7 @@
 
     internal class Capture : ChessMove
     {
-        public Capture(Space startingSpace, Space endingSpace, Space affectedSpace) : base(startingSpace, endingSpace, affectedSpace)
+        public Capture(Space startingSpace, Space endingSpace) : base(startingSpace, endingSpace)
         {
         }
     }

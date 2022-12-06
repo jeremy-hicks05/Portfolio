@@ -5,8 +5,9 @@
 
     internal class Castle : ChessMove
     {
-        public Castle(Space startingSpace, Space endingSpace, Space affectedSpace) : base(startingSpace, endingSpace, affectedSpace)
+        public Castle(Space startingSpace, Space endingSpace) : base(startingSpace, endingSpace)
         {
+
         }
     }
 }

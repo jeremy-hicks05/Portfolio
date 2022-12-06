@@ -9,7 +9,7 @@ namespace ConsoleChessV3.Moves
 {
     internal class Move : ChessMove
     {
-        public Move(Space initialSpace, Space targetSpace, Space affectedSpace) : base(initialSpace, targetSpace, affectedSpace)
+        public Move(Space initialSpace, Space targetSpace) : base(initialSpace, targetSpace)
         {
             initialSpace.Piece.CanLegallyTryToMoveFromSpaceToSpace(initialSpace, targetSpace);
         }

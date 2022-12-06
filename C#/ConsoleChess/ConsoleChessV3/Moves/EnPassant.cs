@@ -5,9 +5,9 @@
 
     internal class EnPassant : ChessMove
     {
-        public EnPassant(Space startingSpace, Space endingSpace, Space affectedSpace) : base(startingSpace, endingSpace, affectedSpace)
+        public EnPassant(Space startingSpace, Space endingSpace) : base(startingSpace, endingSpace)
         {
-
+            StartingSpace = startingSpace;
         }
     }
 }

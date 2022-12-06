@@ -13,7 +13,7 @@
         public Space AffectedSpace = new();
         public IPiece AffectedPiece;
 
-        public ChessMove(Space startingSpace, Space endingSpace, Space affectedSpace)
+        public ChessMove(Space startingSpace, Space endingSpace)
         {
             StartingSpace = startingSpace;
             TargetSpace = endingSpace;
@@ -21,8 +21,14 @@
             StartingPiece = startingSpace.Piece!;
             TargetPiece = endingSpace.Piece!;
 
-            AffectedSpace = affectedSpace;
-            AffectedPiece = affectedSpace.Piece;
+            AffectedSpace = endingSpace;
+            AffectedPiece = endingSpace.Piece ?? new Piece();
+        }
+
+        public void Perform()
+        {
+            TargetSpace.Piece = StartingSpace.Piece;
+            StartingSpace.Clear();
         }
     }
 }

@@ -8,6 +8,13 @@
         public bool HasMoved { get; set; }
         public int PointValue { get; set; }
         public Player BelongsTo { get; set; }
+
+        public Piece()
+        {
+            Name = $" ";
+            HasMoved = false;
+            PointValue = 0;
+        }
         public void BuildListOfSpacesToInspect()
         {
 

@@ -1,12 +1,14 @@
 ﻿namespace ConsoleChessV3
 {
-    using ConsoleChessV3.Interfaces;
+    using ConsoleChessV3.Builders;
     using ConsoleChessV3.Moves;
     using ConsoleChessV3.Pieces.Black;
     using ConsoleChessV3.Pieces.White;
     using ConsoleChessV3.SuperClasses;
     using System.Text.RegularExpressions;
     using static ConsoleChessV3.Enums.Notation;
+    using Capture = Moves.Capture; // prevent ambiguity between Moves.Capture and RegExp.Capture
+
     internal class ChessBoard
     {
         public static Space[][]? Spaces;
@@ -15,7 +17,6 @@
 
         public static Space? InitialSpace;
         public static Space? TargetSpace;
-        public static Space? AffectedSpace;
 
         public static void InitBoard()
         {
@@ -152,7 +153,12 @@
         {
             if (InitialSpace is not null && TargetSpace is not null)
             {
-                NextMove = new Move(InitialSpace, TargetSpace, TargetSpace);
+                NextMove = MoveBuilder.Build(InitialSpace, TargetSpace);
+
+                Console.WriteLine(NextMove.StartingPiece);
+                Console.WriteLine(NextMove.TargetPiece);
+
+                NextMove.Perform();
             }
         }
 
