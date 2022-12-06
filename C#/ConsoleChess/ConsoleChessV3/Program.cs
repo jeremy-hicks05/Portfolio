@@ -9,17 +9,19 @@
             Console.ReadLine();
             InitBoard();
 
-            PrintBoard();
+            while (true)
+            {
+                PrintBoard();
 
-            GetInitialSpaceInput();
-            GetTargetSpaceInput();
+                GetInitialSpaceInput();
+                GetTargetSpaceInput();
 
-            PlayMove();
+                PlayMove();
+                PrintBoard();
+                SaveMoveInHistory();
 
-            SaveMoveInHistory();
-
-            PrintBoard();
-
+                ShowMoveHistory();
+            }
             Console.WriteLine("Exiting Chess");
             Console.ReadLine();
         }

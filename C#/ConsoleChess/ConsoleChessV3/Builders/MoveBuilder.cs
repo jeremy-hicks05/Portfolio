@@ -9,12 +9,12 @@ namespace ConsoleChessV3.Builders
         public static ChessMove Build(Space fromSpace, Space toSpace)
         {
             // move to empty space
-            if(toSpace == null)
+            if(toSpace.IsEmpty())
             {
                 return new Move(fromSpace, toSpace);
             }
             // capture
-            else if(toSpace != null)
+            else if(toSpace.IsOccupied())
             {
                 return new Capture(fromSpace, toSpace);
             }

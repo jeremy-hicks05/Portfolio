@@ -183,5 +183,14 @@
                 }
             }
         }
+
+        public static void ShowMoveHistory()
+        {
+            foreach(ChessMove m in MovesPlayed)
+            {
+                Console.WriteLine(m.StartingSpace);
+                Console.WriteLine(m.TargetSpace);
+            }
+        }
     }
 }

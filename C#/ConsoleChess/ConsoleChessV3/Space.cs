@@ -37,7 +37,17 @@ namespace ConsoleChessV3
 
         public void Clear()
         {
-            this.Piece = new Piece();
+            this.Piece = null;
+        }
+
+        public bool IsEmpty()
+        {
+            return Piece == null;
+        }
+
+        public bool IsOccupied()
+        {
+            return Piece != null;
         }
     }
 }
