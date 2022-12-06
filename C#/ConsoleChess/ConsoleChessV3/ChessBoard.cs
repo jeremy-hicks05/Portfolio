@@ -1,6 +1,7 @@
 ﻿namespace ConsoleChessV3
 {
     using ConsoleChessV3.Interfaces;
+    using ConsoleChessV3.Moves;
     using ConsoleChessV3.Pieces.Black;
     using ConsoleChessV3.Pieces.White;
     using ConsoleChessV3.SuperClasses;
@@ -8,11 +9,12 @@
     internal class ChessBoard
     {
         public static Space[][]? Spaces;
-        public static Stack<IChessMove?>? MovesPlayed = new();
-        public static IChessMove? NextMove;
+        public static Stack<ChessMove?>? MovesPlayed = new();
+        public static ChessMove? NextMove;
 
         public static Space? InitialSpace;
         public static Space? TargetSpace;
+        public static Space? AffectedSpace;
 
         public static void InitBoard()
         {
@@ -61,10 +63,12 @@
 
         public static void GetInitialSpaceInput()
         {
+            // TODO: Clean input
             // get user input (A-H) and (1-8) for initial space
             Console.WriteLine("Please enter Letter for Initial Space");
             int column = int.Parse(Console.ReadLine());
 
+            // TODO: Clean input
             Console.WriteLine("Please enter Number for Initial Space");
             int row = int.Parse(Console.ReadLine());
 
@@ -73,10 +77,12 @@
 
         public static void GetTargetSpaceInput()
         {
+            // TODO: Clean input
             // get user input (A-H) and (1-8) for target space
             Console.WriteLine("Please enter Letter for Target Space");
             int column = int.Parse(Console.ReadLine());
 
+            // TODO: Clean input
             Console.WriteLine("Please enter Number for Target Space");
             int row = int.Parse(Console.ReadLine());
 
@@ -135,16 +141,29 @@
         {
             if (InitialSpace is not null && TargetSpace is not null)
             {
-                NextMove = new Move(InitialSpace, TargetSpace);
+                NextMove = new Move(InitialSpace, TargetSpace, TargetSpace);
             }
-
         }
 
-        public static void SaveMoveInHistory(IChessMove chessMove)
+        public static void SaveMoveInHistory()
         {
             if (MovesPlayed is not null)
             {
-                MovesPlayed.Push(chessMove);
+                MovesPlayed.Push(NextMove);
+            }
+        }
+
+        public static void TakeBackMove()
+        {
+            if (MovesPlayed is not null)
+            {
+                ChessMove? lastMove = MovesPlayed.Pop();
+                if (lastMove is not null)
+                {
+                    lastMove.TargetSpace.Clear();
+                    lastMove.AffectedSpace.Piece = lastMove.AffectedPiece;
+                    lastMove.StartingSpace.Piece = lastMove.StartingPiece;
+                }
             }
         }
     }

@@ -16,6 +16,8 @@
 
             PlayMove();
 
+            SaveMoveInHistory();
+
             PrintBoard();
 
             Console.WriteLine("Exiting Chess");

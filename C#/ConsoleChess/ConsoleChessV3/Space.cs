@@ -1,5 +1,6 @@
 ﻿using ConsoleChessV3.Interfaces;
 using ConsoleChessV3.Pieces.Black;
+using ConsoleChessV3.SuperClasses;
 
 namespace ConsoleChessV3
 {
@@ -32,6 +33,11 @@ namespace ConsoleChessV3
         public override string ToString()
         {
             return (Piece == null ? $"[ ]" : $"[{Piece.GetName()}]");
+        }
+
+        public void Clear()
+        {
+            this.Piece = new Piece();
         }
     }
 }

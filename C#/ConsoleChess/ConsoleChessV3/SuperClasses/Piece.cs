@@ -18,7 +18,7 @@
             return true;
         }
 
-        public virtual bool CanLegallyTryToMoveFromSpaceToSpace()
+        public virtual bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
             return true;
         }

@@ -9,7 +9,7 @@ namespace ConsoleChessV3.Pieces
 {
     internal class King : Piece
     {
-        public override bool CanLegallyTryToMoveFromSpaceToSpace()
+        public override bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
             return true;
         }

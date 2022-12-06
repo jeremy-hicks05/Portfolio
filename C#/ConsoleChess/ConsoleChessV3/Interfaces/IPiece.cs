@@ -5,7 +5,7 @@ namespace ConsoleChessV3.Interfaces
     internal interface IPiece
     {
         // legal attempt at moving - used for pre-move options
-        public bool CanLegallyTryToMoveFromSpaceToSpace();
+        public bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace);
 
         // legal attempt at capturing - used for pre-move options
         public bool CanLegallyTryToCaptureFromSpaceToSpace();
