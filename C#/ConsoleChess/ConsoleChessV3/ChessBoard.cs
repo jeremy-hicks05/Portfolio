@@ -1,9 +1,11 @@
 ﻿namespace ConsoleChessV3
 {
+    using ConsoleChessV3.Interfaces;
     using static ConsoleChessV3.Enums.Notation;
-    internal static class ChessBoard
+    internal class ChessBoard
     {
         public static Space[][] Spaces;
+        public static Stack<IChessMove> MovesPlayed;
         public static void InitBoard()
         {
             // build 8x8 Chess Board
@@ -47,6 +49,11 @@
                 Console.WriteLine();
             }
             Console.WriteLine("  A  B  C  D  E  F  G  H");
+        }
+
+        public static void PlayMove()
+        {
+
         }
     }
 }

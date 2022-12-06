@@ -3,11 +3,19 @@
     using static ChessBoard;
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Console.WriteLine("Welcome to Chess!");
             Console.ReadLine();
             InitBoard();
+
+            PrintBoard();
+
+            GetInitialSpaceInput();
+            GetTargetSpaceInput();
+
+            PlayMove();
+
             PrintBoard();
 
             Console.WriteLine("Exiting Chess");

@@ -1,4 +1,4 @@
-﻿namespace ConsoleChessV3.Pieces
+﻿namespace ConsoleChessV3.SuperClasses
 {
     using ConsoleChessV3.Enums;
     using ConsoleChessV3.Interfaces;
@@ -10,7 +10,7 @@
         public Player BelongsTo { get; set; }
         public void BuildListOfSpacesToInspect()
         {
-            
+
         }
 
         public virtual bool CanLegallyTryToCaptureFromSpaceToSpace()
