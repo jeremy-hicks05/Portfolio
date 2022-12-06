@@ -5,6 +5,7 @@
     using ConsoleChessV3.Pieces.Black;
     using ConsoleChessV3.Pieces.White;
     using ConsoleChessV3.SuperClasses;
+    using System.Text.RegularExpressions;
     using static ConsoleChessV3.Enums.Notation;
     internal class ChessBoard
     {
@@ -63,47 +64,57 @@
 
         public static void GetInitialSpaceInput()
         {
-            // TODO: Clean input
             // get user input (A-H) and (1-8) for initial space
-            Console.WriteLine("Please enter Letter for Initial Space");
-            int column = int.Parse(Console.ReadLine());
+            string selectedPieceColumn = "Z";
+            string selectedPieceRow = "0";
+            while (!(Regex.Match(selectedPieceColumn!, "^[A-Ha-h]$").Success))
+            {
+                Console.WriteLine("Please enter a letter (A-H)");
+                selectedPieceColumn = Console.ReadLine().ToUpper();
+            }
 
-            // TODO: Clean input
-            Console.WriteLine("Please enter Number for Initial Space");
-            int row = int.Parse(Console.ReadLine());
+            while (!(Regex.Match(selectedPieceRow!, "^[1-8]$").Success))
+            {
+                Console.WriteLine("Please enter a number (1-8)");
+                selectedPieceRow = Console.ReadLine().ToUpper();
+            }
 
-            SetInitialSpaceFromInput(column, row);
+            SetInitialSpaceFromInput(selectedPieceColumn, selectedPieceRow);
         }
 
         public static void GetTargetSpaceInput()
         {
-            // TODO: Clean input
-            // get user input (A-H) and (1-8) for target space
-            Console.WriteLine("Please enter Letter for Target Space");
-            int column = int.Parse(Console.ReadLine());
+            // get user input (A-H) and (1-8) for initial space
+            string selectedPieceColumn = "Z";
+            string selectedPieceRow = "0";
+            while (!(Regex.Match(selectedPieceColumn!, "^[A-Ha-h]$").Success))
+            {
+                Console.WriteLine("Please enter a letter (A-H)");
+                selectedPieceColumn = Console.ReadLine().ToUpper();
+            }
 
-            // TODO: Clean input
-            Console.WriteLine("Please enter Number for Target Space");
-            int row = int.Parse(Console.ReadLine());
+            while (!(Regex.Match(selectedPieceRow!, "^[1-8]$").Success))
+            {
+                Console.WriteLine("Please enter a number (1-8)");
+                selectedPieceRow = Console.ReadLine().ToUpper();
+            }
 
-            SetTargetSpaceFromInput(column, row);
+            SetTargetSpaceFromInput(selectedPieceColumn, selectedPieceRow);
         }
 
-        public static void SetInitialSpaceFromInput(int column, int row)
+        public static void SetInitialSpaceFromInput(string column, string row)
         {
-            // get user input (A-H) and (1-8) for initial space
             if (Spaces is not null)
             {
-                InitialSpace = Spaces[column][row];
+                InitialSpace = Spaces[C[column]][R[row]];
             }
         }
 
-        public static void SetTargetSpaceFromInput(int column, int row)
+        public static void SetTargetSpaceFromInput(string column, string row)
         {
-            // get user input (A-H) and (1-8) for initial space
             if (Spaces is not null)
             {
-                TargetSpace = Spaces[column][row];
+                TargetSpace = Spaces[C[column]][R[row]];
             }
         }
 
