@@ -10,8 +10,8 @@
         public IPiece StartingPiece;
         public IPiece TargetPiece;
 
-        public Space AffectedSpace;
-        public IPiece? AffectedPiece;
+        public Space CapturedSpace;
+        public IPiece? CapturedPiece;
 
         public ChessMove(Space startingSpace, Space endingSpace)
         {
@@ -21,8 +21,8 @@
             StartingPiece = startingSpace.Piece!;
             TargetPiece = endingSpace.Piece!;
 
-            AffectedSpace = startingSpace;
-            AffectedPiece = startingSpace.Piece;
+            CapturedSpace = startingSpace;
+            CapturedPiece = startingSpace.Piece;
         }
 
         public virtual void Perform()

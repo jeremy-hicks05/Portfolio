@@ -185,7 +185,7 @@
                 if (lastMove is not null)
                 {
                     lastMove.TargetSpace.Clear();
-                    lastMove.AffectedSpace.Piece = lastMove.AffectedPiece;
+                    lastMove.CapturedSpace.Piece = lastMove.CapturedPiece;
                     lastMove.StartingSpace.Piece = lastMove.StartingPiece;
                 }
             }

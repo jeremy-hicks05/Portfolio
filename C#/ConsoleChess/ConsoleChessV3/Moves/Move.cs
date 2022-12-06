@@ -19,7 +19,7 @@ namespace ConsoleChessV3.Moves
             if (StartingSpace.Piece.CanLegallyTryToMoveFromSpaceToSpace(StartingSpace, TargetSpace))
             {
                 TargetSpace.Piece = StartingSpace.Piece;
-                AffectedSpace?.Clear();
+                CapturedSpace?.Clear();
             }
         }
     }
