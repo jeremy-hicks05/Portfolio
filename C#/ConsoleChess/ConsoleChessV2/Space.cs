@@ -1,4 +1,6 @@
-﻿namespace ConsoleChessV2
+﻿using ConsoleChessV2.Pieces;
+
+namespace ConsoleChessV2
 {
     internal class Space
     {

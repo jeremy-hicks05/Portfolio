@@ -2,6 +2,7 @@
 
 namespace ConsoleChessV2
 {
+    using ConsoleChessV2.Moves;
     using ConsoleChessV2.Pieces;
     using System.Text.RegularExpressions;
     using static Notation;
@@ -11,7 +12,7 @@ namespace ConsoleChessV2
         public static Space? WhiteKingSpace { get; set; }
         public static Space? BlackKingSpace { get; set; }
 
-        public static Stack<(Space, Space, Space, Piece, bool, bool)> MovesPlayed = new(); // would this work?
+        public static Stack<Move> MovesPlayed = new(); // would this work?
         public static Player turn;
 
         public static void InitBoard()
@@ -214,7 +215,7 @@ namespace ConsoleChessV2
 
         public static void ListMovesPlayed()
         {
-            foreach ((Space, Space, Space, Piece, bool, bool) move in MovesPlayed)
+            foreach (Move move in MovesPlayed)
             {
                 //Console.WriteLine($"Moved from {move.Item2} to  {move.Item1}, capturing {move.Item3}");
             }
@@ -222,19 +223,21 @@ namespace ConsoleChessV2
 
         public static void TakeBackLastMove()
         {
+            // TODO: Fix this based on new Move class **********
+            // *************************************************
             // check for very specific castle moves, make very specific takeback?
             if (MovesPlayed.Count > 0)
             {
                 // original space, ending space, changed space
                 // changed space's piece, changed piece has moved
                 // starting piece has moved
-                (Space, Space, Space, Piece, bool, bool) lastMove = MovesPlayed.Pop();
+                Move lastMove = MovesPlayed.Pop();
 
                 // if castle - do specific takeback
-                if ((lastMove.Item2?.Piece!.GetType() == typeof(BlackKing) ||
-                    lastMove.Item2?.Piece!.GetType() == typeof(WhiteKing)) &&
-                    (lastMove.Item1.Column == C["E"] && lastMove.Item1.Row == R["1"]) &&
-                    (lastMove.Item2.Column == C["G"] && lastMove.Item2.Row == R["1"]))
+                if ((lastMove.TargetSpace?.Piece!.GetType() == typeof(BlackKing) ||
+                    lastMove.TargetSpace?.Piece!.GetType() == typeof(WhiteKing)) &&
+                    (lastMove.InitiatingSpace?.Column == C["E"] && lastMove.InitiatingSpace.Row == R["1"]) &&
+                    (lastMove.TargetSpace.Column == C["G"] && lastMove.TargetSpace.Row == R["1"]))
                 {
                     Spaces![C["E"]][R["1"]].Piece = Spaces![C["G"]][R["1"]].Piece;
                     Spaces![C["H"]][R["1"]].Piece = Spaces![C["F"]][R["1"]].Piece;
@@ -243,10 +246,10 @@ namespace ConsoleChessV2
                     Spaces![C["F"]][R["1"]].Clear();
                     Spaces![C["G"]][R["1"]].Clear();
                 }
-                else if ((lastMove.Item2?.Piece!.GetType() == typeof(BlackKing) ||
-                    lastMove.Item2?.Piece!.GetType() == typeof(WhiteKing)) && 
-                    (lastMove.Item1?.Column == C["E"] && lastMove.Item1?.Row == R["1"]) &&
-                    (lastMove.Item2.Column == C["C"] && lastMove.Item2.Row == R["1"]))
+                else if ((lastMove.InitiatingSpace?.Piece!.GetType() == typeof(BlackKing) ||
+                    lastMove.TargetSpace?.Piece!.GetType() == typeof(WhiteKing)) && 
+                    (lastMove.InitiatingSpace.Column == C["E"] && lastMove.InitiatingSpace.Row == R["1"]) &&
+                    (lastMove.InitiatingSpace.Column == C["C"] && lastMove.InitiatingSpace.Row == R["1"]))
                 {
                     Spaces![C["E"]][R["1"]].Piece = Spaces![C["C"]][R["1"]].Piece;
                     Spaces![C["A"]][R["1"]].Piece = Spaces![C["D"]][R["1"]].Piece;
@@ -255,10 +258,10 @@ namespace ConsoleChessV2
                     Spaces![C["C"]][R["1"]].Clear();
                     Spaces![C["D"]][R["1"]].Clear();
                 }
-                else if ((lastMove.Item2?.Piece!.GetType() == typeof(BlackKing) ||
-                    lastMove.Item2?.Piece!.GetType() == typeof(WhiteKing)) &&
-                    (lastMove.Item1?.Column == C["E"] && lastMove.Item1?.Row == R["8"]) &&
-                    (lastMove.Item2.Column == C["G"] && lastMove.Item2.Row == R["8"]))
+                else if ((lastMove.InitiatingSpace?.Piece!.GetType() == typeof(BlackKing) ||
+                    lastMove.InitiatingSpace?.Piece!.GetType() == typeof(WhiteKing)) &&
+                    (lastMove.InitiatingSpace?.Column == C["E"] && lastMove.InitiatingSpace?.Row == R["8"]) &&
+                    (lastMove.InitiatingSpace.Column == C["G"] && lastMove.InitiatingSpace.Row == R["8"]))
                 {
                     Spaces![C["E"]][R["8"]].Piece = Spaces![C["G"]][R["8"]].Piece;
                     Spaces![C["H"]][R["8"]].Piece = Spaces![C["F"]][R["8"]].Piece;
@@ -267,10 +270,10 @@ namespace ConsoleChessV2
                     Spaces![C["F"]][R["8"]].Clear();
                     Spaces![C["G"]][R["8"]].Clear();
                 }
-                else if ((lastMove.Item2?.Piece!.GetType() == typeof(BlackKing) ||
-                    lastMove.Item2?.Piece!.GetType() == typeof(WhiteKing)) &&
-                    (lastMove.Item1?.Column == C["E"] && lastMove.Item1?.Row == R["8"]) &&
-                    (lastMove.Item2.Column == C["C"] && lastMove.Item2.Row == R["8"]))
+                else if ((lastMove.InitiatingSpace?.Piece!.GetType() == typeof(BlackKing) ||
+                    lastMove.InitiatingSpace?.Piece!.GetType() == typeof(WhiteKing)) &&
+                    (lastMove.InitiatingSpace?.Column == C["E"] && lastMove.InitiatingSpace?.Row == R["8"]) &&
+                    (lastMove.InitiatingSpace.Column == C["C"] && lastMove.InitiatingSpace.Row == R["8"]))
                 {
                     Spaces![C["E"]][R["8"]].Piece = Spaces![C["C"]][R["8"]].Piece;
                     Spaces![C["A"]][R["8"]].Piece = Spaces![C["D"]][R["8"]].Piece;
@@ -281,10 +284,10 @@ namespace ConsoleChessV2
                 }
                 else
                 {
-                    lastMove.Item1!.Piece = lastMove.Item2?.Piece;
-                    lastMove.Item2?.Clear();
-                    lastMove.Item1.Piece!.HasMoved = lastMove.Item5;
-                    lastMove.Item3.Piece = lastMove.Item4;
+                    lastMove.InitiatingSpace!.Piece = lastMove.InitiatingSpace?.Piece;
+                    lastMove.InitiatingSpace?.Clear();
+                    lastMove.InitiatingSpace!.Piece!.HasMoved = lastMove.InitiatingSpace.Piece.HasMoved;
+                    lastMove.InitiatingSpace.Piece = lastMove.InitiatingSpace.Piece;
                 }
                 ChangeTurn();
             }

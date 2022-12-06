@@ -1,6 +1,4 @@
-﻿using ConsoleChessV2.Pieces;
-
-namespace ConsoleChessV2
+﻿namespace ConsoleChessV2.Pieces
 {
     internal class Piece
     {
@@ -38,7 +36,7 @@ namespace ConsoleChessV2
         public virtual bool TryMove(Space fromSpace, Space toSpace)
         {
             if (CanLegallyTryToMoveFromSpaceToSpace(fromSpace, toSpace) &&
-                !(IsBlocked(fromSpace, toSpace)) &&
+                !IsBlocked(fromSpace, toSpace) &&
                 toSpace.IsEmpty())
             {
                 Piece? tempFromSpacePiece = fromSpace.Piece;
@@ -77,14 +75,30 @@ namespace ConsoleChessV2
 
                 if (TryMove(fromSpace, toSpace))
                 {
+                    Move myMove = new Move(
+                        initiatingSpace: fromSpace,
+                        initiatingPiece: startingPiece,
+                        targetSpace: toSpace,
+                        targetPiece: toSpace.Piece,
+                        affectedSpace: changedSpace,
+                        affectedPiece: changedSpacePiece
+                        );
                     // changedSpace1 == H8 and changedSpace2 == F8
-                    ChessBoard.MovesPlayed.Push((fromSpace, toSpace, changedSpace, changedSpacePiece, startingPieceHasMoved, changedSpacePieceHasMoved)!);
+                    ChessBoard.MovesPlayed.Push(myMove);
                     Move(fromSpace, toSpace);
                     ChessBoard.ChangeTurn();
                 }
                 else if (TryCapture(fromSpace, toSpace))
                 {
-                    ChessBoard.MovesPlayed.Push((fromSpace, toSpace, changedSpace, changedSpacePiece, startingPieceHasMoved, changedSpacePieceHasMoved)!);
+                    Move myMove = new Move(
+                        initiatingSpace: fromSpace,
+                        initiatingPiece: startingPiece,
+                        targetSpace: toSpace,
+                        targetPiece: toSpace.Piece,
+                        affectedSpace: changedSpace,
+                        affectedPiece: changedSpacePiece
+                        );
+                    ChessBoard.MovesPlayed.Push(myMove);
                     Capture(fromSpace, toSpace);
                     ChessBoard.ChangeTurn();
                 }
@@ -145,8 +159,8 @@ namespace ConsoleChessV2
 
         public virtual bool TryCapture(Space fromSpace, Space toSpace)
         {
-            if (CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace) && 
-                !(IsBlocked(fromSpace, toSpace)) &&
+            if (CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace) &&
+                !IsBlocked(fromSpace, toSpace) &&
                 toSpace.Piece?.BelongsTo != fromSpace.Piece?.BelongsTo)
             {
                 Piece? tempFromSpacePiece = fromSpace.Piece;
@@ -220,7 +234,7 @@ namespace ConsoleChessV2
         public virtual bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
             return CanLegallyTryToMoveFromSpaceToSpace(fromSpace, toSpace) &&
-                    !(fromSpace.Piece!.IsBlocked(fromSpace, toSpace));
+                    !fromSpace.Piece!.IsBlocked(fromSpace, toSpace);
         }
     }
 }

@@ -413,7 +413,7 @@
 
                 else // if this is not en passant
                 {
-                    if (toSpace.IsOccupied())
+                    if (tempToSpacePiece?.BelongsTo != null) // if space -was- occupied
                     {
                         // verify your king is not in check
                         if (ChessBoard.EitherKingIsInCheck())

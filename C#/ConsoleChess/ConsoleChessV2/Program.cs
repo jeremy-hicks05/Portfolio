@@ -9,8 +9,8 @@
 
 /* TODO: Add stack of moves for popping to "takeback"
  * Test more games alongside lichess
- * 
- * 
+ * Set HasJustMovedTwo to false for all opponent's pieces at the end of a turn
+ * Change move storage and takeback to restore HasJustMovedTwo status
  * 
  * 
  */
