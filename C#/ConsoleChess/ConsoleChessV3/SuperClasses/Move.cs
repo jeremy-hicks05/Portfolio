@@ -9,6 +9,9 @@ namespace ConsoleChessV3.SuperClasses
 {
     internal class Move : ChessMove
     {
-
+        public Move(Space initialSpace, Space targetSpace)
+        {
+            initialSpace.Piece.CanLegallyTryToMoveFromSpaceToSpace();
+        }
     }
 }

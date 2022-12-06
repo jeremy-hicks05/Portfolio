@@ -1,5 +1,5 @@
 ﻿using ConsoleChessV3.Interfaces;
-using ConsoleChessV3.Pieces;
+using ConsoleChessV3.Pieces.Black;
 
 namespace ConsoleChessV3
 {
@@ -14,6 +14,12 @@ namespace ConsoleChessV3
             Column = -1;
             Row = -1;
             Piece = null;
+        }
+
+        public Space(int column, int row)
+        {
+            Column = column;
+            Row = row;
         }
 
         public Space(int column, int row, IPiece piece)
