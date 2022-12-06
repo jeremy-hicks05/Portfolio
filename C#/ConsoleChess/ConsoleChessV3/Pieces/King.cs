@@ -11,7 +11,13 @@ namespace ConsoleChessV3.Pieces
     {
         public override bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            return true;
+            return Math.Abs(fromSpace.Column - toSpace.Column) <= 1
+                   && Math.Abs(fromSpace.Row - toSpace.Row) <= 1;
+        }
+
+        public override void Capture(Space fromSpace, Space toSpace)
+        {
+            base.Capture(fromSpace, toSpace);
         }
     }
 }

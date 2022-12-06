@@ -27,8 +27,11 @@
 
         public virtual void Perform()
         {
-            TargetSpace.Piece = StartingSpace.Piece;
-            AffectedSpace?.Clear();
+            //if (TargetSpace.Piece.CanLegallyTryToMoveFromSpaceToSpace(StartingSpace, TargetSpace))
+            //{
+            //    TargetSpace.Piece = StartingSpace.Piece;
+            //    AffectedSpace?.Clear();
+            //}
         }
     }
 }

@@ -21,8 +21,7 @@ namespace ConsoleChessV3.Pieces
 
         public override void Capture(Space fromSpace, Space toSpace)
         {
-            toSpace.Piece = fromSpace.Piece;
-            fromSpace.Clear();
+            base.Capture(fromSpace, toSpace);
         }
     }
 }

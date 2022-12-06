@@ -1,6 +1,4 @@
 ﻿using ConsoleChessV3.Interfaces;
-using ConsoleChessV3.Pieces.Black;
-using ConsoleChessV3.SuperClasses;
 
 namespace ConsoleChessV3
 {

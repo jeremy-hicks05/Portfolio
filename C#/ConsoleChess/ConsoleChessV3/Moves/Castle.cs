@@ -12,8 +12,7 @@
 
         public override void Perform()
         {
-            TargetSpace.Piece = StartingSpace.Piece;
-            AffectedSpace?.Clear();
+            // TODO: insert code to perform a Castle
         }
     }
 }

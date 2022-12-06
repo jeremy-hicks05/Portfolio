@@ -12,8 +12,7 @@
 
         public override void Perform()
         {
-            TargetSpace.Piece = StartingSpace.Piece;
-            AffectedSpace?.Clear();
+            //TODO: Insert code to perform an EnPassant capture
         }
     }
 }

@@ -28,6 +28,8 @@
                 for (int j = R["1"]; j <= R["8"]; j++)
                 {
                     Spaces[i][j] = new Space();
+                    Spaces[i][j].Column = i;
+                    Spaces[i][j].Row = j;
                 }
             }
 
@@ -51,8 +53,8 @@
             Spaces[C["H"]][R["8"]].Piece = new BlackRook();
 
             Spaces[C["A"]][R["1"]].Piece = new WhiteRook();
-            Spaces[C["B"]][R["1"]].Piece = new WhiteBishop();
-            Spaces[C["C"]][R["1"]].Piece = new WhiteKnight();
+            Spaces[C["B"]][R["1"]].Piece = new WhiteKnight();
+            Spaces[C["C"]][R["1"]].Piece = new WhiteBishop();
             Spaces[C["D"]][R["1"]].Piece = new WhiteQueen();
             Spaces[C["E"]][R["1"]].Piece = new WhiteKing();
             Spaces[C["F"]][R["1"]].Piece = new WhiteBishop();

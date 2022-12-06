@@ -11,13 +11,16 @@ namespace ConsoleChessV3.Moves
     {
         public Move(Space initialSpace, Space targetSpace) : base(initialSpace, targetSpace)
         {
-            //initialSpace.Piece.CanLegallyTryToMoveFromSpaceToSpace(initialSpace, targetSpace);
+
         }
 
         public override void Perform()
         {
-            TargetSpace.Piece = StartingSpace.Piece;
-            AffectedSpace?.Clear();
+            if (StartingSpace.Piece.CanLegallyTryToMoveFromSpaceToSpace(StartingSpace, TargetSpace))
+            {
+                TargetSpace.Piece = StartingSpace.Piece;
+                AffectedSpace?.Clear();
+            }
         }
     }
 }

@@ -14,7 +14,7 @@
 
         }
 
-        public virtual bool CanLegallyTryToCaptureFromSpaceToSpace()
+        public virtual bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
             return false;
         }
@@ -36,7 +36,8 @@
 
         public virtual void Capture(Space fromSpace, Space toSpace)
         {
-            throw new NotImplementedException();
+            toSpace.Piece = fromSpace.Piece;
+            fromSpace.Clear();
         }
 
         public virtual bool TryMove()

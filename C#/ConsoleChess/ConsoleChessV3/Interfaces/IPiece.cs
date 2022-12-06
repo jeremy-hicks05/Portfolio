@@ -8,7 +8,7 @@ namespace ConsoleChessV3.Interfaces
         public bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace);
 
         // legal attempt at capturing - used for pre-move options
-        public bool CanLegallyTryToCaptureFromSpaceToSpace();
+        public bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace);
 
         public void BuildListOfSpacesToInspect();
 
