@@ -24,7 +24,7 @@ namespace ConsoleChessV3.Interfaces
 
         // return affected pieces for successful move
         // to be used in takeback function
-        public void Move();
+        public void Move(Space fromSpace, Space toSpace);
 
         // return affected pieces for successful capture
         // to be used in takeback function

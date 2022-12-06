@@ -18,10 +18,5 @@ namespace ConsoleChessV3.Pieces
             // slope does not meet criteria
             return false;
         }
-
-        public override void Capture(Space fromSpace, Space toSpace)
-        {
-            base.Capture(fromSpace, toSpace);
-        }
     }
 }

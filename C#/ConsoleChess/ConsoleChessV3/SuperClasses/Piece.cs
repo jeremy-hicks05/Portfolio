@@ -45,9 +45,10 @@
             return false;
         }
 
-        public virtual void Move()
+        public virtual void Move(Space fromSpace, Space toSpace)
         {
-            throw new NotImplementedException();
+            toSpace.Piece = fromSpace.Piece;
+            fromSpace.Clear();
         }
 
         //--- getters and setters ---//

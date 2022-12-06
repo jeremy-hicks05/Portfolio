@@ -11,7 +11,8 @@ namespace ConsoleChessV3.Pieces
     {
         public override bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            return true;
+            return fromSpace.Column - toSpace.Column == 0 ||
+                    fromSpace.Row - toSpace.Row == 0;
         }
     }
 }
