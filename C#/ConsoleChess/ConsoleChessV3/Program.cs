@@ -22,8 +22,8 @@
 
                 ShowMoveHistory();
             }
-            Console.WriteLine("Exiting Chess");
-            Console.ReadLine();
+            //Console.WriteLine("Exiting Chess");
+            //Console.ReadLine();
         }
     }
 }

@@ -9,5 +9,11 @@
         {
             StartingSpace = startingSpace;
         }
+
+        public override void Perform()
+        {
+            TargetSpace.Piece = StartingSpace.Piece;
+            AffectedSpace?.Clear();
+        }
     }
 }

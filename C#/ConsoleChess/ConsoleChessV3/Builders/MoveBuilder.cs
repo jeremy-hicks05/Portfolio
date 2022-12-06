@@ -6,30 +6,32 @@ namespace ConsoleChessV3.Builders
 {
     internal static class MoveBuilder
     {
-        public static ChessMove Build(Space fromSpace, Space toSpace)
+        public static ChessMove? Build(Space fromSpace, Space toSpace)
         {
-            // move to empty space
-            if(toSpace.IsEmpty())
+            // TODO: finish EnPassant detection logic
+            if (fromSpace.Piece is not null)
             {
-                return new Move(fromSpace, toSpace);
+                if (fromSpace.Piece.GetType() == typeof(Pawn))
+                {
+                    return new EnPassant(fromSpace, toSpace);
+                }
+                // castle
+                else if (fromSpace.Piece.GetType() == typeof(King) &&
+                    Math.Abs(fromSpace.Column - toSpace.Column) == 2)
+                {
+                    return new Castle(fromSpace, toSpace);
+                }
+                // capture
+                else if (toSpace.IsOccupied())
+                {
+                    return new Capture(fromSpace, toSpace);
+                }
+                // standard move
+                else
+                {
+                    return new Move(fromSpace, toSpace);
+                }
             }
-            // capture
-            else if(toSpace.IsOccupied())
-            {
-                return new Capture(fromSpace, toSpace);
-            }
-            // Castle
-            else if(fromSpace.Piece.GetType() == typeof(King) && 
-                Math.Abs(fromSpace.Column - toSpace.Column) == 2)
-            {
-                return new Castle(fromSpace, toSpace);
-            }
-            else if(fromSpace.Piece.GetType() == typeof(Pawn))
-            {
-                Console.WriteLine("Pawn move!");
-            }
-
-            // set up logic for determining if it is EnPassant
             return null;
         }
     }

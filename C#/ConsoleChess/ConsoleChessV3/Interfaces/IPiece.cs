@@ -24,11 +24,11 @@ namespace ConsoleChessV3.Interfaces
 
         // return affected pieces for successful move
         // to be used in takeback function
-        public IChessMove Move();
+        public void Move();
 
         // return affected pieces for successful capture
         // to be used in takeback function
-        public IChessMove Capture();
+        public void Capture(Space fromSpace, Space toSpace);
 
         // getters and setters
         public string GetName();

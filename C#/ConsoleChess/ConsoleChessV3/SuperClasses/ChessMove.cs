@@ -25,7 +25,7 @@
             AffectedPiece = startingSpace.Piece;
         }
 
-        public void Perform()
+        public virtual void Perform()
         {
             TargetSpace.Piece = StartingSpace.Piece;
             AffectedSpace?.Clear();

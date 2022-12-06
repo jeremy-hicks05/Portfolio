@@ -4,55 +4,49 @@
     using ConsoleChessV3.Interfaces;
     internal class Piece : IPiece
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = $" ";
         public bool HasMoved { get; set; }
         public int PointValue { get; set; }
         public Player BelongsTo { get; set; }
 
-        //public Piece()
-        //{
-        //    Name = $" ";
-        //    HasMoved = false;
-        //    PointValue = 0;
-        //}
-        public void BuildListOfSpacesToInspect()
+        public virtual void BuildListOfSpacesToInspect()
         {
 
         }
 
         public virtual bool CanLegallyTryToCaptureFromSpaceToSpace()
         {
-            return true;
+            return false;
         }
 
         public virtual bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
+            return false;
+        }
+
+        public virtual bool IsBlocked()
+        {
             return true;
         }
 
-        public IChessMove Capture()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsBlocked()
+        public virtual bool TryCapture()
         {
             return false;
         }
 
-        public IChessMove Move()
+        public virtual void Capture(Space fromSpace, Space toSpace)
         {
             throw new NotImplementedException();
         }
 
-        public bool TryCapture()
+        public virtual bool TryMove()
         {
-            return true;
+            return false;
         }
 
-        public bool TryMove()
+        public virtual void Move()
         {
-            return true;
+            throw new NotImplementedException();
         }
 
         //--- getters and setters ---//
@@ -75,5 +69,7 @@
         {
             return Name;
         }
+
+        
     }
 }

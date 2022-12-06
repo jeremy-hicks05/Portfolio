@@ -1,7 +1,6 @@
 ﻿namespace ConsoleChessV3
 {
     using ConsoleChessV3.Builders;
-    using ConsoleChessV3.Moves;
     using ConsoleChessV3.Pieces.Black;
     using ConsoleChessV3.Pieces.White;
     using ConsoleChessV3.SuperClasses;
@@ -71,13 +70,13 @@
             while (!(Regex.Match(selectedPieceColumn!, "^[A-Ha-h]$").Success))
             {
                 Console.WriteLine("Please enter a letter (A-H)");
-                selectedPieceColumn = Console.ReadLine().ToUpper();
+                selectedPieceColumn = Console.ReadLine()!.ToUpper();
             }
 
             while (!(Regex.Match(selectedPieceRow!, "^[1-8]$").Success))
             {
                 Console.WriteLine("Please enter a number (1-8)");
-                selectedPieceRow = Console.ReadLine().ToUpper();
+                selectedPieceRow = Console.ReadLine()!.ToUpper();
             }
 
             SetInitialSpaceFromInput(selectedPieceColumn, selectedPieceRow);
@@ -91,13 +90,13 @@
             while (!(Regex.Match(selectedPieceColumn!, "^[A-Ha-h]$").Success))
             {
                 Console.WriteLine("Please enter a letter (A-H)");
-                selectedPieceColumn = Console.ReadLine().ToUpper();
+                selectedPieceColumn = Console.ReadLine()!.ToUpper();
             }
 
             while (!(Regex.Match(selectedPieceRow!, "^[1-8]$").Success))
             {
                 Console.WriteLine("Please enter a number (1-8)");
-                selectedPieceRow = Console.ReadLine().ToUpper();
+                selectedPieceRow = Console.ReadLine()!.ToUpper();
             }
 
             SetTargetSpaceFromInput(selectedPieceColumn, selectedPieceRow);
@@ -137,16 +136,19 @@
 
         public static void PrintBoard()
         {
-            for (int j = R["8"]; j >= R["1"]; j--)
+            if (Spaces is not null)
             {
-                Console.Write((j + 1).ToString());
-                for (int i = C["A"]; i <= C["H"]; i++)
+                for (int j = R["8"]; j >= R["1"]; j--)
                 {
-                    Console.Write(Spaces[i][j]);
+                    Console.Write((j + 1).ToString());
+                    for (int i = C["A"]; i <= C["H"]; i++)
+                    {
+                        Console.Write(Spaces[i][j]);
+                    }
+                    Console.WriteLine();
                 }
-                Console.WriteLine();
+                Console.WriteLine("  A  B  C  D  E  F  G  H");
             }
-            Console.WriteLine("  A  B  C  D  E  F  G  H");
         }
 
         public static void PlayMove()
@@ -155,10 +157,13 @@
             {
                 NextMove = MoveBuilder.Build(InitialSpace, TargetSpace);
 
-                Console.WriteLine(NextMove.StartingPiece);
-                Console.WriteLine(NextMove.TargetPiece);
+                if (NextMove is not null)
+                {
+                    Console.WriteLine(NextMove.StartingPiece);
+                    Console.WriteLine(NextMove.TargetPiece);
 
-                NextMove.Perform();
+                    NextMove.Perform();
+                }
             }
         }
 
@@ -186,10 +191,16 @@
 
         public static void ShowMoveHistory()
         {
-            foreach(ChessMove m in MovesPlayed)
+            if (MovesPlayed is not null)
             {
-                Console.WriteLine(m.StartingSpace);
-                Console.WriteLine(m.TargetSpace);
+                foreach (ChessMove? m in MovesPlayed)
+                {
+                    if (m is not null)
+                    {
+                        Console.WriteLine(m.StartingSpace);
+                        Console.WriteLine(m.TargetSpace);
+                    }
+                }
             }
         }
     }

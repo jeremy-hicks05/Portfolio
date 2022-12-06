@@ -7,6 +7,11 @@
     {
         public Capture(Space startingSpace, Space endingSpace) : base(startingSpace, endingSpace)
         {
+
+        }
+        public override void Perform()
+        {
+            StartingPiece.Capture(StartingSpace, TargetSpace);
         }
     }
 }
