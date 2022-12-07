@@ -197,6 +197,7 @@
                             NextMove.Perform();
                             SaveMoveInHistory();
                             ChangeTurn();
+                            PrintBoard();
                         }
                     }
                 }
@@ -221,6 +222,7 @@
                     lastMove.TargetSpace.Clear();
                     lastMove.RestoreSpace.Piece = lastMove.RestorePiece;
                     lastMove.StartingSpace.Piece = lastMove.StartingPiece;
+                    ChangeTurn();
                 }
             }
             PrintBoard();
@@ -432,7 +434,8 @@
                             {
                                 for (int m = 0; m < 8; m++)
                                 {
-                                    if ((Spaces![i][j].Piece!
+                                    if (Spaces[k][m].IsEmpty() &&
+                                        (Spaces![i][j].Piece!
                                         .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
                                         !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
                                     {
@@ -442,7 +445,8 @@
                                             return false;
                                         }
                                     }
-                                    if ((Spaces![i][j].Piece!
+                                    if (Spaces[k][m].IsOccupied() &&
+                                        (Spaces![i][j].Piece!
                                         .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
                                         !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
                                     {

@@ -14,10 +14,11 @@
         {
             return (Math.Abs(fromSpace.Column - toSpace.Column) <= 1
                    && Math.Abs(fromSpace.Row - toSpace.Row) <= 1) ||
-                   (fromSpace.Column == C["E"] && fromSpace.Row == R["8"] &&
+                   (!ChessBoard.BlackKingSpace.IsUnderAttackByWhite &&
+                   ((fromSpace.Column == C["E"] && fromSpace.Row == R["8"] &&
                    toSpace.Column == C["H"] && toSpace.Row == R["8"]) ||
                    (fromSpace.Column == C["E"] && fromSpace.Row == R["8"] &&
-                   toSpace.Column == C["A"] && toSpace.Row == R["8"]);
+                   toSpace.Column == C["A"] && toSpace.Row == R["8"])));
         }
 
         public override void BuildListOfSpacesToInspect(Space fromSpace, Space toSpace)

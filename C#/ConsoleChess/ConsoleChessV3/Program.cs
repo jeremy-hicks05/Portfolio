@@ -23,11 +23,11 @@
 
                 //PrintBoard();
 
-                ShowMoveHistory();
+                //ShowMoveHistory();
                 
                 //PrintBoard();
                 //ShowMoveHistory();
-                Console.ReadLine();
+                //Console.ReadLine();
             }
             //Console.WriteLine("Exiting Chess");
         }

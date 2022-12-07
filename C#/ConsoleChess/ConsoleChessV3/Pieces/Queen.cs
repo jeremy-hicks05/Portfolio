@@ -12,9 +12,9 @@ namespace ConsoleChessV3.Pieces
         public override bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
             return (fromSpace.Column == toSpace.Column || 
-                fromSpace.Row == toSpace.Row) || 
-                (Math.Abs(fromSpace.Column - toSpace.Column) / 
-                 Math.Abs(fromSpace.Row - toSpace.Row) == 1); // && shortcircuit prevents div by 0
+                fromSpace.Row == toSpace.Row) ||
+                ((float)Math.Abs(fromSpace.Column - toSpace.Column) / 
+                (float)Math.Abs(fromSpace.Row - toSpace.Row) == 1) ; // && shortcircuit prevents div by 0
         }
 
         public override void BuildListOfSpacesToInspect(Space fromSpace, Space toSpace)
