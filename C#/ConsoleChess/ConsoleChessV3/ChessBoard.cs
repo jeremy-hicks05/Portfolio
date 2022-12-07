@@ -20,6 +20,9 @@
 
         private static Player Turn;
 
+        public static Space WhiteKingSpace;
+        public static Space BlackKingSpace;
+
         public static void InitBoard()
         {
             // build 8x8 Chess Board
@@ -51,6 +54,7 @@
             Spaces[C["C"]][R["8"]].Piece = new BlackKnight();
             Spaces[C["D"]][R["8"]].Piece = new BlackQueen();
             Spaces[C["E"]][R["8"]].Piece = new BlackKing();
+            BlackKingSpace = Spaces[C["E"]][R["8"]];
             Spaces[C["F"]][R["8"]].Piece = new BlackBishop();
             Spaces[C["G"]][R["8"]].Piece = new BlackKnight();
             Spaces[C["H"]][R["8"]].Piece = new BlackRook();
@@ -60,6 +64,7 @@
             Spaces[C["C"]][R["1"]].Piece = new WhiteBishop();
             Spaces[C["D"]][R["1"]].Piece = new WhiteQueen();
             Spaces[C["E"]][R["1"]].Piece = new WhiteKing();
+            WhiteKingSpace = Spaces[C["E"]][R["1"]];
             Spaces[C["F"]][R["1"]].Piece = new WhiteBishop();
             Spaces[C["G"]][R["1"]].Piece = new WhiteKnight();
             Spaces[C["H"]][R["1"]].Piece = new WhiteRook();
@@ -78,6 +83,11 @@
             {
                 Console.WriteLine("Please enter a letter (A-H)");
                 selectedPieceColumn = Console.ReadLine()!.ToUpper();
+
+                if(selectedPieceColumn == "T")
+                {
+                    TakeBackMove();
+                }
             }
 
             while (!(Regex.Match(selectedPieceRow!, "^[1-8]$").Success))
@@ -139,6 +149,14 @@
         public static void ChangeTurn()
         {
             // change from White to Black or Black to White when move has been performed
+            if(Turn == Player.White)
+            {
+                Turn = Player.Black;
+            }
+            else
+            {
+                Turn = Player.White;
+            }
         }
 
         public static void PrintBoard()
@@ -165,8 +183,8 @@
                 TargetSpace is not null &&
                 InitialSpace.Piece is not null)
             {
-                if (InitialSpace.Piece.GetBelongsTo() == Turn)
-                {
+                //if (InitialSpace.Piece.GetBelongsTo() == Turn)
+                //{
                     NextMove = MoveBuilder.Build(InitialSpace, TargetSpace);
 
                     if (NextMove is not null)
@@ -181,7 +199,7 @@
                             ChangeTurn();
                         }
                     }
-                }
+                //}
             }
         }
 
@@ -201,10 +219,11 @@
                 if (lastMove is not null)
                 {
                     lastMove.TargetSpace.Clear();
-                    lastMove.CapturedSpace.Piece = lastMove.CapturedPiece;
+                    lastMove.RestoreSpace.Piece = lastMove.RestorePiece;
                     lastMove.StartingSpace.Piece = lastMove.StartingPiece;
                 }
             }
+            PrintBoard();
         }
 
         public static void ShowMoveHistory()
@@ -218,11 +237,11 @@
                         Console.WriteLine("Move Type: " + m.GetType());
                         Console.WriteLine("Starting Space: " + m.StartingSpace);
                         Console.WriteLine("Ending Space: " + m.TargetSpace);
-                        Console.WriteLine("Captured Space: " + m.CapturedSpace);
+                        Console.WriteLine("Restore Space: " + m.RestoreSpace);
 
                         Console.WriteLine("Starting Piece: " + m.StartingPiece);
                         Console.WriteLine("Ending Piece: " + m.TargetPiece);
-                        Console.WriteLine("Captured Piece: " + m.CapturedPiece);
+                        Console.WriteLine("Restore Piece: " + m.RestorePiece);
                     }
                 }
             }
@@ -230,6 +249,80 @@
             {
                 Console.WriteLine("No moves have been played");
             }
+        }
+
+        public static void FindAllSpacesAttacked()
+        {
+            if (Spaces is not null)
+            {
+                // reset UnderAttack flags
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        // reset being attacked flags
+                        Spaces[i][j].IsUnderAttackByBlack = false;
+                        Spaces[i][j].IsUnderAttackByWhite = false;
+                    }
+                }
+
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (Spaces[i][j].Piece is not null && 
+                            Spaces[i][j].Piece.GetBelongsTo() == Player.White)
+                        {
+                            for (int k = 0; k < 8; k++)
+                            {
+                                for (int m = 0; m < 8; m++)
+                                {
+                                    if (Spaces[i][j].Piece is not null &&  
+                                        (Spaces![i][j].Piece
+                                        .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece
+                                        .IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        Spaces[k][m].IsUnderAttackByWhite = true;
+                                    }
+                                }
+                            }
+                        }
+                        if (Spaces[i][j].Piece is not null && 
+                            Spaces[i][j].Piece.GetBelongsTo() == Player.Black)
+                        {
+                            for (int k = 0; k < 8; k++)
+                            {
+                                for (int m = 0; m < 8; m++)
+                                {
+                                    if (Spaces[i][j].Piece is not null &&
+                                        (Spaces[i][j].Piece
+                                        .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece
+                                        .IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        Spaces[k][m].IsUnderAttackByBlack = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public static bool KingIsInCheck()
+        {
+            FindAllSpacesAttacked();
+            if (Turn == Player.White && WhiteKingSpace!.IsUnderAttackByBlack)
+            {
+                return true;
+            }
+            else if (Turn == Player.Black && BlackKingSpace!.IsUnderAttackByWhite)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

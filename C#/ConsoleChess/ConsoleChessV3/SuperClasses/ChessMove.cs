@@ -10,8 +10,8 @@
         public IPiece StartingPiece;
         public IPiece TargetPiece;
 
-        public Space CapturedSpace;
-        public IPiece? CapturedPiece;
+        public Space RestoreSpace;
+        public IPiece? RestorePiece;
 
         public ChessMove(Space startingSpace, Space endingSpace)
         {
@@ -21,8 +21,8 @@
             TargetSpace = endingSpace;
             TargetPiece = endingSpace.Piece!;
 
-            CapturedSpace = endingSpace;
-            CapturedPiece = endingSpace.Piece;
+            RestoreSpace = endingSpace;
+            RestorePiece = endingSpace.Piece;
         }
 
         public virtual void Perform()
@@ -42,7 +42,10 @@
                 {
                     if (!StartingSpace.Piece.IsBlocked(StartingSpace, TargetSpace))
                     {
-                        return true;
+                        if (StartingSpace.Piece.TryMove(StartingSpace, TargetSpace))
+                        {
+                            return true;
+                        }
                     }
                 }
             }

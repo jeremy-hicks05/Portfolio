@@ -1,5 +1,6 @@
 ﻿namespace ConsoleChessV3.Pieces.Black
 {
+    using ConsoleChessV3.Interfaces;
     using static ConsoleChessV3.Enums.Notation;
     internal class BlackKing : King
     {
@@ -7,6 +8,16 @@
         {
             Name = "k";
             BelongsTo = Enums.Player.Black;
+        }
+
+        public override bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
+        {
+            return (Math.Abs(fromSpace.Column - toSpace.Column) <= 1
+                   && Math.Abs(fromSpace.Row - toSpace.Row) <= 1) ||
+                   (fromSpace.Column == C["E"] && fromSpace.Row == R["8"] &&
+                   toSpace.Column == C["H"] && toSpace.Row == R["8"]) ||
+                   (fromSpace.Column == C["E"] && fromSpace.Row == R["8"] &&
+                   toSpace.Column == C["A"] && toSpace.Row == R["8"]);
         }
 
         public override void BuildListOfSpacesToInspect(Space fromSpace, Space toSpace)
@@ -109,6 +120,44 @@
                     SpacesToReview.Add(ChessBoard.Spaces[C["C"]][R["8"]]);
                     SpacesToReview.Add(ChessBoard.Spaces[C["D"]][R["8"]]);
                 }
+            }
+        }
+
+        public override bool TryMove(Space fromSpace, Space toSpace)
+        {
+            IPiece? fromSpacePiece = fromSpace.Piece;
+            IPiece? toSpacePiece = toSpace.Piece;
+            if (fromSpace.Piece is not null)
+            {
+                toSpace.Piece = fromSpace.Piece;
+                // try new King space
+                ChessBoard.BlackKingSpace = toSpace;
+                fromSpace.Clear();
+            }
+
+            if (ChessBoard.KingIsInCheck())
+            {
+                // undo move
+                fromSpace.Piece = fromSpacePiece;
+                toSpace.Piece = toSpacePiece;
+                ChessBoard.BlackKingSpace = fromSpace;
+                return false;
+            }
+            // undo move
+            fromSpace.Piece = fromSpacePiece;
+            toSpace.Piece = toSpacePiece;
+            ChessBoard.BlackKingSpace = fromSpace;
+            return true;
+        }
+
+        public override void Move(Space fromSpace, Space toSpace)
+        {
+            if (fromSpace.Piece is not null)
+            {
+                fromSpace.Piece.SetHasMoved(true);
+                toSpace.Piece = fromSpace.Piece;
+                ChessBoard.BlackKingSpace = toSpace;
+                fromSpace.Clear();
             }
         }
     }

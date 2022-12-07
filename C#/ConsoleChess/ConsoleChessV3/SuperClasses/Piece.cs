@@ -28,7 +28,8 @@
         public virtual bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
             // default method
-            throw new NotImplementedException();
+            return false;
+            //throw new NotImplementedException();
         }
 
         public virtual bool IsBlocked(Space fromSpace, Space toSpace)
@@ -64,9 +65,27 @@
             fromSpace.Clear();
         }
 
-        public virtual bool TryMove()
+        public virtual bool TryMove(Space fromSpace, Space toSpace)
         {
-            return false;
+            IPiece? fromSpacePiece = fromSpace.Piece;
+            IPiece? toSpacePiece = toSpace.Piece;
+            if (fromSpace.Piece is not null)
+            {
+                toSpace.Piece = fromSpace.Piece;
+                fromSpace.Clear();
+            }
+
+            if(ChessBoard.KingIsInCheck())
+            {
+                // undo move
+                fromSpace.Piece = fromSpacePiece;
+                toSpace.Piece = toSpacePiece;
+                return false;
+            }
+            // undo move
+            fromSpace.Piece = fromSpacePiece;
+            toSpace.Piece = toSpacePiece;
+            return true;
         }
 
         public virtual void Move(Space fromSpace, Space toSpace)
@@ -76,6 +95,16 @@
                 fromSpace.Piece.SetHasMoved(true);
                 toSpace.Piece = fromSpace.Piece;
                 fromSpace.Clear();
+            }
+        }
+
+        public virtual void UndoMove(ChessMove move)
+        {
+            if (move is not null)
+            {
+                move.TargetSpace.Clear();
+                move.RestoreSpace.Piece = move.RestorePiece;
+                move.StartingSpace.Piece = move.StartingPiece;
             }
         }
 

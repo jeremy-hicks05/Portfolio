@@ -17,11 +17,11 @@
                 GetTargetSpaceInput();
 
                 PlayMove();
+
                 //PrintBoard();
-                //SaveMoveInHistory();
 
                 ShowMoveHistory();
-                //TakeBackMove();
+                
                 //PrintBoard();
                 //ShowMoveHistory();
                 Console.ReadLine();

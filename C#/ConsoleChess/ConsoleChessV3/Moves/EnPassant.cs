@@ -12,14 +12,12 @@
             //CapturedSpace = piece to the left/right of pawn
             if (ChessBoard.Spaces is not null)
             {
-                CapturedSpace =
+                RestoreSpace =
                     StartingPiece.GetBelongsTo() == Enums.Player.White ?
                     ChessBoard.Spaces[TargetSpace.Column][TargetSpace.Row - 1] : // If WhitePawn
                     ChessBoard.Spaces[TargetSpace.Column][TargetSpace.Row + 1];  // If BlackPawn
             }
-
-
-            CapturedPiece = CapturedSpace.Piece;
+            RestorePiece = RestoreSpace.Piece;
         }
 
         public override void Perform()
@@ -29,8 +27,8 @@
                 //TODO: Insert code to perform an EnPassant capture
                 TargetSpace.Piece = StartingPiece;
                 StartingSpace.Clear();
-                CapturedPiece = CapturedSpace.Piece;
-                CapturedSpace.Clear();
+                RestorePiece = RestoreSpace.Piece;
+                RestoreSpace.Clear();
             }
         }
 

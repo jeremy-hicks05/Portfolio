@@ -1,4 +1,5 @@
 ﻿using ConsoleChessV3.Enums;
+using ConsoleChessV3.SuperClasses;
 
 namespace ConsoleChessV3.Interfaces
 {
@@ -17,7 +18,12 @@ namespace ConsoleChessV3.Interfaces
         public bool IsBlocked(Space fromSpace, Space toSpace);
 
         // attempt move, then test for check status on player's king
-        public bool TryMove();
+        public bool TryMove(Space fromSpace, Space toSpace);
+
+        public void UndoMove(ChessMove move)
+        {
+
+        }
 
         // attempt capture, then test for check status on player's king
         public bool TryCapture();
