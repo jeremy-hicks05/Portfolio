@@ -251,6 +251,7 @@
                         }
 
                         lastMove.StartingSpace.Piece = lastMove.StartingPiece;
+                        lastMove.StartingPiece.SetHasMoved(lastMove.StartingPieceHasMoved);
                     }
                     else // undo regular move
                     {
