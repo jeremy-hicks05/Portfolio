@@ -10,11 +10,11 @@ namespace ConsoleChessV3.Interfaces
         // legal attempt at capturing - used for pre-move options
         public bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace);
 
-        public void BuildListOfSpacesToInspect();
+        public void BuildListOfSpacesToInspect(Space fromSpace, Space toSpace);
 
         // checking if piece is blocked by anything but open spaces
         // before it gets to its destination
-        public bool IsBlocked();
+        public bool IsBlocked(Space fromSpace, Space toSpace);
 
         // attempt move, then test for check status on player's king
         public bool TryMove();
@@ -34,6 +34,7 @@ namespace ConsoleChessV3.Interfaces
         public string GetName();
         public int GetPointValue();
         public bool GetHasMoved();
+        public void SetHasMoved(bool moved);
         public Player GetBelongsTo();
     }
 }

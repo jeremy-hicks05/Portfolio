@@ -138,6 +138,7 @@
 
         public static void PrintBoard()
         {
+            Console.Clear();
             if (Spaces is not null)
             {
                 for (int j = R["8"]; j >= R["1"]; j--)
@@ -164,7 +165,11 @@
                     Console.WriteLine(NextMove.StartingPiece);
                     Console.WriteLine(NextMove.TargetPiece);
 
-                    NextMove.Perform();
+                    if (NextMove.IsValidChessMove())
+                    {
+                        NextMove.Perform();
+                        SaveMoveInHistory();
+                    }
                 }
             }
         }
@@ -199,10 +204,20 @@
                 {
                     if (m is not null)
                     {
-                        Console.WriteLine(m.StartingSpace);
-                        Console.WriteLine(m.TargetSpace);
+                        Console.WriteLine("Move Type: " + m.GetType());
+                        Console.WriteLine("Starting Space: " + m.StartingSpace);
+                        Console.WriteLine("Ending Space: " + m.TargetSpace);
+                        Console.WriteLine("Captured Space: " + m.CapturedSpace);
+
+                        Console.WriteLine("Starting Piece: " + m.StartingPiece);
+                        Console.WriteLine("Ending Piece: " + m.TargetPiece);
+                        Console.WriteLine("Captured Piece: " + m.CapturedPiece);
                     }
                 }
+            }
+            else
+            {
+                Console.WriteLine("No moves have been played");
             }
         }
     }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ConsoleChessV3.SuperClasses;
+﻿using ConsoleChessV3.SuperClasses;
 
 namespace ConsoleChessV3.Pieces
 {
@@ -16,6 +11,12 @@ namespace ConsoleChessV3.Pieces
                     ||
                     (Math.Abs(fromSpace.Column - toSpace.Column) == 1 &&
                     Math.Abs(fromSpace.Row - toSpace.Row) == 2);
+        }
+
+        public override void BuildListOfSpacesToInspect(Space fromSpace, Space toSpace)
+        {
+            SpacesToReview.Clear();
+            SpacesToReview.Add(toSpace);
         }
     }
 }

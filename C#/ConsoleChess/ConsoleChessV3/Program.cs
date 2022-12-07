@@ -17,13 +17,16 @@
                 GetTargetSpaceInput();
 
                 PlayMove();
-                PrintBoard();
-                SaveMoveInHistory();
+                //PrintBoard();
+                //SaveMoveInHistory();
 
                 ShowMoveHistory();
+                //TakeBackMove();
+                //PrintBoard();
+                //ShowMoveHistory();
+                Console.ReadLine();
             }
             //Console.WriteLine("Exiting Chess");
-            //Console.ReadLine();
         }
     }
 }

@@ -8,6 +8,8 @@ namespace ConsoleChessV3
         public int Row;
         public IPiece? Piece;
 
+        public bool IsUnderAttackByWhite;
+        public bool IsUnderAttackByBlack;
         public Space()
         {
             Column = -1;

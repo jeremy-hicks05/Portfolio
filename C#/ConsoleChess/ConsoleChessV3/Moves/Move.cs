@@ -16,7 +16,7 @@ namespace ConsoleChessV3.Moves
 
         public override void Perform()
         {
-            if (StartingSpace.Piece.CanLegallyTryToMoveFromSpaceToSpace(StartingSpace, TargetSpace))
+            if (StartingSpace is not null && StartingSpace.Piece is not null)
             {
                 StartingSpace.Piece.Move(StartingSpace, TargetSpace);
             }

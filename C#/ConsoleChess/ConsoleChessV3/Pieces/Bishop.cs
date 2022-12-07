@@ -18,5 +18,43 @@ namespace ConsoleChessV3.Pieces
             // slope does not meet criteria
             return false;
         }
+
+        public override void BuildListOfSpacesToInspect(Space fromSpace, Space toSpace)
+        {
+            SpacesToReview.Clear();
+
+            if (toSpace.Column > fromSpace.Column && toSpace.Row > fromSpace.Row)
+            {
+                // attacking up and right
+                for (int column = fromSpace.Column + 1, row = fromSpace.Row + 1; column <= toSpace.Column && row <= toSpace.Row; column++, row++)
+                {
+                    SpacesToReview!.Add(ChessBoard.Spaces![column][row]);
+                }
+            }
+            else if (toSpace.Column > fromSpace.Column && toSpace.Row < fromSpace.Row)
+            {
+                // attacking down and right
+                for (int column = fromSpace.Column + 1, row = fromSpace.Row - 1; column <= toSpace.Column && row >= toSpace.Row; column++, row--)
+                {
+                    SpacesToReview!.Add(ChessBoard.Spaces![column][row]);
+                }
+            }
+            else if (toSpace.Column < fromSpace.Column && toSpace.Row < fromSpace.Row)
+            {
+                // attacking down and left
+                for (int column = fromSpace.Column - 1, row = fromSpace.Row - 1; column >= toSpace.Column && row >= toSpace.Row; column--, row--)
+                {
+                    SpacesToReview!.Add(ChessBoard.Spaces![column][row]);
+                }
+            }
+            else if (toSpace.Column < fromSpace.Column && toSpace.Row > fromSpace.Row)
+            {
+                // attacking up and left
+                for (int column = fromSpace.Column - 1, row = fromSpace.Row + 1; column >= toSpace.Column && row <= toSpace.Row; column--, row++)
+                {
+                    SpacesToReview!.Add(ChessBoard.Spaces![column][row]);
+                }
+            }
+        }
     }
 }

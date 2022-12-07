@@ -10,10 +10,27 @@
         }
         public override void Perform()
         {
-            if (StartingSpace.Piece.CanLegallyTryToCaptureFromSpaceToSpace(StartingSpace, TargetSpace))
+            if (StartingSpace is not null && StartingSpace.Piece is not null)
             {
-                StartingSpace.Piece.Capture(StartingSpace, TargetSpace);
+                if (StartingSpace.Piece.CanLegallyTryToCaptureFromSpaceToSpace(StartingSpace, TargetSpace))
+                {
+                    StartingSpace.Piece.Capture(StartingSpace, TargetSpace);
+                }
             }
+        }
+
+
+        public override bool IsValidChessMove()
+        {
+            if (StartingSpace is not null && StartingSpace.Piece is not null)
+            {
+                if (StartingSpace.Piece.CanLegallyTryToCaptureFromSpaceToSpace(StartingSpace, TargetSpace))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

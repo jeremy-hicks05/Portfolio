@@ -12,9 +12,15 @@ namespace ConsoleChessV3.Builders
             // TODO: finish EnPassant detection logic
             if (fromSpace.Piece is not null)
             {
-                if (fromSpace.Piece is Pawn)
+                if (fromSpace.Piece is Pawn &&
+                    (Math.Abs(toSpace.Column - fromSpace.Column) == 1) &&
+                    ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece is Pawn)
                 {
-                    return new EnPassant(fromSpace, toSpace);
+                    Pawn tempPawn = ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece as Pawn;
+                    if (tempPawn.HasJustMovedTwo)
+                    {
+                        return new EnPassant(fromSpace, toSpace);
+                    }
                 }
                 // castle
                 else if (fromSpace.Piece is King &&

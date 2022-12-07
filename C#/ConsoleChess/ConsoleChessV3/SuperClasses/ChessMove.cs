@@ -33,5 +33,20 @@
             //    AffectedSpace?.Clear();
             //}
         }
+
+        public virtual bool IsValidChessMove()
+        {
+            if (StartingSpace is not null && StartingSpace.Piece is not null)
+            {
+                if (StartingSpace.Piece.CanLegallyTryToMoveFromSpaceToSpace(StartingSpace, TargetSpace))
+                {
+                    if (!StartingSpace.Piece.IsBlocked(StartingSpace, TargetSpace))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

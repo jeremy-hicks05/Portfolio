@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ConsoleChessV3.SuperClasses;
+﻿using ConsoleChessV3.SuperClasses;
 
 namespace ConsoleChessV3.Pieces
 {
+    using static ConsoleChessV3.Enums.Notation;
     internal class King : Piece
     {
         public override bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
