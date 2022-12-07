@@ -54,8 +54,31 @@
             return true;
         }
 
-        public virtual bool TryCapture()
+        public virtual bool TryCapture(Space fromSpace, Space toSpace)
         {
+            if (CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace) &&
+                !IsBlocked(fromSpace, toSpace) &&
+                toSpace.Piece?.GetBelongsTo() != fromSpace.Piece?.GetBelongsTo())
+            {
+                IPiece? tempFromSpacePiece = fromSpace.Piece;
+                IPiece? tempToSpacePiece = toSpace.Piece;
+
+                toSpace.Piece = fromSpace.Piece;
+                fromSpace.Clear();
+
+                // verify your king is not in check
+                if (ChessBoard.KingIsInCheck())
+                {
+                    // cancel move
+                    fromSpace.Piece = tempFromSpacePiece;
+                    toSpace.Piece = tempToSpacePiece;
+                    return false;
+                }
+                // revert move and let calling function finish it
+                fromSpace.Piece = tempFromSpacePiece;
+                toSpace.Piece = tempToSpacePiece;
+                return true;
+            }
             return false;
         }
 

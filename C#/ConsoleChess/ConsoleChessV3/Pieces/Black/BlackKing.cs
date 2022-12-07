@@ -160,5 +160,37 @@
                 fromSpace.Clear();
             }
         }
+
+        public override bool TryCapture(Space fromSpace, Space toSpace)
+        {
+            if (toSpace.Piece is not null &&
+                CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace) &&
+                !IsBlocked(fromSpace, toSpace) &&
+                toSpace.Piece?.GetBelongsTo() != fromSpace.Piece?.GetBelongsTo())
+            {
+                IPiece? tempFromSpacePiece = fromSpace.Piece;
+                IPiece? tempToSpacePiece = toSpace.Piece;
+
+                toSpace.Piece = fromSpace.Piece;
+                ChessBoard.BlackKingSpace = toSpace;
+                fromSpace.Clear();
+
+                // verify your king is not in check
+                if (ChessBoard.KingIsInCheck())
+                {
+                    // cancel move
+                    fromSpace.Piece = tempFromSpacePiece;
+                    toSpace.Piece = tempToSpacePiece;
+                    ChessBoard.BlackKingSpace = fromSpace;
+                    return false;
+                }
+                // revert move and let calling function finish it
+                fromSpace.Piece = tempFromSpacePiece;
+                toSpace.Piece = tempToSpacePiece;
+                ChessBoard.BlackKingSpace = fromSpace;
+                return true;
+            }
+            return false;
+        }
     }
 }

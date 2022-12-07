@@ -26,7 +26,7 @@ namespace ConsoleChessV3.Interfaces
         }
 
         // attempt capture, then test for check status on player's king
-        public bool TryCapture();
+        public bool TryCapture(Space fromSpace, Space toSpace);
 
         // return affected pieces for successful move
         // to be used in takeback function

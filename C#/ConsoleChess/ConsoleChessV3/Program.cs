@@ -9,7 +9,10 @@
             Console.ReadLine();
             InitBoard();
 
-            while (true)
+            while (!BlackIsCheckMated() &&
+                !WhiteIsCheckMated() &&
+                !BlackIsStaleMated() &&
+                !WhiteIsStaleMated())
             {
                 PrintBoard();
 

@@ -81,7 +81,7 @@
             string selectedPieceRow = "0";
             while (!(Regex.Match(selectedPieceColumn!, "^[A-Ha-h]$").Success))
             {
-                Console.WriteLine("Please enter a letter (A-H)");
+                Console.WriteLine("Please enter a letter (A-H) or T to TakeBack");
                 selectedPieceColumn = Console.ReadLine()!.ToUpper();
 
                 if(selectedPieceColumn == "T")
@@ -183,8 +183,8 @@
                 TargetSpace is not null &&
                 InitialSpace.Piece is not null)
             {
-                //if (InitialSpace.Piece.GetBelongsTo() == Turn)
-                //{
+                if (InitialSpace.Piece.GetBelongsTo() == Turn)
+                {
                     NextMove = MoveBuilder.Build(InitialSpace, TargetSpace);
 
                     if (NextMove is not null)
@@ -199,7 +199,7 @@
                             ChangeTurn();
                         }
                     }
-                //}
+                }
             }
         }
 
@@ -213,7 +213,7 @@
 
         public static void TakeBackMove()
         {
-            if (MovesPlayed is not null)
+            if (MovesPlayed is not null && MovesPlayed.Count > 0)
             {
                 ChessMove? lastMove = MovesPlayed.Pop();
                 if (lastMove is not null)
@@ -322,6 +322,191 @@
             {
                 return true;
             }
+            return false;
+        }
+
+        public static bool WhiteIsCheckMated()
+        {
+            FindAllSpacesAttacked();
+            if (WhiteKingSpace!.IsUnderAttackByBlack)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (Spaces![i][j].Piece.GetBelongsTo() == Player.White)
+                        {
+                            for (int k = 0; k < 8; k++)
+                            {
+                                for (int m = 0; m < 8; m++)
+                                {
+                                    if ((Spaces![i][j].Piece
+                                        .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece.TryMove(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            //Console.WriteLine("White is not checkmated!");
+                                            return false;
+                                        }
+                                    }
+                                    //if ((Spaces![i][j].Piece
+                                    //    .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                    //    !(Spaces![i][j].Piece.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    //{
+                                    //    if (Spaces[i][j].Piece.TryCapture(Spaces[i][j], Spaces[k][m]))
+                                    //    {
+                                    //        //Console.WriteLine("White is not checkmated!");
+                                    //        return false;
+                                    //    }
+                                    //}
+                                }
+                            }
+                        }
+                    }
+                }
+                Console.WriteLine("WHITE IS CHECKMATED!");
+                return true;
+            }
+            //Console.WriteLine("White is not in check!");
+            return false;
+        }
+        public static bool WhiteIsStaleMated()
+        {
+            FindAllSpacesAttacked();
+            if (!(WhiteKingSpace!.IsUnderAttackByBlack))
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (Spaces![i][j].Piece?.GetBelongsTo() == Player.White)
+                        {
+                            for (int k = 0; k < 8; k++)
+                            {
+                                for (int m = 0; m < 8; m++)
+                                {
+                                    if ((Spaces![i][j].Piece!
+                                        .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            //Console.WriteLine("White is not stalemated!");
+                                            return false;
+                                        }
+                                    }
+                                    if ((Spaces![i][j].Piece!
+                                        .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece!.TryCapture(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            //Console.WriteLine("White is not stalemated!");
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Console.WriteLine("WHITE IS STALEMATED!");
+                return true;
+            }
+            //Console.WriteLine("White is in check!");
+            return false;
+        }
+        public static bool BlackIsCheckMated()
+        {
+            FindAllSpacesAttacked();
+            if (BlackKingSpace!.IsUnderAttackByWhite)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (Spaces![i][j].Piece?.GetBelongsTo() == Player.Black)
+                        {
+                            for (int k = 0; k < 8; k++)
+                            {
+                                for (int m = 0; m < 8; m++)
+                                {
+                                    if ((Spaces![i][j].Piece!
+                                        .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            //Console.WriteLine("Black is not checkmated!");
+                                            return false;
+                                        }
+                                    }
+                                    if ((Spaces![i][j].Piece!
+                                        .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece.TryCapture(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            //Console.WriteLine("Black is not checkmated!");
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Console.WriteLine("BLACK IS CHECKMATED!");
+                return true;
+            }
+            //Console.WriteLine("Black is not in check!");
+            return false;
+        }
+        public static bool BlackIsStaleMated()
+        {
+            FindAllSpacesAttacked();
+            if (!(BlackKingSpace!.IsUnderAttackByWhite))
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (Spaces![i][j].Piece?.GetBelongsTo() == Player.Black)
+                        {
+                            for (int k = 0; k < 8; k++)
+                            {
+                                for (int m = 0; m < 8; m++)
+                                {
+                                    if ((Spaces![i][j].Piece!
+                                        .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            //Console.WriteLine("Black is not stalemated!");
+                                            return false;
+                                        }
+                                    }
+                                    if ((Spaces![i][j].Piece!
+                                        .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece!.TryCapture(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            //Console.WriteLine("Black is not stalemated!");
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Console.WriteLine("BLACK IS STALEMATED!");
+                return true;
+            }
+            //Console.WriteLine("Black is in check!");
             return false;
         }
     }
