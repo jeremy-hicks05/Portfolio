@@ -12,13 +12,16 @@
 
         public override bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            return (Math.Abs(fromSpace.Column - toSpace.Column) <= 1
-                   && Math.Abs(fromSpace.Row - toSpace.Row) <= 1) ||
+            return fromSpace != toSpace &&
+                    (Math.Abs(fromSpace.Column - toSpace.Column) <= 1 && 
+                    Math.Abs(fromSpace.Row - toSpace.Row) <= 1)
+                   ||
                    (!ChessBoard.BlackKingSpace.IsUnderAttackByWhite &&
                    ((fromSpace.Column == C["E"] && fromSpace.Row == R["8"] &&
-                   toSpace.Column == C["H"] && toSpace.Row == R["8"]) ||
+                    toSpace.Column == C["H"] && toSpace.Row == R["8"])
+                   ||
                    (fromSpace.Column == C["E"] && fromSpace.Row == R["8"] &&
-                   toSpace.Column == C["A"] && toSpace.Row == R["8"])));
+                    toSpace.Column == C["A"] && toSpace.Row == R["8"])));
         }
 
         public override void BuildListOfSpacesToInspect(Space fromSpace, Space toSpace)
@@ -126,29 +129,44 @@
 
         public override bool TryMove(Space fromSpace, Space toSpace)
         {
-            IPiece? fromSpacePiece = fromSpace.Piece;
-            IPiece? toSpacePiece = toSpace.Piece;
-            if (fromSpace.Piece is not null)
+            if (toSpace.IsEmpty())
             {
-                toSpace.Piece = fromSpace.Piece;
-                // try new King space
-                ChessBoard.BlackKingSpace = toSpace;
-                fromSpace.Clear();
+                ChessBoard.FindAllSpacesAttacked();
+                if (toSpace.IsUnderAttackByWhite)
+                {
+                    return false;
+                }
+                return true;
             }
+            return false;
+            //if (toSpace.IsOccupied())
+            //{
+            //    IPiece? fromSpacePiece = fromSpace.Piece;
+            //    IPiece? toSpacePiece = toSpace.Piece;
+            //    if (fromSpace.Piece is not null)
+            //    {
+            //        toSpace.Piece = fromSpace.Piece;
+            //        // try new King space
+            //        ChessBoard.BlackKingSpace = toSpace;
+            //        fromSpace.Clear();
+            //    }
 
-            if (ChessBoard.KingIsInCheck())
-            {
-                // undo move
-                fromSpace.Piece = fromSpacePiece;
-                toSpace.Piece = toSpacePiece;
-                ChessBoard.BlackKingSpace = fromSpace;
-                return false;
-            }
-            // undo move
-            fromSpace.Piece = fromSpacePiece;
-            toSpace.Piece = toSpacePiece;
-            ChessBoard.BlackKingSpace = fromSpace;
-            return true;
+            //    if (ChessBoard.KingIsInCheck())
+            //    {
+            //        // undo move
+            //        fromSpace.Piece = fromSpacePiece;
+            //        toSpace.Piece = toSpacePiece;
+            //        ChessBoard.BlackKingSpace = fromSpace;
+            //        return false;
+            //    }
+            //    // undo move
+            //    fromSpace.Piece = fromSpacePiece;
+            //    toSpace.Piece = toSpacePiece;
+            //    ChessBoard.BlackKingSpace = fromSpace;
+            //    return true;
+            //}
+            //return false;
+            
         }
 
         public override void Move(Space fromSpace, Space toSpace)
@@ -164,34 +182,47 @@
 
         public override bool TryCapture(Space fromSpace, Space toSpace)
         {
-            if (toSpace.Piece is not null &&
-                CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace) &&
-                !IsBlocked(fromSpace, toSpace) &&
-                toSpace.Piece?.GetBelongsTo() != fromSpace.Piece?.GetBelongsTo())
+            if (toSpace.IsOccupied())
             {
-                IPiece? tempFromSpacePiece = fromSpace.Piece;
-                IPiece? tempToSpacePiece = toSpace.Piece;
-
-                toSpace.Piece = fromSpace.Piece;
-                ChessBoard.BlackKingSpace = toSpace;
-                fromSpace.Clear();
-
-                // verify your king is not in check
-                if (ChessBoard.KingIsInCheck())
+                ChessBoard.FindAllSpacesAttacked();
+                if (toSpace.IsUnderAttackByWhite)
                 {
-                    // cancel move
-                    fromSpace.Piece = tempFromSpacePiece;
-                    toSpace.Piece = tempToSpacePiece;
-                    ChessBoard.BlackKingSpace = fromSpace;
                     return false;
                 }
-                // revert move and let calling function finish it
-                fromSpace.Piece = tempFromSpacePiece;
-                toSpace.Piece = tempToSpacePiece;
-                ChessBoard.BlackKingSpace = fromSpace;
                 return true;
             }
             return false;
+            //if (toSpace.IsEmpty())
+            //{
+            //    if (CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace) &&
+            //        !IsBlocked(fromSpace, toSpace) &&
+            //        toSpace.Piece?.GetBelongsTo() != fromSpace.Piece?.GetBelongsTo())
+            //    {
+            //        IPiece? tempFromSpacePiece = fromSpace.Piece;
+            //        IPiece? tempToSpacePiece = toSpace.Piece;
+
+            //        toSpace.Piece = fromSpace.Piece;
+            //        ChessBoard.BlackKingSpace = toSpace;
+            //        fromSpace.Clear();
+
+            //        // verify your king is not in check
+            //        if (ChessBoard.KingIsInCheck())
+            //        {
+            //            // cancel move
+            //            fromSpace.Piece = tempFromSpacePiece;
+            //            toSpace.Piece = tempToSpacePiece;
+            //            ChessBoard.BlackKingSpace = fromSpace;
+            //            return false;
+            //        }
+            //        // revert move and let calling function finish it
+            //        fromSpace.Piece = tempFromSpacePiece;
+            //        toSpace.Piece = tempToSpacePiece;
+            //        ChessBoard.BlackKingSpace = fromSpace;
+            //        return true;
+            //    }
+            //}
+            //return false;
+            
         }
     }
 }

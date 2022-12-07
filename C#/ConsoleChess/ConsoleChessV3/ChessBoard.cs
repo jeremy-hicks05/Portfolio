@@ -84,7 +84,7 @@
                 Console.WriteLine("Please enter a letter (A-H) or T to TakeBack");
                 selectedPieceColumn = Console.ReadLine()!.ToUpper();
 
-                if(selectedPieceColumn == "T")
+                if (selectedPieceColumn == "T")
                 {
                     TakeBackMove();
                 }
@@ -149,7 +149,7 @@
         public static void ChangeTurn()
         {
             // change from White to Black or Black to White when move has been performed
-            if(Turn == Player.White)
+            if (Turn == Player.White)
             {
                 Turn = Player.Black;
             }
@@ -179,7 +179,7 @@
 
         public static void PlayMove()
         {
-            if (InitialSpace is not null && 
+            if (InitialSpace is not null &&
                 TargetSpace is not null &&
                 InitialSpace.Piece is not null)
             {
@@ -272,14 +272,22 @@
                 {
                     for (int j = 0; j < 8; j++)
                     {
-                        if (Spaces[i][j].Piece is not null && 
+                        if (Spaces[i][j].Piece is not null &&
                             Spaces[i][j].Piece.GetBelongsTo() == Player.White)
                         {
                             for (int k = 0; k < 8; k++)
                             {
                                 for (int m = 0; m < 8; m++)
                                 {
-                                    if (Spaces[i][j].Piece is not null &&  
+                                    if (Spaces[i][j].Piece is not null &&
+                                        (Spaces![i][j].Piece
+                                        .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece
+                                        .IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        Spaces[k][m].IsUnderAttackByWhite = true;
+                                    }
+                                    if (Spaces[i][j].Piece is not null &&
                                         (Spaces![i][j].Piece
                                         .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
                                         !(Spaces![i][j].Piece
@@ -290,13 +298,21 @@
                                 }
                             }
                         }
-                        if (Spaces[i][j].Piece is not null && 
+                        if (Spaces[i][j].Piece is not null &&
                             Spaces[i][j].Piece.GetBelongsTo() == Player.Black)
                         {
                             for (int k = 0; k < 8; k++)
                             {
                                 for (int m = 0; m < 8; m++)
                                 {
+                                    if (Spaces[i][j].Piece is not null &&
+                                        (Spaces![i][j].Piece
+                                        .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece
+                                        .IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        Spaces[k][m].IsUnderAttackByBlack = true;
+                                    }
                                     if (Spaces[i][j].Piece is not null &&
                                         (Spaces[i][j].Piece
                                         .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
@@ -336,7 +352,9 @@
                 {
                     for (int j = 0; j < 8; j++)
                     {
-                        if (Spaces![i][j].Piece.GetBelongsTo() == Player.White)
+                        if (Spaces is not null &&
+                            Spaces[i][j].Piece is not null &&
+                                Spaces![i][j].Piece.GetBelongsTo() == Player.White)
                         {
                             for (int k = 0; k < 8; k++)
                             {
@@ -352,16 +370,16 @@
                                             return false;
                                         }
                                     }
-                                    //if ((Spaces![i][j].Piece
-                                    //    .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
-                                    //    !(Spaces![i][j].Piece.IsBlocked(Spaces[i][j], Spaces[k][m])))
-                                    //{
-                                    //    if (Spaces[i][j].Piece.TryCapture(Spaces[i][j], Spaces[k][m]))
-                                    //    {
-                                    //        //Console.WriteLine("White is not checkmated!");
-                                    //        return false;
-                                    //    }
-                                    //}
+                                    if ((Spaces![i][j].Piece
+                                        .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
+                                        !(Spaces![i][j].Piece.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    {
+                                        if (Spaces[i][j].Piece.TryCapture(Spaces[i][j], Spaces[k][m]))
+                                        {
+                                            //Console.WriteLine("White is not checkmated!");
+                                            return false;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -428,27 +446,27 @@
                 {
                     for (int j = 0; j < 8; j++)
                     {
-                        if (Spaces![i][j].Piece?.GetBelongsTo() == Player.Black)
+
+                        if (Spaces![i][j].Piece is not null &&
+                            Spaces![i][j].Piece.GetBelongsTo() == Player.Black)
                         {
                             for (int k = 0; k < 8; k++)
                             {
                                 for (int m = 0; m < 8; m++)
                                 {
-                                    if (Spaces[k][m].IsEmpty() &&
-                                        (Spaces![i][j].Piece!
-                                        .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
-                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                    if (Spaces![i][j].Piece
+                                        .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m]) &&
+                                        !(Spaces![i][j].Piece.IsBlocked(Spaces[i][j], Spaces[k][m])))
                                     {
-                                        if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
+                                        if (Spaces[i][j].Piece.TryMove(Spaces[i][j], Spaces[k][m]))
                                         {
                                             //Console.WriteLine("Black is not checkmated!");
                                             return false;
                                         }
                                     }
-                                    if (Spaces[k][m].IsOccupied() &&
-                                        (Spaces![i][j].Piece!
+                                    if ((Spaces![i][j].Piece
                                         .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
-                                        !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                        !(Spaces![i][j].Piece.IsBlocked(Spaces[i][j], Spaces[k][m])))
                                     {
                                         if (Spaces[i][j].Piece.TryCapture(Spaces[i][j], Spaces[k][m]))
                                         {
