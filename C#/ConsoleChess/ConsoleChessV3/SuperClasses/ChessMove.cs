@@ -5,13 +5,17 @@
     internal class ChessMove : IChessMove
     {
         public Space StartingSpace;
-        public Space TargetSpace;
-
         public IPiece StartingPiece;
+        public bool StartingPieceHasMoved;
+
+        public Space TargetSpace;
         public IPiece TargetPiece;
+        public bool TargetPieceHasMoved;
 
         public Space RestoreSpace;
         public IPiece? RestorePiece;
+        public bool RestorePieceHasMoved;
+        
 
         public ChessMove(Space startingSpace, Space endingSpace)
         {

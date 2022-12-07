@@ -2,6 +2,7 @@
 {
     using ConsoleChessV3.Builders;
     using ConsoleChessV3.Enums;
+    using ConsoleChessV3.Moves;
     using ConsoleChessV3.Pieces.Black;
     using ConsoleChessV3.Pieces.White;
     using ConsoleChessV3.SuperClasses;
@@ -221,9 +222,42 @@
                 ChessMove? lastMove = MovesPlayed.Pop();
                 if (lastMove is not null)
                 {
-                    lastMove.TargetSpace.Clear();
-                    lastMove.RestoreSpace.Piece = lastMove.RestorePiece;
-                    lastMove.StartingSpace.Piece = lastMove.StartingPiece;
+                    if (lastMove is Castle)
+                    {
+                        // undo castle move
+
+                        // undo KingSideCastle
+                    }
+                    else if(lastMove is EnPassant)
+                    {
+                        lastMove.TargetSpace.Clear();
+                        lastMove.RestoreSpace.Piece = lastMove.RestorePiece;
+                        if (lastMove.RestoreSpace.Piece is not null)
+                        {
+                            lastMove.RestoreSpace.Piece.SetHasMoved(lastMove.RestorePieceHasMoved);
+                        }
+
+                        lastMove.StartingSpace.Piece = lastMove.StartingPiece;
+
+
+                    }
+                    else if(lastMove is Capture)
+                    {
+                        lastMove.TargetSpace.Clear();
+                        lastMove.RestoreSpace.Piece = lastMove.RestorePiece;
+                        if (lastMove.RestoreSpace.Piece is not null)
+                        {
+                            lastMove.RestoreSpace.Piece.SetHasMoved(lastMove.RestorePieceHasMoved);
+                        }
+
+                        lastMove.StartingSpace.Piece = lastMove.StartingPiece;
+                    }
+                    else // undo regular move
+                    {
+                        lastMove.TargetSpace.Clear();
+                        lastMove.StartingSpace.Piece = lastMove.StartingPiece;
+                        lastMove.StartingPiece.SetHasMoved(lastMove.StartingPieceHasMoved);
+                    }
                     ChangeTurn();
                 }
             }
