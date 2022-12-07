@@ -28,8 +28,8 @@
         public virtual bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
             // default method
-            return false;
-            //throw new NotImplementedException();
+            //return false;
+            throw new NotImplementedException();
         }
 
         public virtual bool IsBlocked(Space fromSpace, Space toSpace)
@@ -56,30 +56,35 @@
 
         public virtual bool TryCapture(Space fromSpace, Space toSpace)
         {
-            if (CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace) &&
-                !IsBlocked(fromSpace, toSpace) &&
-                toSpace.Piece?.GetBelongsTo() != fromSpace.Piece?.GetBelongsTo())
+            if (toSpace.IsOccupied())
             {
-                IPiece? tempFromSpacePiece = fromSpace.Piece;
-                IPiece? tempToSpacePiece = toSpace.Piece;
-
-                toSpace.Piece = fromSpace.Piece;
-                fromSpace.Clear();
-
-                // verify your king is not in check
-                if (ChessBoard.KingIsInCheck())
+                if (CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace) &&
+                    !IsBlocked(fromSpace, toSpace) &&
+                    toSpace.Piece?.GetBelongsTo() != fromSpace.Piece?.GetBelongsTo())
                 {
-                    // cancel move
+                    IPiece? tempFromSpacePiece = fromSpace.Piece;
+                    IPiece? tempToSpacePiece = toSpace.Piece;
+
+                    toSpace.Piece = fromSpace.Piece;
+                    fromSpace.Clear();
+
+                    // verify your king is not in check
+                    if (ChessBoard.KingIsInCheck())
+                    {
+                        // cancel move
+                        fromSpace.Piece = tempFromSpacePiece;
+                        toSpace.Piece = tempToSpacePiece;
+                        return false;
+                    }
+                    // revert move and let calling function finish it
                     fromSpace.Piece = tempFromSpacePiece;
                     toSpace.Piece = tempToSpacePiece;
-                    return false;
+                    return true;
                 }
-                // revert move and let calling function finish it
-                fromSpace.Piece = tempFromSpacePiece;
-                toSpace.Piece = tempToSpacePiece;
-                return true;
+                return false;
             }
             return false;
+
         }
 
         public virtual void Capture(Space fromSpace, Space toSpace)

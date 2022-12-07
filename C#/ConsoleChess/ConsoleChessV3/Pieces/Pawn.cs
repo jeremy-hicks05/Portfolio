@@ -8,6 +8,7 @@ namespace ConsoleChessV3.Pieces
         public override bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
             return (fromSpace.Piece is not null) &&
+                    (toSpace.IsEmpty()) &&
                     ((fromSpace.Column == toSpace.Column &&
                         toSpace.Row - fromSpace.Row <= 1) 
                     ||
@@ -51,7 +52,7 @@ namespace ConsoleChessV3.Pieces
         public override void Move(Space fromSpace, Space toSpace)
         {
             HasJustMovedTwo = false;
-            if (fromSpace.Piece is not null)
+            if (fromSpace.Piece is not null && toSpace.IsEmpty())
             {
                 fromSpace.Piece.SetHasMoved(true);
                 if(Math.Abs(toSpace.Row - fromSpace.Row) == 2)

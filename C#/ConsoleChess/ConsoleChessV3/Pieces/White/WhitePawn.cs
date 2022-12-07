@@ -10,7 +10,6 @@
         public override void BuildListOfSpacesToInspect(Space fromSpace, Space toSpace)
         {
             SpacesToReview.Clear();
-            //spacesToCaptureReview?.Clear();
             if (toSpace.Column == fromSpace.Column)
             {
                 for (int row = fromSpace.Row + 1; row <= toSpace.Row; row++)

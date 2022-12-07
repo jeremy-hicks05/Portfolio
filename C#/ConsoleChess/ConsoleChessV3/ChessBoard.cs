@@ -71,6 +71,8 @@
 
             Turn = Player.White;
 
+            FindAllSpacesAttacked();
+
             //Console.WriteLine("Board Initiated");
         }
 

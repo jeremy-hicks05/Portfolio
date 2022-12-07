@@ -127,29 +127,16 @@
 
         public override bool TryMove(Space fromSpace, Space toSpace)
         {
-            IPiece? fromSpacePiece = fromSpace.Piece;
-            IPiece? toSpacePiece = toSpace.Piece;
-            if (fromSpace.Piece is not null)
+            if (toSpace.IsEmpty())
             {
-                toSpace.Piece = fromSpace.Piece;
-                // test from new King position
-                ChessBoard.WhiteKingSpace = toSpace;
-                fromSpace.Clear();
+                ChessBoard.FindAllSpacesAttacked();
+                if (toSpace.IsUnderAttackByBlack)
+                {
+                    return false;
+                }
+                return true;
             }
-
-            if (ChessBoard.KingIsInCheck())
-            {
-                // undo move
-                fromSpace.Piece = fromSpacePiece;
-                toSpace.Piece = toSpacePiece;
-                ChessBoard.WhiteKingSpace = fromSpace;
-                return false;
-            }
-            // undo move
-            fromSpace.Piece = fromSpacePiece;
-            toSpace.Piece = toSpacePiece;
-            ChessBoard.WhiteKingSpace = fromSpace;
-            return true;
+            return false;
         }
 
         public override void Move(Space fromSpace, Space toSpace)
@@ -165,30 +152,13 @@
 
         public override bool TryCapture(Space fromSpace, Space toSpace)
         {
-            if (CanLegallyTryToCaptureFromSpaceToSpace(fromSpace, toSpace) &&
-                !IsBlocked(fromSpace, toSpace) &&
-                toSpace.Piece?.GetBelongsTo() != fromSpace.Piece?.GetBelongsTo())
+            if (toSpace.IsOccupied())
             {
-                IPiece? tempFromSpacePiece = fromSpace.Piece;
-                IPiece? tempToSpacePiece = toSpace.Piece;
-
-                toSpace.Piece = fromSpace.Piece;
-                ChessBoard.WhiteKingSpace = toSpace;
-                fromSpace.Clear();
-
-                // verify your king is not in check
-                if (ChessBoard.KingIsInCheck())
+                ChessBoard.FindAllSpacesAttacked();
+                if (toSpace.IsUnderAttackByBlack)
                 {
-                    // cancel move
-                    fromSpace.Piece = tempFromSpacePiece;
-                    toSpace.Piece = tempToSpacePiece;
-                    ChessBoard.WhiteKingSpace = fromSpace;
                     return false;
                 }
-                // revert move and let calling function finish it
-                fromSpace.Piece = tempFromSpacePiece;
-                toSpace.Piece = tempToSpacePiece;
-                ChessBoard.WhiteKingSpace = fromSpace;
                 return true;
             }
             return false;
