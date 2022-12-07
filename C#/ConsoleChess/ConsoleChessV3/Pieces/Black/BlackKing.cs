@@ -5,6 +5,7 @@
         public BlackKing()
         {
             Name = "k";
+            BelongsTo = Enums.Player.Black;
         }
     }
 }

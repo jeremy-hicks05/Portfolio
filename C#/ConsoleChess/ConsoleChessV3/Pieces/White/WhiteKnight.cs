@@ -5,6 +5,7 @@
         public WhiteKnight()
         {
             Name = "N";
+            BelongsTo = Enums.Player.White;
         }
     }
 }

@@ -5,6 +5,7 @@
         public BlackPawn()
         {
             Name = "p";
+            BelongsTo = Enums.Player.Black;
         }
     }
 }

@@ -5,6 +5,7 @@
         public BlackQueen()
         {
             Name = "q";
+            BelongsTo = Enums.Player.Black;
         }
     }
 }

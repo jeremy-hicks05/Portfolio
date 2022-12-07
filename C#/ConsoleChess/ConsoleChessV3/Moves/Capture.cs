@@ -10,7 +10,10 @@
         }
         public override void Perform()
         {
-            StartingPiece.Capture(StartingSpace, TargetSpace);
+            if (StartingSpace.Piece.CanLegallyTryToCaptureFromSpaceToSpace(StartingSpace, TargetSpace))
+            {
+                StartingSpace.Piece.Capture(StartingSpace, TargetSpace);
+            }
         }
     }
 }

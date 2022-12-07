@@ -5,6 +5,7 @@
         public BlackBishop()
         {
             Name = "b";
+            BelongsTo = Enums.Player.Black;
         }
     }
 }

@@ -16,13 +16,13 @@
         public ChessMove(Space startingSpace, Space endingSpace)
         {
             StartingSpace = startingSpace;
-            TargetSpace = endingSpace;
-
             StartingPiece = startingSpace.Piece!;
+
+            TargetSpace = endingSpace;
             TargetPiece = endingSpace.Piece!;
 
-            CapturedSpace = startingSpace;
-            CapturedPiece = startingSpace.Piece;
+            CapturedSpace = endingSpace;
+            CapturedPiece = endingSpace.Piece;
         }
 
         public virtual void Perform()

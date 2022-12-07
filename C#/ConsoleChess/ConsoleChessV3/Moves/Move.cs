@@ -18,8 +18,7 @@ namespace ConsoleChessV3.Moves
         {
             if (StartingSpace.Piece.CanLegallyTryToMoveFromSpaceToSpace(StartingSpace, TargetSpace))
             {
-                TargetSpace.Piece = StartingSpace.Piece;
-                CapturedSpace?.Clear();
+                StartingSpace.Piece.Move(StartingSpace, TargetSpace);
             }
         }
     }

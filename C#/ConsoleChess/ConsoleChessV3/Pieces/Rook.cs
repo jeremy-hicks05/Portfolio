@@ -14,5 +14,11 @@ namespace ConsoleChessV3.Pieces
             return fromSpace.Column - toSpace.Column == 0 ||
                     fromSpace.Row - toSpace.Row == 0;
         }
+
+        public override bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
+        {
+            return CanLegallyTryToMoveFromSpaceToSpace(fromSpace, toSpace)
+                && fromSpace.Piece.GetBelongsTo() != toSpace.Piece.GetBelongsTo();
+        }
     }
 }

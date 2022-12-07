@@ -5,6 +5,7 @@
         public WhiteKing()
         {
             Name = "K";
+            BelongsTo = Enums.Player.White;
         }
     }
 }

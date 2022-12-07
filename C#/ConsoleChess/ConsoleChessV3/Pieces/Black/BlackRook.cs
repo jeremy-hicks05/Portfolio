@@ -5,6 +5,7 @@
         public BlackRook()
         {
             Name = "r";
+            BelongsTo = Enums.Player.Black;
         }
     }
 }

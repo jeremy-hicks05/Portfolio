@@ -5,6 +5,7 @@
         public WhiteBishop()
         {
             Name = "B";
+            BelongsTo = Enums.Player.White;
         }
     }
 }
