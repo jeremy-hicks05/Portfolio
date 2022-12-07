@@ -1,6 +1,7 @@
 ﻿namespace ConsoleChessV3
 {
     using ConsoleChessV3.Builders;
+    using ConsoleChessV3.Enums;
     using ConsoleChessV3.Pieces.Black;
     using ConsoleChessV3.Pieces.White;
     using ConsoleChessV3.SuperClasses;
@@ -16,6 +17,8 @@
 
         public static Space? InitialSpace;
         public static Space? TargetSpace;
+
+        private static Player Turn;
 
         public static void InitBoard()
         {
@@ -33,7 +36,7 @@
                 }
             }
 
-            for(int i = C["A"]; i <= C["H"]; i++)
+            for (int i = C["A"]; i <= C["H"]; i++)
             {
                 Spaces[i][R["7"]].Piece = new BlackPawn();
             }
@@ -60,6 +63,8 @@
             Spaces[C["F"]][R["1"]].Piece = new WhiteBishop();
             Spaces[C["G"]][R["1"]].Piece = new WhiteKnight();
             Spaces[C["H"]][R["1"]].Piece = new WhiteRook();
+
+            Turn = Player.White;
 
             //Console.WriteLine("Board Initiated");
         }
@@ -156,19 +161,25 @@
 
         public static void PlayMove()
         {
-            if (InitialSpace is not null && TargetSpace is not null)
+            if (InitialSpace is not null && 
+                TargetSpace is not null &&
+                InitialSpace.Piece is not null)
             {
-                NextMove = MoveBuilder.Build(InitialSpace, TargetSpace);
-
-                if (NextMove is not null)
+                if (InitialSpace.Piece.GetBelongsTo() == Turn)
                 {
-                    Console.WriteLine(NextMove.StartingPiece);
-                    Console.WriteLine(NextMove.TargetPiece);
+                    NextMove = MoveBuilder.Build(InitialSpace, TargetSpace);
 
-                    if (NextMove.IsValidChessMove())
+                    if (NextMove is not null)
                     {
-                        NextMove.Perform();
-                        SaveMoveInHistory();
+                        Console.WriteLine(NextMove.StartingPiece);
+                        Console.WriteLine(NextMove.TargetPiece);
+
+                        if (NextMove.IsValidChessMove())
+                        {
+                            NextMove.Perform();
+                            SaveMoveInHistory();
+                            ChangeTurn();
+                        }
                     }
                 }
             }
