@@ -13,14 +13,17 @@
 
         public override void Perform()
         {
-            // TODO: insert code to perform a Castle
-            // we know it's a King and has not moved
+            // TODO: insert code to perform a QueenSide Castle
             if (StartingSpace.Piece is not null && 
                 ChessBoard.Spaces is not null && 
                 ChessBoard.Spaces[C["H"]][StartingSpace.Row].Piece is not null)
             {
                 Console.WriteLine("Performing Castle!");
+
+                // move king
                 StartingSpace.Piece.Move(StartingSpace, TargetSpace);
+
+                // move rook
                 ChessBoard.Spaces[C["H"]][StartingSpace.Row].Piece
                     .Move(ChessBoard.Spaces[C["H"]][StartingSpace.Row],
                             ChessBoard.Spaces[C["F"]][StartingSpace.Row]);
