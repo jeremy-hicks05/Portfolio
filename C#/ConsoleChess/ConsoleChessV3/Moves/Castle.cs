@@ -7,12 +7,12 @@
         public Castle(Space startingSpace, Space endingSpace) : base(startingSpace, endingSpace)
         {
             // add designation for 'captured' / 'affected' piece(s)?
-            if (StartingSpace.Column + 2 == TargetSpace.Column)
+            if (StartingSpace.Column + 2 == TargetSpace.Column) // king side castle
             {
                 RestorePiece = ChessBoard.Spaces[C["H"]][StartingSpace.Row].Piece;
                 RestoreSpace = ChessBoard.Spaces[C["H"]][StartingSpace.Row];
             }
-            else
+            else // queen side castle
             {
                 RestorePiece = ChessBoard.Spaces[C["A"]][StartingSpace.Row].Piece;
                 RestoreSpace = ChessBoard.Spaces[C["A"]][StartingSpace.Row];
@@ -38,6 +38,23 @@
                 ChessBoard.Spaces[C["E"]][StartingSpace.Row].Clear();
                 ChessBoard.Spaces[C["A"]][StartingSpace.Row].Clear();
             }
+        }
+
+        public override bool IsValidChessMove()
+        {
+            if (StartingSpace.Column + 2 == TargetSpace.Column) // king side castle
+            {
+                return !(ChessBoard.Spaces[C["E"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
+                    ChessBoard.Spaces[C["F"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
+                    ChessBoard.Spaces[C["F"]][StartingSpace.Row].IsUnderAttackByOpponent());
+            }
+            else // queen side castle
+            {
+                return !(ChessBoard.Spaces[C["E"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
+                    ChessBoard.Spaces[C["D"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
+                    ChessBoard.Spaces[C["C"]][StartingSpace.Row].IsUnderAttackByOpponent());
+            }
+            return false;
         }
 
         public override void Reverse()

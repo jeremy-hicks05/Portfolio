@@ -19,7 +19,7 @@
         public static Space? InitialSpace;
         public static Space? TargetSpace;
 
-        private static Player Turn;
+        public static Player Turn;
 
         public static Space WhiteKingSpace;
         public static Space BlackKingSpace;

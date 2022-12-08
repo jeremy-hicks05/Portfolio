@@ -1,4 +1,5 @@
-﻿using ConsoleChessV3.Interfaces;
+﻿using ConsoleChessV3.Enums;
+using ConsoleChessV3.Interfaces;
 
 namespace ConsoleChessV3
 {
@@ -48,6 +49,17 @@ namespace ConsoleChessV3
         public bool IsOccupied()
         {
             return Piece != null;
+        }
+
+        public bool IsUnderAttackByOpponent()
+        {
+            switch (ChessBoard.Turn)
+            {
+                case Player.Black:
+                    return IsUnderAttackByWhite;
+                default:
+                    return IsUnderAttackByBlack;
+            }
         }
     }
 }
