@@ -9,13 +9,14 @@ namespace ConsoleChessV3.Pieces
         {
             return (fromSpace.Piece is not null) &&
                     (toSpace.IsEmpty()) &&
-                    ((fromSpace.Column == toSpace.Column &&
-                        toSpace.Row - fromSpace.Row <= 1) 
+                    (
+                    fromSpace.Column == toSpace.Column &&
+                        Math.Abs(toSpace.Row - fromSpace.Row) <= 1)
                     ||
-                    !HasMoved && 
+                    !HasMoved &&
                     (!fromSpace.Piece.GetHasMoved() &&
                     fromSpace.Column == toSpace.Column &&
-                        toSpace.Row - fromSpace.Row <= 2));
+                        Math.Abs(toSpace.Row - fromSpace.Row) <= 2);
         }
 
         public override bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
