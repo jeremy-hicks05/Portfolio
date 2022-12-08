@@ -21,5 +21,12 @@ namespace ConsoleChessV3.Moves
                 StartingSpace.Piece.Move(StartingSpace, TargetSpace);
             }
         }
+
+        public override void Reverse()
+        {
+            TargetSpace.Clear();
+            StartingSpace.Piece = StartingPiece;
+            StartingPiece.SetHasMoved(StartingPieceHasMoved);
+        }
     }
 }

@@ -51,8 +51,8 @@
             }
 
             Spaces[C["A"]][R["8"]].Piece = new BlackRook();
-            Spaces[C["B"]][R["8"]].Piece = new BlackBishop();
-            Spaces[C["C"]][R["8"]].Piece = new BlackKnight();
+            Spaces[C["B"]][R["8"]].Piece = new BlackKnight();
+            Spaces[C["C"]][R["8"]].Piece = new BlackBishop();
             Spaces[C["D"]][R["8"]].Piece = new BlackQueen();
             Spaces[C["E"]][R["8"]].Piece = new BlackKing();
             BlackKingSpace = Spaces[C["E"]][R["8"]];
@@ -222,43 +222,7 @@
                 ChessMove? lastMove = MovesPlayed.Pop();
                 if (lastMove is not null)
                 {
-                    if (lastMove is Castle)
-                    {
-                        // undo castle move
-
-                        // undo KingSideCastle
-                    }
-                    else if(lastMove is EnPassant)
-                    {
-                        lastMove.TargetSpace.Clear();
-                        lastMove.RestoreSpace.Piece = lastMove.RestorePiece;
-                        if (lastMove.RestoreSpace.Piece is not null)
-                        {
-                            lastMove.RestoreSpace.Piece.SetHasMoved(lastMove.RestorePieceHasMoved);
-                        }
-
-                        lastMove.StartingSpace.Piece = lastMove.StartingPiece;
-
-
-                    }
-                    else if(lastMove is Capture)
-                    {
-                        lastMove.TargetSpace.Clear();
-                        lastMove.RestoreSpace.Piece = lastMove.RestorePiece;
-                        if (lastMove.RestoreSpace.Piece is not null)
-                        {
-                            lastMove.RestoreSpace.Piece.SetHasMoved(lastMove.RestorePieceHasMoved);
-                        }
-
-                        lastMove.StartingSpace.Piece = lastMove.StartingPiece;
-                        lastMove.StartingPiece.SetHasMoved(lastMove.StartingPieceHasMoved);
-                    }
-                    else // undo regular move
-                    {
-                        lastMove.TargetSpace.Clear();
-                        lastMove.StartingSpace.Piece = lastMove.StartingPiece;
-                        lastMove.StartingPiece.SetHasMoved(lastMove.StartingPieceHasMoved);
-                    }
+                    lastMove.Reverse();
                     ChangeTurn();
                 }
             }

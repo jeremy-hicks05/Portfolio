@@ -32,6 +32,18 @@
             }
         }
 
+        public override void Reverse()
+        {
+            TargetSpace.Clear();
+            RestoreSpace.Piece = RestorePiece;
+            if (RestoreSpace.Piece is not null)
+            {
+                RestoreSpace.Piece.SetHasMoved(RestorePieceHasMoved);
+            }
+
+            StartingSpace.Piece = StartingPiece;
+        }
+
         public override bool IsValidChessMove()
         {
             if (StartingSpace is not null && StartingSpace.Piece is not null)

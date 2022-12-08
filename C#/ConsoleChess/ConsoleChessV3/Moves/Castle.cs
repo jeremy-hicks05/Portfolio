@@ -7,26 +7,56 @@
         public Castle(Space startingSpace, Space endingSpace) : base(startingSpace, endingSpace)
         {
             // add designation for 'captured' / 'affected' piece(s)?
-            RestorePiece = ChessBoard.Spaces[C["H"]][StartingSpace.Row].Piece;
-            RestoreSpace = ChessBoard.Spaces[C["H"]][StartingSpace.Row];
+            if (StartingSpace.Column + 2 == TargetSpace.Column)
+            {
+                RestorePiece = ChessBoard.Spaces[C["H"]][StartingSpace.Row].Piece;
+                RestoreSpace = ChessBoard.Spaces[C["H"]][StartingSpace.Row];
+            }
+            else
+            {
+                RestorePiece = ChessBoard.Spaces[C["A"]][StartingSpace.Row].Piece;
+                RestoreSpace = ChessBoard.Spaces[C["A"]][StartingSpace.Row];
+            }
         }
 
         public override void Perform()
         {
-            // TODO: insert code to perform a QueenSide Castle
-            if (StartingSpace.Piece is not null && 
-                ChessBoard.Spaces is not null && 
-                ChessBoard.Spaces[C["H"]][StartingSpace.Row].Piece is not null)
+            if (StartingSpace.Column + 2 == TargetSpace.Column) // king side castle
             {
-                Console.WriteLine("Performing Castle!");
+                ChessBoard.Spaces[C["G"]][StartingSpace.Row].Piece = ChessBoard.Spaces[C["E"]][StartingSpace.Row].Piece;
+                ChessBoard.Spaces[C["F"]][StartingSpace.Row].Piece = ChessBoard.Spaces[C["H"]][StartingSpace.Row].Piece;
 
-                // move king
-                StartingSpace.Piece.Move(StartingSpace, TargetSpace);
+                ChessBoard.Spaces[C["E"]][StartingSpace.Row].Clear();
+                ChessBoard.Spaces[C["H"]][StartingSpace.Row].Clear();
 
-                // move rook
-                ChessBoard.Spaces[C["H"]][StartingSpace.Row].Piece
-                    .Move(ChessBoard.Spaces[C["H"]][StartingSpace.Row],
-                            ChessBoard.Spaces[C["F"]][StartingSpace.Row]);
+            }
+            else // Queen side castle
+            {
+                ChessBoard.Spaces[C["C"]][StartingSpace.Row].Piece = ChessBoard.Spaces[C["E"]][StartingSpace.Row].Piece;
+                ChessBoard.Spaces[C["D"]][StartingSpace.Row].Piece = ChessBoard.Spaces[C["A"]][StartingSpace.Row].Piece;
+
+                ChessBoard.Spaces[C["E"]][StartingSpace.Row].Clear();
+                ChessBoard.Spaces[C["A"]][StartingSpace.Row].Clear();
+            }
+        }
+
+        public override void Reverse()
+        {
+            StartingSpace.Piece = StartingPiece;
+            StartingSpace.Piece.SetHasMoved(StartingPieceHasMoved);
+
+            RestoreSpace.Piece = RestorePiece;
+            RestoreSpace.Piece.SetHasMoved(RestorePieceHasMoved);
+
+            if(StartingSpace.Column + 2 == TargetSpace.Column)
+            {
+                ChessBoard.Spaces[StartingSpace.Column + 1][StartingSpace.Row].Clear();
+                ChessBoard.Spaces[StartingSpace.Column + 2][StartingSpace.Row].Clear();
+            }
+            else
+            {
+                ChessBoard.Spaces[StartingSpace.Column - 1][StartingSpace.Row].Clear();
+                ChessBoard.Spaces[StartingSpace.Column - 2][StartingSpace.Row].Clear();
             }
         }
     }

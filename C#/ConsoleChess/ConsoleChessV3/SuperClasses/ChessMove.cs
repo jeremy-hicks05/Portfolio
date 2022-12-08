@@ -38,6 +38,11 @@
             //}
         }
 
+        public virtual void Reverse()
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual bool IsValidChessMove()
         {
             if (StartingSpace is not null && StartingSpace.Piece is not null)
