@@ -9,11 +9,12 @@
             Console.ReadLine();
             InitBoard();
 
-            while (!BlackIsCheckMated() &&
-                !WhiteIsCheckMated() &&
-                !BlackIsStaleMated() &&
-                !WhiteIsStaleMated())
+            while (true)
             {
+                BlackIsCheckMated();
+                WhiteIsCheckMated();
+                BlackIsStaleMated();
+                WhiteIsStaleMated();
                 PrintBoard();
 
                 GetInitialSpaceInput();

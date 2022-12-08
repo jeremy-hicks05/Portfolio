@@ -56,6 +56,7 @@
 
         public virtual bool TryCapture(Space fromSpace, Space toSpace)
         {
+
             IPiece? tempFromSpacePiece = fromSpace.Piece;
             IPiece? tempToSpacePiece = toSpace.Piece;
 

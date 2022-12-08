@@ -3,6 +3,7 @@
     using ConsoleChessV3.Builders;
     using ConsoleChessV3.Enums;
     using ConsoleChessV3.Moves;
+    using ConsoleChessV3.Pieces;
     using ConsoleChessV3.Pieces.Black;
     using ConsoleChessV3.Pieces.White;
     using ConsoleChessV3.SuperClasses;
@@ -166,6 +167,25 @@
             }
         }
 
+        public static void UpdateHasJustMovedTwo()
+        {
+            // change all 'has just moved two's for player whose turn it is about to become - how?
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (Spaces[i][j].Piece is not null && Spaces[i][j].Piece.GetBelongsTo() == Turn)
+                    {
+                        if (Spaces[i][j].Piece is Pawn)
+                        {
+                            Pawn tempPawn = Spaces[i][j].Piece as Pawn;
+                            tempPawn.HasJustMovedTwo = false;
+                        }
+                    }
+                }
+            }
+        }
+
         public static void PrintBoard()
         {
             Console.Clear();
@@ -204,6 +224,7 @@
                             NextMove.Perform();
                             SaveMoveInHistory();
                             ChangeTurn();
+                            UpdateHasJustMovedTwo();
                             PrintBoard();
                         }
                     }
@@ -228,6 +249,7 @@
                 {
                     lastMove.Reverse();
                     ChangeTurn();
+                    
                 }
             }
             PrintBoard();
@@ -391,6 +413,7 @@
                     }
                 }
                 Console.WriteLine("WHITE IS CHECKMATED!");
+                Console.ReadLine();
                 return true;
             }
             //Console.WriteLine("White is not in check!");
@@ -437,6 +460,7 @@
                     }
                 }
                 Console.WriteLine("WHITE IS STALEMATED!");
+                Console.ReadLine();
                 return true;
             }
             //Console.WriteLine("White is in check!");
@@ -485,6 +509,7 @@
                     }
                 }
                 Console.WriteLine("BLACK IS CHECKMATED!");
+                Console.ReadLine();
                 return true;
             }
             //Console.WriteLine("Black is not in check!");
@@ -531,6 +556,7 @@
                     }
                 }
                 Console.WriteLine("BLACK IS STALEMATED!");
+                Console.ReadLine();
                 return true;
             }
             //Console.WriteLine("Black is in check!");
