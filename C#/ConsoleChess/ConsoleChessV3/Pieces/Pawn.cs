@@ -12,6 +12,7 @@ namespace ConsoleChessV3.Pieces
                     ((fromSpace.Column == toSpace.Column &&
                         toSpace.Row - fromSpace.Row <= 1) 
                     ||
+                    !HasMoved && 
                     (!fromSpace.Piece.GetHasMoved() &&
                     fromSpace.Column == toSpace.Column &&
                         toSpace.Row - fromSpace.Row <= 2));
@@ -55,11 +56,12 @@ namespace ConsoleChessV3.Pieces
             HasJustMovedTwo = false;
             if (fromSpace.Piece is not null && toSpace.IsEmpty())
             {
-                fromSpace.Piece.SetHasMoved(true);
+                //fromSpace.Piece.SetHasMoved(true);
                 if(Math.Abs(toSpace.Row - fromSpace.Row) == 2)
                 {
                     HasJustMovedTwo = true;
                 }
+                HasMoved = true;
                 toSpace.Piece = fromSpace.Piece;
                 fromSpace.Clear();
             }
