@@ -14,7 +14,8 @@ namespace ConsoleChessV3.Builders
             {
                 if (fromSpace.Piece is Pawn &&
                     (Math.Abs(toSpace.Column - fromSpace.Column) == 1) &&
-                    ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece is Pawn)
+                    ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece is Pawn &&
+                    ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece.GetBelongsTo() != fromSpace.Piece.GetBelongsTo())
                 {
                     Pawn tempPawn = ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece as Pawn;
                     if (tempPawn.HasJustMovedTwo)
