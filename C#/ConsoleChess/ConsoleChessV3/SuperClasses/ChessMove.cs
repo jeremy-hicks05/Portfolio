@@ -31,11 +31,7 @@
 
         public virtual void Perform()
         {
-            //if (TargetSpace.Piece.CanLegallyTryToMoveFromSpaceToSpace(StartingSpace, TargetSpace))
-            //{
-            //    TargetSpace.Piece = StartingSpace.Piece;
-            //    AffectedSpace?.Clear();
-            //}
+
         }
 
         public virtual void Reverse()

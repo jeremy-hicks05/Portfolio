@@ -148,6 +148,10 @@
             return TargetSpace;
         }
 
+        public static void VerifyMove(ChessMove chessMove)
+        {
+
+        }
 
         public static void ChangeTurn()
         {
@@ -192,8 +196,8 @@
 
                     if (NextMove is not null)
                     {
-                        Console.WriteLine(NextMove.StartingPiece);
-                        Console.WriteLine(NextMove.TargetPiece);
+                        //Console.WriteLine(NextMove.StartingPiece);
+                        //Console.WriteLine(NextMove.TargetPiece);
 
                         if (NextMove.IsValidChessMove())
                         {

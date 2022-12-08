@@ -30,5 +30,15 @@
                 SpacesToReview!.Add(ChessBoard.Spaces![toSpace.Column][toSpace.Row]);
             }
         }
+
+        public override bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
+        {
+            //capture up and left or up and right
+            return (fromSpace.Column -  1 == toSpace.Column &&
+                fromSpace.Row + 1 == toSpace.Row) 
+                ||
+                (fromSpace.Column +  1 == toSpace.Column &&
+                fromSpace.Row + 1 == toSpace.Row);
+        }
     }
 }

@@ -12,10 +12,7 @@
         {
             if (StartingSpace is not null && StartingSpace.Piece is not null)
             {
-                if (StartingSpace.Piece.CanLegallyTryToCaptureFromSpaceToSpace(StartingSpace, TargetSpace))
-                {
-                    StartingSpace.Piece.Capture(StartingSpace, TargetSpace);
-                }
+                StartingSpace.Piece.Capture(StartingSpace, TargetSpace);
             }
         }
 
@@ -38,7 +35,10 @@
             {
                 if (StartingSpace.Piece.CanLegallyTryToCaptureFromSpaceToSpace(StartingSpace, TargetSpace))
                 {
-                    return true;
+                    if (StartingSpace.Piece.TryCapture(StartingSpace, TargetSpace))
+                    {
+                        return true;
+                    }
                 }
             }
 

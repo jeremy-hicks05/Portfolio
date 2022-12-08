@@ -19,6 +19,7 @@ namespace ConsoleChessV3.Pieces
 
         public override bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
+            //TODO : stop pawn from capturing backwards - move to BlackPawn and WhitePawn
             return Math.Abs(toSpace.Column - fromSpace.Column) == 1 &&
                 Math.Abs(toSpace.Row - fromSpace.Row) == 1;
         }
