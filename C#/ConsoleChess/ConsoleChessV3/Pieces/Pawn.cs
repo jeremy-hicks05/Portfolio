@@ -14,6 +14,7 @@ namespace ConsoleChessV3.Pieces
                         Math.Abs(toSpace.Row - fromSpace.Row) <= 1)
                     ||
                     !HasMoved &&
+                    (toSpace.IsEmpty()) &&
                     (!fromSpace.Piece.GetHasMoved() &&
                     fromSpace.Column == toSpace.Column &&
                         Math.Abs(toSpace.Row - fromSpace.Row) <= 2);

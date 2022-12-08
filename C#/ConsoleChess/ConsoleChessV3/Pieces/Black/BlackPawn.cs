@@ -1,4 +1,6 @@
-﻿namespace ConsoleChessV3.Pieces.Black
+﻿using ConsoleChessV3.Pieces.White;
+
+namespace ConsoleChessV3.Pieces.Black
 {
     internal class BlackPawn : Pawn
     {
@@ -35,12 +37,31 @@
 
         public override bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            //capture up and left or up and right
-            return (fromSpace.Column - 1 == toSpace.Column &&
-                fromSpace.Row - 1 == toSpace.Row)
-                ||
+            WhitePawn tempWhitePawn;
+            bool tempWhitePawnHasJustMoveTwo = false;
+
+            if (fromSpace.Column - 1 >= 0 && ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece is WhitePawn)
+            {
+                tempWhitePawn = ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece as WhitePawn;
+                tempWhitePawnHasJustMoveTwo = tempWhitePawn.HasJustMovedTwo;
+            }
+            else if (fromSpace.Column + 1 <= 7 && ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece is WhitePawn)
+            {
+                tempWhitePawn = ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece as WhitePawn;
+                tempWhitePawnHasJustMoveTwo = tempWhitePawn.HasJustMovedTwo;
+            }
+            //capture down and left or down and right
+            return ((fromSpace.Column - 1 == toSpace.Column &&
+                fromSpace.Row - 1 == toSpace.Row) ||
                 (fromSpace.Column + 1 == toSpace.Column &&
-                fromSpace.Row - 1 == toSpace.Row);
+                fromSpace.Row - 1 == toSpace.Row)) &&
+                toSpace.IsOccupied()
+                ||
+                (((fromSpace.Column - 1 == toSpace.Column &&
+                fromSpace.Row - 1 == toSpace.Row) ||
+                (fromSpace.Column + 1 == toSpace.Column &&
+                fromSpace.Row - 1 == toSpace.Row)) &&
+                tempWhitePawnHasJustMoveTwo);
         }
     }
 }

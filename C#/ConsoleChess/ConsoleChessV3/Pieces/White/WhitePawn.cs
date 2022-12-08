@@ -55,10 +55,10 @@ namespace ConsoleChessV3.Pieces.White
                 fromSpace.Row + 1 == toSpace.Row)) && 
                 toSpace.IsOccupied()
                 ||
-                ((fromSpace.Column - 1 == toSpace.Column &&
+                (((fromSpace.Column - 1 == toSpace.Column &&
                 fromSpace.Row + 1 == toSpace.Row) ||
                 (fromSpace.Column + 1 == toSpace.Column &&
-                fromSpace.Row + 1 == toSpace.Row) &&
+                fromSpace.Row + 1 == toSpace.Row)) &&
                 tempBlackPawnHasJustMoveTwo);
         }
     }
