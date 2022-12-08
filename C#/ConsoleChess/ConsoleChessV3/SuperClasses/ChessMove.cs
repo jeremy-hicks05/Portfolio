@@ -9,10 +9,10 @@
         public bool StartingPieceHasMoved;
 
         public Space TargetSpace;
-        public IPiece TargetPiece;
+        public IPiece? TargetPiece;
         public bool TargetPieceHasMoved;
 
-        public Space RestoreSpace;
+        public Space? RestoreSpace;
         public IPiece? RestorePiece;
         public bool RestorePieceHasMoved;
         
@@ -21,12 +21,14 @@
         {
             StartingSpace = startingSpace;
             StartingPiece = startingSpace.Piece!;
+            StartingPieceHasMoved = StartingPiece.GetHasMoved();
 
             TargetSpace = endingSpace;
-            TargetPiece = endingSpace.Piece!;
-
-            RestoreSpace = endingSpace;
-            RestorePiece = endingSpace.Piece;
+            if (TargetSpace.Piece is not null)
+            {
+                TargetPiece = endingSpace.Piece!;
+                TargetPieceHasMoved = TargetPiece.GetHasMoved();
+            }
         }
 
         public virtual void Perform()

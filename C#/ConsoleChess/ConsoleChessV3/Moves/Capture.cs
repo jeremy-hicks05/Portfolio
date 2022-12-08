@@ -7,6 +7,23 @@
         public Capture(Space startingSpace, Space endingSpace) : base(startingSpace, endingSpace)
         {
 
+            StartingSpace = startingSpace;
+            StartingPiece = startingSpace.Piece!;
+            StartingPieceHasMoved = StartingPiece.GetHasMoved();
+
+            TargetSpace = endingSpace;
+            if (TargetSpace.Piece is not null)
+            {
+                TargetPiece = endingSpace.Piece!;
+                TargetPieceHasMoved = TargetPiece.GetHasMoved();
+            }
+
+            RestoreSpace = endingSpace;
+            if (RestoreSpace.Piece is not null)
+            {
+                RestorePiece = endingSpace.Piece;
+                RestorePieceHasMoved = RestorePiece.GetHasMoved();
+            }
         }
         public override void Perform()
         {
