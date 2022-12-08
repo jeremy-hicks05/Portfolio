@@ -133,6 +133,7 @@
             if (toSpace.IsEmpty())
             {
                 fromSpace.Clear();
+                ChessBoard.FindAllSpacesAttacked();
                 if (toSpace.IsUnderAttackByWhite)
                 {
                     fromSpace.Piece = fromSpacePiece;
