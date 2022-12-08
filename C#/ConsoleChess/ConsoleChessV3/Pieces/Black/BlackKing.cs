@@ -129,13 +129,16 @@
 
         public override bool TryMove(Space fromSpace, Space toSpace)
         {
+            IPiece fromSpacePiece = fromSpace.Piece;
             if (toSpace.IsEmpty())
             {
-                ChessBoard.FindAllSpacesAttacked();
+                fromSpace.Clear();
                 if (toSpace.IsUnderAttackByWhite)
                 {
+                    fromSpace.Piece = fromSpacePiece;
                     return false;
                 }
+                fromSpace.Piece = fromSpacePiece;
                 return true;
             }
             return false; 

@@ -29,6 +29,15 @@
                 ChessBoard.Spaces[C["E"]][StartingSpace.Row].Clear();
                 ChessBoard.Spaces[C["H"]][StartingSpace.Row].Clear();
 
+                if(ChessBoard.Turn == Enums.Player.White)
+                {
+                    ChessBoard.WhiteKingSpace = TargetSpace;
+                }
+                else
+                {
+                    ChessBoard.BlackKingSpace = TargetSpace;
+                }
+
             }
             else // Queen side castle
             {
@@ -37,6 +46,15 @@
 
                 ChessBoard.Spaces[C["E"]][StartingSpace.Row].Clear();
                 ChessBoard.Spaces[C["A"]][StartingSpace.Row].Clear();
+
+                if (ChessBoard.Turn == Enums.Player.White)
+                {
+                    ChessBoard.WhiteKingSpace = TargetSpace;
+                }
+                else
+                {
+                    ChessBoard.BlackKingSpace = TargetSpace;
+                }
             }
         }
 
@@ -69,11 +87,29 @@
             {
                 ChessBoard.Spaces[StartingSpace.Column + 1][StartingSpace.Row].Clear();
                 ChessBoard.Spaces[StartingSpace.Column + 2][StartingSpace.Row].Clear();
+
+                if (ChessBoard.Turn == Enums.Player.White)
+                {
+                    ChessBoard.WhiteKingSpace = StartingSpace;
+                }
+                else
+                {
+                    ChessBoard.BlackKingSpace = StartingSpace;
+                }
             }
             else
             {
                 ChessBoard.Spaces[StartingSpace.Column - 1][StartingSpace.Row].Clear();
                 ChessBoard.Spaces[StartingSpace.Column - 2][StartingSpace.Row].Clear();
+
+                if (ChessBoard.Turn == Enums.Player.White)
+                {
+                    ChessBoard.WhiteKingSpace = StartingSpace;
+                }
+                else
+                {
+                    ChessBoard.BlackKingSpace = StartingSpace;
+                }
             }
         }
     }
