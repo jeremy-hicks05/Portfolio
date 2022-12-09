@@ -2,6 +2,11 @@
 {
     using ConsoleChessV3.SuperClasses;
 
+    /// <summary>
+    /// Represents the occurrence of a piece being captured in chess.  
+    /// It holds the starting, ending, captured, and otherwise affected pieces
+    /// when it comes to a capture.  Is reversed when TakeBack function is called.
+    /// </summary>
     internal class Capture : ChessMove
     {
         public Capture(Space startingSpace, Space endingSpace) : base(startingSpace, endingSpace)

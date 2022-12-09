@@ -12,9 +12,8 @@
 
         public virtual void BuildListOfSpacesToInspect(Space fromSpace, Space toSpace)
         {
-            // default function implementation - may not use
+            // must be overriden by sub class
             throw new NotImplementedException();
-            //SpacesToReview.Clear();
         }
 
         public virtual bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
@@ -27,8 +26,7 @@
 
         public virtual bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            // default method
-            //return false;
+            // must be overriden by sub class
             throw new NotImplementedException();
         }
 

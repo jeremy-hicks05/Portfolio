@@ -18,19 +18,6 @@ namespace ConsoleChessV3
             Piece = null;
         }
 
-        public Space(int column, int row)
-        {
-            Column = column;
-            Row = row;
-        }
-
-        public Space(int column, int row, IPiece piece)
-        {
-            Column = column;
-            Row = row;
-            Piece = piece;
-        }
-
         public override string ToString()
         {
             return (Piece == null ? $"[ ]" : $"[{Piece.GetName()}]");
@@ -41,16 +28,28 @@ namespace ConsoleChessV3
             this.Piece = null;
         }
 
+        /// <summary>
+        /// Returns whether Space has a piece on it
+        /// </summary>
+        /// <returns></returns>
         public bool IsEmpty()
         {
             return Piece == null;
         }
 
+        /// <summary>
+        /// Returns whether Space has a piece on it
+        /// </summary>
+        /// <returns></returns>
         public bool IsOccupied()
         {
             return Piece != null;
         }
 
+        /// <summary>
+        /// Returns whether this Space is under attack by one of the opponent's pieces
+        /// </summary>
+        /// <returns></returns>
         public bool IsUnderAttackByOpponent()
         {
             switch (ChessBoard.Turn)

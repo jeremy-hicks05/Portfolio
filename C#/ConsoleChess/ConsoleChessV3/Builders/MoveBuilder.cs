@@ -1,15 +1,20 @@
 ﻿using ConsoleChessV3.Moves;
 using ConsoleChessV3.Pieces;
-using ConsoleChessV3.Pieces.White;
 using ConsoleChessV3.SuperClasses;
 
 namespace ConsoleChessV3.Builders
 {
     internal static class MoveBuilder
     {
+        /// <summary>
+        /// Builds a ChessMove, determining which type it is (EnPassant, Promotion, Capture, Move, Castle)
+        /// and returns it to the calling function for future performing
+        /// </summary>
+        /// <param name="fromSpace"></param>
+        /// <param name="toSpace"></param>
+        /// <returns></returns>
         public static ChessMove? Build(Space fromSpace, Space toSpace)
         {
-            // TODO: finish EnPassant detection logic
             if (ChessBoard.Spaces is not null && fromSpace.Piece is not null)
             {
                 if (fromSpace.Piece is Pawn &&

@@ -33,11 +33,13 @@
 
         public virtual void Perform()
         {
-
+            // must be overridden by subclasses
+            throw new NotImplementedException();
         }
 
         public virtual void Reverse()
         {
+            // must be overridden by subclasses
             throw new NotImplementedException();
         }
 

@@ -25,6 +25,9 @@
         public static Space? WhiteKingSpace;
         public static Space? BlackKingSpace;
 
+        /// <summary>
+        /// Populates ChessBoard with all the pieces, sets first turn as White
+        /// </summary>
         public static void InitBoard()
         {
             // build 8x8 Chess Board
@@ -78,6 +81,9 @@
             //Console.WriteLine("Board Initiated");
         }
 
+        /// <summary>
+        /// Verifies and gets the Letter (Column) and Row (Number) of initial space
+        /// </summary>
         public static void GetInitialSpaceInput()
         {
             // get user input (A-H) and (1-8) for initial space
@@ -103,6 +109,9 @@
             SetInitialSpaceFromInput(selectedPieceColumn, selectedPieceRow);
         }
 
+        /// <summary>
+        /// Verifies and gets the Letter (Column) and Row (Number) of target space
+        /// </summary>
         public static void GetTargetSpaceInput()
         {
             // get user input (A-H) and (1-8) for initial space
@@ -123,6 +132,11 @@
             SetTargetSpaceFromInput(selectedPieceColumn, selectedPieceRow);
         }
 
+        /// <summary>
+        /// Sets InitialSpace property
+        /// </summary>
+        /// <param name="column"></param>
+        /// <param name="row"></param>
         public static void SetInitialSpaceFromInput(string column, string row)
         {
             if (Spaces is not null)
@@ -131,6 +145,11 @@
             }
         }
 
+        /// <summary>
+        /// Sets TargetSpace property
+        /// </summary>
+        /// <param name="column"></param>
+        /// <param name="row"></param>
         public static void SetTargetSpaceFromInput(string column, string row)
         {
             if (Spaces is not null)
@@ -139,21 +158,9 @@
             }
         }
 
-        public static Space? GetInitialSpace()
-        {
-            return InitialSpace;
-        }
-
-        public static Space? GetTargetSpace()
-        {
-            return TargetSpace;
-        }
-
-        public static void VerifyMove()
-        {
-
-        }
-
+        /// <summary>
+        /// Changes turn from Black to White or White to Black
+        /// </summary>
         public static void ChangeTurn()
         {
             // change from White to Black or Black to White when move has been performed
@@ -167,6 +174,9 @@
             }
         }
 
+        /// <summary>
+        /// Sets "HasJustMovedTwo" flag to false for your pawns when your turn starts
+        /// </summary>
         public static void UpdateHasJustMovedTwo()
         {
             if (Spaces is not null)
@@ -189,6 +199,9 @@
             }
         }
 
+        /// <summary>
+        /// Prints ChessBoard and Pieces in an 8x8 grid to the console
+        /// </summary>
         public static void PrintBoard()
         {
             Console.Clear();
@@ -208,6 +221,10 @@
             }
         }
 
+        /// <summary>
+        /// Checks for null Space inputs, Builds NextMove, validates move, performs move
+        /// Changes turn, Updates "HasJustMovedTwo", and finally Prints the Board
+        /// </summary>
         public static void PlayMove()
         {
             if (InitialSpace is not null &&
@@ -220,13 +237,10 @@
 
                     if (NextMove is not null)
                     {
-                        //Console.WriteLine(NextMove.StartingPiece);
-                        //Console.WriteLine(NextMove.TargetPiece);
-
                         if (NextMove.IsValidChessMove())
                         {
                             NextMove.Perform();
-                            SaveMoveInHistory();
+                            SaveMoveToHistory();
                             ChangeTurn();
                             UpdateHasJustMovedTwo();
                             PrintBoard();
@@ -236,7 +250,10 @@
             }
         }
 
-        public static void SaveMoveInHistory()
+        /// <summary>
+        /// Pushes NextMove property to MoveHistory stack
+        /// </summary>
+        public static void SaveMoveToHistory()
         {
             if (MovesPlayed is not null)
             {
@@ -244,6 +261,9 @@
             }
         }
 
+        /// <summary>
+        /// Reverses the move on the top of the MoveHistory stack
+        /// </summary>
         public static void TakeBackMove()
         {
             if (MovesPlayed is not null && MovesPlayed.Count > 0)
@@ -259,6 +279,9 @@
             PrintBoard();
         }
 
+        /// <summary>
+        /// Prints out the Initial and Target spaces of the move history
+        /// </summary>
         public static void ShowMoveHistory()
         {
             if (MovesPlayed is not null)
@@ -284,6 +307,10 @@
             }
         }
 
+        /// <summary>
+        /// Iterates through the board, attempting to move every piece to every space,
+        /// setting the IsUnderAttackBy{Player} property based on the owner of the piece
+        /// </summary>
         public static void FindAllSpacesAttacked()
         {
             if (Spaces is not null)
@@ -360,6 +387,11 @@
             }
         }
 
+        /// <summary>
+        /// Tests if either Player's KingSpace is attacked by the opponent.
+        /// Used to determine if a move just made puts your own king in check
+        /// </summary>
+        /// <returns></returns>
         public static bool KingIsInCheck()
         {
             FindAllSpacesAttacked();
@@ -374,6 +406,10 @@
             return false;
         }
 
+        /// <summary>
+        /// Checks for White being Checkmated
+        /// </summary>
+        /// <returns></returns>
         public static bool WhiteIsCheckMated()
         {
             if (Turn == Player.White)
@@ -425,6 +461,11 @@
             }
             return false;
         }
+
+        /// <summary>
+        /// Checks for White being Stalemated
+        /// </summary>
+        /// <returns></returns>
         public static bool WhiteIsStaleMated()
         {
             if (Turn == Player.White)
@@ -474,6 +515,11 @@
             }
             return false;
         }
+
+        /// <summary>
+        /// Checks for Black being Checkmated
+        /// </summary>
+        /// <returns></returns>
         public static bool BlackIsCheckMated()
         {
             if (Turn == Player.Black)
@@ -526,6 +572,11 @@
             //Console.WriteLine("Black is not in check!");
             return false;
         }
+
+        /// <summary>
+        /// Checks for Black being Stalekmated
+        /// </summary>
+        /// <returns></returns>
         public static bool BlackIsStaleMated()
         {
             if (Turn == Player.Black)
