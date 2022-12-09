@@ -76,15 +76,6 @@ namespace ConsoleChessV3.Moves
             {
                 TargetPiece.SetHasMoved(TargetPieceHasMoved);
             }
-
-            if (RestoreSpace is not null)
-            {
-                RestoreSpace.Piece = RestorePiece;
-                if (RestoreSpace.Piece is not null)
-                {
-                    RestoreSpace.Piece.SetHasMoved(RestorePieceHasMoved);
-                }
-            }
         }
 
         public override bool IsValidChessMove()
