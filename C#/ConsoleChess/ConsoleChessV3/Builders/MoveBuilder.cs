@@ -24,6 +24,12 @@ namespace ConsoleChessV3.Builders
                         return new EnPassant(fromSpace, toSpace);
                     }
                 }
+                // promotion
+                else if ((fromSpace.Piece is Pawn && toSpace.Row == 7) ||
+                    (fromSpace.Piece is Pawn && toSpace.Row == 0))
+                {
+                    return new Promotion(fromSpace, toSpace);
+                }
                 // castle
                 else if (fromSpace.Piece is King &&
                     Math.Abs(fromSpace.Column - toSpace.Column) == 2)

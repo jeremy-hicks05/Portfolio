@@ -55,6 +55,16 @@
                         }
                     }
                 }
+                else if (StartingSpace.Piece.CanLegallyTryToCaptureFromSpaceToSpace(StartingSpace, TargetSpace))
+                {
+                    if (!StartingSpace.Piece.IsBlocked(StartingSpace, TargetSpace))
+                    {
+                        if (StartingSpace.Piece.TryCapture(StartingSpace, TargetSpace))
+                        {
+                            return true;
+                        }
+                    }
+                }
             }
             return false;
         }
