@@ -16,7 +16,8 @@
                     (Math.Abs(fromSpace.Column - toSpace.Column) <= 1 && 
                     Math.Abs(fromSpace.Row - toSpace.Row) <= 1)
                    ||
-                   (!ChessBoard.BlackKingSpace.IsUnderAttackByWhite &&
+                   (ChessBoard.BlackKingSpace is not null &&
+                   !ChessBoard.BlackKingSpace.IsUnderAttackByWhite &&
                    ((fromSpace.Column == C["E"] && fromSpace.Row == R["8"] &&
                     toSpace.Column == C["G"] && toSpace.Row == R["8"])
                    ||
@@ -129,7 +130,7 @@
 
         public override bool TryMove(Space fromSpace, Space toSpace)
         {
-            IPiece fromSpacePiece = fromSpace.Piece;
+            IPiece? fromSpacePiece = fromSpace.Piece;
             if (toSpace.IsEmpty())
             {
                 fromSpace.Clear();

@@ -17,7 +17,7 @@
                     ChessBoard.Spaces[TargetSpace.Column][TargetSpace.Row - 1] : // If WhitePawn
                     ChessBoard.Spaces[TargetSpace.Column][TargetSpace.Row + 1];  // If BlackPawn
             }
-            RestorePiece = RestoreSpace.Piece;
+            RestorePiece = RestoreSpace?.Piece;
         }
 
         public override void Perform()
@@ -27,16 +27,22 @@
                 //TODO: Insert code to perform an EnPassant capture
                 TargetSpace.Piece = StartingPiece;
                 StartingSpace.Clear();
-                RestorePiece = RestoreSpace.Piece;
-                RestoreSpace.Clear();
+                RestorePiece = RestoreSpace?.Piece;
+                if (RestoreSpace is not null)
+                {
+                    RestoreSpace.Clear();
+                }
             }
         }
 
         public override void Reverse()
         {
             TargetSpace.Clear();
-            RestoreSpace.Piece = RestorePiece;
-            if (RestoreSpace.Piece is not null)
+            if (RestoreSpace is not null)
+            {
+                RestoreSpace.Piece = RestorePiece;
+            }
+            if (RestoreSpace is not null && RestoreSpace.Piece is not null)
             {
                 RestoreSpace.Piece.SetHasMoved(RestorePieceHasMoved);
             }

@@ -35,24 +35,26 @@ namespace ConsoleChessV3.Pieces.White
 
         public override bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            BlackPawn tempBlackPawn;
+            BlackPawn? tempBlackPawn;
             bool tempBlackPawnHasJustMoveTwo = false;
-            
-            if (fromSpace.Column - 1 >= 0 && ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece is BlackPawn)
+            if (ChessBoard.Spaces is not null)
             {
-                tempBlackPawn = ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece as BlackPawn;
-                tempBlackPawnHasJustMoveTwo = tempBlackPawn.HasJustMovedTwo;
-            }
-            else if (fromSpace.Column + 1 <= 7 && ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece is BlackPawn)
-            {
-                tempBlackPawn = ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece as BlackPawn;
-                tempBlackPawnHasJustMoveTwo = tempBlackPawn.HasJustMovedTwo;
+                if (fromSpace.Column - 1 >= 0 && ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece is BlackPawn)
+                {
+                    tempBlackPawn = ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece as BlackPawn;
+                    tempBlackPawnHasJustMoveTwo = tempBlackPawn == null ? false : tempBlackPawn.HasJustMovedTwo;
+                }
+                else if (fromSpace.Column + 1 <= 7 && ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece is BlackPawn)
+                {
+                    tempBlackPawn = ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece as BlackPawn;
+                    tempBlackPawnHasJustMoveTwo = tempBlackPawn == null ? false : tempBlackPawn.HasJustMovedTwo;
+                }
             }
             //capture up and left or up and right
-            return ((fromSpace.Column -  1 == toSpace.Column &&
+            return ((fromSpace.Column - 1 == toSpace.Column &&
                 fromSpace.Row + 1 == toSpace.Row) ||
-                (fromSpace.Column +  1 == toSpace.Column &&
-                fromSpace.Row + 1 == toSpace.Row)) && 
+                (fromSpace.Column + 1 == toSpace.Column &&
+                fromSpace.Row + 1 == toSpace.Row)) &&
                 toSpace.IsOccupied()
                 ||
                 (((fromSpace.Column - 1 == toSpace.Column &&

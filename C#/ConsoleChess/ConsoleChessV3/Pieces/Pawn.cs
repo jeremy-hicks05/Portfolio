@@ -13,6 +13,7 @@ namespace ConsoleChessV3.Pieces
                     fromSpace.Column == toSpace.Column &&
                         Math.Abs(toSpace.Row - fromSpace.Row) <= 1)
                     ||
+                    (fromSpace.Piece is not null) &&
                     !HasMoved &&
                     (toSpace.IsEmpty()) &&
                     (!fromSpace.Piece.GetHasMoved() &&

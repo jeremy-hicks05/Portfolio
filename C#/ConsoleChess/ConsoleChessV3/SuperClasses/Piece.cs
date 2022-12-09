@@ -121,7 +121,10 @@
             if (move is not null)
             {
                 move.TargetSpace.Clear();
-                move.RestoreSpace.Piece = move.RestorePiece;
+                if (move.RestoreSpace is not null)
+                {
+                    move.RestoreSpace.Piece = move.RestorePiece;
+                }
                 move.StartingSpace.Piece = move.StartingPiece;
             }
         }

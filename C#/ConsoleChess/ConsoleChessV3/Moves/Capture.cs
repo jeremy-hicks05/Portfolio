@@ -22,7 +22,7 @@
             if (RestoreSpace.Piece is not null)
             {
                 RestorePiece = endingSpace.Piece;
-                RestorePieceHasMoved = RestorePiece.GetHasMoved();
+                RestorePieceHasMoved = RestorePiece != null && RestorePiece.GetHasMoved();
             }
         }
         public override void Perform()
@@ -36,8 +36,11 @@
         public override void Reverse()
         {
             TargetSpace.Clear();
-            RestoreSpace.Piece = RestorePiece;
-            if (RestoreSpace.Piece is not null)
+            if (RestoreSpace is not null)
+            {
+                RestoreSpace.Piece = RestorePiece;
+            }
+            if (RestoreSpace is not null && RestoreSpace.Piece is not null)
             {
                 RestoreSpace.Piece.SetHasMoved(RestorePieceHasMoved);
             }

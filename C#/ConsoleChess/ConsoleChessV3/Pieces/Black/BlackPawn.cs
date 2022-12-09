@@ -37,18 +37,21 @@ namespace ConsoleChessV3.Pieces.Black
 
         public override bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            WhitePawn tempWhitePawn;
+            WhitePawn? tempWhitePawn;
             bool tempWhitePawnHasJustMoveTwo = false;
 
-            if (fromSpace.Column - 1 >= 0 && ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece is WhitePawn)
+            if (ChessBoard.Spaces is not null)
             {
-                tempWhitePawn = ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece as WhitePawn;
-                tempWhitePawnHasJustMoveTwo = tempWhitePawn.HasJustMovedTwo;
-            }
-            else if (fromSpace.Column + 1 <= 7 && ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece is WhitePawn)
-            {
-                tempWhitePawn = ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece as WhitePawn;
-                tempWhitePawnHasJustMoveTwo = tempWhitePawn.HasJustMovedTwo;
+                if (fromSpace.Column - 1 >= 0 && ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece is WhitePawn)
+                {
+                    tempWhitePawn = ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece as WhitePawn;
+                    tempWhitePawnHasJustMoveTwo = tempWhitePawn == null ? false : tempWhitePawn.HasJustMovedTwo;
+                }
+                else if (fromSpace.Column + 1 <= 7 && ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece is WhitePawn)
+                {
+                    tempWhitePawn = ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece as WhitePawn;
+                    tempWhitePawnHasJustMoveTwo = tempWhitePawn == null ? false : tempWhitePawn.HasJustMovedTwo;
+                }
             }
             //capture down and left or down and right
             return ((fromSpace.Column - 1 == toSpace.Column &&

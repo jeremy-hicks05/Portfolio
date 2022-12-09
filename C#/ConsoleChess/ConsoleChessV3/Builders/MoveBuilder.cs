@@ -10,15 +10,16 @@ namespace ConsoleChessV3.Builders
         public static ChessMove? Build(Space fromSpace, Space toSpace)
         {
             // TODO: finish EnPassant detection logic
-            if (fromSpace.Piece is not null)
+            if (ChessBoard.Spaces is not null && fromSpace.Piece is not null)
             {
                 if (fromSpace.Piece is Pawn &&
                     (Math.Abs(toSpace.Column - fromSpace.Column) == 1) &&
+                    ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece is not null &&
                     ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece is Pawn &&
-                    ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece.GetBelongsTo() != fromSpace.Piece.GetBelongsTo())
+                    ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece!.GetBelongsTo() != fromSpace.Piece.GetBelongsTo())
                 {
-                    Pawn tempPawn = ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece as Pawn;
-                    if (tempPawn.HasJustMovedTwo)
+                    Pawn? tempPawn = ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece as Pawn;
+                    if (tempPawn is not null && tempPawn.HasJustMovedTwo)
                     {
                         return new EnPassant(fromSpace, toSpace);
                     }

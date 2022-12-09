@@ -101,7 +101,7 @@ namespace ConsoleChessV3.Pieces
                     ChessBoard.Spaces[C["H"]][R["1"]].Piece is King &&
                     HasMoved == false &&
                     fromSpace.Row == toSpace.Row &&
-                    ChessBoard.Spaces[C["H"]][R["1"]].Piece.GetHasMoved() == false &&
+                    ChessBoard.Spaces[C["H"]][R["1"]].Piece!.GetHasMoved() == false &&
                     fromSpace.Column == C["E"] && toSpace.Column == C["G"])
                 {
                     SpacesToReview.Add(ChessBoard.Spaces[C["F"]][R["1"]]);
@@ -113,7 +113,7 @@ namespace ConsoleChessV3.Pieces
                     ChessBoard.Spaces[C["A"]][R["1"]].Piece is King &&
                     HasMoved == false &&
                     fromSpace.Row == toSpace.Row &&
-                    ChessBoard.Spaces[C["A"]][R["1"]].Piece.GetHasMoved() == false &&
+                    ChessBoard.Spaces[C["A"]][R["1"]].Piece!.GetHasMoved() == false &&
                     fromSpace.Column == C["E"] && toSpace.Column == C["C"])
                 {
                     SpacesToReview.Add(ChessBoard.Spaces[C["B"]][R["1"]]);
