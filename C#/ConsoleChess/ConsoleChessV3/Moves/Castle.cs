@@ -1,5 +1,6 @@
 ﻿namespace ConsoleChessV3.Moves
 {
+    using ConsoleChessV3.Pieces.White;
     using ConsoleChessV3.SuperClasses;
     using static ConsoleChessV3.Enums.Notation;
     internal class Castle : ChessMove
@@ -98,6 +99,17 @@
                 StartingSpace.Piece = StartingPiece;
                 StartingSpace.Piece.SetHasMoved(StartingPieceHasMoved);
 
+                if (ChessBoard.Turn == Enums.Player.White)
+                {
+                    // ChangeTurn happens afterwards
+                    ChessBoard.BlackKingSpace = StartingSpace;
+                }
+                else
+                {
+                    // ChangeTurn happens afterwards
+                    ChessBoard.WhiteKingSpace = StartingSpace;
+                }
+
                 if (RestoreSpace is not null)
                 {
                     RestoreSpace.Piece = RestorePiece;
@@ -112,29 +124,11 @@
                 {
                     ChessBoard.Spaces[StartingSpace.Column + 1][StartingSpace.Row].Clear();
                     ChessBoard.Spaces[StartingSpace.Column + 2][StartingSpace.Row].Clear();
-
-                    if (ChessBoard.Turn == Enums.Player.White)
-                    {
-                        ChessBoard.WhiteKingSpace = StartingSpace;
-                    }
-                    else
-                    {
-                        ChessBoard.BlackKingSpace = StartingSpace;
-                    }
                 }
                 else
                 {
                     ChessBoard.Spaces[StartingSpace.Column - 1][StartingSpace.Row].Clear();
                     ChessBoard.Spaces[StartingSpace.Column - 2][StartingSpace.Row].Clear();
-
-                    if (ChessBoard.Turn == Enums.Player.White)
-                    {
-                        ChessBoard.WhiteKingSpace = StartingSpace;
-                    }
-                    else
-                    {
-                        ChessBoard.BlackKingSpace = StartingSpace;
-                    }
                 }
             }
         }

@@ -1,4 +1,14 @@
-﻿namespace ConsoleChessV3
+﻿/********************************************
+ *     ** Console Chess **                  *
+ *      by Jeremy Hicks (c) 2022            *
+ *      Tested By: Kari Seitz               *
+ *      Early Version Review: Shaun Lake    *
+ *                                          *
+ *                                          *
+ ********************************************/
+
+
+namespace ConsoleChessV3
 {
     using static ChessBoard;
     internal class Program
@@ -21,16 +31,7 @@
                 GetTargetSpaceInput();
 
                 PlayMove();
-
-                //PrintBoard();
-
-                //ShowMoveHistory();
-                
-                //PrintBoard();
-                //ShowMoveHistory();
-                //Console.ReadLine();
             }
-            //Console.WriteLine("Exiting Chess");
         }
     }
 }
