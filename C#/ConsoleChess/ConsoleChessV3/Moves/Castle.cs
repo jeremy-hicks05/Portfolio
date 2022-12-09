@@ -70,15 +70,22 @@
             {
                 if (StartingSpace.Column + 2 == TargetSpace.Column) // king side castle
                 {
-                    return !(ChessBoard.Spaces[C["E"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
+                    return (ChessBoard.Spaces[C["F"]][StartingSpace.Row].IsEmpty() &&
+                        ChessBoard.Spaces[C["G"]][StartingSpace.Row].IsEmpty())
+                        &&
+                        (!(ChessBoard.Spaces[C["E"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
                         ChessBoard.Spaces[C["F"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
-                        ChessBoard.Spaces[C["F"]][StartingSpace.Row].IsUnderAttackByOpponent());
+                        ChessBoard.Spaces[C["G"]][StartingSpace.Row].IsUnderAttackByOpponent()));
                 }
                 else // queen side castle
                 {
-                    return !(ChessBoard.Spaces[C["E"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
+                    return (ChessBoard.Spaces[C["B"]][StartingSpace.Row].IsEmpty() &&
+                        ChessBoard.Spaces[C["C"]][StartingSpace.Row].IsEmpty() &&
+                        ChessBoard.Spaces[C["D"]][StartingSpace.Row].IsEmpty())
+                        &&
+                        (!(ChessBoard.Spaces[C["E"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
                         ChessBoard.Spaces[C["D"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
-                        ChessBoard.Spaces[C["C"]][StartingSpace.Row].IsUnderAttackByOpponent());
+                        ChessBoard.Spaces[C["C"]][StartingSpace.Row].IsUnderAttackByOpponent()));
                 }
             }
             return false;
