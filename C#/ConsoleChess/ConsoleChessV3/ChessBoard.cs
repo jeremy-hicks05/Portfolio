@@ -91,6 +91,7 @@
             string selectedPieceRow = "0";
             while (!(Regex.Match(selectedPieceColumn!, "^[A-Ha-h]$").Success))
             {
+                
                 Console.WriteLine("Please enter a letter (A-H) or T to TakeBack");
                 selectedPieceColumn = Console.ReadLine()!.ToUpper();
 
@@ -98,12 +99,15 @@
                 {
                     TakeBackMove();
                 }
+                PrintBoard();
             }
 
             while (!(Regex.Match(selectedPieceRow!, "^[1-8]$").Success))
             {
+                Console.WriteLine(selectedPieceColumn);
                 Console.WriteLine("Please enter a number (1-8)");
                 selectedPieceRow = Console.ReadLine()!.ToUpper();
+                PrintBoard();
             }
 
             SetInitialSpaceFromInput(selectedPieceColumn, selectedPieceRow);
@@ -119,12 +123,22 @@
             string selectedPieceRow = "0";
             while (!(Regex.Match(selectedPieceColumn!, "^[A-Ha-h]$").Success))
             {
+                if (InitialSpace is not null)
+                {
+                    Console.WriteLine(InitialSpace.PrintNotation() +"->");
+                }
                 Console.WriteLine("Please enter a letter (A-H)");
                 selectedPieceColumn = Console.ReadLine()!.ToUpper();
             }
 
             while (!(Regex.Match(selectedPieceRow!, "^[1-8]$").Success))
             {
+                PrintBoard();
+                if (InitialSpace is not null)
+                {
+                    Console.Write(InitialSpace.PrintNotation() + "-> ");
+                }
+                Console.WriteLine(selectedPieceColumn);
                 Console.WriteLine("Please enter a number (1-8)");
                 selectedPieceRow = Console.ReadLine()!.ToUpper();
             }

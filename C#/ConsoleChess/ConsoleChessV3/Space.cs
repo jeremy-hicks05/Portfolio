@@ -60,5 +60,70 @@ namespace ConsoleChessV3
                     return IsUnderAttackByBlack;
             }
         }
+
+        public string PrintNotation()
+        {
+            string notation = "";
+            switch (Column)
+            {
+                case 0:
+                    notation = "A";
+                    break;
+                case 1:
+                    notation = "B";
+                    break;
+                case 2:
+                    notation = "C";
+                    break;
+                case 3:
+                    notation = "D";
+                    break;
+                case 4:
+                    notation = "E";
+                    break;
+                case 5:
+                    notation = "F";
+                    break;
+                case 6:
+                    notation = "G";
+                    break;
+                case 7:
+                    notation = "H";
+                    break;
+                default:
+                    break;
+            }
+
+            switch(Row)
+            {
+                case 0:
+                    notation += "1";
+                    break;
+                case 1:
+                    notation += "2";
+                    break;
+                case 2:
+                    notation += "3";
+                    break;
+                case 3:
+                    notation += "4";
+                    break;
+                case 4:
+                    notation += "5";
+                    break;
+                case 5:
+                    notation += "6";
+                    break;
+                case 6:
+                    notation += "7";
+                    break;
+                case 7:
+                    notation += "8";
+                    break;
+                default:
+                    break;
+            }
+            return notation;
+        }
     }
 }
