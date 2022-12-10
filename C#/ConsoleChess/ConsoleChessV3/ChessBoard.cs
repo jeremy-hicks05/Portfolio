@@ -91,13 +91,24 @@
             string selectedPieceRow = "0";
             while (!(Regex.Match(selectedPieceColumn!, "^[A-Ha-h]$").Success))
             {
-                
-                Console.WriteLine("Please enter a letter (A-H) or T to TakeBack");
+
+                if (MovesPlayed is not null && MovesPlayed.Count > 0)
+                {
+                    Console.WriteLine("Please enter a letter (A-H) or T to TakeBack or M to list move history");
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a letter (A-H)");
+                }
                 selectedPieceColumn = Console.ReadLine()!.ToUpper();
 
                 if (selectedPieceColumn == "T")
                 {
                     TakeBackMove();
+                }
+                else if (selectedPieceColumn == "M")
+                {
+                    ShowMoveHistory();
                 }
                 PrintBoard();
             }
@@ -125,7 +136,7 @@
             {
                 if (InitialSpace is not null)
                 {
-                    Console.WriteLine(InitialSpace.PrintNotation() +"->");
+                    Console.WriteLine(InitialSpace.PrintNotation() + "->");
                 }
                 Console.WriteLine("Please enter a letter (A-H)");
                 selectedPieceColumn = Console.ReadLine()!.ToUpper();
@@ -300,25 +311,79 @@
         {
             if (MovesPlayed is not null)
             {
-                foreach (ChessMove? m in MovesPlayed)
+                int i = 1;
+                foreach (ChessMove? m in MovesPlayed.Reverse())
                 {
                     if (m is not null)
                     {
-                        Console.WriteLine("Move Type: " + m.GetType());
-                        Console.WriteLine("Starting Space: " + m.StartingSpace);
-                        Console.WriteLine("Ending Space: " + m.TargetSpace);
-                        Console.WriteLine("Restore Space: " + m.RestoreSpace);
+                        if (m.StartingPiece.GetBelongsTo() == Player.White)
+                        {
+                            Console.Write(i + ":");
+                            i++;
+                        }
 
-                        Console.WriteLine("Starting Piece: " + m.StartingPiece);
-                        Console.WriteLine("Ending Piece: " + m.TargetPiece);
-                        Console.WriteLine("Restore Piece: " + m.RestorePiece);
+                        if (m is Capture || m is EnPassant)
+                        {
+                            if (m.StartingPiece is Pawn)
+                            {
+                                Console.Write(" " + 
+                                    m.StartingSpace.PrintNotation() + " x " +
+                                    m.TargetSpace.PrintNotation());
+                            }
+                            else
+                            {
+                                Console.Write(" " +
+                                    m.StartingPiece.GetName() + " " +
+                                    m.StartingSpace.PrintNotation() + " x " +
+                                    m.TargetPiece?.GetName() + " " +
+                                    m.TargetSpace.PrintNotation());
+                            }
+                        }
+                        else if (m is Move)
+                        {
+                            if (m.StartingPiece is Pawn)
+                            {
+                                Console.Write(" " + m.TargetSpace.PrintNotation());
+                            }
+                            else
+                            {
+                                Console.Write(" " + m.StartingPiece.GetName());
+                                Console.Write(m.TargetSpace.PrintNotation());
+                            }
+                        }
+                        else if (m is Castle)
+                        {
+                            // if king side castle
+                            if (TargetSpace?.Column == C["C"])
+                            {
+                                Console.Write(" o-o");
+                            }
+                            else // if queen side castle
+                            {
+                                Console.Write(" o-o-o");
+                            }
+                        }
+                        else
+                        {
+                            Console.Write(" " +
+                                m.StartingPiece.GetName() + " " +
+                                m.StartingSpace.PrintNotation() + " -> " +
+                                m.TargetPiece?.GetName() + " " +
+                                m.TargetSpace.PrintNotation());
+                            //Console.WriteLine("Move Type: " + m.GetType().ToString().Split(".").Last());
+                        }
+                        if(m.StartingPiece.GetBelongsTo() == Player.Black)
+                        {
+                            Console.WriteLine();
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No moves have been played");
                     }
                 }
             }
-            else
-            {
-                Console.WriteLine("No moves have been played");
-            }
+            Console.ReadLine();
         }
 
         /// <summary>
