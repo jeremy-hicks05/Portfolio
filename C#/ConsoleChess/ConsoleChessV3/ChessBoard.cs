@@ -115,7 +115,7 @@
 
             while (!(Regex.Match(selectedPieceRow!, "^[1-8]$").Success))
             {
-                Console.WriteLine(selectedPieceColumn);
+                Console.WriteLine(selectedPieceColumn.ToLower());
                 Console.WriteLine("Please enter a number (1-8)");
                 selectedPieceRow = Console.ReadLine()!.ToUpper();
                 PrintBoard();
@@ -149,7 +149,7 @@
                 {
                     Console.Write(InitialSpace.PrintNotation() + "-> ");
                 }
-                Console.WriteLine(selectedPieceColumn);
+                Console.WriteLine(selectedPieceColumn.ToLower());
                 Console.WriteLine("Please enter a number (1-8)");
                 selectedPieceRow = Console.ReadLine()!.ToUpper();
             }
@@ -327,15 +327,15 @@
                             if (m.StartingPiece is Pawn)
                             {
                                 Console.Write(" " + 
-                                    m.StartingSpace.PrintNotation() + " x " +
+                                    m.StartingSpace.PrintNotation() + "x" +
                                     m.TargetSpace.PrintNotation());
                             }
                             else
                             {
                                 Console.Write(" " +
-                                    m.StartingPiece.GetName() + " " +
-                                    m.StartingSpace.PrintNotation() + " x " +
-                                    m.TargetPiece?.GetName() + " " +
+                                    m.StartingPiece.GetName() +
+                                    m.StartingSpace.PrintNotation() + "x" +
+                                    m.TargetPiece?.GetName() +
                                     m.TargetSpace.PrintNotation());
                             }
                         }
@@ -354,7 +354,7 @@
                         else if (m is Castle)
                         {
                             // if king side castle
-                            if (TargetSpace?.Column == C["C"])
+                            if (TargetSpace?.Column == C["G"])
                             {
                                 Console.Write(" o-o");
                             }
@@ -366,9 +366,9 @@
                         else
                         {
                             Console.Write(" " +
-                                m.StartingPiece.GetName() + " " +
+                                m.StartingPiece.GetName() +
                                 m.StartingSpace.PrintNotation() + " -> " +
-                                m.TargetPiece?.GetName() + " " +
+                                m.TargetPiece?.GetName() +
                                 m.TargetSpace.PrintNotation());
                             //Console.WriteLine("Move Type: " + m.GetType().ToString().Split(".").Last());
                         }

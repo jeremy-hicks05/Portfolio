@@ -67,28 +67,28 @@ namespace ConsoleChessV3
             switch (Column)
             {
                 case 0:
-                    notation = "A";
+                    notation = "a";
                     break;
                 case 1:
-                    notation = "B";
+                    notation = "b";
                     break;
                 case 2:
-                    notation = "C";
+                    notation = "c";
                     break;
                 case 3:
-                    notation = "D";
+                    notation = "d";
                     break;
                 case 4:
-                    notation = "E";
+                    notation = "e";
                     break;
                 case 5:
-                    notation = "F";
+                    notation = "f";
                     break;
                 case 6:
-                    notation = "G";
+                    notation = "g";
                     break;
                 case 7:
-                    notation = "H";
+                    notation = "g";
                     break;
                 default:
                     break;
