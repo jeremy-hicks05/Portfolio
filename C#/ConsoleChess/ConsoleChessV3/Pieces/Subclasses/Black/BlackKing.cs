@@ -1,6 +1,7 @@
 ﻿namespace ConsoleChessV3.Pieces.Black
 {
     using ConsoleChessV3.Interfaces;
+    using ConsoleChessV3.Pieces.Subclasses;
     using static ConsoleChessV3.Enums.Notation;
     internal class BlackKing : King
     {

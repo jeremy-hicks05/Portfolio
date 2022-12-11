@@ -1,6 +1,6 @@
-﻿using ConsoleChessV3.Moves;
-using ConsoleChessV3.Pieces;
-using ConsoleChessV3.SuperClasses;
+﻿using ConsoleChessV3.Pieces.Subclasses;
+using ConsoleChessV3.ChessMoves;
+using ConsoleChessV3.ChessMoves.Subclasses;
 
 namespace ConsoleChessV3.Builders
 {
@@ -17,6 +17,7 @@ namespace ConsoleChessV3.Builders
         {
             if (ChessBoard.Spaces is not null && fromSpace.Piece is not null)
             {
+                // check for EnPassant move
                 if (fromSpace.Piece is Pawn &&
                     (Math.Abs(toSpace.Column - fromSpace.Column) == 1) &&
                     ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece is not null &&

@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ConsoleChessV3.SuperClasses;
 
-namespace ConsoleChessV3.Pieces
+namespace ConsoleChessV3.Pieces.Subclasses
 {
     internal class Queen : Piece
     {
         public override bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            return (fromSpace.Column == toSpace.Column || 
-                fromSpace.Row == toSpace.Row) ||
-                ((float)Math.Abs(fromSpace.Column - toSpace.Column) / 
-                (float)Math.Abs(fromSpace.Row - toSpace.Row) == 1) ; // && shortcircuit prevents div by 0
+            return fromSpace.Column == toSpace.Column ||
+                fromSpace.Row == toSpace.Row ||
+                Math.Abs(fromSpace.Column - toSpace.Column) /
+                (float)Math.Abs(fromSpace.Row - toSpace.Row) == 1; // && shortcircuit prevents div by 0
         }
 
         public override void BuildListOfSpacesToInspect(Space fromSpace, Space toSpace)

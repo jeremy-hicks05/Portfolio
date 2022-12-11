@@ -1,15 +1,16 @@
-﻿namespace ConsoleChessV3
+﻿using ConsoleChessV3.ChessMoves.Subclasses;
+
+namespace ConsoleChessV3
 {
     using ConsoleChessV3.Builders;
     using ConsoleChessV3.Enums;
-    using ConsoleChessV3.Moves;
-    using ConsoleChessV3.Pieces;
+    using ConsoleChessV3.ChessMoves;
     using ConsoleChessV3.Pieces.Black;
+    using ConsoleChessV3.Pieces.Subclasses;
     using ConsoleChessV3.Pieces.White;
-    using ConsoleChessV3.SuperClasses;
     using System.Text.RegularExpressions;
     using static ConsoleChessV3.Enums.Notation;
-    using Capture = Moves.Capture; // prevent ambiguity between Moves.Capture and RegExp.Capture
+    using Capture = Capture; // prevent ambiguity between Moves.Capture and RegExp.Capture
 
     internal class ChessBoard
     {

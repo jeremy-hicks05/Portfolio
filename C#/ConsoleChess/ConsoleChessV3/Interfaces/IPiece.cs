@@ -1,5 +1,4 @@
 ﻿using ConsoleChessV3.Enums;
-using ConsoleChessV3.SuperClasses;
 
 namespace ConsoleChessV3.Interfaces
 {

@@ -1,4 +1,5 @@
-﻿using ConsoleChessV3.Pieces.White;
+﻿using ConsoleChessV3.Pieces.Subclasses;
+using ConsoleChessV3.Pieces.White;
 
 namespace ConsoleChessV3.Pieces.Black
 {

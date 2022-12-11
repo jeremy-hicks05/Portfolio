@@ -1,7 +1,9 @@
-﻿namespace ConsoleChessV3.SuperClasses
+﻿namespace ConsoleChessV3.Pieces
 {
     using ConsoleChessV3.Enums;
     using ConsoleChessV3.Interfaces;
+    using ConsoleChessV3.ChessMoves;
+
     internal class Piece : IPiece
     {
         public string Name { get; set; } = $" ";

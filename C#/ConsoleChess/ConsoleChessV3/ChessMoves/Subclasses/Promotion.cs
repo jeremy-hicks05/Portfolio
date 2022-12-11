@@ -1,13 +1,12 @@
 ﻿using ConsoleChessV3.Pieces.Black;
 using ConsoleChessV3.Pieces.White;
-using ConsoleChessV3.SuperClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleChessV3.Moves
+namespace ConsoleChessV3.ChessMoves.Subclasses
 {
     internal class Promotion : ChessMove
     {

@@ -1,24 +1,22 @@
-﻿using ConsoleChessV3.SuperClasses;
-
-namespace ConsoleChessV3.Pieces
+﻿namespace ConsoleChessV3.Pieces.Subclasses
 {
     internal class Pawn : Piece
     {
         public bool HasJustMovedTwo { get; set; }
         public override bool CanLegallyTryToMoveFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            return (fromSpace.Piece is not null) &&
-                    (toSpace.IsEmpty()) &&
-                    (
+            return fromSpace.Piece is not null &&
+                    toSpace.IsEmpty() &&
+                    
                     fromSpace.Column == toSpace.Column &&
-                        Math.Abs(toSpace.Row - fromSpace.Row) <= 1)
+                        Math.Abs(toSpace.Row - fromSpace.Row) <= 1
                     ||
-                    (fromSpace.Piece is not null) &&
+                    fromSpace.Piece is not null &&
                     !HasMoved &&
-                    (toSpace.IsEmpty()) &&
-                    (!fromSpace.Piece.GetHasMoved() &&
+                    toSpace.IsEmpty() &&
+                    !fromSpace.Piece.GetHasMoved() &&
                     fromSpace.Column == toSpace.Column &&
-                        Math.Abs(toSpace.Row - fromSpace.Row) <= 2);
+                        Math.Abs(toSpace.Row - fromSpace.Row) <= 2;
         }
 
         public override void BuildListOfSpacesToInspect(Space fromSpace, Space toSpace)
@@ -53,7 +51,7 @@ namespace ConsoleChessV3.Pieces
             if (fromSpace.Piece is not null && toSpace.IsEmpty())
             {
                 //fromSpace.Piece.SetHasMoved(true);
-                if(Math.Abs(toSpace.Row - fromSpace.Row) == 2)
+                if (Math.Abs(toSpace.Row - fromSpace.Row) == 2)
                 {
                     HasJustMovedTwo = true;
                 }

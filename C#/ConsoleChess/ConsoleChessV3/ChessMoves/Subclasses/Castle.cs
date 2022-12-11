@@ -1,7 +1,7 @@
-﻿namespace ConsoleChessV3.Moves
+﻿namespace ConsoleChessV3.ChessMoves.Subclasses
 {
+    using ConsoleChessV3.ChessMoves;
     using ConsoleChessV3.Pieces.White;
-    using ConsoleChessV3.SuperClasses;
     using static ConsoleChessV3.Enums.Notation;
     internal class Castle : ChessMove
     {
@@ -71,22 +71,22 @@
             {
                 if (StartingSpace.Column + 2 == TargetSpace.Column) // king side castle
                 {
-                    return (ChessBoard.Spaces[C["F"]][StartingSpace.Row].IsEmpty() &&
-                        ChessBoard.Spaces[C["G"]][StartingSpace.Row].IsEmpty())
+                    return ChessBoard.Spaces[C["F"]][StartingSpace.Row].IsEmpty() &&
+                        ChessBoard.Spaces[C["G"]][StartingSpace.Row].IsEmpty()
                         &&
-                        (!(ChessBoard.Spaces[C["E"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
+                        !(ChessBoard.Spaces[C["E"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
                         ChessBoard.Spaces[C["F"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
-                        ChessBoard.Spaces[C["G"]][StartingSpace.Row].IsUnderAttackByOpponent()));
+                        ChessBoard.Spaces[C["G"]][StartingSpace.Row].IsUnderAttackByOpponent());
                 }
                 else // queen side castle
                 {
-                    return (ChessBoard.Spaces[C["B"]][StartingSpace.Row].IsEmpty() &&
+                    return ChessBoard.Spaces[C["B"]][StartingSpace.Row].IsEmpty() &&
                         ChessBoard.Spaces[C["C"]][StartingSpace.Row].IsEmpty() &&
-                        ChessBoard.Spaces[C["D"]][StartingSpace.Row].IsEmpty())
+                        ChessBoard.Spaces[C["D"]][StartingSpace.Row].IsEmpty()
                         &&
-                        (!(ChessBoard.Spaces[C["E"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
+                        !(ChessBoard.Spaces[C["E"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
                         ChessBoard.Spaces[C["D"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
-                        ChessBoard.Spaces[C["C"]][StartingSpace.Row].IsUnderAttackByOpponent()));
+                        ChessBoard.Spaces[C["C"]][StartingSpace.Row].IsUnderAttackByOpponent());
                 }
             }
             return false;

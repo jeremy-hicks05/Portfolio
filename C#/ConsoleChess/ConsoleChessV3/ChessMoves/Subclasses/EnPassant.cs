@@ -1,6 +1,6 @@
-﻿namespace ConsoleChessV3.Moves
+﻿namespace ConsoleChessV3.ChessMoves.Subclasses
 {
-    using ConsoleChessV3.SuperClasses;
+    using ConsoleChessV3.ChessMoves;
 
     internal class EnPassant : ChessMove
     {

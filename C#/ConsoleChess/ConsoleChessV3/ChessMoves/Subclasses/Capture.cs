@@ -1,6 +1,6 @@
-﻿namespace ConsoleChessV3.Moves
+﻿namespace ConsoleChessV3.ChessMoves.Subclasses
 {
-    using ConsoleChessV3.SuperClasses;
+    using ConsoleChessV3.ChessMoves;
 
     /// <summary>
     /// Represents the occurrence of a piece being captured in chess.  

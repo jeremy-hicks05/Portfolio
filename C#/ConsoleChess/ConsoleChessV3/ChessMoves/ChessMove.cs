@@ -1,4 +1,4 @@
-﻿namespace ConsoleChessV3.SuperClasses
+﻿namespace ConsoleChessV3.ChessMoves
 {
     using ConsoleChessV3.Interfaces;
 
@@ -15,7 +15,7 @@
         public Space? RestoreSpace;
         public IPiece? RestorePiece;
         public bool RestorePieceHasMoved;
-        
+
 
         public ChessMove(Space startingSpace, Space endingSpace)
         {

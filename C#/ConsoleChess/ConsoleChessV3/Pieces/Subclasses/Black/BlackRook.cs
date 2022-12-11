@@ -1,4 +1,6 @@
-﻿namespace ConsoleChessV3.Pieces.Black
+﻿using ConsoleChessV3.Pieces.Subclasses;
+
+namespace ConsoleChessV3.Pieces.Black
 {
     internal class BlackRook : Rook
     {

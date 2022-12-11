@@ -1,4 +1,6 @@
-﻿namespace ConsoleChessV3.Pieces.White
+﻿using ConsoleChessV3.Pieces.Subclasses;
+
+namespace ConsoleChessV3.Pieces.White
 {
     internal class WhiteKnight : Knight
     {
