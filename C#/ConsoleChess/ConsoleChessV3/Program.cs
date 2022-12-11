@@ -27,7 +27,6 @@
  *      Checks for checkmate and stalemate.                     *
  *      Follows all the rules of chess.                         *
  *                                                              *
- *                                                              *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 

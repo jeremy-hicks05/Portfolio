@@ -238,7 +238,25 @@ namespace ConsoleChessV3
                     Console.Write((j + 1).ToString());
                     for (int i = C["A"]; i <= C["H"]; i++)
                     {
-                        Console.Write(Spaces[i][j]);
+                        if (Spaces[i][j].Piece is not null)
+                        {
+                            if (Spaces[i][j].Piece!.GetBelongsTo() == Player.White)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.Write(Spaces[i][j]);
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                            else if (Spaces[i][j].Piece!.GetBelongsTo() == Player.Black)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                Console.Write(Spaces[i][j]);
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                        }
+                        else
+                        {
+                            Console.Write(Spaces[i][j]);
+                        }
                     }
                     Console.WriteLine();
                 }
