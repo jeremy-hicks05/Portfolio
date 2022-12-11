@@ -230,6 +230,7 @@ namespace ConsoleChessV3
         /// </summary>
         public static void PrintBoard()
         {
+            ConsoleColor darkSquare = ConsoleColor.DarkMagenta;
             Console.Clear();
             if (Spaces is not null)
             {
@@ -242,20 +243,63 @@ namespace ConsoleChessV3
                         {
                             if (Spaces[i][j].Piece!.GetBelongsTo() == Player.White)
                             {
+                                if ((i + j) % 2 == 0)
+                                {
+                                    Console.ForegroundColor = darkSquare;
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+                                Console.Write("[");
                                 Console.ForegroundColor = ConsoleColor.Yellow;
-                                Console.Write(Spaces[i][j]);
-                                Console.ForegroundColor = ConsoleColor.White;
+                                Console.Write(Spaces[i][j].Piece!.GetName());
+                                if ((i + j) % 2 == 0)
+                                {
+                                    Console.ForegroundColor = darkSquare;
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+                                Console.Write("]");
                             }
                             else if (Spaces[i][j].Piece!.GetBelongsTo() == Player.Black)
                             {
+                                if ((i + j) % 2 == 0)
+                                {
+                                    Console.ForegroundColor = darkSquare;
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+                                Console.Write("[");
                                 Console.ForegroundColor = ConsoleColor.Blue;
-                                Console.Write(Spaces[i][j]);
-                                Console.ForegroundColor = ConsoleColor.White;
+                                Console.Write(Spaces[i][j].Piece!.GetName());
+                                if ((i + j) % 2 == 0)
+                                {
+                                    Console.ForegroundColor = darkSquare;
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+                                Console.Write("]");
                             }
                         }
                         else
                         {
-                            Console.Write(Spaces[i][j]);
+                            if ((i + j) % 2 == 0)
+                            {
+                                Console.ForegroundColor = darkSquare;
+                                Console.Write(Spaces[i][j]);
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.White;
+                                Console.Write(Spaces[i][j]);
+                            }
                         }
                     }
                     Console.WriteLine();
