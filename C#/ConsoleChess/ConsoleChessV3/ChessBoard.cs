@@ -230,13 +230,18 @@ namespace ConsoleChessV3
         /// </summary>
         public static void PrintBoard()
         {
-            ConsoleColor darkSquare = ConsoleColor.DarkMagenta;
+            ConsoleColor background = ConsoleColor.Black;
+            ConsoleColor darkSquare = ConsoleColor.Red;
+            ConsoleColor lightSquare = ConsoleColor.White;
+            ConsoleColor blackPiece = ConsoleColor.Red;
+            ConsoleColor whitePiece = ConsoleColor.White;
             Console.Clear();
             if (Spaces is not null)
             {
                 for (int j = R["8"]; j >= R["1"]; j--)
                 {
                     Console.Write((j + 1).ToString());
+                    Console.BackgroundColor = background;
                     for (int i = C["A"]; i <= C["H"]; i++)
                     {
                         if (Spaces[i][j].Piece is not null)
@@ -249,10 +254,10 @@ namespace ConsoleChessV3
                                 }
                                 else
                                 {
-                                    Console.ForegroundColor = ConsoleColor.White;
+                                    Console.ForegroundColor = lightSquare;
                                 }
                                 Console.Write("[");
-                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.ForegroundColor = whitePiece;
                                 Console.Write(Spaces[i][j].Piece!.GetName());
                                 if ((i + j) % 2 == 0)
                                 {
@@ -260,7 +265,7 @@ namespace ConsoleChessV3
                                 }
                                 else
                                 {
-                                    Console.ForegroundColor = ConsoleColor.White;
+                                    Console.ForegroundColor = lightSquare;
                                 }
                                 Console.Write("]");
                             }
@@ -272,10 +277,10 @@ namespace ConsoleChessV3
                                 }
                                 else
                                 {
-                                    Console.ForegroundColor = ConsoleColor.White;
+                                    Console.ForegroundColor = lightSquare;
                                 }
                                 Console.Write("[");
-                                Console.ForegroundColor = ConsoleColor.Blue;
+                                Console.ForegroundColor = blackPiece;
                                 Console.Write(Spaces[i][j].Piece!.GetName());
                                 if ((i + j) % 2 == 0)
                                 {
@@ -283,7 +288,7 @@ namespace ConsoleChessV3
                                 }
                                 else
                                 {
-                                    Console.ForegroundColor = ConsoleColor.White;
+                                    Console.ForegroundColor = lightSquare;
                                 }
                                 Console.Write("]");
                             }
@@ -297,7 +302,7 @@ namespace ConsoleChessV3
                             }
                             else
                             {
-                                Console.ForegroundColor = ConsoleColor.White;
+                                Console.ForegroundColor = lightSquare;
                                 Console.Write(Spaces[i][j]);
                             }
                         }

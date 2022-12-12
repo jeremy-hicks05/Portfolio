@@ -51,10 +51,22 @@
                 {
                     if (!StartingSpace.Piece.IsBlocked(StartingSpace, TargetSpace))
                     {
+
                         if (StartingSpace.Piece.TryMove(StartingSpace, TargetSpace))
                         {
+                            
                             return true;
                         }
+                        else
+                        {
+                            Console.WriteLine("King would be in check");
+                            Console.ReadLine();
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Piece is blocked");
+                        Console.ReadLine();
                     }
                 }
                 else if (StartingSpace.Piece.CanLegallyTryToCaptureFromSpaceToSpace(StartingSpace, TargetSpace))
@@ -65,7 +77,22 @@
                         {
                             return true;
                         }
+                        else
+                        {
+                            Console.WriteLine("King would be in check");
+                            Console.ReadLine();
+                        }
                     }
+                    else
+                    {
+                        Console.WriteLine("Piece is blocked");
+                        Console.ReadLine();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Piece does not move like that");
+                    Console.ReadLine();
                 }
             }
             return false;

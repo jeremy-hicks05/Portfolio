@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ConsoleChessV3.ChessMoves.Subclasses
@@ -17,49 +18,58 @@ namespace ConsoleChessV3.ChessMoves.Subclasses
 
         public override void Perform()
         {
+            string? promotionChoice = "Z";
             Console.WriteLine("Promotion!");
-            Console.WriteLine("Which piece would you like to promote to?");
-            Console.WriteLine("N: Knight");
-            Console.WriteLine("B: Bishop");
-            Console.WriteLine("R: Rook");
-            Console.WriteLine("Q: Queen");
-            string? promotionChoice = Console.ReadLine()!.ToUpper();
+            while (!Regex.Match(promotionChoice, "[NBRQ]").Success)
+            {
+                Console.WriteLine("Which piece would you like to promote to?");
+                Console.WriteLine("N: Knight");
+                Console.WriteLine("B: Bishop");
+                Console.WriteLine("R: Rook");
+                Console.WriteLine("Q: Queen");
+                promotionChoice = Console.ReadLine()!.ToUpper();
 
-            if (ChessBoard.Turn == Enums.Player.White)
-            {
-                switch (promotionChoice)
+                if (ChessBoard.Turn == Enums.Player.White)
                 {
-                    case "N":
-                        TargetSpace.Piece = new WhiteKnight();
-                        break;
-                    case "B":
-                        TargetSpace.Piece = new WhiteBishop();
-                        break;
-                    case "R":
-                        TargetSpace.Piece = new WhiteRook();
-                        break;
-                    default:
-                        TargetSpace.Piece = new WhiteQueen();
-                        break;
+                    switch (promotionChoice)
+                    {
+                        case "N":
+                            TargetSpace.Piece = new WhiteKnight();
+                            break;
+                        case "B":
+                            TargetSpace.Piece = new WhiteBishop();
+                            break;
+                        case "R":
+                            TargetSpace.Piece = new WhiteRook();
+                            break;
+                        case "Q":
+                            TargetSpace.Piece = new WhiteQueen();
+                            break;
+                        default:
+                            break;
+                    }
                 }
-            }
-            else
-            {
-                switch (promotionChoice)
+                else
                 {
-                    case "N":
-                        TargetSpace.Piece = new BlackKnight();
-                        break;
-                    case "B":
-                        TargetSpace.Piece = new BlackBishop();
-                        break;
-                    case "R":
-                        TargetSpace.Piece = new BlackRook();
-                        break;
-                    default:
-                        TargetSpace.Piece = new BlackQueen();
-                        break;
+                    switch (promotionChoice)
+                    {
+                        case "N":
+                            TargetSpace.Piece = new BlackKnight();
+                            break;
+                        case "B":
+                            TargetSpace.Piece = new BlackBishop();
+                            break;
+                        case "R":
+                            TargetSpace.Piece = new BlackRook();
+                            break;
+                        case "Q":
+                            TargetSpace.Piece = new BlackQueen();
+                            break;
+                        default:
+                            break;
+                    }
                 }
+                ChessBoard.PrintBoard();
             }
             StartingSpace.Clear();
         }

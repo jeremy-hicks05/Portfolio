@@ -1,6 +1,8 @@
 ﻿using ConsoleChessV3.Pieces.Subclasses;
 using ConsoleChessV3.ChessMoves;
 using ConsoleChessV3.ChessMoves.Subclasses;
+using ConsoleChessV3.Pieces.Black;
+using ConsoleChessV3.Pieces.White;
 
 namespace ConsoleChessV3.Builders
 {
@@ -17,17 +19,40 @@ namespace ConsoleChessV3.Builders
         {
             if (ChessBoard.Spaces is not null && fromSpace.Piece is not null)
             {
-                // check for EnPassant move
-                if (fromSpace.Piece is Pawn &&
-                    (Math.Abs(toSpace.Column - fromSpace.Column) == 1) &&
-                    ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece is not null &&
-                    ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece is Pawn &&
-                    ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece!.GetBelongsTo() != fromSpace.Piece.GetBelongsTo())
+                // check for White EnPassant move
+                if (ChessBoard.Turn == Enums.Player.White &&
+                    fromSpace.Piece is Pawn &&
+                    toSpace.Piece is null &&
+                    (Math.Abs(toSpace.Column - fromSpace.Column) == 1))
                 {
-                    Pawn? tempPawn = ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece as Pawn;
-                    if (tempPawn is not null && tempPawn.HasJustMovedTwo)
+                    if (ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece is BlackPawn)
                     {
-                        return new EnPassant(fromSpace, toSpace);
+                        Pawn? tempPawn = ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece as Pawn;
+                        if (tempPawn is not null && tempPawn.HasJustMovedTwo)
+                        {
+                            if (ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece!.GetBelongsTo() != fromSpace.Piece.GetBelongsTo())
+                            {
+                                return new EnPassant(fromSpace, toSpace);
+                            }
+                        }
+                    }
+                }
+                // check for Black EnPassant move
+                else if (ChessBoard.Turn == Enums.Player.Black &&
+                    fromSpace.Piece is Pawn &&
+                    toSpace.Piece is null &&
+                    (Math.Abs(toSpace.Column - fromSpace.Column) == 1))
+                {
+                    if (ChessBoard.Spaces[toSpace.Column][toSpace.Row + 1].Piece is WhitePawn)
+                    {
+                        Pawn? tempPawn = ChessBoard.Spaces[toSpace.Column][toSpace.Row + 1].Piece as Pawn;
+                        if (tempPawn is not null && tempPawn.HasJustMovedTwo)
+                        {
+                            if (ChessBoard.Spaces[toSpace.Column][toSpace.Row + 1].Piece!.GetBelongsTo() != fromSpace.Piece.GetBelongsTo())
+                            {
+                                return new EnPassant(fromSpace, toSpace);
+                            }
+                        }
                     }
                 }
                 // promotion

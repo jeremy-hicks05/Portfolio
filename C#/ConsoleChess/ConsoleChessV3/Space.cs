@@ -88,7 +88,7 @@ namespace ConsoleChessV3
                     notation = "g";
                     break;
                 case 7:
-                    notation = "g";
+                    notation = "h";
                     break;
                 default:
                     break;
