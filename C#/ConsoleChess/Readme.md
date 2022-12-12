@@ -1,4 +1,4 @@
-#C# Console Chess
+# C# Console Chess
 ---
       Tested By: Kari Seitz               
       Early Version Review: Shaun Lake    
