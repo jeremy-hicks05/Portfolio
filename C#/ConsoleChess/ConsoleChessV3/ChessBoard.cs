@@ -330,6 +330,8 @@ namespace ConsoleChessV3
 
                     if (NextMove is not null)
                     {
+
+                        // check validity of chess move - is king in check?
                         if (NextMove.IsValidChessMove())
                         {
                             NextMove.Perform();
