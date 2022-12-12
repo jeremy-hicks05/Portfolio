@@ -4,7 +4,7 @@
       Early Version Review: Shaun Lake    
       Late Version Review: Jim Shaver
 
-![Screenshot](https://github.com/jeremy-hicks05/Games/blob/master/ChessApp Screenshot.png?raw=true)
+![Screenshot](https://github.com/jeremy-hicks05/Games/blob/master/ChessAppScreenshot.png?raw=true)
 
  Description:                                                 
       Imitates a Chess board, allowing user to input          
