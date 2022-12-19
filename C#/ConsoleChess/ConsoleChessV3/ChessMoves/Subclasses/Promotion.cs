@@ -34,16 +34,16 @@ namespace ConsoleChessV3.ChessMoves.Subclasses
                     switch (promotionChoice)
                     {
                         case "N":
-                            TargetSpace.Piece = new WhiteKnight();
+                            TargetSpace.SetPiece(new WhiteKnight());
                             break;
                         case "B":
-                            TargetSpace.Piece = new WhiteBishop();
+                            TargetSpace.SetPiece(new WhiteBishop());
                             break;
                         case "R":
-                            TargetSpace.Piece = new WhiteRook();
+                            TargetSpace.SetPiece(new WhiteRook());
                             break;
                         case "Q":
-                            TargetSpace.Piece = new WhiteQueen();
+                            TargetSpace.SetPiece(new WhiteQueen());
                             break;
                         default:
                             break;
@@ -54,16 +54,16 @@ namespace ConsoleChessV3.ChessMoves.Subclasses
                     switch (promotionChoice)
                     {
                         case "N":
-                            TargetSpace.Piece = new BlackKnight();
+                            TargetSpace.SetPiece(new BlackKnight());
                             break;
                         case "B":
-                            TargetSpace.Piece = new BlackBishop();
+                            TargetSpace.SetPiece(new BlackBishop());
                             break;
                         case "R":
-                            TargetSpace.Piece = new BlackRook();
+                            TargetSpace.SetPiece(new BlackRook());
                             break;
                         case "Q":
-                            TargetSpace.Piece = new BlackQueen();
+                            TargetSpace.SetPiece(new BlackQueen());
                             break;
                         default:
                             break;
@@ -77,10 +77,10 @@ namespace ConsoleChessV3.ChessMoves.Subclasses
         public override void Reverse()
         {
             // restore pawn and remove promoted piece
-            StartingSpace.Piece = StartingPiece;
+            StartingSpace.SetPiece(StartingPiece);
             StartingPiece.SetHasMoved(StartingPieceHasMoved);
 
-            TargetSpace.Piece = TargetPiece;
+            TargetSpace.SetPiece(TargetPiece);
             if (TargetPiece is not null)
             {
                 TargetPiece.SetHasMoved(TargetPieceHasMoved);

@@ -17,20 +17,20 @@ namespace ConsoleChessV3.Pieces.White
             {
                 for (int row = fromSpace.Row + 1; row <= toSpace.Row; row++)
                 {
-                    SpacesToReview!.Add(ChessBoard.Spaces![fromSpace.Column][row]);
+                    SpacesToReview!.Add(ChessBoard.GetSpace(fromSpace.Column, row));
                 }
             }
             else if (fromSpace.Column + 1 == toSpace.Column &&
                      fromSpace.Row + 1 == toSpace.Row)
             {
                 // attacking up and right
-                SpacesToReview!.Add(ChessBoard.Spaces![toSpace.Column][toSpace.Row]);
+                SpacesToReview!.Add(ChessBoard.GetSpace(toSpace.Column, toSpace.Row));
             }
             else if (fromSpace.Column - 1 == toSpace.Column &&
                      fromSpace.Row + 1 == toSpace.Row)
             {
                 // attacking up and left
-                SpacesToReview!.Add(ChessBoard.Spaces![toSpace.Column][toSpace.Row]);
+                SpacesToReview!.Add(ChessBoard.GetSpace(toSpace.Column, toSpace.Row));
             }
         }
 
@@ -38,19 +38,17 @@ namespace ConsoleChessV3.Pieces.White
         {
             BlackPawn? tempBlackPawn;
             bool tempBlackPawnHasJustMoveTwo = false;
-            if (ChessBoard.Spaces is not null)
+            if (fromSpace.Column - 1 >= 0 && ChessBoard.GetSpace(fromSpace.Column - 1, fromSpace.Row).GetPiece() is BlackPawn)
             {
-                if (fromSpace.Column - 1 >= 0 && ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece is BlackPawn)
-                {
-                    tempBlackPawn = ChessBoard.Spaces[fromSpace.Column - 1][fromSpace.Row].Piece as BlackPawn;
-                    tempBlackPawnHasJustMoveTwo = tempBlackPawn == null ? false : tempBlackPawn.HasJustMovedTwo;
-                }
-                else if (fromSpace.Column + 1 <= 7 && ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece is BlackPawn)
-                {
-                    tempBlackPawn = ChessBoard.Spaces[fromSpace.Column + 1][fromSpace.Row].Piece as BlackPawn;
-                    tempBlackPawnHasJustMoveTwo = tempBlackPawn == null ? false : tempBlackPawn.HasJustMovedTwo;
-                }
+                tempBlackPawn = ChessBoard.GetSpace(fromSpace.Column - 1, fromSpace.Row).GetPiece() as BlackPawn;
+                tempBlackPawnHasJustMoveTwo = tempBlackPawn == null ? false : tempBlackPawn.HasJustMovedTwo;
             }
+            if (fromSpace.Column + 1 <= 7 && ChessBoard.GetSpace(fromSpace.Column + 1, fromSpace.Row).GetPiece() is BlackPawn)
+            {
+                tempBlackPawn = ChessBoard.GetSpace(fromSpace.Column + 1, fromSpace.Row).GetPiece() as BlackPawn;
+                tempBlackPawnHasJustMoveTwo = tempBlackPawn == null ? false : tempBlackPawn.HasJustMovedTwo;
+            }
+
             //capture up and left or up and right
             return ((fromSpace.Column - 1 == toSpace.Column &&
                 fromSpace.Row + 1 == toSpace.Row) ||

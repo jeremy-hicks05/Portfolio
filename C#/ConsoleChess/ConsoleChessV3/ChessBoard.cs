@@ -14,7 +14,7 @@ namespace ConsoleChessV3
 
     internal class ChessBoard
     {
-        public static Space[][]? Spaces;
+        private static Space[][]? Spaces;
         public static Stack<ChessMove?>? MovesPlayed = new();
         public static ChessMove? NextMove;
 
@@ -47,33 +47,33 @@ namespace ConsoleChessV3
 
             for (int i = C["A"]; i <= C["H"]; i++)
             {
-                Spaces[i][R["7"]].Piece = new BlackPawn();
+                Spaces[i][R["7"]].SetPiece(new BlackPawn());
             }
 
             for (int i = C["A"]; i <= C["H"]; i++)
             {
-                Spaces[i][R["2"]].Piece = new WhitePawn();
+                Spaces[i][R["2"]].SetPiece(new WhitePawn());
             }
 
-            Spaces[C["A"]][R["8"]].Piece = new BlackRook();
-            Spaces[C["B"]][R["8"]].Piece = new BlackKnight();
-            Spaces[C["C"]][R["8"]].Piece = new BlackBishop();
-            Spaces[C["D"]][R["8"]].Piece = new BlackQueen();
-            Spaces[C["E"]][R["8"]].Piece = new BlackKing();
+            Spaces[C["A"]][R["8"]].SetPiece(new BlackRook());
+            Spaces[C["B"]][R["8"]].SetPiece(new BlackKnight());
+            Spaces[C["C"]][R["8"]].SetPiece(new BlackBishop());
+            Spaces[C["D"]][R["8"]].SetPiece(new BlackQueen());
+            Spaces[C["E"]][R["8"]].SetPiece(new BlackKing());
             BlackKingSpace = Spaces[C["E"]][R["8"]];
-            Spaces[C["F"]][R["8"]].Piece = new BlackBishop();
-            Spaces[C["G"]][R["8"]].Piece = new BlackKnight();
-            Spaces[C["H"]][R["8"]].Piece = new BlackRook();
+            Spaces[C["F"]][R["8"]].SetPiece(new BlackBishop());
+            Spaces[C["G"]][R["8"]].SetPiece(new BlackKnight());
+            Spaces[C["H"]][R["8"]].SetPiece(new BlackRook());
 
-            Spaces[C["A"]][R["1"]].Piece = new WhiteRook();
-            Spaces[C["B"]][R["1"]].Piece = new WhiteKnight();
-            Spaces[C["C"]][R["1"]].Piece = new WhiteBishop();
-            Spaces[C["D"]][R["1"]].Piece = new WhiteQueen();
-            Spaces[C["E"]][R["1"]].Piece = new WhiteKing();
+            Spaces[C["A"]][R["1"]].SetPiece(new WhiteRook());
+            Spaces[C["B"]][R["1"]].SetPiece(new WhiteKnight());
+            Spaces[C["C"]][R["1"]].SetPiece(new WhiteBishop());
+            Spaces[C["D"]][R["1"]].SetPiece(new WhiteQueen());
+            Spaces[C["E"]][R["1"]].SetPiece(new WhiteKing());
             WhiteKingSpace = Spaces[C["E"]][R["1"]];
-            Spaces[C["F"]][R["1"]].Piece = new WhiteBishop();
-            Spaces[C["G"]][R["1"]].Piece = new WhiteKnight();
-            Spaces[C["H"]][R["1"]].Piece = new WhiteRook();
+            Spaces[C["F"]][R["1"]].SetPiece(new WhiteBishop());
+            Spaces[C["G"]][R["1"]].SetPiece(new WhiteKnight());
+            Spaces[C["H"]][R["1"]].SetPiece(new WhiteRook());
 
             Turn = Player.White;
 
@@ -184,6 +184,15 @@ namespace ConsoleChessV3
             }
         }
 
+        public static Space GetSpace(int column, int row)
+        {
+            if (Spaces is not null)
+            {
+                return Spaces[column][row];
+            }
+            throw new Exception("error");
+        }
+
         /// <summary>
         /// Changes turn from Black to White or White to Black
         /// </summary>
@@ -212,11 +221,11 @@ namespace ConsoleChessV3
                 {
                     for (int j = 0; j < 8; j++)
                     {
-                        if (Spaces[i][j].Piece is not null && Spaces[i][j].Piece!.GetBelongsTo() == Turn)
+                        if (Spaces[i][j].GetPiece() is not null && Spaces[i][j].GetPiece()!.GetBelongsTo() == Turn)
                         {
-                            if (Spaces[i][j].Piece is Pawn)
+                            if (Spaces[i][j].GetPiece() is Pawn)
                             {
-                                Pawn? tempPawn = Spaces[i][j].Piece as Pawn;
+                                Pawn? tempPawn = Spaces[i][j].GetPiece() as Pawn;
                                 tempPawn!.HasJustMovedTwo = false;
                             }
                         }
@@ -244,9 +253,9 @@ namespace ConsoleChessV3
                     Console.BackgroundColor = background;
                     for (int i = C["A"]; i <= C["H"]; i++)
                     {
-                        if (Spaces[i][j].Piece is not null)
+                        if (Spaces[i][j].GetPiece() is not null)
                         {
-                            if (Spaces[i][j].Piece!.GetBelongsTo() == Player.White)
+                            if (Spaces[i][j].GetPiece()!.GetBelongsTo() == Player.White)
                             {
                                 if ((i + j) % 2 == 0)
                                 {
@@ -258,7 +267,7 @@ namespace ConsoleChessV3
                                 }
                                 Console.Write("[");
                                 Console.ForegroundColor = whitePiece;
-                                Console.Write(Spaces[i][j].Piece!.GetName());
+                                Console.Write(Spaces[i][j].GetPiece()!.GetName());
                                 if ((i + j) % 2 == 0)
                                 {
                                     Console.ForegroundColor = darkSquare;
@@ -269,7 +278,7 @@ namespace ConsoleChessV3
                                 }
                                 Console.Write("]");
                             }
-                            else if (Spaces[i][j].Piece!.GetBelongsTo() == Player.Black)
+                            else if (Spaces[i][j].GetPiece()!.GetBelongsTo() == Player.Black)
                             {
                                 if ((i + j) % 2 == 0)
                                 {
@@ -281,7 +290,7 @@ namespace ConsoleChessV3
                                 }
                                 Console.Write("[");
                                 Console.ForegroundColor = blackPiece;
-                                Console.Write(Spaces[i][j].Piece!.GetName());
+                                Console.Write(Spaces[i][j].GetPiece()!.GetName());
                                 if ((i + j) % 2 == 0)
                                 {
                                     Console.ForegroundColor = darkSquare;
@@ -322,9 +331,9 @@ namespace ConsoleChessV3
         {
             if (InitialSpace is not null &&
                 TargetSpace is not null &&
-                InitialSpace.Piece is not null)
+                InitialSpace.GetPiece() is not null)
             {
-                if (InitialSpace.Piece.GetBelongsTo() == Turn)
+                if (InitialSpace.GetPiece()!.GetBelongsTo() == Turn)
                 {
                     NextMove = MoveBuilder.Build(InitialSpace, TargetSpace);
 
@@ -396,7 +405,7 @@ namespace ConsoleChessV3
                         {
                             if (m.StartingPiece is Pawn)
                             {
-                                Console.Write(" " + 
+                                Console.Write(" " +
                                     m.StartingSpace.PrintNotation() + "x" +
                                     m.TargetSpace.PrintNotation());
                             }
@@ -442,7 +451,7 @@ namespace ConsoleChessV3
                                 m.TargetSpace.PrintNotation());
                             //Console.WriteLine("Move Type: " + m.GetType().ToString().Split(".").Last());
                         }
-                        if(m.StartingPiece.GetBelongsTo() == Player.Black)
+                        if (m.StartingPiece.GetBelongsTo() == Player.Black)
                         {
                             Console.WriteLine();
                         }
@@ -479,25 +488,25 @@ namespace ConsoleChessV3
                 {
                     for (int j = 0; j < 8; j++)
                     {
-                        if (Spaces[i][j].Piece is not null &&
-                            Spaces[i][j].Piece!.GetBelongsTo() == Player.White)
+                        if (Spaces[i][j].GetPiece() is not null &&
+                            Spaces[i][j].GetPiece()!.GetBelongsTo() == Player.White)
                         {
                             for (int k = 0; k < 8; k++)
                             {
                                 for (int m = 0; m < 8; m++)
                                 {
-                                    if (Spaces[i][j].Piece is not null &&
-                                        (Spaces![i][j].Piece!
+                                    if (Spaces[i][j].GetPiece() is not null &&
+                                        (Spaces![i][j].GetPiece()!
                                         .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
-                                        !(Spaces![i][j].Piece!
+                                        !(Spaces![i][j].GetPiece()!
                                         .IsBlocked(Spaces[i][j], Spaces[k][m])))
                                     {
                                         Spaces[k][m].IsUnderAttackByWhite = true;
                                     }
-                                    if (Spaces[i][j].Piece is not null &&
-                                        (Spaces![i][j].Piece!
+                                    if (Spaces[i][j].GetPiece() is not null &&
+                                        (Spaces![i][j].GetPiece()!
                                         .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
-                                        !(Spaces![i][j].Piece!
+                                        !(Spaces![i][j].GetPiece()!
                                         .IsBlocked(Spaces[i][j], Spaces[k][m])))
                                     {
                                         Spaces[k][m].IsUnderAttackByWhite = true;
@@ -505,25 +514,25 @@ namespace ConsoleChessV3
                                 }
                             }
                         }
-                        if (Spaces[i][j].Piece is not null &&
-                            Spaces[i][j].Piece!.GetBelongsTo() == Player.Black)
+                        if (Spaces[i][j].GetPiece() is not null &&
+                            Spaces[i][j].GetPiece()!.GetBelongsTo() == Player.Black)
                         {
                             for (int k = 0; k < 8; k++)
                             {
                                 for (int m = 0; m < 8; m++)
                                 {
-                                    if (Spaces[i][j].Piece is not null &&
-                                        (Spaces![i][j].Piece!
+                                    if (Spaces[i][j].GetPiece() is not null &&
+                                        (Spaces![i][j].GetPiece()!
                                         .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
-                                        !(Spaces![i][j].Piece!
+                                        !(Spaces![i][j].GetPiece()!
                                         .IsBlocked(Spaces[i][j], Spaces[k][m])))
                                     {
                                         Spaces[k][m].IsUnderAttackByBlack = true;
                                     }
-                                    if (Spaces[i][j].Piece is not null &&
-                                        (Spaces[i][j].Piece!
+                                    if (Spaces[i][j].GetPiece() is not null &&
+                                        (Spaces[i][j].GetPiece()!
                                         .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
-                                        !(Spaces![i][j].Piece!
+                                        !(Spaces![i][j].GetPiece()!
                                         .IsBlocked(Spaces[i][j], Spaces[k][m])))
                                     {
                                         Spaces[k][m].IsUnderAttackByBlack = true;
@@ -571,28 +580,28 @@ namespace ConsoleChessV3
                         for (int j = 0; j < 8; j++)
                         {
                             if (Spaces is not null &&
-                                Spaces[i][j].Piece is not null &&
-                                    Spaces![i][j].Piece!.GetBelongsTo() == Player.White)
+                                Spaces[i][j].GetPiece() is not null &&
+                                    Spaces![i][j].GetPiece()!.GetBelongsTo() == Player.White)
                             {
                                 for (int k = 0; k < 8; k++)
                                 {
                                     for (int m = 0; m < 8; m++)
                                     {
-                                        if ((Spaces![i][j].Piece!
+                                        if ((Spaces![i][j].GetPiece()!
                                             .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
-                                            !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                            !(Spaces![i][j].GetPiece()!.IsBlocked(Spaces[i][j], Spaces[k][m])))
                                         {
-                                            if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
+                                            if (Spaces[i][j].GetPiece()!.TryMove(Spaces[i][j], Spaces[k][m]))
                                             {
                                                 //Console.WriteLine("White is not checkmated!");
                                                 return false;
                                             }
                                         }
-                                        if ((Spaces![i][j].Piece!
+                                        if ((Spaces![i][j].GetPiece()!
                                             .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
-                                            !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                            !(Spaces![i][j].GetPiece()!.IsBlocked(Spaces[i][j], Spaces[k][m])))
                                         {
-                                            if (Spaces[i][j].Piece!.TryCapture(Spaces[i][j], Spaces[k][m]))
+                                            if (Spaces[i][j].GetPiece()!.TryCapture(Spaces[i][j], Spaces[k][m]))
                                             {
                                                 //Console.WriteLine("White is not checkmated!");
                                                 return false;
@@ -626,27 +635,27 @@ namespace ConsoleChessV3
                     {
                         for (int j = 0; j < 8; j++)
                         {
-                            if (Spaces![i][j].Piece?.GetBelongsTo() == Player.White)
+                            if (Spaces![i][j].GetPiece()?.GetBelongsTo() == Player.White)
                             {
                                 for (int k = 0; k < 8; k++)
                                 {
                                     for (int m = 0; m < 8; m++)
                                     {
-                                        if ((Spaces![i][j].Piece!
+                                        if ((Spaces![i][j].GetPiece()!
                                             .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
-                                            !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                            !(Spaces![i][j].GetPiece()!.IsBlocked(Spaces[i][j], Spaces[k][m])))
                                         {
-                                            if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
+                                            if (Spaces[i][j].GetPiece()!.TryMove(Spaces[i][j], Spaces[k][m]))
                                             {
                                                 //Console.WriteLine("White is not stalemated!");
                                                 return false;
                                             }
                                         }
-                                        if ((Spaces![i][j].Piece!
+                                        if ((Spaces![i][j].GetPiece()!
                                             .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
-                                            !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                            !(Spaces![i][j].GetPiece()!.IsBlocked(Spaces[i][j], Spaces[k][m])))
                                         {
-                                            if (Spaces[i][j].Piece!.TryCapture(Spaces[i][j], Spaces[k][m]))
+                                            if (Spaces[i][j].GetPiece()!.TryCapture(Spaces[i][j], Spaces[k][m]))
                                             {
                                                 //Console.WriteLine("White is not stalemated!");
                                                 return false;
@@ -681,28 +690,28 @@ namespace ConsoleChessV3
                         for (int j = 0; j < 8; j++)
                         {
 
-                            if (Spaces![i][j].Piece is not null &&
-                                Spaces![i][j].Piece!.GetBelongsTo() == Player.Black)
+                            if (Spaces![i][j].GetPiece() is not null &&
+                                Spaces![i][j].GetPiece()!.GetBelongsTo() == Player.Black)
                             {
                                 for (int k = 0; k < 8; k++)
                                 {
                                     for (int m = 0; m < 8; m++)
                                     {
-                                        if (Spaces![i][j].Piece!
+                                        if (Spaces![i][j].GetPiece()!
                                             .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m]) &&
-                                            !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                            !(Spaces![i][j].GetPiece()!.IsBlocked(Spaces[i][j], Spaces[k][m])))
                                         {
-                                            if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
+                                            if (Spaces[i][j].GetPiece()!.TryMove(Spaces[i][j], Spaces[k][m]))
                                             {
                                                 //Console.WriteLine("Black is not checkmated!");
                                                 return false;
                                             }
                                         }
-                                        if ((Spaces![i][j].Piece!
+                                        if ((Spaces![i][j].GetPiece()!
                                             .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
-                                            !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                            !(Spaces![i][j].GetPiece()!.IsBlocked(Spaces[i][j], Spaces[k][m])))
                                         {
-                                            if (Spaces[i][j].Piece!.TryCapture(Spaces[i][j], Spaces[k][m]))
+                                            if (Spaces[i][j].GetPiece()!.TryCapture(Spaces[i][j], Spaces[k][m]))
                                             {
                                                 //Console.WriteLine("Black is not checkmated!");
                                                 return false;
@@ -737,27 +746,27 @@ namespace ConsoleChessV3
                     {
                         for (int j = 0; j < 8; j++)
                         {
-                            if (Spaces![i][j].Piece?.GetBelongsTo() == Player.Black)
+                            if (Spaces![i][j].GetPiece()?.GetBelongsTo() == Player.Black)
                             {
                                 for (int k = 0; k < 8; k++)
                                 {
                                     for (int m = 0; m < 8; m++)
                                     {
-                                        if ((Spaces![i][j].Piece!
+                                        if ((Spaces![i][j].GetPiece()!
                                             .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
-                                            !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                            !(Spaces![i][j].GetPiece()!.IsBlocked(Spaces[i][j], Spaces[k][m])))
                                         {
-                                            if (Spaces[i][j].Piece!.TryMove(Spaces[i][j], Spaces[k][m]))
+                                            if (Spaces[i][j].GetPiece()!.TryMove(Spaces[i][j], Spaces[k][m]))
                                             {
                                                 //Console.WriteLine("Black is not stalemated!");
                                                 return false;
                                             }
                                         }
-                                        if ((Spaces![i][j].Piece!
+                                        if ((Spaces![i][j].GetPiece()!
                                             .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
-                                            !(Spaces![i][j].Piece!.IsBlocked(Spaces[i][j], Spaces[k][m])))
+                                            !(Spaces![i][j].GetPiece()!.IsBlocked(Spaces[i][j], Spaces[k][m])))
                                         {
-                                            if (Spaces[i][j].Piece!.TryCapture(Spaces[i][j], Spaces[k][m]))
+                                            if (Spaces[i][j].GetPiece()!.TryCapture(Spaces[i][j], Spaces[k][m]))
                                             {
                                                 //Console.WriteLine("Black is not stalemated!");
                                                 return false;

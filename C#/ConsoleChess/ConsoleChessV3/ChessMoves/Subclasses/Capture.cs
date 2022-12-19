@@ -13,28 +13,28 @@
         {
 
             StartingSpace = startingSpace;
-            StartingPiece = startingSpace.Piece!;
+            StartingPiece = startingSpace.GetPiece()!;
             StartingPieceHasMoved = StartingPiece.GetHasMoved();
 
             TargetSpace = endingSpace;
-            if (TargetSpace.Piece is not null)
+            if (TargetSpace.GetPiece() is not null)
             {
-                TargetPiece = endingSpace.Piece!;
+                TargetPiece = endingSpace.GetPiece()!;
                 TargetPieceHasMoved = TargetPiece.GetHasMoved();
             }
 
             RestoreSpace = endingSpace;
-            if (RestoreSpace.Piece is not null)
+            if (RestoreSpace.GetPiece() is not null)
             {
-                RestorePiece = endingSpace.Piece;
+                RestorePiece = endingSpace.GetPiece();
                 RestorePieceHasMoved = RestorePiece != null && RestorePiece.GetHasMoved();
             }
         }
         public override void Perform()
         {
-            if (StartingSpace is not null && StartingSpace.Piece is not null)
+            if (StartingSpace is not null && StartingSpace.GetPiece() is not null)
             {
-                StartingSpace.Piece.Capture(StartingSpace, TargetSpace);
+                StartingSpace.GetPiece()!.Capture(StartingSpace, TargetSpace);
             }
         }
 
@@ -43,24 +43,24 @@
             TargetSpace.Clear();
             if (RestoreSpace is not null)
             {
-                RestoreSpace.Piece = RestorePiece;
+                RestoreSpace.SetPiece(RestorePiece);
             }
-            if (RestoreSpace is not null && RestoreSpace.Piece is not null)
+            if (RestoreSpace is not null && RestoreSpace.GetPiece() is not null)
             {
-                RestoreSpace.Piece.SetHasMoved(RestorePieceHasMoved);
+                RestoreSpace.GetPiece()!.SetHasMoved(RestorePieceHasMoved);
             }
 
-            StartingSpace.Piece = StartingPiece;
+            StartingSpace.SetPiece(StartingPiece);
             StartingPiece.SetHasMoved(StartingPieceHasMoved);
         }
 
         public override bool IsValidChessMove()
         {
-            if (StartingSpace is not null && StartingSpace.Piece is not null)
+            if (StartingSpace is not null && StartingSpace.GetPiece() is not null)
             {
-                if (StartingSpace.Piece.CanLegallyTryToCaptureFromSpaceToSpace(StartingSpace, TargetSpace))
+                if (StartingSpace.GetPiece()!.CanLegallyTryToCaptureFromSpaceToSpace(StartingSpace, TargetSpace))
                 {
-                    if (StartingSpace.Piece.TryCapture(StartingSpace, TargetSpace))
+                    if (StartingSpace.GetPiece()!.TryCapture(StartingSpace, TargetSpace))
                     {
                         return true;
                     }

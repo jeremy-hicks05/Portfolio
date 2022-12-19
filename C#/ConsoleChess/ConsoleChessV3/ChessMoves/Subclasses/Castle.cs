@@ -7,129 +7,117 @@
     {
         public Castle(Space startingSpace, Space endingSpace) : base(startingSpace, endingSpace)
         {
-            if (ChessBoard.Spaces is not null)
+            // add designation for 'captured' / 'affected' piece(s)?
+            if (StartingSpace.Column + 2 == TargetSpace.Column) // king side castle
             {
-                // add designation for 'captured' / 'affected' piece(s)?
-                if (StartingSpace.Column + 2 == TargetSpace.Column) // king side castle
-                {
-                    RestorePiece = ChessBoard.Spaces[C["H"]][StartingSpace.Row].Piece;
-                    RestoreSpace = ChessBoard.Spaces[C["H"]][StartingSpace.Row];
-                }
-                else // queen side castle
-                {
-                    RestorePiece = ChessBoard.Spaces[C["A"]][StartingSpace.Row].Piece;
-                    RestoreSpace = ChessBoard.Spaces[C["A"]][StartingSpace.Row];
-                }
+                RestorePiece = ChessBoard.GetSpace(C["H"], StartingSpace.Row).GetPiece();
+                RestoreSpace = ChessBoard.GetSpace(C["H"], StartingSpace.Row);
             }
+            else // queen side castle
+            {
+                RestorePiece = ChessBoard.GetSpace(C["A"], StartingSpace.Row).GetPiece();
+                RestoreSpace = ChessBoard.GetSpace(C["A"], StartingSpace.Row);
+            }
+
         }
 
         public override void Perform()
         {
-            if (ChessBoard.Spaces is not null)
+            if (StartingSpace.Column + 2 == TargetSpace.Column) // king side castle
             {
-                if (StartingSpace.Column + 2 == TargetSpace.Column) // king side castle
+                ChessBoard.GetSpace(C["G"], StartingSpace.Row).SetPiece(ChessBoard.GetSpace(C["E"], StartingSpace.Row).GetPiece());
+                ChessBoard.GetSpace(C["F"], StartingSpace.Row).SetPiece(ChessBoard.GetSpace(C["H"], StartingSpace.Row).GetPiece());
+
+                ChessBoard.GetSpace(C["E"], StartingSpace.Row).Clear();
+                ChessBoard.GetSpace(C["H"], StartingSpace.Row).Clear();
+
+                if (ChessBoard.Turn == Enums.Player.White)
                 {
-                    ChessBoard.Spaces[C["G"]][StartingSpace.Row].Piece = ChessBoard.Spaces[C["E"]][StartingSpace.Row].Piece;
-                    ChessBoard.Spaces[C["F"]][StartingSpace.Row].Piece = ChessBoard.Spaces[C["H"]][StartingSpace.Row].Piece;
-
-                    ChessBoard.Spaces[C["E"]][StartingSpace.Row].Clear();
-                    ChessBoard.Spaces[C["H"]][StartingSpace.Row].Clear();
-
-                    if (ChessBoard.Turn == Enums.Player.White)
-                    {
-                        ChessBoard.WhiteKingSpace = TargetSpace;
-                    }
-                    else
-                    {
-                        ChessBoard.BlackKingSpace = TargetSpace;
-                    }
-
+                    ChessBoard.WhiteKingSpace = TargetSpace;
                 }
-                else // Queen side castle
+                else
                 {
-                    ChessBoard.Spaces[C["C"]][StartingSpace.Row].Piece = ChessBoard.Spaces[C["E"]][StartingSpace.Row].Piece;
-                    ChessBoard.Spaces[C["D"]][StartingSpace.Row].Piece = ChessBoard.Spaces[C["A"]][StartingSpace.Row].Piece;
+                    ChessBoard.BlackKingSpace = TargetSpace;
+                }
 
-                    ChessBoard.Spaces[C["E"]][StartingSpace.Row].Clear();
-                    ChessBoard.Spaces[C["A"]][StartingSpace.Row].Clear();
+            }
+            else // Queen side castle
+            {
+                ChessBoard.GetSpace(C["C"], StartingSpace.Row).SetPiece(ChessBoard.GetSpace(C["E"], StartingSpace.Row).GetPiece());
+                ChessBoard.GetSpace(C["D"], StartingSpace.Row).SetPiece(ChessBoard.GetSpace(C["A"], StartingSpace.Row).GetPiece());
 
-                    if (ChessBoard.Turn == Enums.Player.White)
-                    {
-                        ChessBoard.WhiteKingSpace = TargetSpace;
-                    }
-                    else
-                    {
-                        ChessBoard.BlackKingSpace = TargetSpace;
-                    }
+                ChessBoard.GetSpace(C["E"], StartingSpace.Row).Clear();
+                ChessBoard.GetSpace(C["A"], StartingSpace.Row).Clear();
+
+                if (ChessBoard.Turn == Enums.Player.White)
+                {
+                    ChessBoard.WhiteKingSpace = TargetSpace;
+                }
+                else
+                {
+                    ChessBoard.BlackKingSpace = TargetSpace;
                 }
             }
         }
 
         public override bool IsValidChessMove()
         {
-            if (ChessBoard.Spaces is not null)
+            if (StartingSpace.Column + 2 == TargetSpace.Column) // king side castle
             {
-                if (StartingSpace.Column + 2 == TargetSpace.Column) // king side castle
-                {
-                    return ChessBoard.Spaces[C["F"]][StartingSpace.Row].IsEmpty() &&
-                        ChessBoard.Spaces[C["G"]][StartingSpace.Row].IsEmpty()
-                        &&
-                        !(ChessBoard.Spaces[C["E"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
-                        ChessBoard.Spaces[C["F"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
-                        ChessBoard.Spaces[C["G"]][StartingSpace.Row].IsUnderAttackByOpponent());
-                }
-                else // queen side castle
-                {
-                    return ChessBoard.Spaces[C["B"]][StartingSpace.Row].IsEmpty() &&
-                        ChessBoard.Spaces[C["C"]][StartingSpace.Row].IsEmpty() &&
-                        ChessBoard.Spaces[C["D"]][StartingSpace.Row].IsEmpty()
-                        &&
-                        !(ChessBoard.Spaces[C["E"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
-                        ChessBoard.Spaces[C["D"]][StartingSpace.Row].IsUnderAttackByOpponent() ||
-                        ChessBoard.Spaces[C["C"]][StartingSpace.Row].IsUnderAttackByOpponent());
-                }
+                return ChessBoard.GetSpace(C["F"], StartingSpace.Row).IsEmpty() &&
+                    ChessBoard.GetSpace(C["G"], StartingSpace.Row).IsEmpty()
+                    &&
+                    !(ChessBoard.GetSpace(C["E"], StartingSpace.Row).IsUnderAttackByOpponent() ||
+                    ChessBoard.GetSpace(C["F"], StartingSpace.Row).IsUnderAttackByOpponent() ||
+                    ChessBoard.GetSpace(C["G"], StartingSpace.Row).IsUnderAttackByOpponent());
             }
-            return false;
+            else // queen side castle
+            {
+                return ChessBoard.GetSpace(C["B"], StartingSpace.Row).IsEmpty() &&
+                    ChessBoard.GetSpace(C["C"], StartingSpace.Row).IsEmpty() &&
+                    ChessBoard.GetSpace(C["D"], StartingSpace.Row).IsEmpty()
+                    &&
+                    !(ChessBoard.GetSpace(C["E"], StartingSpace.Row).IsUnderAttackByOpponent() ||
+                    ChessBoard.GetSpace(C["D"], StartingSpace.Row).IsUnderAttackByOpponent() ||
+                    ChessBoard.GetSpace(C["C"], StartingSpace.Row).IsUnderAttackByOpponent());
+            }
         }
 
         public override void Reverse()
         {
-            if (ChessBoard.Spaces is not null)
+            StartingSpace.SetPiece(StartingPiece);
+            StartingSpace.GetPiece()!.SetHasMoved(StartingPieceHasMoved);
+
+            if (ChessBoard.Turn == Enums.Player.White)
             {
-                StartingSpace.Piece = StartingPiece;
-                StartingSpace.Piece.SetHasMoved(StartingPieceHasMoved);
+                // ChangeTurn happens afterwards
+                ChessBoard.BlackKingSpace = StartingSpace;
+            }
+            else
+            {
+                // ChangeTurn happens afterwards
+                ChessBoard.WhiteKingSpace = StartingSpace;
+            }
 
-                if (ChessBoard.Turn == Enums.Player.White)
-                {
-                    // ChangeTurn happens afterwards
-                    ChessBoard.BlackKingSpace = StartingSpace;
-                }
-                else
-                {
-                    // ChangeTurn happens afterwards
-                    ChessBoard.WhiteKingSpace = StartingSpace;
-                }
-
-                if (RestoreSpace is not null)
-                {
-                    RestoreSpace.Piece = RestorePiece;
-                }
-                if (RestoreSpace is not null && RestoreSpace.Piece is not null)
-                {
-                    RestoreSpace.Piece.SetHasMoved(RestorePieceHasMoved);
-                }
+            if (RestoreSpace is not null)
+            {
+                RestoreSpace.SetPiece(RestorePiece);
+            }
+            if (RestoreSpace is not null && RestoreSpace.GetPiece() is not null)
+            {
+                RestoreSpace.GetPiece()!.SetHasMoved(RestorePieceHasMoved);
+            }
 
 
-                if (StartingSpace.Column + 2 == TargetSpace.Column)
-                {
-                    ChessBoard.Spaces[StartingSpace.Column + 1][StartingSpace.Row].Clear();
-                    ChessBoard.Spaces[StartingSpace.Column + 2][StartingSpace.Row].Clear();
-                }
-                else
-                {
-                    ChessBoard.Spaces[StartingSpace.Column - 1][StartingSpace.Row].Clear();
-                    ChessBoard.Spaces[StartingSpace.Column - 2][StartingSpace.Row].Clear();
-                }
+            if (StartingSpace.Column + 2 == TargetSpace.Column)
+            {
+                ChessBoard.GetSpace(StartingSpace.Column + 1, StartingSpace.Row).Clear();
+                ChessBoard.GetSpace(StartingSpace.Column + 2, StartingSpace.Row).Clear();
+            }
+            else
+            {
+                ChessBoard.GetSpace(StartingSpace.Column - 1, StartingSpace.Row).Clear();
+                ChessBoard.GetSpace(StartingSpace.Column - 2, StartingSpace.Row).Clear();
             }
         }
     }

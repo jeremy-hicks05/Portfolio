@@ -25,7 +25,7 @@ namespace ConsoleChessV3.Pieces.Subclasses
                 // attacking right
                 for (int column = fromSpace.Column + 1; column <= toSpace.Column; column++)
                 {
-                    SpacesToReview.Add(ChessBoard.Spaces![column][fromSpace.Row]);
+                    SpacesToReview.Add(ChessBoard.GetSpace(column, fromSpace.Row));
                 }
             }
             else if (toSpace.Column < fromSpace.Column && toSpace.Row == fromSpace.Row)
@@ -33,7 +33,7 @@ namespace ConsoleChessV3.Pieces.Subclasses
                 // attacking left
                 for (int column = fromSpace.Column - 1; column >= toSpace.Column; column--)
                 {
-                    SpacesToReview.Add(ChessBoard.Spaces![column][fromSpace.Row]);
+                    SpacesToReview.Add(ChessBoard.GetSpace(column, fromSpace.Row));
                 }
             }
             else if (toSpace.Column == fromSpace.Column && toSpace.Row < fromSpace.Row)
@@ -41,7 +41,7 @@ namespace ConsoleChessV3.Pieces.Subclasses
                 // attacking down
                 for (int row = fromSpace.Row - 1; row >= toSpace.Row; row--)
                 {
-                    SpacesToReview.Add(ChessBoard.Spaces![fromSpace.Column][row]);
+                    SpacesToReview.Add(ChessBoard.GetSpace(fromSpace.Column, row));
                 }
             }
             else if (toSpace.Column == fromSpace.Column && toSpace.Row > fromSpace.Row)
@@ -49,7 +49,7 @@ namespace ConsoleChessV3.Pieces.Subclasses
                 // attacking up
                 for (int row = fromSpace.Row + 1; row <= toSpace.Row; row++)
                 {
-                    SpacesToReview.Add(ChessBoard.Spaces![fromSpace.Column][row]);
+                    SpacesToReview.Add(ChessBoard.GetSpace(fromSpace.Column, row));
                 }
             }
             // end Move like Rook
@@ -59,7 +59,7 @@ namespace ConsoleChessV3.Pieces.Subclasses
                 // attacking up and right
                 for (int column = fromSpace.Column + 1, row = fromSpace.Row + 1; column <= toSpace.Column && row <= toSpace.Row; column++, row++)
                 {
-                    SpacesToReview!.Add(ChessBoard.Spaces![column][row]);
+                    SpacesToReview!.Add(ChessBoard.GetSpace(column, row));
                 }
             }
             else if (toSpace.Column > fromSpace.Column && toSpace.Row < fromSpace.Row)
@@ -67,7 +67,7 @@ namespace ConsoleChessV3.Pieces.Subclasses
                 // attacking down and right
                 for (int column = fromSpace.Column + 1, row = fromSpace.Row - 1; column <= toSpace.Column && row >= toSpace.Row; column++, row--)
                 {
-                    SpacesToReview!.Add(ChessBoard.Spaces![column][row]);
+                    SpacesToReview!.Add(ChessBoard.GetSpace(column, row));
                 }
             }
             else if (toSpace.Column < fromSpace.Column && toSpace.Row < fromSpace.Row)
@@ -75,7 +75,7 @@ namespace ConsoleChessV3.Pieces.Subclasses
                 // attacking down and left
                 for (int column = fromSpace.Column - 1, row = fromSpace.Row - 1; column >= toSpace.Column && row >= toSpace.Row; column--, row--)
                 {
-                    SpacesToReview!.Add(ChessBoard.Spaces![column][row]);
+                    SpacesToReview!.Add(ChessBoard.GetSpace(column, row));
                 }
             }
             else if (toSpace.Column < fromSpace.Column && toSpace.Row > fromSpace.Row)
@@ -83,7 +83,7 @@ namespace ConsoleChessV3.Pieces.Subclasses
                 // attacking up and left
                 for (int column = fromSpace.Column - 1, row = fromSpace.Row + 1; column >= toSpace.Column && row <= toSpace.Row; column--, row++)
                 {
-                    SpacesToReview!.Add(ChessBoard.Spaces![column][row]);
+                    SpacesToReview!.Add(ChessBoard.GetSpace(column, row));
                 }
             }
             // end Move like Bishop

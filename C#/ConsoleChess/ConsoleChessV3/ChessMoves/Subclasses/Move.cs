@@ -15,16 +15,16 @@ namespace ConsoleChessV3.ChessMoves.Subclasses
 
         public override void Perform()
         {
-            if (StartingSpace is not null && StartingSpace.Piece is not null)
+            if (StartingSpace is not null && StartingSpace.GetPiece() is not null)
             {
-                StartingSpace.Piece.Move(StartingSpace, TargetSpace);
+                StartingSpace.GetPiece()!.Move(StartingSpace, TargetSpace);
             }
         }
 
         public override void Reverse()
         {
             TargetSpace.Clear();
-            StartingSpace.Piece = StartingPiece;
+            StartingSpace.SetPiece(StartingPiece);
             StartingPiece.SetHasMoved(StartingPieceHasMoved);
         }
     }

@@ -20,8 +20,8 @@
 
         public virtual bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            return toSpace.Piece is not null &&
-                BelongsTo != toSpace.Piece.GetBelongsTo() &&
+            return toSpace.GetPiece() is not null &&
+                BelongsTo != toSpace.GetPiece()!.GetBelongsTo() &&
                 CanLegallyTryToMoveFromSpaceToSpace(fromSpace, toSpace) &&
                 !IsBlocked(fromSpace, toSpace);
         }
@@ -57,61 +57,61 @@
         public virtual bool TryCapture(Space fromSpace, Space toSpace)
         {
 
-            IPiece? tempFromSpacePiece = fromSpace.Piece;
-            IPiece? tempToSpacePiece = toSpace.Piece;
+            IPiece? tempFromSpacePiece = fromSpace.GetPiece();
+            IPiece? tempToSpacePiece = toSpace.GetPiece();
 
-            toSpace.Piece = fromSpace.Piece;
+            toSpace.SetPiece(fromSpace.GetPiece());
             fromSpace.Clear();
 
             // verify your king is not in check
             if (ChessBoard.KingIsInCheck())
             {
                 // cancel move
-                fromSpace.Piece = tempFromSpacePiece;
-                toSpace.Piece = tempToSpacePiece;
+                fromSpace.SetPiece(tempFromSpacePiece);
+                toSpace.SetPiece(tempToSpacePiece);
                 return false;
             }
             // revert move and let calling function finish it
-            fromSpace.Piece = tempFromSpacePiece;
-            toSpace.Piece = tempToSpacePiece;
+            fromSpace.SetPiece(tempFromSpacePiece);
+            toSpace.SetPiece(tempToSpacePiece);
             return true;
         }
 
         public virtual void Capture(Space fromSpace, Space toSpace)
         {
-            toSpace.Piece = fromSpace.Piece;
+            toSpace.SetPiece(fromSpace.GetPiece());
             fromSpace.Clear();
         }
 
         public virtual bool TryMove(Space fromSpace, Space toSpace)
         {
-            IPiece? fromSpacePiece = fromSpace.Piece;
-            IPiece? toSpacePiece = toSpace.Piece;
-            if (fromSpace.Piece is not null)
+            IPiece? fromSpacePiece = fromSpace.GetPiece();
+            IPiece? toSpacePiece = toSpace.GetPiece();
+            if (fromSpace.GetPiece() is not null)
             {
-                toSpace.Piece = fromSpace.Piece;
+                toSpace.SetPiece(fromSpace.GetPiece());
                 fromSpace.Clear();
             }
 
             if (ChessBoard.KingIsInCheck())
             {
                 // undo move
-                fromSpace.Piece = fromSpacePiece;
-                toSpace.Piece = toSpacePiece;
+                fromSpace.SetPiece(fromSpacePiece);
+                toSpace.SetPiece(toSpacePiece);
                 return false;
             }
             // undo move
-            fromSpace.Piece = fromSpacePiece;
-            toSpace.Piece = toSpacePiece;
+            fromSpace.SetPiece(fromSpacePiece);
+            toSpace.SetPiece(toSpacePiece);
             return true;
         }
 
         public virtual void Move(Space fromSpace, Space toSpace)
         {
-            if (fromSpace.Piece is not null)
+            if (fromSpace.GetPiece() is not null)
             {
-                fromSpace.Piece.SetHasMoved(true);
-                toSpace.Piece = fromSpace.Piece;
+                fromSpace.GetPiece()!.SetHasMoved(true);
+                toSpace.SetPiece(fromSpace.GetPiece());
                 fromSpace.Clear();
             }
         }
@@ -123,9 +123,9 @@
                 move.TargetSpace.Clear();
                 if (move.RestoreSpace is not null)
                 {
-                    move.RestoreSpace.Piece = move.RestorePiece;
+                    move.RestoreSpace.SetPiece(move.RestorePiece);
                 }
-                move.StartingSpace.Piece = move.StartingPiece;
+                move.StartingSpace.SetPiece(move.StartingPiece);
             }
         }
 

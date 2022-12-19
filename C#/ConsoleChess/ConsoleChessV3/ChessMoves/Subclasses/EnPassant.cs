@@ -10,14 +10,12 @@
             TargetSpace = endingSpace;
 
             //CapturedSpace = piece to the left/right of pawn
-            if (ChessBoard.Spaces is not null)
-            {
-                RestoreSpace =
-                    StartingPiece.GetBelongsTo() == Enums.Player.White ?
-                    ChessBoard.Spaces[TargetSpace.Column][TargetSpace.Row - 1] : // If WhitePawn
-                    ChessBoard.Spaces[TargetSpace.Column][TargetSpace.Row + 1];  // If BlackPawn
-            }
-            RestorePiece = RestoreSpace?.Piece;
+            RestoreSpace =
+                StartingPiece.GetBelongsTo() == Enums.Player.White ?
+                ChessBoard.GetSpace(TargetSpace.Column, TargetSpace.Row - 1) : // If WhitePawn
+                ChessBoard.GetSpace(TargetSpace.Column, TargetSpace.Row + 1);  // If BlackPawn
+
+            RestorePiece = RestoreSpace?.GetPiece();
         }
 
         public override void Perform()
@@ -25,9 +23,9 @@
             if (StartingPiece.CanLegallyTryToCaptureFromSpaceToSpace(StartingSpace, TargetSpace))
             {
                 //TODO: Insert code to perform an EnPassant capture
-                TargetSpace.Piece = StartingPiece;
+                TargetSpace.SetPiece(StartingPiece);
                 StartingSpace.Clear();
-                RestorePiece = RestoreSpace?.Piece;
+                RestorePiece = RestoreSpace?.GetPiece();
                 if (RestoreSpace is not null)
                 {
                     RestoreSpace.Clear();
@@ -40,21 +38,21 @@
             TargetSpace.Clear();
             if (RestoreSpace is not null)
             {
-                RestoreSpace.Piece = RestorePiece;
+                RestoreSpace.SetPiece(RestorePiece);
             }
-            if (RestoreSpace is not null && RestoreSpace.Piece is not null)
+            if (RestoreSpace is not null && RestoreSpace.GetPiece() is not null)
             {
-                RestoreSpace.Piece.SetHasMoved(RestorePieceHasMoved);
+                RestoreSpace.GetPiece()!.SetHasMoved(RestorePieceHasMoved);
             }
 
-            StartingSpace.Piece = StartingPiece;
+            StartingSpace.SetPiece(StartingPiece);
         }
 
         public override bool IsValidChessMove()
         {
-            if (StartingSpace is not null && StartingSpace.Piece is not null)
+            if (StartingSpace is not null && StartingSpace.GetPiece() is not null)
             {
-                if (StartingSpace.Piece.CanLegallyTryToCaptureFromSpaceToSpace(StartingSpace, TargetSpace))
+                if (StartingSpace.GetPiece()!.CanLegallyTryToCaptureFromSpaceToSpace(StartingSpace, TargetSpace))
                 {
                     return true;
                 }

@@ -17,20 +17,20 @@ namespace ConsoleChessV3.Builders
         /// <returns></returns>
         public static ChessMove? Build(Space fromSpace, Space toSpace)
         {
-            if (ChessBoard.Spaces is not null && fromSpace.Piece is not null)
+            if (fromSpace.GetPiece() is not null)
             {
                 // check for White EnPassant move
                 if (ChessBoard.Turn == Enums.Player.White &&
-                    fromSpace.Piece is Pawn &&
-                    toSpace.Piece is null &&
+                    fromSpace.GetPiece() is Pawn &&
+                    toSpace.GetPiece() is null &&
                     (Math.Abs(toSpace.Column - fromSpace.Column) == 1))
                 {
-                    if (ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece is BlackPawn)
+                    if (ChessBoard.GetSpace(toSpace.Column, toSpace.Row - 1).GetPiece() is BlackPawn)
                     {
-                        Pawn? tempPawn = ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece as Pawn;
+                        Pawn? tempPawn = ChessBoard.GetSpace(toSpace.Column, toSpace.Row - 1).GetPiece() as Pawn;
                         if (tempPawn is not null && tempPawn.HasJustMovedTwo)
                         {
-                            if (ChessBoard.Spaces[toSpace.Column][toSpace.Row - 1].Piece!.GetBelongsTo() != fromSpace.Piece.GetBelongsTo())
+                            if (ChessBoard.GetSpace(toSpace.Column, toSpace.Row - 1).GetPiece()!.GetBelongsTo() != fromSpace.GetPiece()!.GetBelongsTo())
                             {
                                 return new EnPassant(fromSpace, toSpace);
                             }
@@ -39,16 +39,16 @@ namespace ConsoleChessV3.Builders
                 }
                 // check for Black EnPassant move
                 else if (ChessBoard.Turn == Enums.Player.Black &&
-                    fromSpace.Piece is Pawn &&
-                    toSpace.Piece is null &&
+                    fromSpace.GetPiece() is Pawn &&
+                    toSpace.GetPiece() is null &&
                     (Math.Abs(toSpace.Column - fromSpace.Column) == 1))
                 {
-                    if (ChessBoard.Spaces[toSpace.Column][toSpace.Row + 1].Piece is WhitePawn)
+                    if (ChessBoard.GetSpace(toSpace.Column, toSpace.Row + 1).GetPiece() is WhitePawn)
                     {
-                        Pawn? tempPawn = ChessBoard.Spaces[toSpace.Column][toSpace.Row + 1].Piece as Pawn;
+                        Pawn? tempPawn = ChessBoard.GetSpace(toSpace.Column, toSpace.Row + 1).GetPiece() as Pawn;
                         if (tempPawn is not null && tempPawn.HasJustMovedTwo)
                         {
-                            if (ChessBoard.Spaces[toSpace.Column][toSpace.Row + 1].Piece!.GetBelongsTo() != fromSpace.Piece.GetBelongsTo())
+                            if (ChessBoard.GetSpace(toSpace.Column, toSpace.Row + 1).GetPiece()!.GetBelongsTo() != fromSpace.GetPiece()!.GetBelongsTo())
                             {
                                 return new EnPassant(fromSpace, toSpace);
                             }
@@ -56,13 +56,13 @@ namespace ConsoleChessV3.Builders
                     }
                 }
                 // promotion
-                else if ((fromSpace.Piece is Pawn && toSpace.Row == 7) ||
-                    (fromSpace.Piece is Pawn && toSpace.Row == 0))
+                else if ((fromSpace.GetPiece() is Pawn && toSpace.Row == 7) ||
+                    (fromSpace.GetPiece() is Pawn && toSpace.Row == 0))
                 {
                     return new Promotion(fromSpace, toSpace);
                 }
                 // castle
-                else if (fromSpace.Piece is King &&
+                else if (fromSpace.GetPiece() is King &&
                     Math.Abs(fromSpace.Column - toSpace.Column) == 2)
                 {
                     return new Castle(fromSpace, toSpace);

@@ -7,7 +7,7 @@ namespace ConsoleChessV3
     {
         public int Column;
         public int Row;
-        public IPiece? Piece;
+        private IPiece? Piece;
 
         public bool IsUnderAttackByWhite;
         public bool IsUnderAttackByBlack;
@@ -21,6 +21,20 @@ namespace ConsoleChessV3
         public override string ToString()
         {
             return (Piece == null ? $"[ ]" : $"[{Piece.GetName()}]");
+        }
+
+        public IPiece? GetPiece()
+        {
+            if(Piece == null)
+            {
+                return null;
+            }
+            return Piece;
+        }
+
+        public void SetPiece(IPiece? piece)
+        {
+            Piece = piece;
         }
 
         public void Clear()

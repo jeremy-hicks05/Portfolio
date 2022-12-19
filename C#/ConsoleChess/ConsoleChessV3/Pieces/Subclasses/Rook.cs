@@ -16,10 +16,10 @@ namespace ConsoleChessV3.Pieces.Subclasses
 
         public override bool CanLegallyTryToCaptureFromSpaceToSpace(Space fromSpace, Space toSpace)
         {
-            return toSpace.Piece is not null &&
-                fromSpace.Piece is not null &&
+            return toSpace.GetPiece() is not null &&
+                fromSpace.GetPiece() is not null &&
                 CanLegallyTryToMoveFromSpaceToSpace(fromSpace, toSpace)
-                && fromSpace.Piece.GetBelongsTo() != toSpace.Piece.GetBelongsTo();
+                && fromSpace.GetPiece()!.GetBelongsTo() != toSpace.GetPiece()!.GetBelongsTo();
         }
 
         public override void BuildListOfSpacesToInspect(Space fromSpace, Space toSpace)
@@ -30,7 +30,7 @@ namespace ConsoleChessV3.Pieces.Subclasses
                 // attacking right
                 for (int column = fromSpace.Column + 1; column <= toSpace.Column; column++)
                 {
-                    SpacesToReview.Add(ChessBoard.Spaces![column][fromSpace.Row]);
+                    SpacesToReview.Add(ChessBoard.GetSpace(column, fromSpace.Row));
                 }
             }
             else if (toSpace.Column < fromSpace.Column && toSpace.Row == fromSpace.Row)
@@ -38,7 +38,7 @@ namespace ConsoleChessV3.Pieces.Subclasses
                 // attacking left
                 for (int column = fromSpace.Column - 1; column >= toSpace.Column; column--)
                 {
-                    SpacesToReview.Add(ChessBoard.Spaces![column][fromSpace.Row]);
+                    SpacesToReview.Add(ChessBoard.GetSpace(column, fromSpace.Row));
                 }
             }
             else if (toSpace.Column == fromSpace.Column && toSpace.Row < fromSpace.Row)
@@ -46,7 +46,7 @@ namespace ConsoleChessV3.Pieces.Subclasses
                 // attacking down
                 for (int row = fromSpace.Row - 1; row >= toSpace.Row; row--)
                 {
-                    SpacesToReview.Add(ChessBoard.Spaces![fromSpace.Column][row]);
+                    SpacesToReview.Add(ChessBoard.GetSpace(fromSpace.Column, row));
                 }
             }
             else if (toSpace.Column == fromSpace.Column && toSpace.Row > fromSpace.Row)
@@ -54,7 +54,7 @@ namespace ConsoleChessV3.Pieces.Subclasses
                 // attacking up
                 for (int row = fromSpace.Row + 1; row <= toSpace.Row; row++)
                 {
-                    SpacesToReview.Add(ChessBoard.Spaces![fromSpace.Column][row]);
+                    SpacesToReview.Add(ChessBoard.GetSpace(fromSpace.Column, row));
                 }
             }
         }

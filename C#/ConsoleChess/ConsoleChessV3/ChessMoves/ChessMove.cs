@@ -20,13 +20,13 @@
         public ChessMove(Space startingSpace, Space endingSpace)
         {
             StartingSpace = startingSpace;
-            StartingPiece = startingSpace.Piece!;
+            StartingPiece = startingSpace.GetPiece()!;
             StartingPieceHasMoved = StartingPiece.GetHasMoved();
 
             TargetSpace = endingSpace;
-            if (TargetSpace.Piece is not null)
+            if (TargetSpace.GetPiece() is not null)
             {
-                TargetPiece = endingSpace.Piece!;
+                TargetPiece = endingSpace.GetPiece()!;
                 TargetPieceHasMoved = TargetPiece.GetHasMoved();
             }
         }
@@ -45,35 +45,36 @@
 
         public virtual bool IsValidChessMove()
         {
-            if (StartingSpace is not null && StartingSpace.Piece is not null)
+            if (StartingSpace.GetPiece() is not null)
             {
-                if (StartingSpace.Piece.CanLegallyTryToMoveFromSpaceToSpace(StartingSpace, TargetSpace))
+                if (StartingSpace.GetPiece()!.CanLegallyTryToMoveFromSpaceToSpace(StartingSpace, TargetSpace))
                 {
-                    if (!StartingSpace.Piece.IsBlocked(StartingSpace, TargetSpace))
+                    if (!StartingSpace.GetPiece()!.IsBlocked(StartingSpace, TargetSpace))
                     {
-
-                        if (StartingSpace.Piece.TryMove(StartingSpace, TargetSpace))
+                        if (StartingSpace.GetPiece()!.TryMove(StartingSpace, TargetSpace))
                         {
-                            
+
                             return true;
                         }
                         else
                         {
                             Console.WriteLine("King would be in check");
                             Console.ReadLine();
+                            return false;
                         }
                     }
                     else
                     {
                         Console.WriteLine("Piece is blocked");
                         Console.ReadLine();
+                        return false;
                     }
                 }
-                else if (StartingSpace.Piece.CanLegallyTryToCaptureFromSpaceToSpace(StartingSpace, TargetSpace))
+                else if (StartingSpace.GetPiece()!.CanLegallyTryToCaptureFromSpaceToSpace(StartingSpace, TargetSpace))
                 {
-                    if (!StartingSpace.Piece.IsBlocked(StartingSpace, TargetSpace))
+                    if (!StartingSpace.GetPiece()!.IsBlocked(StartingSpace, TargetSpace))
                     {
-                        if (StartingSpace.Piece.TryCapture(StartingSpace, TargetSpace))
+                        if (StartingSpace.GetPiece()!.TryCapture(StartingSpace, TargetSpace))
                         {
                             return true;
                         }
@@ -81,20 +82,25 @@
                         {
                             Console.WriteLine("King would be in check");
                             Console.ReadLine();
+                            return false;
                         }
                     }
                     else
                     {
                         Console.WriteLine("Piece is blocked");
                         Console.ReadLine();
+                        return false;
                     }
                 }
                 else
                 {
                     Console.WriteLine("Piece does not move like that");
                     Console.ReadLine();
+                    return false;
                 }
             }
+            Console.WriteLine("Starting space is empty.");
+            Console.ReadLine();
             return false;
         }
     }
