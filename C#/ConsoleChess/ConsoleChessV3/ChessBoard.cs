@@ -184,6 +184,13 @@ namespace ConsoleChessV3
             }
         }
 
+        /// <summary>
+        /// Returns the space on the chessboard at column y and row x
+        /// </summary>
+        /// <param name="column"></param>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static Space GetSpace(int column, int row)
         {
             if (Spaces is not null)
@@ -488,15 +495,13 @@ namespace ConsoleChessV3
                 {
                     for (int j = 0; j < 8; j++)
                     {
-                        if (Spaces[i][j].GetPiece() is not null &&
-                            Spaces[i][j].GetPiece()!.GetBelongsTo() == Player.White)
+                        if (Spaces[i][j].HasWhitePieceOnIt())
                         {
                             for (int k = 0; k < 8; k++)
                             {
                                 for (int m = 0; m < 8; m++)
                                 {
-                                    if (Spaces[i][j].GetPiece() is not null &&
-                                        (Spaces![i][j].GetPiece()!
+                                    if ((Spaces![i][j].GetPiece()!
                                         .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
                                         !(Spaces![i][j].GetPiece()!
                                         .IsBlocked(Spaces[i][j], Spaces[k][m])))
@@ -514,23 +519,20 @@ namespace ConsoleChessV3
                                 }
                             }
                         }
-                        if (Spaces[i][j].GetPiece() is not null &&
-                            Spaces[i][j].GetPiece()!.GetBelongsTo() == Player.Black)
+                        if (Spaces[i][j].HasBlackPieceOnIt())
                         {
                             for (int k = 0; k < 8; k++)
                             {
                                 for (int m = 0; m < 8; m++)
                                 {
-                                    if (Spaces[i][j].GetPiece() is not null &&
-                                        (Spaces![i][j].GetPiece()!
+                                    if ((Spaces![i][j].GetPiece()!
                                         .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
                                         !(Spaces![i][j].GetPiece()!
                                         .IsBlocked(Spaces[i][j], Spaces[k][m])))
                                     {
                                         Spaces[k][m].IsUnderAttackByBlack = true;
                                     }
-                                    if (Spaces[i][j].GetPiece() is not null &&
-                                        (Spaces[i][j].GetPiece()!
+                                    if ((Spaces[i][j].GetPiece()!
                                         .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
                                         !(Spaces![i][j].GetPiece()!
                                         .IsBlocked(Spaces[i][j], Spaces[k][m])))
@@ -580,8 +582,7 @@ namespace ConsoleChessV3
                         for (int j = 0; j < 8; j++)
                         {
                             if (Spaces is not null &&
-                                Spaces[i][j].GetPiece() is not null &&
-                                    Spaces![i][j].GetPiece()!.GetBelongsTo() == Player.White)
+                                Spaces[i][j].HasWhitePieceOnIt())
                             {
                                 for (int k = 0; k < 8; k++)
                                 {
@@ -635,7 +636,7 @@ namespace ConsoleChessV3
                     {
                         for (int j = 0; j < 8; j++)
                         {
-                            if (Spaces![i][j].GetPiece()?.GetBelongsTo() == Player.White)
+                            if (Spaces![i][j].HasWhitePieceOnIt())
                             {
                                 for (int k = 0; k < 8; k++)
                                 {
@@ -690,8 +691,7 @@ namespace ConsoleChessV3
                         for (int j = 0; j < 8; j++)
                         {
 
-                            if (Spaces![i][j].GetPiece() is not null &&
-                                Spaces![i][j].GetPiece()!.GetBelongsTo() == Player.Black)
+                            if (Spaces![i][j].HasBlackPieceOnIt())
                             {
                                 for (int k = 0; k < 8; k++)
                                 {
@@ -746,7 +746,7 @@ namespace ConsoleChessV3
                     {
                         for (int j = 0; j < 8; j++)
                         {
-                            if (Spaces![i][j].GetPiece()?.GetBelongsTo() == Player.Black)
+                            if (Spaces![i][j].HasBlackPieceOnIt())
                             {
                                 for (int k = 0; k < 8; k++)
                                 {

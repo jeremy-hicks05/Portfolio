@@ -11,6 +11,7 @@ namespace ConsoleChessV3
 
         public bool IsUnderAttackByWhite;
         public bool IsUnderAttackByBlack;
+
         public Space()
         {
             Column = -1;
@@ -58,6 +59,16 @@ namespace ConsoleChessV3
         public bool IsOccupied()
         {
             return Piece != null;
+        }
+
+        public bool HasWhitePieceOnIt()
+        {
+            return (Piece is not null) && (Piece.GetBelongsTo() == Player.White);
+        }
+
+        public bool HasBlackPieceOnIt()
+        {
+            return (Piece is not null) && (Piece.GetBelongsTo() == Player.Black);
         }
 
         /// <summary>
