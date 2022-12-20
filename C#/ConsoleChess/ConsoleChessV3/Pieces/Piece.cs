@@ -8,6 +8,7 @@
     {
         public string Name { get; set; } = $" ";
         public bool HasMoved { get; set; }
+        public bool IsPinned { get; set; } = false;
         public int PointValue { get; set; }
         public Player BelongsTo { get; set; }
         public List<Space> SpacesToReview = new();
@@ -63,19 +64,14 @@
             toSpace.SetPiece(fromSpace.GetPiece());
             fromSpace.Clear();
 
-            // verify your king is not in check
-            if (ChessBoard.KingIsInCheck())
-            {
-                // cancel move
-                fromSpace.SetPiece(tempFromSpacePiece);
-                toSpace.SetPiece(tempToSpacePiece);
-                return false;
-            }
-            // revert move and let calling function finish it
+            IsPinned = ChessBoard.KingIsInCheck();
+
             fromSpace.SetPiece(tempFromSpacePiece);
             toSpace.SetPiece(tempToSpacePiece);
-            return true;
+
+            return !IsPinned;
         }
+
 
         public virtual void Capture(Space fromSpace, Space toSpace)
         {
@@ -85,25 +81,19 @@
 
         public virtual bool TryMove(Space fromSpace, Space toSpace)
         {
-            IPiece? fromSpacePiece = fromSpace.GetPiece();
-            IPiece? toSpacePiece = toSpace.GetPiece();
+            IPiece? tempFromSpacePiece = fromSpace.GetPiece();
+            IPiece? tempToSpacePiece = toSpace.GetPiece();
             if (fromSpace.GetPiece() is not null)
             {
                 toSpace.SetPiece(fromSpace.GetPiece());
                 fromSpace.Clear();
-            }
 
-            if (ChessBoard.KingIsInCheck())
-            {
-                // undo move
-                fromSpace.SetPiece(fromSpacePiece);
-                toSpace.SetPiece(toSpacePiece);
-                return false;
+                IsPinned = ChessBoard.KingIsInCheck();
+
+                fromSpace.SetPiece(tempFromSpacePiece);
+                toSpace.SetPiece(tempToSpacePiece);
             }
-            // undo move
-            fromSpace.SetPiece(fromSpacePiece);
-            toSpace.SetPiece(toSpacePiece);
-            return true;
+            return !IsPinned;
         }
 
         public virtual void Move(Space fromSpace, Space toSpace)

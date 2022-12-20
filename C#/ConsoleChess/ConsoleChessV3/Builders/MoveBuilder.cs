@@ -24,22 +24,18 @@ namespace ConsoleChessV3.Builders
                 {
                     return new EnPassant(fromSpace, toSpace);
                 }
-                // promotion
                 else if (IsPromotion(fromSpace, toSpace))
                 {
                     return new Promotion(fromSpace, toSpace);
                 }
-                // castle
                 else if (IsCastle(fromSpace, toSpace))
                 {
                     return new Castle(fromSpace, toSpace);
                 }
-                // capture
                 else if(IsCapture(fromSpace, toSpace))
                 {
                     return new Capture(fromSpace, toSpace);
                 }
-                // standard move
                 else if(IsMove(fromSpace, toSpace))
                 {
                     return new Move(fromSpace, toSpace);
