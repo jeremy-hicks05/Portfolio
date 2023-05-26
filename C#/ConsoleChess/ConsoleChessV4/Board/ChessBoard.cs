@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ConsoleChessV4.Abstract;
+using ConsoleChessV4.Piece;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +14,7 @@ namespace ConsoleChessV4.Board
 
         public static void InitChessBoard()
         {
+
             for (int i = 0; i < Board.GetLength(0); i++)
             {
                 for (int j = 0; j < Board.GetLength(1); j++)
@@ -19,18 +22,18 @@ namespace ConsoleChessV4.Board
                     Board[i, j] = new ChessBoardSpace();
                 }
             }
-            Board[0, 0].PieceLetter = 'R';
+            Board[0, 0].Piece = new Rook();
         }
 
         public static void PrintChessBoard()
         {
             Console.WriteLine("_________________________________");
-            for (int i = 0; i< Board.GetLength(0); i++)
+            for (int j = Board.GetLength(1) - 1; j >= 0; j--)
             {
                 Console.Write("| ");
-                for (int j = 0; j < Board.GetLength(1); j++)
+                for (int i = 0; i < Board.GetLength(0); i++)
                 {
-                    Console.Write(Board[i, j].PieceLetter);
+                    Console.Write(PrintSpace(Board[i, j]));
                     Console.Write(" | ");
                 }
                 Console.WriteLine();
@@ -40,9 +43,22 @@ namespace ConsoleChessV4.Board
 
         public static bool MovePiece(ChessBoardSpace fromSpace, ChessBoardSpace toSpace)
         {
-            toSpace.PieceLetter = fromSpace.PieceLetter;
-            fromSpace.PieceLetter = ' ';
+            AbstractPiece tempPiece = toSpace.Piece;
+            if (fromSpace.HasAPiece())
+            {
+                toSpace.Piece = fromSpace.Piece!;
+            }
+            fromSpace.Piece = tempPiece;
             return true;
+        }
+
+        public static char PrintSpace(ChessBoardSpace space)
+        {
+            if(space.Piece == null)
+            {
+                return ' ';
+            }
+            return space.Piece.PieceIcon;
         }
     }
 }

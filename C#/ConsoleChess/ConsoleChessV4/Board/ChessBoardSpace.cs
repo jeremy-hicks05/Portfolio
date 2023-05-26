@@ -8,6 +8,16 @@ namespace ConsoleChessV4.Board
 {
     internal class ChessBoardSpace
     {
-        public char PieceLetter = ' ';
+        public Abstract.AbstractPiece? Piece { get; set; }
+
+        public bool HasAPiece()
+        {
+            return this.Piece != null;
+        }
+
+        public bool IsEmpty()
+        {
+            return this.Piece == null;
+        }
     }
 }

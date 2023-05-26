@@ -14,7 +14,8 @@ namespace ConsoleChessV4.Utility
             Console.WriteLine("Please enter column (a-h)");
             string columnString = Console.ReadLine();
 
-            column = Convert.ToInt32(columnString);
+            column = 
+                LetterToCoordinate.C(columnString);
             return column;
         }
 
@@ -24,7 +25,7 @@ namespace ConsoleChessV4.Utility
             Console.WriteLine("Please enter row (1-8)");
             string rowString = Console.ReadLine();
 
-            row = Convert.ToInt32(rowString);
+            row = LetterToCoordinate.R(rowString);
             return row;
         }
     }
