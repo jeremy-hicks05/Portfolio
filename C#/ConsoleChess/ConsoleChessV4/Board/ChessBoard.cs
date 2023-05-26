@@ -28,15 +28,40 @@ namespace ConsoleChessV4.Board
                 }
             }
             Board[0, 0].Piece = new Rook() { Color = true };
-
             Board[1, 0].Piece = new Knight() { Color = true };
             Board[2, 0].Piece = new Bishop() { Color = true };
             Board[3, 0].Piece = new Queen() { Color = true };
             Board[4, 0].Piece = new King() { Color = true };
-            Board[4, 0].Piece = new Bishop() { Color = true };
-            Board[4, 0].Piece = new Knight() { Color = true };
-            Board[4, 0].Piece = new Rook() { Color = true };
+            Board[5, 0].Piece = new Bishop() { Color = true };
+            Board[6, 0].Piece = new Knight() { Color = true };
+            Board[7, 0].Piece = new Rook() { Color = true };
 
+            Board[0, 1].Piece = new Pawn() { Color = true };
+            Board[1, 1].Piece = new Pawn() { Color = true };
+            Board[2, 1].Piece = new Pawn() { Color = true };
+            Board[3, 1].Piece = new Pawn() { Color = true };
+            Board[4, 1].Piece = new Pawn() { Color = true };
+            Board[5, 1].Piece = new Pawn() { Color = true };
+            Board[6, 1].Piece = new Pawn() { Color = true };
+            Board[7, 1].Piece = new Pawn() { Color = true };
+
+            Board[7, 7].Piece = new Rook() { Color = false };
+            Board[6, 7].Piece = new Knight() { Color = false };
+            Board[5, 7].Piece = new Bishop() { Color = false };
+            Board[4, 7].Piece = new Queen() { Color = false };
+            Board[3, 7].Piece = new King() { Color = false };
+            Board[2, 7].Piece = new Bishop() { Color = false };
+            Board[1, 7].Piece = new Knight() { Color = false };
+            Board[0, 7].Piece = new Rook() { Color = false };
+
+            Board[7, 6].Piece = new Pawn() { Color = false };
+            Board[6, 6].Piece = new Pawn() { Color = false };
+            Board[4, 6].Piece = new Pawn() { Color = false };
+            Board[3, 6].Piece = new Pawn() { Color = false };
+            Board[2, 6].Piece = new Pawn() { Color = false };
+            Board[1, 6].Piece = new Pawn() { Color = false };
+            Board[0, 6].Piece = new Pawn() { Color = false };
+            Board[5, 6].Piece = new Pawn() { Color = false };
         }
 
         public static void PrintChessBoard()

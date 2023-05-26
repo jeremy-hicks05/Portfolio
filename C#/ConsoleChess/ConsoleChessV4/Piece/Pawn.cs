@@ -9,5 +9,9 @@ namespace ConsoleChessV4.Piece
 {
     internal class Pawn : AbstractPiece
     {
+        public Pawn() 
+        {
+            PieceIcon = 'P';
+        }
     }
 }
