@@ -57,10 +57,19 @@ namespace ConsoleChessV4.Board
 
         public static bool IsLegalMove(Move move)
         {
-            if(!move.startingSpace.HasAPiece())
+            
+            if (!move.startingSpace.HasAPiece())
             {
                 Console.WriteLine("Starting space does not have a piece.  Please select another space.");
                 return false;
+            }
+            else if(move.endingSpace.HasAPiece())
+            {
+                if(move.startingSpace.Piece!.Color == move.endingSpace.Piece!.Color)
+                {
+                    Console.WriteLine("Cannot capture your own piece");
+                    return false;
+                }
             }
             else if(move.startingSpace.Piece is Rook && IsRookMove(move))
             {
@@ -91,12 +100,14 @@ namespace ConsoleChessV4.Board
 
         public static bool MovePiece(ChessBoardSpace fromSpace, ChessBoardSpace toSpace)
         {
-            AbstractPiece tempPiece = toSpace.Piece;
+            //AbstractPiece tempPiece = toSpace.Piece;
             if (fromSpace.HasAPiece())
             {
                 toSpace.Piece = fromSpace.Piece!;
+
+                fromSpace.Piece = null;
             }
-            fromSpace.Piece = tempPiece;
+            
             return true;
         }
 
