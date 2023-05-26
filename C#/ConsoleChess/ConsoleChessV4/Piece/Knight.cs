@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ConsoleChessV4.Piece
 {
-    internal class Bishop : AbstractPiece
+    internal class Knight : AbstractPiece
     {
-        public Bishop() 
+        public Knight() 
         {
-            PieceIcon = 'B';
+            PieceIcon = 'N';
         }
     }
 }
