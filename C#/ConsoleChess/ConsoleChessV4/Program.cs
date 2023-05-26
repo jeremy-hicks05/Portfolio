@@ -6,6 +6,9 @@
 //  Ask for User Input
 
 
+using ConsoleChessV4.Board;
+using ConsoleChessV4.ChessMove;
+
 namespace ConsoleChessV4
 {
     internal class Program
@@ -42,16 +45,24 @@ namespace ConsoleChessV4
 
                 // check if piece on selected space can move to second space
 
-                // move piece
-                Board.ChessBoard.MovePiece(
-                    Board.ChessBoard.Board[startColumn, startRow],
-                    Board.ChessBoard.Board[endColumn, endRow]
-                    );
+                Move myMove = new Move(
+                    null, 
+                    ChessGame.ChessGame.Turn,
+                    ChessBoard.Board[startColumn, startRow],
+                    ChessBoard.Board[endColumn, endRow]);
 
-                // change turn or end game
+                if(ChessBoard.IsLegalMove(myMove))
+                {
+                    // move piece
+                    ChessBoard.MovePiece(
+                        ChessBoard.Board[startColumn, startRow],
+                        ChessBoard.Board[endColumn, endRow]);
+
+                    // change turn or end game
+                }
 
                 // print board state
-                Board.ChessBoard.PrintChessBoard();
+                ChessBoard.PrintChessBoard();
             }
         }
     }

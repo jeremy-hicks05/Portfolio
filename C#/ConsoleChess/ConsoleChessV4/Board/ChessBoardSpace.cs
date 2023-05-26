@@ -9,6 +9,8 @@ namespace ConsoleChessV4.Board
     internal class ChessBoardSpace
     {
         public Abstract.AbstractPiece? Piece { get; set; }
+        public int Column { get; set; }
+        public int Row { get; set; }
 
         public bool HasAPiece()
         {
