@@ -136,6 +136,10 @@ namespace ConsoleChessV4.Board
 
         public static bool IsPawnMove(Move move)
         {
+            if(move.startingSpace.Piece.HasMoved)
+            {
+                // only allow capture and moving up one space
+            }
             return false;
         }
 
