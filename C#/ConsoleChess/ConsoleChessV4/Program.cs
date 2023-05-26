@@ -1,8 +1,10 @@
-﻿namespace ConsoleChessV4;
-class Program
+﻿namespace ConsoleChessV4
 {
-    static void Main(string[] args)
+    internal class Program
     {
-        Console.WriteLine("Hello, World!");
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Hello, World!");
+        }
     }
 }
