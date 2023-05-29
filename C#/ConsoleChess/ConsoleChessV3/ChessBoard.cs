@@ -384,15 +384,18 @@ namespace ConsoleChessV3
                 ChessMove? lastMove = MovesPlayed.Pop();
                 if (lastMove is not null)
                 {
-                    ChessMove? lastLastMove = MovesPlayed.Peek();
-                    if(MovesPlayed.Count > 1 &&
-                        lastLastMove is not null && lastLastMove.StartingPiece is Pawn)
+                    if (MovesPlayed.Count > 1)
                     {
-                        Pawn? tempPawn = lastLastMove.StartingPiece as Pawn;
-                        if (tempPawn != null && 
-                            Math.Abs(lastLastMove.TargetSpace.Row - lastLastMove.StartingSpace.Row) == 2)
+                        ChessMove? lastLastMove = MovesPlayed.Peek();
+                        if (
+                            lastLastMove is not null && lastLastMove.StartingPiece is Pawn)
                         {
-                            tempPawn.HasJustMovedTwo = true;
+                            Pawn? tempPawn = lastLastMove.StartingPiece as Pawn;
+                            if (tempPawn != null &&
+                                Math.Abs(lastLastMove.TargetSpace.Row - lastLastMove.StartingSpace.Row) == 2)
+                            {
+                                tempPawn.HasJustMovedTwo = true;
+                            }
                         }
                     }
                     lastMove.Reverse();
