@@ -11,12 +11,14 @@ namespace ConsoleChessV3
     using System.Text.RegularExpressions;
     using static ConsoleChessV3.Enums.Notation;
     using Capture = Capture; // prevent ambiguity between Moves.Capture and RegExp.Capture
-    using ConsoleChessV3.Pieces;
+    using System.Data.Common;
 
     internal class ChessBoard
     {
         private static Space[][]? Spaces;
+        
         public static Stack<ChessMove?>? MovesPlayed = new();
+
         public static ChessMove? NextMove;
 
         public static Space? InitialSpace;
@@ -83,17 +85,25 @@ namespace ConsoleChessV3
             //Console.WriteLine("Board Initiated");
         }
 
-        /// <summary>
-        /// Verifies and gets the Letter (Column) and Row (Number) of initial space
-        /// </summary>
-        public static void GetInitialSpaceInput()
+        public static string GetUserRowInput(string column)
         {
-            // get user input (A-H) and (1-8) for initial space
-            string selectedPieceColumn = "Z";
-            string selectedPieceRow = "0";
-            while (!(Regex.Match(selectedPieceColumn!, "^[A-Ha-h]$").Success))
+            string row = "0";
+            Console.WriteLine(column.ToLower());
+            while (!(Regex.Match(row!, "^[1-8]$").Success))
             {
+                //Console.WriteLine(row);
+                Console.WriteLine("Please enter a number (1-8)");
+                row = Console.ReadLine()!.ToUpper();
+                PrintBoard();
+            }
+            return row;
+        }
 
+        public static string GetUserColumnInput()
+        {
+            string column = "Z";
+            while (!(Regex.Match(column!, "^[A-Ha-h]$").Success))
+            {
                 if (MovesPlayed is not null && MovesPlayed.Count > 0)
                 {
                     Console.WriteLine("Please enter a letter (A-H) or T to TakeBack or M to list move history");
@@ -102,27 +112,32 @@ namespace ConsoleChessV3
                 {
                     Console.WriteLine("Please enter a letter (A-H)");
                 }
-                selectedPieceColumn = Console.ReadLine()!.ToUpper();
 
-                if (selectedPieceColumn == "T")
+                column = Console.ReadLine()!.ToUpper();
+
+                if (MovesPlayed is not null && MovesPlayed.Count > 0 && column == "T")
                 {
                     TakeBackMove();
                 }
-                else if (selectedPieceColumn == "M")
+                else if (MovesPlayed is not null && MovesPlayed.Count > 0 && column == "M")
                 {
                     ShowMoveHistory();
                 }
                 PrintBoard();
             }
+            return column;
+        }
 
-            while (!(Regex.Match(selectedPieceRow!, "^[1-8]$").Success))
-            {
-                Console.WriteLine(selectedPieceColumn.ToLower());
-                Console.WriteLine("Please enter a number (1-8)");
-                selectedPieceRow = Console.ReadLine()!.ToUpper();
-                PrintBoard();
-            }
+        /// <summary>
+        /// Verifies and gets the Letter (Column) and Row (Number) of initial space
+        /// </summary>
+        public static void GetInitialSpaceInput()
+        {
+            // get user input (A-H) and (1-8) for initial space
+            string selectedPieceColumn = GetUserColumnInput();
+            string selectedPieceRow = GetUserRowInput(selectedPieceColumn);
 
+            PrintBoard();
             SetInitialSpaceFromInput(selectedPieceColumn, selectedPieceRow);
         }
 
@@ -131,15 +146,23 @@ namespace ConsoleChessV3
         /// </summary>
         public static void GetTargetSpaceInput()
         {
+
+            //string selectedPieceColumn = GetUserColumnInput();
+            //string selectedPieceRow = GetUserRowInput();
+
+            //PrintBoard();
+            //SetInitialSpaceFromInput(selectedPieceColumn, selectedPieceRow);
             // get user input (A-H) and (1-8) for initial space
             string selectedPieceColumn = "Z";
             string selectedPieceRow = "0";
             while (!(Regex.Match(selectedPieceColumn!, "^[A-Ha-h]$").Success))
             {
+                PrintBoard();
                 if (InitialSpace is not null)
                 {
                     Console.WriteLine(InitialSpace.PrintNotation() + "->");
                 }
+                //Console.WriteLine(selectedPieceRow.ToLower());
                 Console.WriteLine("Please enter a letter (A-H)");
                 selectedPieceColumn = Console.ReadLine()!.ToUpper();
             }
@@ -155,7 +178,6 @@ namespace ConsoleChessV3
                 Console.WriteLine("Please enter a number (1-8)");
                 selectedPieceRow = Console.ReadLine()!.ToUpper();
             }
-
             SetTargetSpaceFromInput(selectedPieceColumn, selectedPieceRow);
         }
 
@@ -434,9 +456,9 @@ namespace ConsoleChessV3
                             else
                             {
                                 Console.Write(" " +
-                                    m.StartingPiece.GetName() +
+                                    m.StartingPiece.GetName().ToUpper() +
                                     m.StartingSpace.PrintNotation() + "x" +
-                                    m.TargetPiece?.GetName() +
+                                    m.TargetPiece?.GetName().ToUpper() +
                                     m.TargetSpace.PrintNotation());
                             }
                         }
@@ -448,7 +470,7 @@ namespace ConsoleChessV3
                             }
                             else
                             {
-                                Console.Write(" " + m.StartingPiece.GetName());
+                                Console.Write(" " + m.StartingPiece.GetName().ToUpper());
                                 Console.Write(m.TargetSpace.PrintNotation());
                             }
                         }
@@ -485,6 +507,7 @@ namespace ConsoleChessV3
                 }
             }
             Console.ReadLine();
+            //Console.Clear();
         }
 
         /// <summary>
@@ -705,7 +728,6 @@ namespace ConsoleChessV3
                     {
                         for (int j = 0; j < 8; j++)
                         {
-
                             if (Spaces![i][j].HasBlackPieceOnIt())
                             {
                                 for (int k = 0; k < 8; k++)
