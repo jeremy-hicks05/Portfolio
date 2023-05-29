@@ -11,33 +11,34 @@ namespace ConsoleChessV5.Abstract
 {
     internal abstract class Move
     {
-        Space FirstSpace { get; set; }
-        Space SecondSpace { get; set; }
-        internal Move()
-        {
-
-        }
+        internal Space FirstSpace { get; set; }
+        internal Space SecondSpace { get; set; }
 
         internal Move(Space firstSpace, Space secondSpace)
         {
-
+            FirstSpace = firstSpace;
+            SecondSpace = secondSpace;
         }
 
         internal static Move MoveFactory(Space firstSpace, Space secondSpace)
         {
             if(firstSpace.Piece is Pawn)
             {
-                return new Moves.EnPassant();
+                return new Moves.EnPassant(firstSpace, secondSpace);
             }
             if(firstSpace.Piece.Owner != secondSpace.Piece.Owner)
             {
-                return new Moves.Capture();
+                return new Moves.Capture(firstSpace, secondSpace);
             }
-            return new Moves.ToEmptySpace();
+            return new Moves.ToEmptySpace(firstSpace, secondSpace);
         }
 
         internal static bool IsLegalAttempt(Move move)
         {
+            if(move.FirstSpace.Piece is Pawn)
+            {
+
+            }
             return true;
         }
     }

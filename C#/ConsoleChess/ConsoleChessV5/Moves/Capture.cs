@@ -4,11 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ConsoleChessV5.Abstract;
+using ConsoleChessV5.ChessBoard;
 
 namespace ConsoleChessV5.Moves
 {
     internal class Capture : Move
     {
+        public Capture(Space firstSpace, Space secondSpace) : base(firstSpace, secondSpace)
+        {
 
+        }
     }
 }
