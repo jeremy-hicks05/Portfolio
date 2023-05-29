@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleChessV5
+namespace ConsoleChessV5.ChessBoard
 {
     internal class Space
     {
-        public Space() 
-        { 
-        
+        public Space()
+        {
+
         }
 
-        public Space(string column, string row) 
+        public Space(string column, string row)
         {
-            
+
         }
 
         //public Space BuildSpace(string column, string row)

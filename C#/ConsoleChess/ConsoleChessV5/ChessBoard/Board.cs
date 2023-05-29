@@ -4,25 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleChessV5
+namespace ConsoleChessV5.ChessBoard
 {
     internal class Board
     {
         internal Space[,] Spaces = new Space[8, 8];
-        public Board() 
+        public Board()
         {
-            
+            // initialize chessboard and pieces
         }
 
         internal void PrintBoard()
         {
             Console.WriteLine("Printing chess board");
+            // TODO: Implement Printing Chess Board
         }
 
-        internal void MovePiece(Space firstSpace, Space secondSpace)
+        internal bool MovePiece(Space firstSpace, Space secondSpace)
         {
             Console.WriteLine("Moving Piece . . .");
+            throw new NotImplementedException();
         }
-
     }
 }

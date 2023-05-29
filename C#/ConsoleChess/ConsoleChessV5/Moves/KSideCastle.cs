@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleChessV5
+namespace ConsoleChessV5.Moves
 {
-    internal class Move
+    internal class KSideCastle
     {
     }
 }

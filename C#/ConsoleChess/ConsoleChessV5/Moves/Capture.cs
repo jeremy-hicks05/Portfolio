@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleChessV5.Abstract;
 
-namespace ConsoleChessV5
+namespace ConsoleChessV5.Moves
 {
-    internal class Turn
+    internal class Capture : Move
     {
     }
 }
