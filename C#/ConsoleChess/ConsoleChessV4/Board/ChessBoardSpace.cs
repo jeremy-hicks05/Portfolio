@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ConsoleChessV4.Board
 {
-    internal class ChessBoardSpace
+    public class ChessBoardSpace
     {
-        public Abstract.AbstractPiece? Piece { get; set; }
+        public Abstract.Piece? Piece { get; set; }
         public int Column { get; set; }
         public int Row { get; set; }
 

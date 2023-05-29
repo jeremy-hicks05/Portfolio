@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleChessV4.Player
 {
-    internal class Player
+    public class Player
     {
     }
 }

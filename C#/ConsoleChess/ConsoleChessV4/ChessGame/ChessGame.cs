@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleChessV4.Board;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace ConsoleChessV4.ChessGame
 {
-    public static class ChessGame
+    public class ChessGame
     {
-        public static bool Turn { get; set; }
-        public static string State { get; set; } // Win, Draw, BlackTurn, WhiteTurn
+        public ChessBoard Board = new ChessBoard();
+        public bool Turn { get; set; }
+        public string State { get; set; } // Win, Draw, BlackTurn, WhiteTurn
+
+        public List<Turn.Turn> Turns { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleChessV4.Piece
 {
-    internal class Rook : AbstractPiece
+    internal class Rook : Abstract.Piece
     {
         public Rook() 
         {

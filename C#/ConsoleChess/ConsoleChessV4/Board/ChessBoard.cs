@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace ConsoleChessV4.Board
 {
-    internal static class ChessBoard
+    public class ChessBoard
     {
-        internal static ChessBoardSpace[,] Board = new ChessBoardSpace[8, 8];
+        public static ChessBoardSpace[,] Board;
 
-        public static void InitChessBoard()
+        public ChessBoard()
         {
-
+            Board = new ChessBoardSpace[8, 8];
             for (int i = 0; i < Board.GetLength(0); i++)
             {
                 for (int j = 0; j < Board.GetLength(1); j++)
@@ -62,9 +62,10 @@ namespace ConsoleChessV4.Board
             Board[1, 6].Piece = new Pawn() { Color = false };
             Board[0, 6].Piece = new Pawn() { Color = false };
             Board[5, 6].Piece = new Pawn() { Color = false };
+
         }
 
-        public static void PrintChessBoard()
+        public void PrintChessBoard()
         {
             Console.WriteLine("_________________________________");
             for (int j = Board.GetLength(1) - 1; j >= 0; j--)
@@ -80,7 +81,7 @@ namespace ConsoleChessV4.Board
             }
         }
 
-        public static bool IsLegalMove(Move move)
+        public bool IsLegalMove(Move move)
         {
             
             if (!move.startingSpace.HasAPiece())

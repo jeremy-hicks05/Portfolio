@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleChessV4.Piece
 {
-    internal class King : AbstractPiece
+    internal class King : Abstract.Piece
     {
         public King() 
         {

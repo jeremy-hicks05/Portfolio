@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ConsoleChessV4.Abstract
 {
-    internal abstract class AbstractPiece
+    public abstract class Piece
     {
 
-        public AbstractPiece()
+        public Piece()
         {
             HasMoved = false;
         }

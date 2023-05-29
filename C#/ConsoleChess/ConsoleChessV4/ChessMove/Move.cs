@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleChessV4.ChessMove
 {
-    internal class Move
+    public class Move
     {
         public Player.Player player;
         public bool turn;
