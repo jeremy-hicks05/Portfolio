@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleChessV5.Abstract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,19 +9,12 @@ namespace ConsoleChessV5.ChessBoard
 {
     internal class Space
     {
+        internal Abstract.Piece? Piece { get; set; }
+        internal int Row { get; set; }
+        internal int Column { get; set; }
         public Space()
         {
 
         }
-
-        public Space(string column, string row)
-        {
-
-        }
-
-        //public Space BuildSpace(string column, string row)
-        //{
-
-        //}
     }
 }

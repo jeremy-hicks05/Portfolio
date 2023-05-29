@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleChessV5.Abstract
+namespace ConsoleChessV5.Piece
 {
-    internal abstract class Piece
+    internal class King
     {
-        internal bool Owner { get; set; }
     }
 }
