@@ -26,6 +26,7 @@ namespace ConsoleChessV5
 
             while(GameState == State.Playing) 
             {
+                ChessBoard.PrintBoard();
                 GameState = UpdateGameState();
                 Space FirstSpace = GetFirstSpace();
                 Space SecondSpace = GetSecondSpace();
@@ -44,16 +45,25 @@ namespace ConsoleChessV5
         }
 
         // methods
+
+        internal void TakeBack()
+        {
+            this.MovesPlayed.Pop();
+        }
+
         internal Space GetFirstSpace()
         {
             string column = GetUserInputColumn();
 
             string row = GetUserInputRow();
 
+            int columnInt = Utility.Conversion.ConvertColumnToInt(column);
+            int rowInt = Utility.Conversion.ConvertRowToInt(row);
+
             return ChessBoard
                     .Spaces
-                    [Utility.Conversion.ConvertColumnToInt(column),
-                    Utility.Conversion.ConvertColumnToInt(row)];
+                    [rowInt,
+                    columnInt];
         }
 
         internal Space GetSecondSpace()
@@ -62,10 +72,13 @@ namespace ConsoleChessV5
 
             string row = GetUserInputRow();
 
+            int columnInt = Utility.Conversion.ConvertColumnToInt(column);
+            int rowInt = Utility.Conversion.ConvertRowToInt(row);
+
             return ChessBoard
                     .Spaces
-                    [Utility.Conversion.ConvertColumnToInt(column),
-                    Utility.Conversion.ConvertColumnToInt(row)];
+                    [rowInt,
+                    columnInt];
         }
 
         private string GetUserInputColumn()

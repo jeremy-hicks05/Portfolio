@@ -11,6 +11,7 @@ namespace ConsoleChessV3
     using System.Text.RegularExpressions;
     using static ConsoleChessV3.Enums.Notation;
     using Capture = Capture; // prevent ambiguity between Moves.Capture and RegExp.Capture
+    using ConsoleChessV3.Pieces;
 
     internal class ChessBoard
     {
@@ -223,7 +224,8 @@ namespace ConsoleChessV3
         {
             if (Spaces is not null)
             {
-                // change all 'has just moved two's for player whose turn it is about to become - how?
+                // change all 'has just moved two's for player whose turn it is about to become
+                // how to reverse this when a takeback occurs?
                 for (int i = 0; i < 8; i++)
                 {
                     for (int j = 0; j < 8; j++)
@@ -382,9 +384,19 @@ namespace ConsoleChessV3
                 ChessMove? lastMove = MovesPlayed.Pop();
                 if (lastMove is not null)
                 {
+                    ChessMove? lastLastMove = MovesPlayed.Peek();
+                    if(MovesPlayed.Count > 1 &&
+                        lastLastMove is not null && lastLastMove.StartingPiece is Pawn)
+                    {
+                        Pawn? tempPawn = lastLastMove.StartingPiece as Pawn;
+                        if (tempPawn != null && 
+                            Math.Abs(lastLastMove.TargetSpace.Row - lastLastMove.StartingSpace.Row) == 2)
+                        {
+                            tempPawn.HasJustMovedTwo = true;
+                        }
+                    }
                     lastMove.Reverse();
                     ChangeTurn();
-
                 }
             }
             PrintBoard();
