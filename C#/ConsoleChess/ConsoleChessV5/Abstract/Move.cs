@@ -11,6 +11,8 @@ namespace ConsoleChessV5.Abstract
 {
     internal abstract class Move
     {
+        Space FirstSpace { get; set; }
+        Space SecondSpace { get; set; }
         internal Move()
         {
 
@@ -21,7 +23,7 @@ namespace ConsoleChessV5.Abstract
 
         }
 
-        internal Move GetMoveType(Space firstSpace, Space secondSpace)
+        internal static Move MoveFactory(Space firstSpace, Space secondSpace)
         {
             if(firstSpace.Piece is Pawn)
             {
@@ -32,6 +34,11 @@ namespace ConsoleChessV5.Abstract
                 return new Moves.Capture();
             }
             return new Moves.ToEmptySpace();
+        }
+
+        internal static bool IsLegalAttempt(Move move)
+        {
+            return true;
         }
     }
 }

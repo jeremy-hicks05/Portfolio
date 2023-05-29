@@ -27,6 +27,19 @@ namespace ConsoleChessV5
             while(GameState == State.Playing) 
             {
                 GameState = UpdateGameState();
+                Space FirstSpace = GetFirstSpace();
+                Space SecondSpace = GetSecondSpace();
+
+                Move move = Move.MoveFactory(FirstSpace, SecondSpace);
+
+                if (Move.IsLegalAttempt(move))
+                {
+                    MovesPlayed.Push(move);
+                }
+                else
+                {
+                    Console.WriteLine("Illegal move");
+                }
             }
         }
 
@@ -37,7 +50,10 @@ namespace ConsoleChessV5
 
             string row = GetUserInputRow();
 
-            return new Space(column, row);
+            return ChessBoard
+                    .Spaces
+                    [Utility.Conversion.ConvertColumnToInt(column),
+                    Utility.Conversion.ConvertColumnToInt(row)];
         }
 
         internal Space GetSecondSpace()
@@ -45,7 +61,11 @@ namespace ConsoleChessV5
             string column = GetUserInputColumn();
 
             string row = GetUserInputRow();
-            return new Space(column, row);
+
+            return ChessBoard
+                    .Spaces
+                    [Utility.Conversion.ConvertColumnToInt(column),
+                    Utility.Conversion.ConvertColumnToInt(row)];
         }
 
         private string GetUserInputColumn()

@@ -8,8 +8,8 @@ namespace ConsoleChessV5.Utility
 {
     internal static class Conversion
     {
-        public static int ConvertColumnToInt() { throw new NotImplementedException(); }
+        public static int ConvertColumnToInt(string column) { throw new NotImplementedException(); }
 
-        public static int ConvertRowToInt() { throw new NotImplementedException(); }
+        public static int ConvertRowToInt(string row) { throw new NotImplementedException(); }
     }
 }
