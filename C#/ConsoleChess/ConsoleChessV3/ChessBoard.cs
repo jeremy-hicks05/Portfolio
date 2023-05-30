@@ -81,8 +81,6 @@ namespace ConsoleChessV3
             Turn = Player.White;
 
             FindAllSpacesAttacked();
-
-            //Console.WriteLine("Board Initiated");
         }
 
         public static string GetUserRowInput(string column)
@@ -91,7 +89,6 @@ namespace ConsoleChessV3
             Console.WriteLine(column.ToLower());
             while (!(Regex.Match(row!, "^[1-8]$").Success))
             {
-                //Console.WriteLine(row);
                 Console.WriteLine("Please enter a number (1-8)");
                 row = Console.ReadLine()!.ToUpper();
                 PrintBoard();
@@ -146,13 +143,6 @@ namespace ConsoleChessV3
         /// </summary>
         public static void GetTargetSpaceInput()
         {
-
-            //string selectedPieceColumn = GetUserColumnInput();
-            //string selectedPieceRow = GetUserRowInput();
-
-            //PrintBoard();
-            //SetInitialSpaceFromInput(selectedPieceColumn, selectedPieceRow);
-            // get user input (A-H) and (1-8) for initial space
             string selectedPieceColumn = "Z";
             string selectedPieceRow = "0";
             while (!(Regex.Match(selectedPieceColumn!, "^[A-Ha-h]$").Success))
@@ -162,7 +152,6 @@ namespace ConsoleChessV3
                 {
                     Console.WriteLine(InitialSpace.PrintNotation() + "->");
                 }
-                //Console.WriteLine(selectedPieceRow.ToLower());
                 Console.WriteLine("Please enter a letter (A-H)");
                 selectedPieceColumn = Console.ReadLine()!.ToUpper();
             }
@@ -247,7 +236,6 @@ namespace ConsoleChessV3
             if (Spaces is not null)
             {
                 // change all 'has just moved two's for player whose turn it is about to become
-                // how to reverse this when a takeback occurs?
                 for (int i = 0; i < 8; i++)
                 {
                     for (int j = 0; j < 8; j++)
@@ -367,19 +355,13 @@ namespace ConsoleChessV3
                 if (InitialSpace.GetPiece()!.GetBelongsTo() == Turn)
                 {
                     NextMove = MoveBuilder.Build(InitialSpace, TargetSpace);
-
-                    if (NextMove is not null)
+                    if (NextMove is not null && NextMove.IsValidChessMove())
                     {
-
-                        // check validity of chess move - is king in check?
-                        if (NextMove.IsValidChessMove())
-                        {
-                            NextMove.Perform();
-                            SaveMoveToHistory();
-                            ChangeTurn();
-                            UpdateHasJustMovedTwo();
-                            PrintBoard();
-                        }
+                        NextMove.Perform();
+                        SaveMoveToHistory();
+                        ChangeTurn();
+                        UpdateHasJustMovedTwo();
+                        PrintBoard();
                     }
                 }
             }
@@ -510,6 +492,19 @@ namespace ConsoleChessV3
             //Console.Clear();
         }
 
+        public static void ClearUnderAttackFlags()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    // reset being attacked flags
+                    Spaces[i][j].IsUnderAttackByBlack = false;
+                    Spaces[i][j].IsUnderAttackByWhite = false;
+                }
+            }
+        }
+
         /// <summary>
         /// Iterates through the board, attempting to move every piece to every space,
         /// setting the IsUnderAttackBy{Player} property based on the owner of the piece
@@ -519,15 +514,7 @@ namespace ConsoleChessV3
             if (Spaces is not null)
             {
                 // reset UnderAttack flags
-                for (int i = 0; i < 8; i++)
-                {
-                    for (int j = 0; j < 8; j++)
-                    {
-                        // reset being attacked flags
-                        Spaces[i][j].IsUnderAttackByBlack = false;
-                        Spaces[i][j].IsUnderAttackByWhite = false;
-                    }
-                }
+                ClearUnderAttackFlags();
 
                 for (int i = 0; i < 8; i++)
                 {
@@ -630,6 +617,7 @@ namespace ConsoleChessV3
                                             .CanLegallyTryToMoveFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
                                             !(Spaces![i][j].GetPiece()!.IsBlocked(Spaces[i][j], Spaces[k][m])))
                                         {
+                                            // call TryMove on every possible way the King can move
                                             if (Spaces[i][j].GetPiece()!.TryMove(Spaces[i][j], Spaces[k][m]))
                                             {
                                                 //Console.WriteLine("White is not checkmated!");
@@ -640,6 +628,7 @@ namespace ConsoleChessV3
                                             .CanLegallyTryToCaptureFromSpaceToSpace(Spaces[i][j], Spaces[k][m])) &&
                                             !(Spaces![i][j].GetPiece()!.IsBlocked(Spaces[i][j], Spaces[k][m])))
                                         {
+                                            // call TryCapture on every possible way the King can capture
                                             if (Spaces[i][j].GetPiece()!.TryCapture(Spaces[i][j], Spaces[k][m]))
                                             {
                                                 //Console.WriteLine("White is not checkmated!");
