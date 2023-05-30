@@ -179,7 +179,23 @@ namespace ConsoleChessV3
         {
             if (Spaces is not null)
             {
-                InitialSpace = Spaces[C[column]][R[row]];
+                Space selectedSpace = Spaces[C[column]][R[row]];
+                if (selectedSpace.IsOccupied() && 
+                    (Turn == Player.White && 
+                    selectedSpace.GetPiece()!.GetBelongsTo() == Player.White) ||
+                    (Turn == Player.Black &&
+                    selectedSpace.GetPiece()!.GetBelongsTo() == Player.Black))
+                {
+                    InitialSpace = Spaces[C[column]][R[row]];
+                }
+                else
+                {
+                    Console.WriteLine("Please select a space with one of your pieces on it");
+                    Console.ReadLine();
+                    Console.Clear();
+                    PrintBoard();
+                    GetInitialSpaceInput();
+                }
             }
         }
 
@@ -494,13 +510,16 @@ namespace ConsoleChessV3
 
         public static void ClearUnderAttackFlags()
         {
-            for (int i = 0; i < 8; i++)
+            if (Spaces is not null)
             {
-                for (int j = 0; j < 8; j++)
+                for (int i = 0; i < 8; i++)
                 {
-                    // reset being attacked flags
-                    Spaces[i][j].IsUnderAttackByBlack = false;
-                    Spaces[i][j].IsUnderAttackByWhite = false;
+                    for (int j = 0; j < 8; j++)
+                    {
+                        // reset being attacked flags
+                        Spaces[i][j].IsUnderAttackByBlack = false;
+                        Spaces[i][j].IsUnderAttackByWhite = false;
+                    }
                 }
             }
         }

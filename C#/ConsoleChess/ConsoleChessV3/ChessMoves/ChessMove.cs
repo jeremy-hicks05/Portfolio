@@ -94,7 +94,7 @@
                 }
                 else
                 {
-                    Console.WriteLine("Piece does not move like that");
+                    Console.WriteLine($"{StartingSpace!.GetPiece()!.GetType().ToString().Split(".").Last()} does not move like that");
                     Console.ReadLine();
                     return false;
                 }

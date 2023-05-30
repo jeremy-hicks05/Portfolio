@@ -27,6 +27,7 @@ namespace ConsoleChessV3.ChessMoves.Subclasses
                 Console.WriteLine("B: Bishop");
                 Console.WriteLine("R: Rook");
                 Console.WriteLine("Q: Queen");
+                //Console.WriteLine("C: Cancel");
                 promotionChoice = Console.ReadLine()!.ToUpper();
 
                 if (ChessBoard.Turn == Enums.Player.White)
@@ -71,7 +72,6 @@ namespace ConsoleChessV3.ChessMoves.Subclasses
                 }
                 ChessBoard.PrintBoard();
             }
-            StartingSpace.Clear();
         }
 
         public override void Reverse()
