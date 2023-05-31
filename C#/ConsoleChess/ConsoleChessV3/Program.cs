@@ -41,18 +41,11 @@ namespace ConsoleChessV3
             Console.ReadLine();
             InitBoard();
 
-            while (
-                    !BlackIsCheckMated() &&
+            while ( !BlackIsCheckMated() &&
                     !WhiteIsCheckMated() &&
                     !BlackIsStaleMated() &&
-                    !WhiteIsStaleMated())
+                    !WhiteIsStaleMated() )
             {
-                //BlackIsCheckMated();
-                //WhiteIsCheckMated();
-                //BlackIsStaleMated();
-                //WhiteIsStaleMated();
-                PrintBoard();
-
                 GetInitialSpaceInput();
                 GetTargetSpaceInput();
 

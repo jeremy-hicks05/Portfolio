@@ -81,6 +81,7 @@ namespace ConsoleChessV3
             Turn = Player.White;
 
             FindAllSpacesAttacked();
+            PrintBoard();
         }
 
         public static string GetUserRowInput(string column)
@@ -209,6 +210,16 @@ namespace ConsoleChessV3
             if (Spaces is not null)
             {
                 TargetSpace = Spaces[C[column]][R[row]];
+
+                if(InitialSpace == TargetSpace)
+                {
+                    Console.WriteLine("Cannot move to the same space");
+                    Console.ReadLine();
+                    Console.Clear();
+                    PrintBoard();
+                    InitialSpace = null;
+                    GetInitialSpaceInput();
+                }
             }
         }
 
