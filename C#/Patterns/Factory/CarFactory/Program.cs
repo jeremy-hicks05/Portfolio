@@ -12,9 +12,19 @@
 
             Car secondCar = carFactory.GetCarType("Mustang");
 
-            firstCar.Drive();
+            List<Car> cars = new() {firstCar , secondCar};
 
-            secondCar.Drive();
+            foreach(Car car in cars)
+            {
+                Console.WriteLine(car.Make);
+                car.Drive();
+            }
+
+            foreach (Cruise cruise in cars.Where(c => c.GetType() == typeof(Cruise)))
+            {
+                Console.WriteLine(cruise.Make);
+                cruise.Drive();
+            }
         }
     }
 }
