@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace CarFactory
 {
-    internal class Mustang
+    internal class Mustang : Car
     {
+        public Mustang()
+        {
+            Make = "Ford";
+        }
+
+        public override void Drive()
+        {
+            Console.WriteLine("Driving a Mustang");
+        }
     }
 }
