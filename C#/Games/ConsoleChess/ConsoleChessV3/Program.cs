@@ -16,8 +16,8 @@
  * Description:                                                 *
  *      Imitates a Chess board, allowing user to input          *
  *      a letter and number combination to select a space       *
- *      on the board, and another space to move that space's    *
- *      piece to.                                               *
+ *      on the board, and another space to move the first       *
+ *      space's piece to.                                     *
  *                                                              *
  *      Allows for takebacks and records the history of         *
  *      moves made.                                             *
