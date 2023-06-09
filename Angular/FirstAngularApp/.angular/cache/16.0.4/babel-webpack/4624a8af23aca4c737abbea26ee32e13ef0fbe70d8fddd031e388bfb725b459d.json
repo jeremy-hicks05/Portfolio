@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { InjectionToken } from '@angular/core';\nexport const APP_CONFIG = new InjectionToken('app.config');\nexport const appSettings = {\n  title: 'My app',\n  version: 1.0\n};","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}
