@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { HeroComponent } from './hero/hero.component';
+import { HeroListComponent } from './heroes/hero-list/hero-list.component';
+import { HeroesModule } from './heroes/heroes.module';
 
 
 @NgModule({
@@ -11,7 +13,8 @@ import { HeroComponent } from './hero/hero.component';
     HeroComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HeroesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

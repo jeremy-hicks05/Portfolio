@@ -10,6 +10,7 @@ import { HeroListComponent } from './hero-list/hero-list.component';
   ],
   imports: [
     CommonModule
-  ]
+  ],
+  exports:[HeroListComponent]
 })
 export class HeroesModule { }

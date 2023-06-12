@@ -1,4 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, OnDestroy, Output, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnInit, OnDestroy,
+  Output, OnChanges, SimpleChanges
+} from '@angular/core';
 
 @Component({
   selector: 'app-hero',
@@ -21,7 +24,9 @@ export class HeroComponent implements OnInit, OnDestroy, OnChanges {
     const hero = changes['name'];
     const oldValue = hero.previousValue;
     const newValue = hero.currentValue;
-    console.log(`Hero changed from ${oldValue} to ${newValue}`);
+    if (!hero.isFirstChange()) {
+      console.log(`Hero changed from ${oldValue} to ${newValue}`);
+    }
   }
 }
 
