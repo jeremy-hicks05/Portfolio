@@ -3,7 +3,7 @@
 <ul>
     <li *ngFor="let product of products | sort; let i=index"
         (click)="selectedProduct = product">
-        {{ product.name | lowercase }}
+        {{ product.name | uppercase }}
     </li>
 </ul>
 
