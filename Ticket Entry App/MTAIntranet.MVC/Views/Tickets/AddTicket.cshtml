@@ -1,0 +1,77 @@
+﻿@model MTAIntranet.MVC.Models.ViewModels.TicketViewModel
+@{
+    ViewData["Title"] = "Open Ticket";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Open Ticket</h1>
+</div>
+
+<form asp-controller="Tickets" asp-action="AddTicket">
+    <div class="row">
+        <div class="col">
+            <label onclick="window.location='Categories'"
+                   asp-for="@Model.Category"></label>
+            <select class="form-select"
+                    asp-for="@Model.Category"
+                    asp-items=@Model.CategoriesList!.Select(t => new SelectListItem(){ Text = t.Name, Value = t.Name })>
+                <option value="none" selected disabled>--Please Select a Category--</option>
+            </select>
+            <span asp-validation-for="@Model.Category"></span>
+        </div>
+        <div class="col">
+            <label hidden id="SubTypeLabel" onclick="window.location='TicketSubTypes'" asp-for="@Model.SubType"></label>
+            <select id="SubType" hidden
+                    class="form-select"
+                    asp-for="@Model.SubType">
+            </select>
+            <span asp-validation-for="@Model.SubType"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label hidden id="ImpactLabel" onclick="window.location='Impacts'" asp-for="@Model.Impact"></label>
+            <select hidden id="Impact" class="form-select"
+                    asp-for="@Model.Impact"
+                    asp-items=@Model.ImpactList!.Select(i => new SelectListItem(){ Text = i.Description, Value = i.Description })>
+                <option value="none" selected disabled>--Please Select an Impact--</option>
+            </select>
+            <span asp-validation-for="@Model.Impact"></span>
+        </div>
+        <div class="col">
+            <label hidden id="SummaryLabel" asp-for="@Model.Summary"></label>
+            <textarea hidden id="Summary" class="form-control" asp-for="@Model.Summary"></textarea>
+            <span asp-validation-for="@Model.Summary"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label id="useridlabel" hidden>User ID</label>
+            <input class="form-control" id="userid" hidden />
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col">
+        </div>
+    </div>
+
+    @*Hidden Fields for all tickets*@
+
+    <input class="form-control" asp-for="@Model.EnteredByUser" value="@User.Identity?.Name" readonly />
+    <input class="form-control" asp-for="@Model.ApprovalState" value="Does not need approval" readonly />
+    <input class="form-control" asp-for="@Model.DateEntered" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" readonly />
+    <input class="form-control" asp-for="@Model.DateLastUpdated" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" readonly />
+    <input class="form-control" asp-for="@Model.ApprovedBy" value="NA" readonly />
+    <input class="form-control" asp-for="@Model.ReasonForRejection" value="NA" readonly />
+
+    <button id="submit" class="btn btn-primary mt-2" type="submit">Submit Ticket</button>
+</form>
+
+@section Scripts {
+    <script src="~/js/addTicket.js">
+        
+    </script>
+}

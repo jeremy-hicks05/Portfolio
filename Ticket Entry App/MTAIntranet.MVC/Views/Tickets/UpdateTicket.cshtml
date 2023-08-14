@@ -1,0 +1,92 @@
+﻿@model MTAIntranet.MVC.Models.ViewModels.TicketViewModel
+@{
+    ViewData["Title"] = "Update Ticket";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Update Ticket</h1>
+</div>
+
+@if (Model is not null)
+{
+    <form asp-controller="Tickets" asp-action="UpdateTicket">
+
+        @*<input class="form-control" type="hidden" asp-for="@Model.TicketId" />*@
+
+        <div class="row">
+            <div class="col">
+
+                <label asp-for="@Model.Summary"></label>
+                <input class="form-control" asp-for="@Model.Summary" />
+                <span asp-validation-for="@Model.Summary"></span>
+            </div>
+            <div class="col">
+                <label asp-for="@Model.ApprovalState"></label>
+                <input readonly class="form-control" asp-for="@Model.ApprovalState">
+                @*<select class="form-select" asp-for="@Model.ApprovalState" asp-items=@Model.ApprovalStatesList!.Select(a => new SelectListItem(){ Text = a.Name, Value = a.Name })></select>*@
+                <span asp-validation-for="@Model.ApprovalState"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col">
+                <label asp-for="@Model.EnteredByUser"></label>
+                <input readonly class="form-control" asp-for="@Model.EnteredByUser" />
+                <span asp-validation-for="@Model.EnteredByUser"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label asp-for="@Model.Impact"></label>
+                <select class="form-select" asp-for="@Model.Impact" asp-items=@Model.ImpactList!.Select(i => new SelectListItem(){ Text = i.Description, Value = i.Description })></select>
+                <span asp-validation-for="@Model.Impact"></span>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col">
+                <label asp-for="@Model.Category"></label>
+                <select class="form-select" asp-for="@Model.Category" asp-items=@Model.CategoriesList!.Select(t => new SelectListItem(){ Text = t.Name, Value = t.Name })></select>
+                <span asp-validation-for="@Model.Category"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label asp-for="@Model.SubType"></label>
+                <select class="form-select" asp-for="@Model.SubType" asp-items=@Model.TicketSubTypeList!.Select(s => new SelectListItem(){ Text = s.Name, Value = s.Name })></select>
+                <span asp-validation-for="@Model.SubType"></span>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label asp-for="@Model.DateEntered"></label>
+                <input readonly class="form-control" asp-for="@Model.DateEntered" value="@Model.DateEntered.ToString("yyyy-MM-ddTHH:mm")" />
+                <span asp-validation-for="@Model.DateEntered"></span>
+            </div>
+            <div class="col">
+                <label asp-for="@Model.DateLastUpdated"></label>
+                <input readonly class="form-control" asp-for="@Model.DateLastUpdated" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                <span asp-validation-for="@Model.DateLastUpdated"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label asp-for="@Model.ApprovedBy"></label>
+                <input class="form-control" value="@Model.ApprovedBy" asp-for="@Model.ApprovedBy" readonly />
+                <span asp-validation-for="@Model.ApprovedBy"></span>
+            </div>
+            <div class="col"></div>
+        </div>
+        <button class="btn btn-primary mt-2" type="submit">Update Ticket</button>
+    </form>
+}
+else
+{
+    <h2>Ticket ID Not Found</h2>
+}

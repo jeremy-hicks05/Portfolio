@@ -1,0 +1,123 @@
+﻿@model MTAIntranet.MVC.Models.ViewModels.TicketViewModel
+@{
+    ViewData["Title"] = "Approve Ticket";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Approve Ticket</h1>
+</div>
+
+@if (Model is not null)
+{
+    @if (Model.ApprovalState == "Needs Approval")
+    {
+        <form asp-controller="Tickets" asp-action="ApproveTicket">
+            <div class="row">
+                <div class="col">
+
+                    <label asp-for="@Model.Summary"></label>
+                    <input class="form-control" asp-for="@Model.Summary" readonly />
+                    <span asp-validation-for="@Model.Summary"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="@Model.ApprovalState"></label>
+                    <input class="form-control" asp-for="@Model.ApprovalState" readonly />
+                    <span asp-validation-for="@Model.ApprovalState"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label asp-for="@Model.EnteredByUser"></label>
+                    <input class="form-control" asp-for="@Model.EnteredByUser" readonly />
+                    <span asp-validation-for="@Model.EnteredByUser"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="@Model.Impact"></label>
+                    <input class="form-control" asp-for="@Model.Impact" readonly />
+                    <span asp-validation-for="@Model.Impact"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label asp-for="@Model.Category"></label>
+                    <input class="form-control" asp-for="@Model.Category" readonly />
+                    <span asp-validation-for="@Model.Category"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="@Model.SubType"></label>
+                    <input class="form-control" asp-for="@Model.SubType" readonly />
+                    <span asp-validation-for="@Model.SubType"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label asp-for="@Model.DateEntered"></label>
+                    <input class="form-control" asp-for="@Model.DateEntered" value="@Model.DateEntered.ToString("yyyy-MM-ddTHH:mm")" readonly />
+                    <span asp-validation-for="@Model.DateEntered"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="@Model.DateLastUpdated"></label>
+                    <input class="form-control" asp-for="@Model.DateLastUpdated" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" readonly />
+                    <span asp-validation-for="@Model.DateLastUpdated"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label asp-for="@Model.ApprovedBy"></label>
+                    <input class="form-control"
+                   asp-for="@Model.ApprovedBy"
+                   value="@User.Identity?.Name" readonly />
+                    <span asp-validation-for="@Model.ApprovedBy"></span>
+                </div>
+                <div class="col">
+                    <label id="rejectreasonlabel" hidden asp-for="@Model.ReasonForRejection"></label>
+                    <textarea id="rejectreason" hidden class="form-control"
+                      asp-for="@Model.ReasonForRejection"></textarea>
+                    <span asp-validation-for="@Model.ReasonForRejection"></span>
+                </div>
+            </div>
+            <button class="btn btn-secondary mt-2" type="submit">Save Ticket</button>
+        </form>
+        <button id="approve" class="btn btn-primary mt-2">Approve Ticket</button>
+        <button id="reject" class="btn btn-danger mt-2">Reject Ticket</button>
+    }
+    else
+    {
+        <h2>Ticket Already Approved or Rejected, or Does Not Need Approval</h2>
+    }
+}
+
+else
+{
+    <h2>Ticket ID Not Found</h2>
+}
+
+@section Scripts{
+
+    <script type="text/javascript">
+        $(document).ready(function () 
+        {
+            $('#approve').click(function () {
+                // set approvalState as Approved
+                $('#ApprovalState').val("Approved");
+                hideRejectionReason();
+            });
+
+            $('#reject').click(function () {
+                // set approvalState as Rejected
+                $('#ApprovalState').val("Rejected");
+                showRejectionReason();
+            });
+        });
+
+        function showRejectionReason(){
+            $('#rejectreasonlabel').removeAttr('hidden');
+            $('#rejectreason').removeAttr('hidden');
+        }
+
+        function hideRejectionReason(){
+            $('#rejectreasonlabel').attr('hidden', true);
+            $('#rejectreason').attr('hidden', true);
+        }
+    </script>
+}

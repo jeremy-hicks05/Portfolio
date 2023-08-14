@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Category>
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Categories</h1>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Type ID</th>
+            <th>Name</th>
+            <th>Sub Types</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Category type in Model)
+        {
+            <tr>
+                <td>@type.CategoryId</td>
+                <td>@type.Name</td>
+                <td>
+                    @if (type.TicketSubTypes.Count() > 0)
+                    {
+                        @foreach (TicketSubType subType in type.TicketSubTypes)
+                        {
+                            @subType.Name
+                            if (subType != type.TicketSubTypes.Last())
+                            {
+                                @:,
+                            }
+                        }
+                        
+                    }
+                </td>
+                <td><a class="btn btn-secondary" href="UpdateCategory/@type.CategoryId">Edit</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a class="btn btn-primary" href="AddCategory">New Category</a>

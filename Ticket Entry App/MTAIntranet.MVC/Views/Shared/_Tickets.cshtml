@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Ticket>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Ticket ID</th>
+            <th>Category</th>
+            <th>SubType</th>
+            <th>Summary</th>
+            <th>Approval State</th>
+            <th>Approved By</th>
+            <th>Date Entered</th>
+            <th>Date Last Updated</th>
+            <th>Impact</th>
+            <th>Entered By User</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Ticket t in Model)
+        {
+            <tr>
+                @if (Model.Count() == 1)
+                {
+                    <td>@t.TicketId</td>
+                }
+                else
+                {
+                    <td><a href=~/Tickets/@(t.TicketId)>@t.TicketId</a></td>
+                }
+                <td>@t.Category.Name</td>
+                <td>@t.SubType.Name</td>
+                <td>@t.Summary</td>
+                <td>@t.ApprovalState.Name</td>
+                <td>@t.ApprovedBy</td>
+                <td>@t.DateEntered.ToString("MM/dd/yyyy hh:mm tt")</td>
+                <td>@t.DateLastUpdated.ToString("MM/dd/yyyy hh:mm tt")</td>
+                <td>@t.Impact.Description</td>
+                <td>@t.EnteredByUser</td>
+            </tr>
+        }
+    </tbody>
+</table>

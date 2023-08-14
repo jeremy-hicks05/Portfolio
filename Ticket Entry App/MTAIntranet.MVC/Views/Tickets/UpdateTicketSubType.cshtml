@@ -1,0 +1,58 @@
+﻿@model MTAIntranet.MVC.Models.ViewModels.TicketSubTypeViewModel
+@{
+    ViewData["Title"] = "Update Ticket SubType";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Update Ticket SubType</h1>
+</div>
+
+@if (Model is not null)
+{
+    <form asp-controller="Tickets" asp-action="UpdateTicketSubType" method="post">
+
+        @*<input class="form-control" type="hidden" asp-for="@Model.TicketType" />*@
+
+        <div class="row">
+            <div class="col">
+                <label asp-for="@Model.Name"></label>
+                <input class="form-control" asp-for="@Model.Name" />
+                <span asp-validation-for="@Model.Name"></span>
+            </div>
+            <div class="col">
+                <label asp-for="@Model.Description"></label>
+                <input class="form-control" asp-for="@Model.Description" />
+                <span asp-validation-for="@Model.Description"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label asp-for="@Model.Category"></label>
+                <select class="form-select" asp-for="@Model.Category"
+                    asp-items="@Model.CategoriesList?.Select(t => new SelectListItem(){Text = t.Name, Value = t.Name})"></select>
+                <span asp-validation-for="@Model.Category"></span>
+            </div>
+            <div class="col">
+                <label asp-for="@Model.NeedsApproval"></label>
+                <select class="form-control" asp-for="@Model.NeedsApproval">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                <span asp-validation-for="@Model.NeedsApproval"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label asp-for="@Model.Cclist"></label>
+                <input class="form-control" asp-for="@Model.Cclist" />
+                <span asp-validation-for="@Model.Cclist"></span>
+            </div>
+            <div class="col"></div>
+        </div>
+        <button class="btn btn-primary mt-2" type="submit">Update Ticket SubType</button>
+    </form>
+}
+else
+{
+    <h2>Ticket SubType ID Not Found</h2>
+}

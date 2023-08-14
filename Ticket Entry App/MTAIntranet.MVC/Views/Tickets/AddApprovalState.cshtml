@@ -1,0 +1,20 @@
+﻿@model MTAIntranet.MVC.Models.ViewModels.ApprovalStateViewModel
+@{
+    ViewData["Title"] = "Add Approval State";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Add Approval State</h1>
+</div>
+
+<form asp-controller="Tickets" asp-action="AddApprovalState">
+    <div class="row">
+        <div class="col">
+            <label asp-for="@Model.Name"></label>
+            <input class="form-control" asp-for="@Model.Name" />
+            <span asp-validation-for="@Model.Name"></span>
+        </div>
+        <div class="col"></div>
+    </div>
+    <button class="btn btn-primary mt-2" type="submit">Add Approval State</button>
+</form>

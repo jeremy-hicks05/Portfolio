@@ -1,0 +1,22 @@
+﻿@model MTAIntranet.SQL.Entities.ApprovalState
+@{
+    ViewData["Title"] = "Delete Approval State";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Delete Approval State</h1>
+</div>
+
+<form asp-controller="Tickets" asp-action="DelApprovalState">
+
+    <input class="form-control" type="hidden" asp-for="@Model.ApprovalStateId" />
+
+    <div class="row">
+        <div class="col">
+            <label asp-for="@Model.Name"></label>
+            <input class="form-control" asp-for="@Model.Name" readonly />
+        </div>
+        <div class="col"></div>
+    </div>
+    <button class="btn btn-danger mt-2" type="submit">Delete Approval State</button>
+</form>
