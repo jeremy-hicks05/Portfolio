@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using WorldCitiesAPI.Data;
+
 namespace WorldCitiesAPI
 {
     public class Program
@@ -12,6 +15,13 @@ namespace WorldCitiesAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Add Application DbContext and SQL Server support
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(
+                builder.Configuration.GetConnectionString("DefaultConnection")
+                )
+            );
 
             var app = builder.Build();
 
