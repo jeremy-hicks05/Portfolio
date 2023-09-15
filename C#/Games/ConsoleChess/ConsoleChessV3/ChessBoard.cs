@@ -183,9 +183,9 @@ namespace ConsoleChessV3
                 Space selectedSpace = Spaces[C[column]][R[row]];
                 if (selectedSpace.IsOccupied() && 
                     (Turn == Player.White && 
-                    selectedSpace.GetPiece()!.GetBelongsTo() == Player.White) ||
+                    selectedSpace.GetPiece()?.GetBelongsTo() == Player.White) ||
                     (Turn == Player.Black &&
-                    selectedSpace.GetPiece()!.GetBelongsTo() == Player.Black))
+                    selectedSpace.GetPiece()?.GetBelongsTo() == Player.Black))
                 {
                     InitialSpace = Spaces[C[column]][R[row]];
                 }
