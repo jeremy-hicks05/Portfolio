@@ -38,6 +38,7 @@ namespace ConsoleChessV3
         static void Main()
         {
             Console.WriteLine("Welcome to Chess!");
+            Console.WriteLine("Press enter to begin playing...");
             Console.ReadLine();
             InitBoard();
 

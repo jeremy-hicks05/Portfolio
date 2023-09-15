@@ -22,24 +22,31 @@ namespace WorldCitiesAPI.Controllers
         }
 
         // GET: api/Cities
+        // GET: api/Cities/?pageIndex=0&pageSize=10
+        // GET: api/Cities/?pageIndex=0&pageSize=10&sortColumn=name&sortOrder=asc
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<City>>> GetCities()
+        public async Task<ActionResult<ApiResult<City>>> GetCities(
+                int pageIndex = 0,
+                int pageSize = 10,
+                string? sortColumn = null,
+                string? sortOrder = null,
+                string? filterColumn = null,
+                string? filterQuery = null)
         {
-          if (_context.Cities == null)
-          {
-              return NotFound();
-          }
-            return await _context.Cities.ToListAsync();
+            return await ApiResult<City>.CreateAsync(
+                    _context.Cities.AsNoTracking(),
+                    pageIndex,
+                    pageSize,
+                    sortColumn,
+                    sortOrder,
+                    filterColumn,
+                    filterQuery);
         }
 
         // GET: api/Cities/5
         [HttpGet("{id}")]
         public async Task<ActionResult<City>> GetCity(int id)
         {
-          if (_context.Cities == null)
-          {
-              return NotFound();
-          }
             var city = await _context.Cities.FindAsync(id);
 
             if (city == null)
@@ -55,7 +62,7 @@ namespace WorldCitiesAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCity(int id, City city)
         {
-            if (id != city.ID)
+            if (id != city.Id)
             {
                 return BadRequest();
             }
@@ -84,26 +91,19 @@ namespace WorldCitiesAPI.Controllers
         // POST: api/Cities
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<ActionResult<City>> PostCity(City city)
         {
-          if (_context.Cities == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Cities'  is null.");
-          }
             _context.Cities.Add(city);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCity", new { id = city.ID }, city);
+            return CreatedAtAction("GetCity", new { id = city.Id }, city);
         }
 
         // DELETE: api/Cities/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCity(int id)
         {
-            if (_context.Cities == null)
-            {
-                return NotFound();
-            }
             var city = await _context.Cities.FindAsync(id);
             if (city == null)
             {
@@ -118,7 +118,20 @@ namespace WorldCitiesAPI.Controllers
 
         private bool CityExists(int id)
         {
-            return (_context.Cities?.Any(e => e.ID == id)).GetValueOrDefault();
+            return _context.Cities.Any(e => e.Id == id);
+        }
+
+        [HttpPost]
+        [Route("IsDupeCity")]
+        public bool IsDupeCity(City city)
+        {
+           return _context.Cities.Any(
+                e => e.Name == city.Name
+                && e.Lat == city.Lat
+                && e.Lon == city.Lon
+                && e.CountryId == city.CountryId
+                && e.Id != city.Id
+            );
         }
     }
 }

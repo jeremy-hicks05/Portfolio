@@ -8,16 +8,16 @@ import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { environment } from './../../environments/environment';
-import { City } from './city';
+import { Country } from './country';
 
 @Component({
-  selector: 'app-cities',
-  templateUrl: './cities.component.html',
-  styleUrls: ['./cities.component.scss']
+  selector: 'app-countries',
+  templateUrl: './countries.component.html',
+  styleUrls: ['./countries.component.scss']
 })
-export class CitiesComponent implements OnInit {
-  public displayedColumns: string[] = ['id', 'name', 'lat', 'lon'];
-  public cities!: MatTableDataSource<City>;
+export class CountriesComponent implements OnInit {
+  public displayedColumns: string[] = ['id', 'name', 'iso2', 'iso3'];
+  public countries!: MatTableDataSource<Country>;
 
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
@@ -59,9 +59,8 @@ export class CitiesComponent implements OnInit {
     this.getData(pageEvent);
   }
 
-
   getData(event: PageEvent) {
-    var url = environment.baseUrl + 'api/Cities';
+    var url = environment.baseUrl + 'api/Countries';
     var params = new HttpParams()
       .set("pageIndex", event.pageIndex.toString())
       .set("pageSize", event.pageSize.toString())
@@ -80,13 +79,10 @@ export class CitiesComponent implements OnInit {
 
     this.http.get<any>(url, { params })
       .subscribe(result => {
-        console.log(result);
         this.paginator.length = result.totalCount;
         this.paginator.pageIndex = result.pageIndex;
         this.paginator.pageSize = result.pageSize;
-        this.cities = new MatTableDataSource<City>(result.data);
+        this.countries = new MatTableDataSource<Country>(result.data);
       }, error => console.error(error));
   }
 }
-
-

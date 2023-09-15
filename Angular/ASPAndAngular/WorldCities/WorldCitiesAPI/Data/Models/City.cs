@@ -1,9 +1,9 @@
-﻿namespace WorldCitiesAPI.Data.Models
-{
-    using Microsoft.EntityFrameworkCore;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
+namespace WorldCitiesAPI.Data.Models
+{
     [Table("Cities")]
     [Index(nameof(Name))]
     [Index(nameof(Lat))]
@@ -16,23 +16,23 @@
         /// </summary>
         [Key]
         [Required]
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// City name (in UTF8 format)
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         /// <summary>
         /// City latitude
         /// </summary>
-        [Column(TypeName = "decimal(7, 4)")]
+        [Column(TypeName = "decimal(7,4)")]
         public decimal Lat { get; set; }
 
         /// <summary>
         /// City longitude
         /// </summary>
-        [Column(TypeName = "decimal(7, 4)")]
+        [Column(TypeName = "decimal(7,4)")]
         public decimal Lon { get; set; }
 
         /// <summary>
@@ -47,7 +47,6 @@
         /// The country related to this city.
         /// </summary>
         public Country? Country { get; set; } = null!;
-
         #endregion
     }
 }

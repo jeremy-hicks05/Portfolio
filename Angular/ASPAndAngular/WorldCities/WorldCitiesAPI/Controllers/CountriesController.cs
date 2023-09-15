@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WorldCitiesAPI.Data;
 using WorldCitiesAPI.Data.Models;
+using System.Linq.Dynamic.Core;
 
 namespace WorldCitiesAPI.Controllers
 {
@@ -21,25 +22,29 @@ namespace WorldCitiesAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Countries
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
+        public async Task<ActionResult<ApiResult<Country>>> GetCountries(
+                int pageIndex = 0,
+                int pageSize = 10,
+                string? sortColumn = null,
+                string? sortOrder = null,
+                string? filterColumn = null,
+                string? filterQuery = null)
         {
-          if (_context.Countries == null)
-          {
-              return NotFound();
-          }
-            return await _context.Countries.ToListAsync();
+            return await ApiResult<Country>.CreateAsync(
+                    _context.Countries.AsNoTracking(),
+                    pageIndex,
+                    pageSize,
+                    sortColumn,
+                    sortOrder,
+                    filterColumn,
+                    filterQuery);
         }
 
         // GET: api/Countries/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Country>> GetCountry(int id)
         {
-          if (_context.Countries == null)
-          {
-              return NotFound();
-          }
             var country = await _context.Countries.FindAsync(id);
 
             if (country == null)
@@ -86,10 +91,6 @@ namespace WorldCitiesAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Country>> PostCountry(Country country)
         {
-          if (_context.Countries == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Countries'  is null.");
-          }
             _context.Countries.Add(country);
             await _context.SaveChangesAsync();
 
@@ -100,10 +101,6 @@ namespace WorldCitiesAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCountry(int id)
         {
-            if (_context.Countries == null)
-            {
-                return NotFound();
-            }
             var country = await _context.Countries.FindAsync(id);
             if (country == null)
             {
@@ -118,7 +115,36 @@ namespace WorldCitiesAPI.Controllers
 
         private bool CountryExists(int id)
         {
-            return (_context.Countries?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _context.Countries.Any(e => e.Id == id);
+        }
+
+        [HttpPost]
+        [Route("IsDupeField")]
+        public bool IsDupeField(
+            int countryId,
+            string fieldName,
+            string fieldValue)
+        {
+            // Default approach (using strongly-typed LAMBA expressions)
+            //switch (fieldName)
+            //{
+            // case "name":
+            // return _context.Countries.Any(c => c.Name == fieldValue);
+            // case "iso2":
+            // return _context.Countries.Any(c => c.ISO2 == fieldValue);
+            // case "iso3":
+            // return _context.Countries.Any(c => c.ISO3 == fieldValue);
+            // default:
+            // return false;
+            //}
+
+            // Alternative approach (using System.Linq.Dynamic.Core)
+            return (ApiResult<Country>.IsValidProperty(fieldName, true))
+                ? _context.Countries.Any(
+                    string.Format("{0} == @0 && Id != @1", fieldName),
+                    fieldValue,
+                    countryId)
+                : false;
         }
     }
 }
