@@ -4,8 +4,6 @@
       Early Version Review: Shaun Lake    
       Late Version Review: Jim Shaver
 
-![Screenshot](https://github.com/jeremy-hicks05/Portfolio/tree/master/C%23/Games/ConsoleChess/ChessAppScreenshot.png)
-
  Description:                                                 
       Imitates a Chess board, allowing user to input          
       a letter and number combination to select a space       
