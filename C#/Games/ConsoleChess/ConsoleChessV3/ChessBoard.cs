@@ -87,9 +87,11 @@ namespace ConsoleChessV3
         public static string GetUserRowInput(string column)
         {
             string row = "0";
-            Console.WriteLine(column.ToLower());
+            
             while (!(Regex.Match(row!, "^[1-8]$").Success))
             {
+                // add show first half of move (ex. 'e')
+                Console.WriteLine(column.ToLower());
                 Console.WriteLine("Please enter a number (1-8)");
                 row = Console.ReadLine()!.ToUpper();
                 PrintBoard();
@@ -131,11 +133,11 @@ namespace ConsoleChessV3
         /// </summary>
         public static void GetInitialSpaceInput()
         {
+            PrintBoard();
             // get user input (A-H) and (1-8) for initial space
             string selectedPieceColumn = GetUserColumnInput();
             string selectedPieceRow = GetUserRowInput(selectedPieceColumn);
-
-            PrintBoard();
+            
             SetInitialSpaceFromInput(selectedPieceColumn, selectedPieceRow);
         }
 
@@ -389,6 +391,11 @@ namespace ConsoleChessV3
                         ChangeTurn();
                         UpdateHasJustMovedTwo();
                         PrintBoard();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid Chess Move");
+                        Console.ReadLine();
                     }
                 }
             }

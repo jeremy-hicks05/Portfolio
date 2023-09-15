@@ -58,15 +58,15 @@
                         }
                         else
                         {
-                            Console.WriteLine("King would be in check");
-                            Console.ReadLine();
+                            //Console.WriteLine("King would be in check");
+                            //Console.ReadLine();
                             return false;
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Piece is blocked");
-                        Console.ReadLine();
+                        //Console.WriteLine("Piece is blocked");
+                        //Console.ReadLine();
                         return false;
                     }
                 }
@@ -80,24 +80,21 @@
                         }
                         else
                         {
-                            Console.WriteLine("King would be in check");
-                            Console.ReadLine();
+                            //Console.WriteLine("King would be in check");
+                            //Console.ReadLine();
                             return false;
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Piece is blocked");
-                        Console.ReadLine();
+                        //Console.WriteLine("Piece is blocked");
+                        //Console.ReadLine();
                         return false;
                     }
                 }
-                else
-                {
-                    Console.WriteLine($"{StartingSpace!.GetPiece()!.GetType().ToString().Split(".").Last()} does not move like that");
-                    Console.ReadLine();
-                    return false;
-                }
+                Console.WriteLine($"{StartingSpace!.GetPiece()!.GetType().ToString().Split(".").Last()} does not move like that");
+                Console.ReadLine();
+                return false;
             }
             Console.WriteLine("Starting space is empty.");
             Console.ReadLine();

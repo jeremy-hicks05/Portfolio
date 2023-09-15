@@ -47,6 +47,7 @@ namespace ConsoleChessV3
                     !BlackIsStaleMated() &&
                     !WhiteIsStaleMated() )
             {
+                //PrintBoard();
                 GetInitialSpaceInput();
                 GetTargetSpaceInput();
 
