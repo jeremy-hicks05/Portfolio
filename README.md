@@ -1,3 +1,4 @@
-# Games
+C# 
 
-1. C# Console Chess
+1. Games
+  a. C# Console Chess
