@@ -1,0 +1,25 @@
+<header>
+    <mat-toolbar color="primary">
+        <button mat-icon-button [routerLink]="['/']">
+            <mat-icon>home</mat-icon>
+        </button>
+        <a mat-flat-button color="primary" [routerLink]="['/tickets']">
+            Tickets
+        </a>
+        <a *ngIf="userHasRole" mat-flat-button color="primary" [routerLink]="['/categories']">
+            Categories
+        </a>
+        <a *ngIf="userHasRole" mat-flat-button color="primary" [routerLink]="['/impacts']">
+            Impacts
+        </a>
+        <a *ngIf="userHasRole" mat-flat-button color="primary" [routerLink]="['/approvalStates']">
+            ApprovalStates
+        </a>
+        <a *ngIf="userHasRole" mat-flat-button color="primary" [routerLink]="['/ticketSubTypes']">
+            SubTypes
+        </a>
+        <a *ngIf="userHasRole" mat-flat-button color="primary" [routerLink]="['/health-check']">
+            Health Check
+        </a>
+    </mat-toolbar>
+</header>
