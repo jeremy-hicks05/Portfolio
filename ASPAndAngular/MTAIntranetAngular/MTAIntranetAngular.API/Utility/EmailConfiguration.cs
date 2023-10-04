@@ -37,7 +37,7 @@ namespace MTAIntranetAngular.Utility
                 MyMail.EnableSsl = true;
                 MyMsg.Priority = MailPriority.Normal;
                 MyMsg.To.Add(new MailAddress(recipientsArray[i].Trim('\'')));
-                MyMsg.Subject = ticket.SubType.Name + " " + ticket.Category.Name + " ticket from Intranet: " + ticket.DateEntered.ToString("MM/dd/yyyy hh:mm tt");
+                MyMsg.Subject = "Ticket Approval Request: " + ticket.SubType.Name + " " + ticket.Category.Name + " ticket from Intranet: " + ticket.DateEntered.ToString("MM/dd/yyyy hh:mm tt");
                 MyMsg.SubjectEncoding = Encoding.UTF8;
                 MyMsg.IsBodyHtml = true;
                 MyMsg.From = SetMailAddress();
@@ -86,7 +86,7 @@ namespace MTAIntranetAngular.Utility
                 MyMail.EnableSsl = true;
                 MyMsg.Priority = MailPriority.Normal;
                 MyMsg.To.Add(new MailAddress(recipientsArray[i].Trim('\'')));
-                MyMsg.Subject = ticket.SubType.Name + " " + ticket.Category.Name + " ticket from Intranet: " + ticket.DateEntered.ToString("MM/dd/yyyy hh:mm tt");
+                MyMsg.Subject = "Notice: " + ticket.SubType.Name + " " + ticket.Category.Name + " ticket from Intranet: " + ticket.DateEntered.ToString("MM/dd/yyyy hh:mm tt");
                 MyMsg.SubjectEncoding = Encoding.UTF8;
                 MyMsg.IsBodyHtml = true;
                 MyMsg.From = SetMailAddress();
@@ -211,7 +211,7 @@ namespace MTAIntranetAngular.Utility
             //{
             //    MyMsg.To.Add(email);
             //}
-            MyMsg.Subject = ticket.SubType.Name + " " + ticket.Category.Name + " ticket from Intranet: " + ticket.DateEntered.ToString("MM/dd/yyyy hh:mm tt");
+            MyMsg.Subject = "Ticket " + ticket.ApprovalState.Name + ": " + ticket.SubType.Name + " " + ticket.Category.Name + " ticket from Intranet: " + ticket.DateEntered.ToString("MM/dd/yyyy hh:mm tt");
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
@@ -221,7 +221,9 @@ namespace MTAIntranetAngular.Utility
                 @"https://mtadev.mta-flint.net:8443/mtaIntranet#/ticket/" + ticket.TicketId + "<br />" +
                 "Category: " + ticket.Category.Name + " <br />" +
                 "Impact: " + ticket.Impact.Description + " <br />" +
-                "Reason for rejection: " + ticket.ReasonForRejection;
+                ticket.ApprovalState.Name == "Approved" ? 
+                "Approved "
+                : "Reason for rejection: " + ticket.ReasonForRejection;
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;

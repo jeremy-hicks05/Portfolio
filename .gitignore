@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/ASPAndAngular/MTAIntranetAngular/MTAIntranetAngular/.angular/cache/
+ASPAndAngular/MTAIntranetAngular/MTAIntranetAngular/dist/
+ASPAndAngular/MTAIntranetAngular/MTAIntranetAngular/node_modules/
+ASPAndAngular/MTAIntranetAngular/v17/
+ASPAndAngular/MTAIntranetAngular/.vs/

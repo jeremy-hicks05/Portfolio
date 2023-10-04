@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jhicks\\source\\repos\\MTA-Jeremy-Hicks\\MTAIntranetAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj": {}
+    "C:\\Users\\jhicks\\source\\repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jhicks\\source\\repos\\MTA-Jeremy-Hicks\\MTAIntranetAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj": {
+    "C:\\Users\\jhicks\\source\\repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jhicks\\source\\repos\\MTA-Jeremy-Hicks\\MTAIntranetAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj",
+        "projectUniqueName": "C:\\Users\\jhicks\\source\\repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj",
         "projectName": "MTAIntranetAngular.API",
-        "projectPath": "C:\\Users\\jhicks\\source\\repos\\MTA-Jeremy-Hicks\\MTAIntranetAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj",
+        "projectPath": "C:\\Users\\jhicks\\source\\repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj",
         "packagesPath": "C:\\Users\\jhicks\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jhicks\\source\\repos\\MTA-Jeremy-Hicks\\MTAIntranetAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\obj\\",
+        "outputPath": "C:\\Users\\jhicks\\source\\repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\jhicks\\AppData\\Roaming\\NuGet\\NuGet.Config",

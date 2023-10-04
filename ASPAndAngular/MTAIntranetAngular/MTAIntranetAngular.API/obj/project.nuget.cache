@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9KdOhpI0dYEiE9n2kD3sg02ddthVdiDduWdjAY2OSoqus23u7FKpUKMKXWKQMwTULKHoHOdb1fbdigsDUcvU1g==",
+  "dgSpecHash": "tpklMg45BatAAK2ip5cQwH2Pp+idsSAKURysa8z3dtAM4lcLS8EYcrxRZ09GTEF2LDJ9qYTxJyJMQrUe3x7V0w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\jhicks\\source\\repos\\MTA-Jeremy-Hicks\\MTAIntranetAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj",
+  "projectFilePath": "C:\\Users\\jhicks\\source\\repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jhicks\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\jhicks\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
