@@ -7,3 +7,6 @@ ASPAndAngular/MTAIntranetAngular/MTAIntranetAngular/dist/
 ASPAndAngular/MTAIntranetAngular/MTAIntranetAngular/node_modules/
 ASPAndAngular/MTAIntranetAngular/v17/
 ASPAndAngular/MTAIntranetAngular/.vs/
+ASPAndAngular/MTAIntranetAngular/.vs/MTAIntranetAngular/v17
+*.v2
+ASPAndAngular/MTAIntranetAngular/MTAIntranetAngular.API/obj/Debug/net7.0/MTAIntranetAngular.API.assets.cache
