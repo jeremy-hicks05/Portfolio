@@ -1,0 +1,34 @@
+<div class="approval-state-edit">
+    <h1>{{title}}</h1>
+    <p *ngIf="this.approvalStateId && !approvalState"><em>Loading…</em></p>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <p>
+            <mat-error *ngIf="form.invalid && form.hasError('isDupeApprovalState')">
+                <strong>ERROR</strong>:
+                An approval state with the same <i>name</i> already exists.
+            </mat-error>
+        </p>
+
+        <!-- Name -->
+        <mat-form-field>
+            <mat-label>Name:</mat-label>
+            <input matInput formControlName="name" required
+                   placeholder="Type a name"
+                   pattern="^[a-zA-Z\s]+$">
+            <mat-error *ngIf="this.form.controls['name'].errors?.['required']">
+                Name is required.
+            </mat-error>
+        </mat-form-field>
+        <div>
+            <button mat-flat-button color="primary"
+                    type="submit" [disabled]="!form.valid">
+                {{ this.approvalStateId ? "Save" : "Create" }}
+            </button>
+            <button mat-flat-button color="secondary"
+                    [routerLink]="['/approvalStates']">
+                Cancel
+            </button>
+        </div>
+    </form>
+</div>

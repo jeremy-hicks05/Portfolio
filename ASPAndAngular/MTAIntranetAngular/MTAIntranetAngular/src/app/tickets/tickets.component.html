@@ -1,0 +1,94 @@
+<h1 id="tableLabel">Tickets</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p *ngIf="!tickets">
+    <em>Loading...</em>
+</p>
+
+<button mat-flat-button color="primary"
+        class="btn-add" *ngIf="tickets" [routerLink]="['/ticket']">
+    Add a new Ticket
+</button>
+
+<mat-form-field [hidden]="!tickets">
+    <input matInput #filter (keyup)="loadData(filter.value)"
+           placeholder="Filter by name (or part of it)..." />
+</mat-form-field>
+
+<table mat-table [dataSource]="tickets"
+       class="mat-elevation-z8"
+       [hidden]="!tickets"
+       matSort (matSortChange)="loadData()"
+       [matSortActive]="defaultSortColumn"
+       [matSortDirection]="defaultSortOrder">
+    <ng-container matColumnDef="ticketId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ticketId</th>
+        <td mat-cell *matCellDef="let ticket"><a [routerLink]="['/ticket', ticket.ticketId]">{{ticket.ticketId}}</a></td>
+    </ng-container>
+    <ng-container matColumnDef="categoryId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>categoryId</th>
+        <td mat-cell *matCellDef="let ticket">{{ticket.category.name}}</td>
+    </ng-container>
+    <ng-container matColumnDef="subTypeId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>subType</th>
+        <td mat-cell *matCellDef="let ticket">{{ticket.subType.name}}</td>
+    </ng-container>
+    <ng-container matColumnDef="impactId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>impact</th>
+        <td mat-cell *matCellDef="let ticket">{{ticket.impact.description}}</td>
+    </ng-container>
+    <ng-container matColumnDef="summary">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>summary</th>
+        <td mat-cell *matCellDef="let ticket">{{ticket.summary}}</td>
+    </ng-container>
+    <ng-container matColumnDef="reasonForRejection">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>reasonForRejection</th>
+        <td mat-cell *matCellDef="let ticket">{{ticket.reasonForRejection}}</td>
+    </ng-container>
+    <ng-container matColumnDef="approvalStateId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>approvalState</th>
+        <td mat-cell *matCellDef="let ticket">{{ticket.approvalState.name}}</td>
+    </ng-container>
+    <ng-container matColumnDef="approvedby">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>approvedby</th>
+        <td mat-cell *matCellDef="let ticket">{{ticket.approvedBy}}</td>
+    </ng-container>
+    <ng-container matColumnDef="dateentered">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>dateentered</th>
+        <td mat-cell *matCellDef="let ticket">{{ticket.dateEntered}}</td>
+    </ng-container>
+    <ng-container matColumnDef="datelastupdated">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>datelastupdated</th>
+        <td mat-cell *matCellDef="let ticket">{{ticket.dateLastUpdated}}</td>
+    </ng-container>
+    <ng-container matColumnDef="enteredbyuser">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>enteredbyuser</th>
+        <td mat-cell *matCellDef="let ticket">{{ticket.enteredByUser}}</td>
+    </ng-container>
+    <!-- <ng-container matColumnDef="approvalstate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>approvalstate</th>
+        <td mat-cell *matCellDef="let ticket">{{ticket.approvalState}}</td>
+    </ng-container>
+    <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>category</th>
+        <td mat-cell *matCellDef="let ticket">{{ticket.category}}</td>
+    </ng-container>
+    <ng-container matColumnDef="impact">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>impact</th>
+        <td mat-cell *matCellDef="let ticket">{{ticket.impact}}</td>
+    </ng-container>
+    <ng-container matColumnDef="subtype">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>subtype</th>
+        <td mat-cell *matCellDef="let ticket">{{ticket.ticketSubType}}</td>
+    </ng-container> -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<!-- Pagination directive -->
+<mat-paginator [hidden]="!tickets"
+               (page)="getData($event)"
+               [pageSize]="10"
+               [pageSizeOptions]="[10, 20, 50]"
+               showFirstLastButtons></mat-paginator>

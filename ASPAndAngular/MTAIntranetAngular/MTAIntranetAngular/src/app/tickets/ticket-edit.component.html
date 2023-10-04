@@ -1,0 +1,94 @@
+<div class="ticket-edit">
+    <h1>{{title}}</h1>
+    <p *ngIf="this.id && !ticket"><em>Loading…</em></p>
+    <form [formGroup]="form">
+        <!-- <mat-form-field>
+        <mat-label>Ticket ID:</mat-label>
+        <input matInput formControlName="ticketId" required
+               placeholder="Type a Ticket ID">
+    </mat-form-field> -->
+        <!-- Category -->
+        <mat-form-field *ngIf="categories">
+            <mat-label>Select a Category...</mat-label>
+            <mat-select (selectionChange)="loadSubTypesFromCategory($event)" id="categoryId" formControlName="categoryId">
+                <mat-option *ngFor="let category of categories" [value]="category.categoryId">
+                    {{ category.name }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="this.form.controls['categoryId'].errors?.['required']">
+                Category is required.
+            </mat-error>
+        </mat-form-field>
+        <!-- SubType -->
+        <mat-form-field>
+            <mat-label>Select a Sub Type...</mat-label>
+            <mat-select (selectionChange)="setApprovalState($event)" id="subTypeId" formControlName="subTypeId">
+                <mat-option *ngFor="let subType of subTypes" [value]="subType.ticketSubTypeId">
+                    {{ subType.description }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="this.form.controls['subTypeId'].errors?.['required']">
+                Sub Type is required.
+            </mat-error>
+        </mat-form-field>
+        <!-- Impact -->
+        <mat-form-field *ngIf="impacts">
+            <mat-label>Select an Impact...</mat-label>
+            <mat-select id="impactId" formControlName="impactId">
+                <mat-option *ngFor="let impact of impacts" [value]="impact.impactId">
+                    {{ impact.description }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="this.form.controls['impactId'].errors?.['required']">
+                Impact is required.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Summary:</mat-label>
+            <input matInput formControlName="summary" required
+                   placeholder="Type a Summary">
+            <mat-error *ngIf="this.form.controls['summary'].errors?.['required']">
+                Summary is required.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="(form.controls['approvalStateId'].value == 2
+            || form.controls['approvalStateId'].value == 4) && id">
+            <mat-label>Reason For Rejection:</mat-label>
+            <input matInput formControlName="reasonForRejection" required>
+        </mat-form-field>
+
+        <!-- <span [hidden]="form.controls['approvalStateId'].value != 2 || !form.valid || !id">Reason for Rejection:</span> -->
+
+        <input *ngIf="!((form.controls['approvalStateId'].value == 2
+            || form.controls['approvalStateId'].value == 4) && id)"
+               formControlName="reasonForRejection" required
+               [hidden]="form.controls['approvalStateId'].value != 2 || !form.valid || !id"
+               [disabled]="form.controls['approvalStateId'].value !=2 || !form.valid || !id" value="NA">
+
+        <input formControlName="approvalStateId" required hidden>
+        <input formControlName="approvedBy" required hidden>
+        <input formControlName="dateEntered" required hidden>
+        <input formControlName="dateLastUpdated" required hidden>
+        <input formControlName="enteredByUser" required hidden>
+        <div>
+            <button style="margin:5px" mat-flat-button color="primary"
+                    (click)="onSubmit()" [disabled]="!form.valid">
+                {{ this.id ? "Save" : "Create" }}
+            </button>
+            <button style="margin:5px;background-color:darkgreen;color:white"
+                [hidden]="form.controls['approvalStateId'].value != 2 || !form.valid || !id" mat-flat-button
+                (click)=approve()>
+                Approve
+            </button>
+            <button style="margin:5px;background-color:darkred;color:white"
+                [hidden]="!form.valid || form.controls['approvalStateId'].value != 2 || !id" mat-flat-button
+                (click)=reject()>
+                Reject
+            </button>
+            <button mat-flat-button color="secondary"
+                    [routerLink]="['/tickets']">
+                Cancel
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,66 @@
+<h1>
+    SubTypes
+    <!--for {{windowsCurrentUser}} -->
+</h1>
+
+<p *ngIf="!ticketSubTypes"><em>Loading...</em></p>
+
+<button mat-flat-button color="primary"
+        class="btn-add" *ngIf="ticketSubTypes" [routerLink]="['/ticketSubType']">
+    Add a new SubType
+</button>
+
+<mat-form-field [hidden]="!ticketSubTypes">
+    <input matInput #filter (keyup)="onFilterTextChanged(filter.value)"
+           placeholder="Filter by name (or part of it)...">
+</mat-form-field>
+
+<table mat-table [dataSource]="ticketSubTypes"
+       class="mat-elevation-z8"
+       [hidden]="!ticketSubTypes"
+       matSort (matSortChange)="loadData()"
+       [matSortActive]="defaultSortColumn"
+       [matSortDirection]="defaultSortOrder">
+    <!-- Id Column -->
+    <ng-container matColumnDef="ticketSubTypeId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>SubType Id</th>
+        <td mat-cell *matCellDef="let subType">{{ subType.ticketSubTypeId }}</td>
+    </ng-container>
+    <!--Category Column -->
+    <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+        <td mat-cell *matCellDef="let subType">{{ subType.category.name }}</td>
+    </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let subType">
+            <a [routerLink]="['/ticketSubType', subType.ticketSubTypeId]">{{ subType.name }}</a>
+        </td>
+    </ng-container>
+    <!--Description Column -->
+    <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+        <td mat-cell *matCellDef="let subType">{{ subType.description }}</td>
+    </ng-container>
+    <!--Needs Approval Column -->
+    <ng-container matColumnDef="needsApproval">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Needs Approval</th>
+        <td mat-cell *matCellDef="let subType">{{ subType.needsApproval }}</td>
+    </ng-container>
+    <!--CCList Column -->
+    <ng-container matColumnDef="cclist">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>CC List</th>
+        <td mat-cell *matCellDef="let subType">{{ subType.cclist }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<!-- Pagination directive -->
+<mat-paginator [hidden]="!ticketSubTypes"
+               (page)="getData($event)"
+               [pageSize]="10"
+               [pageSizeOptions]="[10, 20, 50]"
+               showFirstLastButtons></mat-paginator>

@@ -1,0 +1,89 @@
+<div class="sub-type-edit">
+    <h1>{{title}}</h1>
+    <p *ngIf="this.subTypeId && !subType"><em>Loading…</em></p>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <p>
+            <mat-error *ngIf="form.invalid && form.hasError('isDupeSubType')">
+                <strong>ERROR</strong>:
+                A subtype with the same <i>name</i>
+                and <i>associated ticket type</i>
+                <!-- and <i>description</i>-->
+                already exists.
+            </mat-error>
+        </p>
+
+        <!-- Category -->
+        <mat-form-field>
+            <mat-label>Category:</mat-label>
+            <mat-select id="categoryId" formControlName="categoryId">
+                <mat-option *ngFor="let category of categories" [value]="category.categoryId">
+                    {{ category.name }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="this.form.controls['categoryId'].errors?.['required']">
+                Category is required.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Name -->
+        <mat-form-field>
+            <mat-label>Name:</mat-label>
+            <input matInput formControlName="name" required
+                   placeholder="Enter a name"
+                   pattern="^[a-zA-Z\s]+$">
+            <mat-error *ngIf="this.form.controls['name'].errors?.['required']">
+                Name is required.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Description -->
+        <mat-form-field>
+            <mat-label>Description:</mat-label>
+            <input matInput formControlName="description" required
+                   placeholder="Enter a description"
+                   pattern="^[a-zA-Z\s]+$">
+            <mat-error *ngIf="this.form.controls['description'].errors?.['required']">
+                Description is required.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Needs Approval -->
+        <mat-form-field>
+            <mat-label>Needs Approval:</mat-label>
+            <mat-select id="needsApproval" formControlName="needsApproval">
+                <mat-option value="Yes">
+                    Yes
+                </mat-option>
+                <mat-option value="No">
+                    No
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="this.form.controls['needsApproval'].errors?.['required']">
+                Needs Approval is required.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- CCList -->
+        <!-- pattern="^[[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]][,]?+$" -->
+        <mat-form-field>
+            <mat-label>CCList (emails separated by commas):</mat-label>
+            <input matInput formControlName="cclist" required
+                   placeholder="Enter a list of emails separated by commas"
+                   pattern="^([\w+-.%]+@[\w.-]+\.[A-Za-z]{2,4})(,[\w+-.%]+@[\w.-]+\.[A-Za-z]{2,4})*$">
+            <mat-error *ngIf="this.form.controls['cclist'].errors?.['required']">
+                CC List is required.
+            </mat-error>
+        </mat-form-field>
+        <div>
+            <button mat-flat-button color="primary"
+                    type="submit" [disabled]="!form.valid">
+                {{ this.subTypeId ? "Save" : "Create" }}
+            </button>
+            <button mat-flat-button color="secondary"
+                    [routerLink]="['/ticketSubTypes']">
+                Cancel
+            </button>
+        </div>
+    </form>
+</div>

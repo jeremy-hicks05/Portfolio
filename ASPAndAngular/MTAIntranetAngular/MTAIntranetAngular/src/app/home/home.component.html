@@ -1,0 +1,29 @@
+<h1>Welcome to the MTA Intranet Beta</h1>
+<p>This website is under construction.  Please report any issues to the ITS helpdesk</p>
+
+<mat-grid-list style="height:50%;width:50%" cols="2" rowHeight="2:1">
+    <mat-grid-tile>
+        <button style="height:100%;width:100%;background-color:lightgray" mat-raised-button [routerLink]="['/ticket']">
+            <p style="font-size:36px">Enter Ticket</p>
+            <mat-icon style="transform: scale(2)">add_circle</mat-icon>
+        </button>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <button style="height:100%;width:100%;background-color:darkgray" mat-raised-button [routerLink]="['/tickets']">
+            <p style="font-size:36px">All Tickets</p>
+            <mat-icon style="transform: scale(2)">list_alt</mat-icon>
+        </button>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <button disabled style="height:100%;width:100%;background-color:darkgreen" mat-raised-button [routerLink]="['/']">
+            <p style="font-size:36px"><s>My Tickets</s></p>
+            <mat-icon style="transform: scale(2)">my_library_books</mat-icon>
+        </button>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <button disabled style="height:100%;width:100%;background-color:darkred" mat-raised-button [routerLink]="['/']">
+            <p style="font-size:36px"><s>Report Issue</s></p>
+            <mat-icon style="transform: scale(2)">error_outline</mat-icon>
+        </button>
+    </mat-grid-tile>
+</mat-grid-list>
