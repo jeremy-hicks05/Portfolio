@@ -5,6 +5,7 @@ C#
 
 Angular
  - [Angular/AngularAndASP](https://github.com/jeremy-hicks05/Portfolio/tree/master/Angular/ASPAndAngular/WorldCities) CRUD Functions on Local Data
+ - [Angular/MTAIntranet](https://github.com/jeremy-hicks05/Portfolio/tree/master/Angular/ASPAndAngular/MTAIntranetAngular) Custom Intranet
 
 JavaScript
 - [JavaScript/Battleship](https://github.com/jeremy-hicks05/Portfolio/tree/master/JavaScript/myBattleShip) Battleship Game
