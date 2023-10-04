@@ -44,7 +44,7 @@ namespace MTAIntranetAngular.Utility
                 MyMsg.BodyEncoding = Encoding.UTF8;
                 MyMsg.Body = ticket.Summary + "<br />" +
                     //"https://mtadev.mta-flint.net/Tickets/" + ticket.TicketId + "<br />" +
-                    @"https://https://mtadev.mta-flint.net:8443/mtaIntranet#/ticket/" + ticket.TicketId + "<br />" +
+                    @"https://mtadev.mta-flint.net:8443/mtaIntranet#/ticket/" + ticket.TicketId + "<br />" +
                     "Impact: " + ticket.Impact.Description + "<br />" +
                     "Approval State: " + ticket.ApprovalState.Name + "<br />" +
                     "Entered by User: " + ticket.EnteredByUser + "<br />" +
@@ -211,7 +211,10 @@ namespace MTAIntranetAngular.Utility
             //{
             //    MyMsg.To.Add(email);
             //}
-            MyMsg.Subject = "Ticket " + ticket.ApprovalState.Name + ": " + ticket.SubType.Name + " " + ticket.Category.Name + " ticket from Intranet: " + ticket.DateEntered.ToString("MM/dd/yyyy hh:mm tt");
+            MyMsg.Subject = "Ticket " + ticket.ApprovalState.Name + ": " + 
+                ticket.SubType.Name + " " + ticket.Category.Name + 
+                " ticket from Intranet: " + 
+                ticket.DateEntered.ToString("MM/dd/yyyy hh:mm tt");
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
@@ -221,9 +224,11 @@ namespace MTAIntranetAngular.Utility
                 @"https://mtadev.mta-flint.net:8443/mtaIntranet#/ticket/" + ticket.TicketId + "<br />" +
                 "Category: " + ticket.Category.Name + " <br />" +
                 "Impact: " + ticket.Impact.Description + " <br />" +
-                ticket.ApprovalState.Name == "Approved" ? 
+                "SubType: " + ticket.SubType.Name + " <br />" +
+                "Description: " + ticket.SubType.Description + " <br />" +
+                (ticket.ApprovalState.Name == "Approved" ? 
                 "Approved "
-                : "Reason for rejection: " + ticket.ReasonForRejection;
+                : "Reason for rejection: " + ticket.ReasonForRejection);
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;
