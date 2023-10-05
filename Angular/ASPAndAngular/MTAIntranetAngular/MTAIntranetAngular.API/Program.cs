@@ -4,6 +4,7 @@ using HealthCheck.API;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace MTAIntranetAngular.API
 {
@@ -44,11 +45,31 @@ namespace MTAIntranetAngular.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            //builder.Services.AddCors(options =>
+            //options.AddPolicy(name: "AngularPolicy",
+            //cfg =>
+            //{
+            //    cfg.AllowAnyHeader();
+            //    cfg.AllowAnyMethod();
+            //    cfg.WithOrigins(builder.Configuration["AllowedCORS"]);
+            //}));
+
             builder.Services.AddDbContext<MtaticketsContext>(options =>
                 options.UseSqlServer(MTADevConnection),
                 ServiceLifetime.Transient);
 
             var app = builder.Build();
+
+            // ADDED
+            FileExtensionContentTypeProvider provider =
+                new FileExtensionContentTypeProvider();
+            provider.Mappings[".webmanifest"] = "application/majifest+json";
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                ContentTypeProvider = provider
+            });
+            // ADDED
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -70,14 +91,24 @@ namespace MTAIntranetAngular.API
                 .SetIsOriginAllowed(host => true)
                 );
 
+
+
             app.UseHttpsRedirection();
+
+            // Does CORS below break healthcheck?
 
             app.UseHealthChecks(new PathString("/api/health"),
                 new CustomHealthCheckOptions());
 
             app.UseAuthorization();
 
+            // ADDED 
+            //app.UseCors("AngularPolicy");
+
             app.MapControllers();
+
+            app.MapMethods("/api/heartbeat", new[] { "HEAD" },
+                () => Results.Ok());
 
             app.Run();
         }

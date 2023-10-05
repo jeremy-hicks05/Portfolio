@@ -27,6 +27,13 @@ import { CategoryEditComponent } from './categories/category-edit.component';
 import { ImpactEditComponent } from './impacts/impact-edit.component';
 import { TicketSubTypeEditComponent } from './ticket-sub-types/ticket-sub-type-edit.component';
 import { windAuthenticationInterceptor } from './common/windowAuthenticationInterceptor';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import {
+  ConnectionServiceModule,
+  ConnectionServiceOptions,
+  ConnectionServiceOptionsToken
+} from 'angular-connection-service';
 
 import { DatePipe } from '@angular/common';
 
@@ -56,13 +63,27 @@ import { DatePipe } from '@angular/common';
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
+    ConnectionServiceModule
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: windAuthenticationInterceptor,
-    multi: true
-  }, DatePipe],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: windAuthenticationInterceptor,
+      multi: true
+    },
+    DatePipe,
+    {
+      provide: ConnectionServiceOptionsToken,
+      useValue: <ConnectionServiceOptions>{
+        heartbeatUrl: environment.baseUrl + '/api/heartbeat',
+
+      }
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
