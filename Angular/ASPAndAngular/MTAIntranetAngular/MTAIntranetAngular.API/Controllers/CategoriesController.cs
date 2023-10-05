@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MTAIntranetAngular.API;
+using MTAIntranetAngular.API.Data.Models;
 
 namespace MTAIntranetAngular.API.Controllers
 {

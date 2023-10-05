@@ -4,16 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace MTAIntranetAngular.API;
+namespace MTAIntranetAngular.API.Data.Models;
 
-[Table("TicketSubType")]
-public partial class TicketSubType
+public partial class TicketSubTypeDTO
 {
-    [Key]
-    [Column("TicketSubTypeID")]
     public int TicketSubTypeId { get; set; }
 
-    [Column("CategoryID")]
     public int CategoryId { get; set; }
 
     [StringLength(20)]
@@ -28,15 +24,7 @@ public partial class TicketSubType
     [Unicode(false)]
     public string NeedsApproval { get; set; } = null!;
 
-    [Column("CCList")]
     [StringLength(255)]
     [Unicode(false)]
     public string Cclist { get; set; } = null!;
-
-    [ForeignKey("CategoryId")]
-    [InverseProperty("TicketSubTypes")]
-    public virtual Category? Category { get; set; } = null!;
-
-    [InverseProperty("SubType")]
-    public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }

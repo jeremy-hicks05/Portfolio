@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MTAIntranetAngular.API.Data.Models;
 
 namespace MTAIntranetAngular.API.Controllers
 {

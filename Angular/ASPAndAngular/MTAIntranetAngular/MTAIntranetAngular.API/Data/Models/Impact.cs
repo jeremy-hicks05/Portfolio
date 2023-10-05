@@ -4,19 +4,19 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace MTAIntranetAngular.API;
+namespace MTAIntranetAngular.API.Data.Models;
 
-[Table("ApprovalState")]
-public partial class ApprovalState
+[Table("Impact")]
+public partial class Impact
 {
     [Key]
-    [Column("ApprovalStateID")]
-    public int ApprovalStateId { get; set; }
+    [Column("ImpactID")]
+    public int ImpactId { get; set; }
 
-    [StringLength(30)]
+    [StringLength(50)]
     [Unicode(false)]
-    public string Name { get; set; } = null!;
+    public string Description { get; set; } = null!;
 
-    [InverseProperty("ApprovalState")]
+    [InverseProperty("Impact")]
     public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }

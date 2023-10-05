@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.StaticFiles;
+using MTAIntranetAngular.API.Data.GraphQL;
 
 namespace MTAIntranetAngular.API
 {
@@ -58,6 +59,13 @@ namespace MTAIntranetAngular.API
                 options.UseSqlServer(MTADevConnection),
                 ServiceLifetime.Transient);
 
+            builder.Services.AddGraphQLServer()
+                .AddAuthorization()
+                .AddQueryType<Query>()
+                .AddMutationType<Mutation>()
+                .AddFiltering()
+                .AddSorting();
+
             var app = builder.Build();
 
             // ADDED
@@ -106,6 +114,8 @@ namespace MTAIntranetAngular.API
             //app.UseCors("AngularPolicy");
 
             app.MapControllers();
+
+            app.MapGraphQL("/api/graphql");
 
             app.MapMethods("/api/heartbeat", new[] { "HEAD" },
                 () => Results.Ok());

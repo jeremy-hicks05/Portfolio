@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using MTAIntranetAngular.API.Data.Models;
 
 namespace MTAIntranetAngular.API;
 
@@ -32,7 +33,7 @@ public partial class MtaticketsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ApprovalState>(entity =>
+        modelBuilder.Entity<ApprovalStateDTO>(entity =>
         {
             entity.HasKey(e => e.ApprovalStateId).HasName("PK__Approval__BE49849A9AA9BEE2");
         });

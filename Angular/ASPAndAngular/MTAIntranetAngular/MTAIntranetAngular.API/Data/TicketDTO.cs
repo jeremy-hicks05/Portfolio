@@ -2,22 +2,16 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MTAIntranetAngular.API;
+namespace MTAIntranetAngular.API.Data.Models;
 
-[Table("Ticket")]
-public partial class Ticket
+public partial class TicketDTO
 {
-    [Key]
-    [Column("TicketID")]
     public int TicketId { get; set; }
 
-    [Column("CategoryID")]
     public int CategoryId { get; set; }
 
-    [Column("SubTypeID")]
     public int SubTypeId { get; set; }
 
-    [Column("ImpactID")]
     public int ImpactId { get; set; }
 
     [StringLength(255)]
@@ -28,7 +22,6 @@ public partial class Ticket
     [Unicode(false)]
     public string? ReasonForRejection { get; set; }
 
-    [Column("ApprovalStateID")]
     public int ApprovalStateId { get; set; }
 
     [StringLength(50)]
@@ -44,20 +37,4 @@ public partial class Ticket
     [StringLength(30)]
     [Unicode(false)]
     public string EnteredByUser { get; set; } = null!;
-
-    [ForeignKey("ApprovalStateId")]
-    [InverseProperty("Tickets")]
-    public virtual ApprovalState? ApprovalState { get; set; } = null!;
-
-    [ForeignKey("CategoryId")]
-    [InverseProperty("Tickets")]
-    public virtual Category? Category { get; set; } = null!;
-
-    [ForeignKey("ImpactId")]
-    [InverseProperty("Tickets")]
-    public virtual Impact? Impact { get; set; } = null!;
-
-    [ForeignKey("SubTypeId")]
-    [InverseProperty("Tickets")]
-    public virtual TicketSubType? SubType { get; set; } = null!;
 }

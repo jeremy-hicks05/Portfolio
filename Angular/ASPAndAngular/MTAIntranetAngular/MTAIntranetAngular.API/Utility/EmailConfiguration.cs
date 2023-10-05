@@ -1,11 +1,11 @@
-﻿using MTAIntranetAngular.API;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.DirectoryServices;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using Microsoft.EntityFrameworkCore;
+using MTAIntranetAngular.API.Data.Models;
 
 namespace MTAIntranetAngular.Utility
 {
