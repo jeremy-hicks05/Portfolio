@@ -69,14 +69,14 @@ namespace MTAIntranetAngular.API
             var app = builder.Build();
 
             // ADDED
-            FileExtensionContentTypeProvider provider =
-                new FileExtensionContentTypeProvider();
-            provider.Mappings[".webmanifest"] = "application/majifest+json";
+            //FileExtensionContentTypeProvider provider =
+            //    new FileExtensionContentTypeProvider();
+            //provider.Mappings[".webmanifest"] = "application/majifest+json";
 
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                ContentTypeProvider = provider
-            });
+            //app.UseStaticFiles(new StaticFileOptions()
+            //{
+            //    ContentTypeProvider = provider
+            //});
             // ADDED
 
             // Configure the HTTP request pipeline.
