@@ -8,6 +8,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort';
 
 import { Ticket } from './ticket';
+import { TicketService } from './ticket.service';
 
 @Component({
   selector: 'app-tickets',
@@ -43,7 +44,7 @@ export class TicketsComponent implements OnInit {
   @ViewChild(MatSort)
   sort!: MatSort;
 
-  constructor(private http: HttpClient) {
+  constructor(private ticketService: TicketService) {
   }
 
   ngOnInit() {
@@ -59,25 +60,32 @@ export class TicketsComponent implements OnInit {
   }
 
   getData(event: PageEvent) {
-    var url = environment.baseUrl + '/api/tickets';
-    var params = new HttpParams()
-      .set("pageIndex", event.pageIndex.toString())
-      .set("pageSize", event.pageSize.toString())
-      .set("sortColumn", (this.sort)
-        ? this.sort.active
-        : this.defaultSortColumn)
-      .set("sortOrder", (this.sort)
-        ? this.sort.direction
-        : this.defaultSortOrder);
+    var sortColumn = (this.sort)
+      ? this.sort.active
+      : this.defaultSortColumn;
 
-    if (this.filterQuery) {
-      params = params
-        .set("filterColumn", this.defaultFilterColumn)
-        .set("filterQuery", this.filterQuery)
-    }
+    var sortOrder = (this.sort)
+      ? this.sort.direction
+      : this.defaultSortOrder;
 
-    this.http.get<any>(url, { params })
+    var filterColumn = (this.filterQuery)
+      ? this.defaultFilterColumn
+      : null;
+
+    var filterQuery = (this.filterQuery)
+      ? this.filterQuery
+      : null;
+
+    this.ticketService.getData(
+      event.pageIndex,
+      event.pageSize,
+      sortColumn,
+      sortOrder,
+      filterColumn,
+      filterQuery)
+
       .subscribe(result => {
+        console.log(result);
         this.paginator.length = result.totalCount;
         this.paginator.pageIndex = result.pageIndex;
         this.paginator.pageSize = result.pageSize;

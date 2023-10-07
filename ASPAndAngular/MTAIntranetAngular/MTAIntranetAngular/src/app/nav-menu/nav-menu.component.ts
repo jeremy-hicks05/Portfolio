@@ -11,15 +11,17 @@ export class NavMenuComponent {
   windowsCurrentUser!: string;
   userHasRole!: boolean;
 
-  constructor(userService: UserService) {
-    userService.get().subscribe(username => {
-      this.windowsCurrentUser = username;
-      //alert(this.windowsCurrentUser);
-    });
+  constructor() { }
 
-    userService.hasRole("ITS Users").subscribe(role => {
-      this.userHasRole = role == "True";
-      //alert(role);
-    });
-  }
+  //constructor(userService: UserService) {
+    //userService.get().subscribe(username => {
+    //  this.windowsCurrentUser = username;
+    //  //alert(this.windowsCurrentUser);
+    //});
+
+    //userService.hasRole("ITS Users").subscribe(role => {
+    //  this.userHasRole = role == "True";
+    //  //alert(role);
+    //});
+  //}
 }

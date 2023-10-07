@@ -6,19 +6,20 @@
         <a mat-flat-button color="primary" [routerLink]="['/tickets']">
             Tickets
         </a>
-        <a *ngIf="userHasRole" mat-flat-button color="primary" [routerLink]="['/categories']">
+        <!-- *ngIf="userHasRole" -->
+        <a mat-flat-button color="primary" [routerLink]="['/categories']">
             Categories
         </a>
-        <a *ngIf="userHasRole" mat-flat-button color="primary" [routerLink]="['/impacts']">
+        <a mat-flat-button color="primary" [routerLink]="['/impacts']">
             Impacts
         </a>
-        <a *ngIf="userHasRole" mat-flat-button color="primary" [routerLink]="['/approvalStates']">
+        <a mat-flat-button color="primary" [routerLink]="['/approvalStates']">
             ApprovalStates
         </a>
-        <a *ngIf="userHasRole" mat-flat-button color="primary" [routerLink]="['/ticketSubTypes']">
+        <a mat-flat-button color="primary" [routerLink]="['/ticketSubTypes']">
             SubTypes
         </a>
-        <a *ngIf="userHasRole" mat-flat-button color="primary" [routerLink]="['/health-check']">
+        <a mat-flat-button color="primary" [routerLink]="['/health-check']">
             Health Check
         </a>
     </mat-toolbar>

@@ -11,6 +11,5 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\common\" />
-    <Folder Include="src\app\services\" />
   </ItemGroup>
 </Project>
