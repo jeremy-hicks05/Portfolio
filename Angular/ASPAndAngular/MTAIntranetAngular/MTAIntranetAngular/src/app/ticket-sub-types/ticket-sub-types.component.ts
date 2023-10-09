@@ -107,7 +107,7 @@ export class TicketSubTypesComponent implements OnInit {
   }
 
   //loadSubTypes() {
-  //  this.http.get<TicketSubType[]>(environment.baseUrl + '/api/ticketsubtypes')
+  //  this.http.get<TicketSubType[]>(environment.baseUrl + 'api/ticketsubtypes')
   //    .subscribe(result => {
   //      this.ticketSubTypes = result.data;
   //    }, error => console.error(error));

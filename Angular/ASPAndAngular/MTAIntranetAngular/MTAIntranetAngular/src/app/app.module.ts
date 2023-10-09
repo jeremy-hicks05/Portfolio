@@ -37,7 +37,7 @@ import {
 
 import { DatePipe } from '@angular/common';
 
-import { APOLLO_OPTIONS } from 'apollo-angular';
+import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 
@@ -59,6 +59,7 @@ import { InMemoryCache } from '@apollo/client/core';
     TicketSubTypeEditComponent
   ],
   imports: [
+    ApolloModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
@@ -84,7 +85,7 @@ import { InMemoryCache } from '@apollo/client/core';
     {
       provide: ConnectionServiceOptionsToken,
       useValue: <ConnectionServiceOptions>{
-        heartbeatUrl: environment.baseUrl + '/api/heartbeat',
+        heartbeatUrl: environment.baseUrl + 'api/heartbeat',
 
       }
     },

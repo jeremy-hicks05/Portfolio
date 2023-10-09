@@ -27,4 +27,6 @@ public partial class TicketSubTypeDTO
     [StringLength(255)]
     [Unicode(false)]
     public string Cclist { get; set; } = null!;
+
+    public string CategoryName { get; set; } = null!;
 }

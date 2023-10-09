@@ -60,7 +60,7 @@ export class TicketSubTypeEditComponent implements OnInit {
     this.subTypeId = idParam ? +idParam : 0;
     if (this.subTypeId) {
       // fetch the city from the server
-      var url = environment.baseUrl + '/api/TicketSubTypes/' + this.subTypeId;
+      var url = environment.baseUrl + 'api/TicketSubTypes/' + this.subTypeId;
       this.http.get<TicketSubType>(url).subscribe(result => {
         this.subType = result;
         this.title = "Edit - " + this.subType.name;
@@ -77,7 +77,7 @@ export class TicketSubTypeEditComponent implements OnInit {
 
   loadSubTypes() {
     // fetch all the counrties from the server
-    var url = environment.baseUrl + '/api/TicketSubTypes';
+    var url = environment.baseUrl + 'api/TicketSubTypes';
     var params = new HttpParams()
       .set("pageIndex", 0)
       .set("pageSize", 9999)
@@ -90,7 +90,7 @@ export class TicketSubTypeEditComponent implements OnInit {
 
   loadCategories() {
     // fetch all the counrties from the server
-    var url = environment.baseUrl + '/api/Categories';
+    var url = environment.baseUrl + 'api/Categories';
     var params = new HttpParams()
       .set("pageIndex", 0)
       .set("pageSize", 9999)
@@ -112,7 +112,7 @@ export class TicketSubTypeEditComponent implements OnInit {
 
       if (this.subTypeId) {
 
-        var url = environment.baseUrl + '/api/TicketSubTypes/' + subType.ticketSubTypeId;
+        var url = environment.baseUrl + 'api/TicketSubTypes/' + subType.ticketSubTypeId;
         this.http
           .put<TicketSubType>(url, subType)
           .subscribe(result => {
@@ -123,7 +123,7 @@ export class TicketSubTypeEditComponent implements OnInit {
       }
       else {
         // ADD NEW mode
-        var url = environment.baseUrl + '/api/TicketSubTypes';
+        var url = environment.baseUrl + 'api/TicketSubTypes';
         this.http
           .post<TicketSubType>(url, subType)
           .subscribe(result => {
@@ -147,7 +147,7 @@ export class TicketSubTypeEditComponent implements OnInit {
       subType.needsApproval = this.form.controls['needsApproval'].value;
       subType.categoryId = +this.form.controls['categoryId'].value;
 
-      var url = environment.baseUrl + '/api/TicketSubTypes/IsDupeSubType';
+      var url = environment.baseUrl + 'api/TicketSubTypes/IsDupeSubType';
       return this.http.post<boolean>(url, subType).pipe(map(result => {
         return (result ? { isDupeSubType: true } : null);
       }));

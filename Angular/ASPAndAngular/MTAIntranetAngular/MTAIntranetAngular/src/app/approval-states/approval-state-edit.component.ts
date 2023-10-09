@@ -52,7 +52,7 @@ export class ApprovalStateEditComponent implements OnInit {
     this.approvalStateId = idParam ? +idParam : 0;
     if (this.approvalStateId) {
       // fetch the city from the server
-      var url = environment.baseUrl + '/api/ApprovalStates/' + this.approvalStateId;
+      var url = environment.baseUrl + 'api/ApprovalStates/' + this.approvalStateId;
       this.http.get<ApprovalState>(url).subscribe(result => {
         this.approvalState = result;
         this.title = "Edit - " + this.approvalState.name;
@@ -68,7 +68,7 @@ export class ApprovalStateEditComponent implements OnInit {
   }
   loadApprovalStates() {
     // fetch all the counrties from the server
-    var url = environment.baseUrl + '/api/ApprovalStates';
+    var url = environment.baseUrl + 'api/ApprovalStates';
     var params = new HttpParams()
       .set("pageIndex", 0)
       .set("pageSize", 9999)
@@ -87,7 +87,7 @@ export class ApprovalStateEditComponent implements OnInit {
 
       if (this.approvalStateId) {
 
-        var url = environment.baseUrl + '/api/ApprovalStates/' + approvalState.approvalStateId;
+        var url = environment.baseUrl + 'api/ApprovalStates/' + approvalState.approvalStateId;
         this.http
           .put<ApprovalState>(url, approvalState)
           .subscribe(result => {
@@ -98,7 +98,7 @@ export class ApprovalStateEditComponent implements OnInit {
       }
       else {
         // ADD NEW mode
-        var url = environment.baseUrl + '/api/ApprovalStates';
+        var url = environment.baseUrl + 'api/ApprovalStates';
         this.http
           .post<ApprovalState>(url, approvalState)
           .subscribe(result => {
@@ -117,7 +117,7 @@ export class ApprovalStateEditComponent implements OnInit {
       approvalState.approvalStateId = (this.approvalStateId) ? this.approvalStateId : 0;
       approvalState.name = this.form.controls['name'].value;
 
-      var url = environment.baseUrl + '/api/ApprovalStates/IsDupeApprovalState';
+      var url = environment.baseUrl + 'api/ApprovalStates/IsDupeApprovalState';
       return this.http.post<boolean>(url, approvalState).pipe(map(result => {
         return (result ? { isDupeApprovalState: true } : null);
       }));

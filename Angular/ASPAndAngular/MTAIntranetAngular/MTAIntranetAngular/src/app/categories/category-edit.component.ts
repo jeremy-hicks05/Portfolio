@@ -53,7 +53,7 @@ export class CategoryEditComponent implements OnInit{
     this.categoryId = idParam ? +idParam : 0;
     if (this.categoryId) {
       // fetch the city from the server
-      var url = environment.baseUrl + '/api/Categories/' + this.categoryId;
+      var url = environment.baseUrl + 'api/Categories/' + this.categoryId;
       this.http.get<Category>(url).subscribe(result => {
         this.category = result;
         this.title = "Edit - " + this.category.name;
@@ -69,7 +69,7 @@ export class CategoryEditComponent implements OnInit{
   }
   loadCategories() {
     // fetch all the counrties from the server
-    var url = environment.baseUrl + '/api/Categories';
+    var url = environment.baseUrl + 'api/Categories';
     var params = new HttpParams()
       .set("pageIndex", 0)
       .set("pageSize", 9999)
@@ -88,7 +88,7 @@ export class CategoryEditComponent implements OnInit{
 
       if (this.categoryId) {
 
-        var url = environment.baseUrl + '/api/Categories/' + category.categoryId;
+        var url = environment.baseUrl + 'api/Categories/' + category.categoryId;
         this.http
           .put<Category>(url, category)
           .subscribe(result => {
@@ -99,7 +99,7 @@ export class CategoryEditComponent implements OnInit{
       }
       else {
         // ADD NEW mode
-        var url = environment.baseUrl + '/api/Categories';
+        var url = environment.baseUrl + 'api/Categories';
         this.http
           .post<Category>(url, category)
           .subscribe(result => {
@@ -119,7 +119,7 @@ export class CategoryEditComponent implements OnInit{
       category.categoryId = (this.categoryId) ? this.categoryId : 0;
       category.name = this.form.controls['name'].value;
 
-      var url = environment.baseUrl + '/api/Categories/IsDupeCategory';
+      var url = environment.baseUrl + 'api/Categories/IsDupeCategory';
       return this.http.post<boolean>(url, category).pipe(map(result => {
         return (result ? { isDupeCategory: true } : null);
       }));

@@ -118,7 +118,7 @@ export class TicketEditComponent implements OnInit {
       // EDIT MODE
 
       // fetch the ticket from the server
-      var url = environment.baseUrl + '/api/Tickets/' + this.id;
+      var url = environment.baseUrl + 'api/Tickets/' + this.id;
       this.http.get<Ticket>(url).subscribe(result => {
         this.ticket = result;
         this.title = "Edit Ticket # - " + this.ticket.ticketId;
@@ -140,7 +140,7 @@ export class TicketEditComponent implements OnInit {
   }
 
   loadApprovalStates() {
-    var url = environment.baseUrl + '/api/ApprovalStates';
+    var url = environment.baseUrl + 'api/ApprovalStates';
     var params = new HttpParams();
 
     this.http.get<any>(url, { params }).subscribe(result => {
@@ -149,7 +149,7 @@ export class TicketEditComponent implements OnInit {
   }
 
   setApprovalState(event: any) {
-    var url = environment.baseUrl + '/api/TicketSubTypes/' + event.value;
+    var url = environment.baseUrl + 'api/TicketSubTypes/' + event.value;
 
     var params = new HttpParams();
 
@@ -161,7 +161,7 @@ export class TicketEditComponent implements OnInit {
   }
 
   loadCategories() {
-    var url = environment.baseUrl + '/api/Categories';
+    var url = environment.baseUrl + 'api/Categories';
     var params = new HttpParams();
 
     this.http.get<any>(url, { params }).subscribe(result => {
@@ -170,7 +170,7 @@ export class TicketEditComponent implements OnInit {
   }
 
   loadImpacts() {
-    var url = environment.baseUrl + '/api/Impacts';
+    var url = environment.baseUrl + 'api/Impacts';
     var params = new HttpParams();
 
     this.http.get<any>(url, { params }).subscribe(result => {
@@ -179,7 +179,7 @@ export class TicketEditComponent implements OnInit {
   }
 
   loadSubTypes() {
-    var url = environment.baseUrl + '/api/TicketSubTypes';
+    var url = environment.baseUrl + 'api/TicketSubTypes';
     var params = new HttpParams();
 
     this.http.get<any>(url, { params }).subscribe(result => {
@@ -190,7 +190,7 @@ export class TicketEditComponent implements OnInit {
   loadSubTypesFromCategory(event: any) {
     this.form.controls['subTypeId'].enable();
     this.form.controls['subTypeId'].setValue("");
-    var url = environment.baseUrl + '/api/TicketSubTypes/filter/' + event.value;
+    var url = environment.baseUrl + 'api/TicketSubTypes/filter/' + event.value;
     var params = new HttpParams();
 
     this.http.get<any>(url, { params }).subscribe(result => {
@@ -213,7 +213,7 @@ export class TicketEditComponent implements OnInit {
       ticket.dateLastUpdated = this.form.controls['dateLastUpdated'].value;
       ticket.enteredByUser = this.form.controls['enteredByUser'].value;
 
-      var url = environment.baseUrl + '/api/Tickets/Approve/' + ticket.ticketId;
+      var url = environment.baseUrl + 'api/Tickets/Approve/' + ticket.ticketId;
       this.http
         .put<Ticket>(url, ticket)
         .subscribe(result => {
@@ -241,7 +241,7 @@ export class TicketEditComponent implements OnInit {
       ticket.dateLastUpdated = this.form.controls['dateLastUpdated'].value;
       ticket.enteredByUser = this.form.controls['enteredByUser'].value;
 
-      var url = environment.baseUrl + '/api/Tickets/Reject/' + ticket.ticketId;
+      var url = environment.baseUrl + 'api/Tickets/Reject/' + ticket.ticketId;
       this.http
         .put<Ticket>(url, ticket)
         .subscribe(result => {
@@ -281,7 +281,7 @@ export class TicketEditComponent implements OnInit {
       if (this.id) {
         // EDIT mode
 
-        var url = environment.baseUrl + '/api/Tickets/' + ticket.ticketId;
+        var url = environment.baseUrl + 'api/Tickets/' + ticket.ticketId;
         this.http
           .put<Ticket>(url, ticket)
           .subscribe(result => {
@@ -294,7 +294,7 @@ export class TicketEditComponent implements OnInit {
       }
       else {
         // ADD NEW mode
-        var url = environment.baseUrl + '/api/Tickets';
+        var url = environment.baseUrl + 'api/Tickets';
         this.http
           .post<Ticket>(url, ticket)
           .subscribe(result => {

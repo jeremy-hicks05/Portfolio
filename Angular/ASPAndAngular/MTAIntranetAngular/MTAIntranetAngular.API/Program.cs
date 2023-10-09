@@ -52,7 +52,8 @@ namespace MTAIntranetAngular.API
             //{
             //    cfg.AllowAnyHeader();
             //    cfg.AllowAnyMethod();
-            //    cfg.WithOrigins(builder.Configuration["AllowedCORS"]);
+            //    cfg.AllowAnyOrigin();
+            //    //cfg.WithOrigins(builder.Configuration["AllowedCORS"]);
             //}));
 
             builder.Services.AddDbContext<MtaticketsContext>(options =>
@@ -60,7 +61,7 @@ namespace MTAIntranetAngular.API
                 ServiceLifetime.Transient);
 
             builder.Services.AddGraphQLServer()
-                .AddAuthorization()
+                //.AddAuthorization()
                 .AddQueryType<Query>()
                 .AddMutationType<Mutation>()
                 .AddFiltering()

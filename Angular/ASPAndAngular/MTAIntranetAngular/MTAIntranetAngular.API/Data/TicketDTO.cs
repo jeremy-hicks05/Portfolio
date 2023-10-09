@@ -37,4 +37,11 @@ public partial class TicketDTO
     [StringLength(30)]
     [Unicode(false)]
     public string EnteredByUser { get; set; } = null!;
+
+    public string CategoryName { get; set; } = null!;
+
+    public string SubTypeName { get; set; } = null!;
+    public string ImpactName { get; set; } = null!;
+
+    public string ApprovalStateName { get; set; } = null!;
 }

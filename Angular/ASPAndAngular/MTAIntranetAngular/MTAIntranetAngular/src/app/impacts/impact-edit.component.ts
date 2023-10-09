@@ -54,7 +54,7 @@ export class ImpactEditComponent implements OnInit{
     this.impactId = idParam ? +idParam : 0;
     if (this.impactId) {
       // fetch the city from the server
-      var url = environment.baseUrl + '/api/Impacts/' + this.impactId;
+      var url = environment.baseUrl + 'api/Impacts/' + this.impactId;
       this.http.get<Impact>(url).subscribe(result => {
         this.impact = result;
         this.title = "Edit - " + this.impact.description;
@@ -71,7 +71,7 @@ export class ImpactEditComponent implements OnInit{
 
   loadImpacts() {
     // fetch all the counrties from the server
-    var url = environment.baseUrl + '/api/Impacts';
+    var url = environment.baseUrl + 'api/Impacts';
     var params = new HttpParams()
       .set("pageIndex", 0)
       .set("pageSize", 9999)
@@ -91,7 +91,7 @@ export class ImpactEditComponent implements OnInit{
 
       if (this.impactId) {
 
-        var url = environment.baseUrl + '/api/Impacts/' + impact.impactId;
+        var url = environment.baseUrl + 'api/Impacts/' + impact.impactId;
         this.http
           .put<Impact>(url, impact)
           .subscribe(result => {
@@ -102,7 +102,7 @@ export class ImpactEditComponent implements OnInit{
       }
       else {
         // ADD NEW mode
-        var url = environment.baseUrl + '/api/Impacts';
+        var url = environment.baseUrl + 'api/Impacts';
         this.http
           .post<Impact>(url, impact)
           .subscribe(result => {
@@ -122,7 +122,7 @@ export class ImpactEditComponent implements OnInit{
       impact.impactId = (this.impactId) ? this.impactId: 0;
       impact.description = this.form.controls['description'].value;
 
-      var url = environment.baseUrl + '/api/Impacts/IsDupeImpact';
+      var url = environment.baseUrl + 'api/Impacts/IsDupeImpact';
       return this.http.post<boolean>(url, impact).pipe(map(result => {
         return (result ? { isDupeImpact: true } : null);
       }));
