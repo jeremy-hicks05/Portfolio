@@ -37,6 +37,10 @@ import {
 
 import { DatePipe } from '@angular/common';
 
+import { APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
+import { InMemoryCache } from '@apollo/client/core';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -83,6 +87,24 @@ import { DatePipe } from '@angular/common';
         heartbeatUrl: environment.baseUrl + '/api/heartbeat',
 
       }
+    },
+    {
+      provide: APOLLO_OPTIONS,
+      useFactory: (httpLink: HttpLink) => {
+        return {
+          cache: new InMemoryCache({
+            addTypename: false
+          }),
+          link: httpLink.create({
+            uri: environment.baseUrl + 'api/graphql',
+          }),
+          defaultOptions: {
+            watchQuery: { fetchPolicy: 'no-cache' },
+            query: { fetchPolicy: 'no-cache' }
+          }
+        };
+      },
+      deps: [HttpLink],
     }],
   bootstrap: [AppComponent]
 })

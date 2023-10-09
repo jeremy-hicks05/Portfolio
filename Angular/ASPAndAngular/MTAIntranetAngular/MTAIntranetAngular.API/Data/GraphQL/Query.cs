@@ -25,5 +25,15 @@ namespace MTAIntranetAngular.API.Data.GraphQL
         public IQueryable<Category> GetCategories(
         [Service] MtaticketsContext context)
         => context.Categories;
+        /// <summary>
+        /// Gets all ApprovalStates.
+        /// /// </summary>
+        [Serial]
+        [UsePaging]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<ApprovalState> GetApprovalStates(
+        [Service] MtaticketsContext context)
+        => context.ApprovalStates;
     }
 }
