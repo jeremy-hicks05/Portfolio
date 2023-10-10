@@ -26,7 +26,7 @@ namespace MTAIntranetAngular.API.Controllers
         [HttpGet]
         public async Task<ActionResult<ApiResult<Category>>> GetCategories(
             int pageIndex = 0,
-            int pageSize = 99,
+            int pageSize = 20,
             string? sortColumn = null,
             string? sortOrder = null,
             string? filterColumn = null,
@@ -92,7 +92,6 @@ namespace MTAIntranetAngular.API.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 

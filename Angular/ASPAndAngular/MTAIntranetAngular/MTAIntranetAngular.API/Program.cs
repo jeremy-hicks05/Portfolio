@@ -90,7 +90,7 @@ namespace MTAIntranetAngular.API
             app.UseCors(options =>
                 options
                 .WithOrigins("https://localhost:4200"
-                //"https://mtadev.mta-flint.net/",
+                //"https://mtadev.mta-flint.net/"
                 //"https://mtadev.mta-flint.net:50443/"
                 )
                 //.AllowAnyOrigin()

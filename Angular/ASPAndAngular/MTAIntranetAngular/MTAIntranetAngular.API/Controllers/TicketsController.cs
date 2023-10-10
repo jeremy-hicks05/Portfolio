@@ -32,10 +32,10 @@ namespace MTAIntranetAngular.API.Controllers
             string? filterColumn = null,
             string? filterQuery = null)
         {
-          if (_context.Tickets == null)
-          {
-              return NotFound();
-          }
+            if (_context.Tickets == null)
+            {
+                return NotFound();
+            }
             return await ApiResult<Ticket>.CreateAsync(
                 _context.Tickets
                 .AsNoTracking()
@@ -56,10 +56,10 @@ namespace MTAIntranetAngular.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Ticket>> GetTicket(int id)
         {
-          if (_context.Tickets == null)
-          {
-              return NotFound();
-          }
+            if (_context.Tickets == null)
+            {
+                return NotFound();
+            }
             var ticket = await _context.Tickets
                 .AsNoTracking()
                 .Include(t => t.Category)
@@ -87,9 +87,9 @@ namespace MTAIntranetAngular.API.Controllers
                 return BadRequest();
             }
 
-            ticket.DateLastUpdated = DateTime.Now;
+            //ticket.DateLastUpdated = DateTime.Now;
             _context.Entry(ticket).State = EntityState.Modified;
-            
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -188,10 +188,10 @@ namespace MTAIntranetAngular.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Ticket>> PostTicket(Ticket ticket)
         {
-          if (_context.Tickets == null)
-          {
-              return Problem("Entity set 'MtaticketsContext.Tickets'  is null.");
-          }
+            if (_context.Tickets == null)
+            {
+                return Problem("Entity set 'MtaticketsContext.Tickets'  is null.");
+            }
             ticket.EnteredByUser = User.Identity!.Name!;
             ticket.Impact = _context.Impacts.Find(ticket.ImpactId);
             ticket.Category = _context.Categories.Find(ticket.CategoryId);
@@ -213,7 +213,7 @@ namespace MTAIntranetAngular.API.Controllers
             return CreatedAtAction("GetTicket", new { id = ticket.TicketId }, ticket);
         }
 
-        
+
 
         // DELETE: api/Tickets/5
         [HttpDelete("{id}")]
@@ -240,12 +240,12 @@ namespace MTAIntranetAngular.API.Controllers
             return (_context.Tickets?.Any(e => e.TicketId == id)).GetValueOrDefault();
         }
 
-        // -- EMAIL REMINDERS -- //
+        // -- EMAIL -- //
         #region EmailReminders
         [HttpGet]
         [AllowAnonymous]
         [Route("SendEmailReminders")]
-        public string SendEmailReminders()
+        public void SendEmailReminders()
         {
             foreach (Ticket ticket in
                 _context.Tickets
@@ -257,9 +257,36 @@ namespace MTAIntranetAngular.API.Controllers
             {
                 EmailConfiguration.SendApprovalRequestToManager(ticket);
             }
-            return "Email reminders sent";
         }
+
+        //[HttpGet]
+        //[AllowAnonymous]
+        //[Route("SendTicketInfo/{id}")]
+        //public void SendTicketInfo(int id)
+        //{
+        //    Ticket ticket = _context.Tickets
+        //        .Include(t => t.SubType)
+        //        .Include(t => t.Impact)
+        //        .Include(t => t.ApprovalState)
+        //        .Include(t => t.Category)
+        //        .First(t => t.TicketId == id);
+        //    EmailConfiguration.SendTicketInfoTo(ticket);
+        //}
+
+        //[HttpGet]
+        //[AllowAnonymous]
+        //[Route("SendTicketToKACE/{id}")]
+        //public void SendTicketToKACE(int id)
+        //{
+        //    Ticket ticket = _context.Tickets
+        //        .Include(t => t.SubType)
+        //        .Include(t => t.Impact)
+        //        .Include(t => t.ApprovalState)
+        //        .Include(t => t.Category)
+        //        .First(t => t.TicketId == id);
+        //    EmailConfiguration.SendEmailToKACE(ticket);
+        //}
         #endregion
-        // -- END EMAIL REMINDERS -- //
+        // -- END EMAIL -- //
     }
 }

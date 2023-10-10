@@ -8,7 +8,7 @@
                placeholder="Type a Ticket ID">
     </mat-form-field> -->
         <!-- Category -->
-        <mat-form-field *ngIf="categories">
+        <mat-form-field>
             <mat-label>Select a Category...</mat-label>
             <mat-select (selectionChange)="loadSubTypesFromCategory($event)" id="categoryId" formControlName="categoryId">
                 <mat-option *ngFor="let category of categories" [value]="category.categoryId">
@@ -32,7 +32,7 @@
             </mat-error>
         </mat-form-field>
         <!-- Impact -->
-        <mat-form-field *ngIf="impacts">
+        <mat-form-field>
             <mat-label>Select an Impact...</mat-label>
             <mat-select id="impactId" formControlName="impactId">
                 <mat-option *ngFor="let impact of impacts" [value]="impact.impactId">
@@ -51,6 +51,14 @@
                 Summary is required.
             </mat-error>
         </mat-form-field>
+        <mat-form-field *ngIf="this.id">
+            <mat-label>Entered By:</mat-label>
+            <input matInput formControlName="enteredByUser" required
+                   placeholder="Entered By User">
+            <mat-error *ngIf="this.form.controls['enteredByUser'].errors?.['required']">
+                User is required.
+            </mat-error>
+        </mat-form-field>
         <mat-form-field *ngIf="(form.controls['approvalStateId'].value == 2
             || form.controls['approvalStateId'].value == 4) && id">
             <mat-label>Reason For Rejection:</mat-label>
@@ -65,24 +73,26 @@
                [hidden]="form.controls['approvalStateId'].value != 2 || !form.valid || !id"
                [disabled]="form.controls['approvalStateId'].value !=2 || !form.valid || !id" value="NA">
 
+        <input *ngif="!this.id" formControlName="enteredByUser" required hidden>
+
         <input formControlName="approvalStateId" required hidden>
         <input formControlName="approvedBy" required hidden>
         <input formControlName="dateEntered" required hidden>
         <input formControlName="dateLastUpdated" required hidden>
-        <input formControlName="enteredByUser" required hidden>
+
         <div>
             <button style="margin:5px" mat-flat-button color="primary"
                     (click)="onSubmit()" [disabled]="!form.valid">
                 {{ this.id ? "Save" : "Create" }}
             </button>
             <button style="margin:5px;background-color:darkgreen;color:white"
-                [hidden]="form.controls['approvalStateId'].value != 2 || !form.valid || !id" mat-flat-button
-                (click)=approve()>
+                    [hidden]="form.controls['approvalStateId'].value != 2 || !form.valid || !id" mat-flat-button
+                    (click)=approve()>
                 Approve
             </button>
             <button style="margin:5px;background-color:darkred;color:white"
-                [hidden]="!form.valid || form.controls['approvalStateId'].value != 2 || !id" mat-flat-button
-                (click)=reject()>
+                    [hidden]="!form.valid || form.controls['approvalStateId'].value != 2 || !id" mat-flat-button
+                    (click)=reject()>
                 Reject
             </button>
             <button mat-flat-button color="secondary"
