@@ -1,11 +1,10 @@
 
-using Microsoft.EntityFrameworkCore;
 using HealthCheck.API;
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.Negotiate;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using MTAIntranetAngular.API.Data.GraphQL;
+using System.Text.Json.Serialization;
 
 namespace MTAIntranetAngular.API
 {
@@ -56,9 +55,12 @@ namespace MTAIntranetAngular.API
             //    //cfg.WithOrigins(builder.Configuration["AllowedCORS"]);
             //}));
 
+            // SignalR
+            builder.Services.AddSignalR();
+
             builder.Services.AddDbContext<MtaticketsContext>(options =>
-                options.UseSqlServer(MTADevConnection),
-                ServiceLifetime.Transient);
+                options.UseSqlServer(MTADevConnection));
+            //,ServiceLifetime.Transient);
 
             builder.Services.AddGraphQLServer()
                 //.AddAuthorization()
@@ -86,11 +88,17 @@ namespace MTAIntranetAngular.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.MapGet("/Error", () => Results.Problem());
+            }
 
             app.UseCors(options =>
                 options
-                .WithOrigins("https://localhost:4200"
-                //"https://mtadev.mta-flint.net/"
+                .WithOrigins("https://localhost:4200",
+                "https://mtadev.mta-flint.net:8443/",
+                "https://mtadev.mta-flint.net/"
                 //"https://mtadev.mta-flint.net:50443/"
                 )
                 //.AllowAnyOrigin()
@@ -100,14 +108,18 @@ namespace MTAIntranetAngular.API
                 .SetIsOriginAllowed(host => true)
                 );
 
-
-
             app.UseHttpsRedirection();
-
-            // Does CORS below break healthcheck?
 
             app.UseHealthChecks(new PathString("/api/health"),
                 new CustomHealthCheckOptions());
+
+            app.MapHub<HealthCheckHub>("/api/health-hub");
+
+            app.MapGet("/api/broadcast/update2", async (IHubContext<HealthCheckHub> hub) =>
+            {
+                await hub.Clients.All.SendAsync("Update", "test");
+                return Results.Text("Update message sent.");
+            });
 
             app.UseAuthorization();
 
