@@ -3,7 +3,9 @@ using HealthCheck.API;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MTAIntranetAngular.API.Data.GraphQL;
+using System.Net;
 using System.Text.Json.Serialization;
 
 namespace MTAIntranetAngular.API
@@ -27,11 +29,12 @@ namespace MTAIntranetAngular.API
                 options.FallbackPolicy = options.DefaultPolicy;
             });
 
-            builder.Services.AddHealthChecks()
+        builder.Services.AddHealthChecks()
                 .AddCheck("MTADev", new ICMPHealthCheck("192.168.122.69", 100))
                 .AddCheck("FLTAS003", new ICMPHealthCheck("FLTAS003", 100))
                 .AddCheck("FLTASTS", new ICMPHealthCheck("FLTASTS", 100))
                 .AddCheck("Sched Srv", new ICMPHealthCheck("FLTAS015", 100))
+                .AddCheck("EAM Test", new IISHealthCheck("http://mtatrapezetest", "eam"))
                 .AddCheck("SendEmailRemindersAngular", new ServiceCheck("SendEmailRemindersAngular", "mtadev"))
                 //.AddCheck("EMailReminderService", new ServiceCheck("MyFirstService.Demo", "mtadev"))
                 //.AddCheck("EAM Max Queue Production", new ServiceCheck("EAM_MAXQ_52120", "192.168.122.70"))
