@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>ce1988cf-2c3d-402e-8308-f9055b03c1ad</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>MyProject.py</StartupFile>
+    <StartupFile>classSubclassIsInstance.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,7 +21,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="MyProject.py" />
+    <Compile Include="class.methods.factory.py" />
+    <Compile Include="classSubclassIsInstance.py" />
+    <Compile Include="class_inheritance.py" />
+    <Compile Include="multiple.inheritance.py" />
+    <Compile Include="static.methods.py" />
+    <Compile Include="super.explicit.py" />
+    <Compile Include="super.duplication.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
