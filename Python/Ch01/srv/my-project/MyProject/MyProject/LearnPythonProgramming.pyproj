@@ -5,7 +5,7 @@
     <ProjectGuid>ce1988cf-2c3d-402e-8308-f9055b03c1ad</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>classSubclassIsInstance.py</StartupFile>
+    <StartupFile>Chapter 6\classSubclassIsInstance.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,13 +22,53 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="class.methods.factory.py" />
-    <Compile Include="classSubclassIsInstance.py" />
-    <Compile Include="class_inheritance.py" />
-    <Compile Include="multiple.inheritance.py" />
-    <Compile Include="static.methods.py" />
-    <Compile Include="super.explicit.py" />
-    <Compile Include="super.duplication.py" />
+    <Compile Include="Chapter 6\cached.property.py" />
+    <Compile Include="Chapter 6\class.methods.factory.py" />
+    <Compile Include="Chapter 6\class.methods.split.py" />
+    <Compile Include="Chapter 6\classSubclassIsInstance.py" />
+    <Compile Include="Chapter 6\class_inheritance.py" />
+    <Compile Include="Chapter 6\dataclass.py" />
+    <Compile Include="Chapter 6\iterator.py" />
+    <Compile Include="Chapter 6\multiple.inheritance.py" />
+    <Compile Include="Chapter 6\operator.overloading.py" />
+    <Compile Include="Chapter 6\private.attrs.py" />
+    <Compile Include="Chapter 6\property.py" />
+    <Compile Include="Chapter 6\static.methods.py" />
+    <Compile Include="Chapter 6\super.explicit.py" />
+    <Compile Include="Chapter 6\super.duplication.py" />
+    <Compile Include="Chapter 7\decimal.prec.py" />
+    <Compile Include="Chapter 7\manager.class.py" />
+    <Compile Include="Chapter 7\multiple.py" />
+    <Compile Include="Chapter 7\trace.back.py" />
+    <Compile Include="Chapter 7\try.syntax.py" />
+    <Compile Include="Chapter 7\unhandled.py" />
+    <Compile Include="Chapter 8\existence.py" />
+    <Compile Include="Chapter 8\json_basic.py" />
+    <Compile Include="Chapter 8\json_cplx.py" />
+    <Compile Include="Chapter 8\json_datetime.py" />
+    <Compile Include="Chapter 8\json_tuple.py" />
+    <Compile Include="Chapter 8\listing.py" />
+    <Compile Include="Chapter 8\manipulation.py" />
+    <Compile Include="Chapter 8\open_try.py" />
+    <Compile Include="Chapter 8\open_with.py" />
+    <Compile Include="Chapter 8\ops_create.py" />
+    <Compile Include="Chapter 8\paths.py" />
+    <Compile Include="Chapter 8\print_file.py" />
+    <Compile Include="Chapter 8\read_write.py" />
+    <Compile Include="Chapter 8\read_write_bin.py" />
+    <Compile Include="Chapter 8\string_io.py" />
+    <Compile Include="Chapter 8\tmp.py" />
+    <Compile Include="Chapter 8\walking.py" />
+    <Compile Include="Chapter 8\write_not_exists.py" />
+    <Compile Include="Chapter 8\zip.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Chapter 6\" />
+    <Folder Include="Chapter 7\" />
+    <Folder Include="Chapter 8\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fear.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
