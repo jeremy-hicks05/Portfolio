@@ -1,10 +1,16 @@
 # io_examples/string_io.py
 import io
 
-stream = io.StringIO()
-stream.write('Learning Python Programming.\n')
-print('Become a Python ninja!', file=stream)
+# stream = io.StringIO()
+# stream.write('Learning Python Programming.\n')
+# print('Become a Python ninja!', file=stream)
 
-contents = stream.getvalue()
-print(contents)
-stream.close()
+# contents = stream.getvalue()
+# print(contents)
+# stream.close()
+
+with io.StringIO() as stream:
+    stream.write('Learning Python Programming.\n')
+    print('Become a python ninaj!', file=stream)
+    contents = stream.getvalue()
+    print(contents)

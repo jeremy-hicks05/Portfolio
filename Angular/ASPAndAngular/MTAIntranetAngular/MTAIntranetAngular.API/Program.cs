@@ -29,16 +29,17 @@ namespace MTAIntranetAngular.API
                 options.FallbackPolicy = options.DefaultPolicy;
             });
 
-        builder.Services.AddHealthChecks()
-                .AddCheck("MTADev", new ICMPHealthCheck("192.168.122.69", 100))
-                .AddCheck("FLTAS003", new ICMPHealthCheck("FLTAS003", 100))
-                .AddCheck("FLTASTS", new ICMPHealthCheck("FLTASTS", 100))
-                .AddCheck("Sched Srv", new ICMPHealthCheck("FLTAS015", 100))
-                .AddCheck("EAM Test", new IISHealthCheck("http://mtatrapezetest", "eam"))
-                .AddCheck("SendEmailRemindersAngular", new ServiceCheck("SendEmailRemindersAngular", "mtadev"))
-                //.AddCheck("EMailReminderService", new ServiceCheck("MyFirstService.Demo", "mtadev"))
-                //.AddCheck("EAM Max Queue Production", new ServiceCheck("EAM_MAXQ_52120", "192.168.122.70"))
-                .AddCheck("EAM Max Queue Test", new ServiceCheck("EAM_MAXQ_52120", "mtatrapezetest"));
+            builder.Services.AddHealthChecks()
+                    .AddCheck("MTADev", new ICMPHealthCheck("192.168.122.69", 100))
+                    .AddCheck("FLTAS003", new ICMPHealthCheck("FLTAS003", 100))
+                    .AddCheck("FLTASTS", new ICMPHealthCheck("FLTASTS", 100))
+                    .AddCheck("Sched Srv", new ICMPHealthCheck("FLTAS015", 100))
+                    .AddCheck("EAM Test", new IISHealthCheck("http://mtatrapezetest", "eam"))
+                    .AddCheck("EAM Prod", new IISHealthCheck("http://mtatrapezeprod", "eam"))
+                    .AddCheck("SendEmailRemindersAngular", new ServiceCheck("SendEmailRemindersAngular", "mtadev"))
+                    //.AddCheck("EMailReminderService", new ServiceCheck("MyFirstService.Demo", "mtadev"))
+                    //.AddCheck("EAM Max Queue Production", new ServiceCheck("EAM_MAXQ_52120", "192.168.122.70"))
+                    .AddCheck("EAM Max Queue Test", new ServiceCheck("EAM_MAXQ_52120", "mtatrapezetest"));
 
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
@@ -101,8 +102,8 @@ namespace MTAIntranetAngular.API
                 options
                 .WithOrigins("https://localhost:4200",
                 "https://mtadev.mta-flint.net:8443/",
-                "https://mtadev.mta-flint.net/"
-                //"https://mtadev.mta-flint.net:50443/"
+                "https://mtadev.mta-flint.net/mtaintranet#",
+                "https://mtadev.mta-flint.net:50443/"
                 )
                 //.AllowAnyOrigin()
                 .AllowAnyHeader()
@@ -111,10 +112,10 @@ namespace MTAIntranetAngular.API
                 .SetIsOriginAllowed(host => true)
                 );
 
-            app.UseHttpsRedirection();
-
             app.UseHealthChecks(new PathString("/api/health"),
-                new CustomHealthCheckOptions());
+            new CustomHealthCheckOptions());
+
+            app.UseHttpsRedirection();
 
             app.MapHub<HealthCheckHub>("/api/health-hub");
 

@@ -53,19 +53,33 @@
     <Compile Include="Chapter 8\open_with.py" />
     <Compile Include="Chapter 8\ops_create.py" />
     <Compile Include="Chapter 8\paths.py" />
+    <Compile Include="Chapter 8\pickler.py" />
     <Compile Include="Chapter 8\print_file.py" />
     <Compile Include="Chapter 8\read_write.py" />
     <Compile Include="Chapter 8\read_write_bin.py" />
+    <Compile Include="Chapter 8\reqs.py" />
+    <Compile Include="Chapter 8\shelf.py" />
+    <Compile Include="Chapter 8\SQL\alchemy.py" />
+    <Compile Include="Chapter 8\SQL\alchemy_models.py" />
     <Compile Include="Chapter 8\string_io.py" />
     <Compile Include="Chapter 8\tmp.py" />
     <Compile Include="Chapter 8\walking.py" />
     <Compile Include="Chapter 8\write_not_exists.py" />
     <Compile Include="Chapter 8\zip.py" />
+    <Compile Include="Chapter 9\tok.py" />
+    <Compile Include="Chapter10\api.py" />
+    <Compile Include="Chapter10\data.py" />
+    <Compile Include="Chapter10\test_api.py" />
+    <Compile Include="KACE\KACE_API.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Chapter 6\" />
     <Folder Include="Chapter 7\" />
     <Folder Include="Chapter 8\" />
+    <Folder Include="Chapter 8\SQL\" />
+    <Folder Include="Chapter 9\" />
+    <Folder Include="KACE\" />
+    <Folder Include="Chapter10\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fear.txt" />
