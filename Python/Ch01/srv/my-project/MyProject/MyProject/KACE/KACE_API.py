@@ -3,7 +3,7 @@ import json
 import requests
 
 username = 'admin'
-password = 'Flint48503'
+password = '***'
 org_name = 'Default'
 
 session = requests.session()
