@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+using MTAIntranetAngular.Utility;
 using System.Net.NetworkInformation;
 
 namespace HealthCheck.API
@@ -33,6 +34,7 @@ namespace HealthCheck.API
                     default:
                         var err =
                             $"ICMP to {Host} failed: {reply.Status}";
+                        EmailConfiguration.SendServerFailure(Host);
                         return HealthCheckResult.Unhealthy(err);
                 }
             }
@@ -40,6 +42,7 @@ namespace HealthCheck.API
             {
                 var err =
                     $"ICMP to {Host} failed {e.Message}";
+                EmailConfiguration.SendServerFailure(Host);
                 return HealthCheckResult.Unhealthy(err);
             }
         }

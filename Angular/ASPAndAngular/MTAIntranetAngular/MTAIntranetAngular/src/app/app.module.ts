@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular-material.module';
 
 import { CategoriesComponent } from './categories/categories.component';
+import { FieldsComponent } from './fields/fields.component';
 import { TicketsComponent } from './tickets/tickets.component';
 import { ImpactsComponent } from './impacts/impacts.component';
 import { TicketSubTypesComponent } from './ticket-sub-types/ticket-sub-types.component';
@@ -48,6 +49,7 @@ import { InMemoryCache } from '@apollo/client/core';
     NavMenuComponent,
     HealthCheckComponent,
     CategoriesComponent,
+    FieldsComponent,
     TicketsComponent,
     ImpactsComponent,
     TicketSubTypesComponent,

@@ -12,6 +12,7 @@
     <OutputPath>.</OutputPath>
     <Name>LearnPythonProgramming</Name>
     <RootNamespace>MyProject</RootNamespace>
+    <TestFramework>Pytest</TestFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +23,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Chapter 11\custom.py" />
+    <Compile Include="Chapter 11\custom_timestamp.py" />
+    <Compile Include="Chapter 12\guiscrape.py" />
+    <Compile Include="Chapter 12\scrape.py" />
     <Compile Include="Chapter 6\cached.property.py" />
     <Compile Include="Chapter 6\class.methods.factory.py" />
     <Compile Include="Chapter 6\class.methods.split.py" />
@@ -71,8 +76,17 @@
     <Compile Include="Chapter10\data.py" />
     <Compile Include="Chapter10\test_api.py" />
     <Compile Include="KACE\KACE_API.py" />
+    <Compile Include="Machine Learning\adaline.py" />
+    <Compile Include="Machine Learning\adalineSGD.py" />
+    <Compile Include="Machine Learning\irisData.py" />
+    <Compile Include="Machine Learning\logisticRegressionGD.py" />
+    <Compile Include="Machine Learning\perceptron.py" />
+    <Compile Include="Machine Learning\plotData.py" />
+    <Compile Include="Machine Learning\scikit-learn.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Chapter 12\simple_server\" />
+    <Folder Include="Chapter 12\simple_server\img\" />
     <Folder Include="Chapter 6\" />
     <Folder Include="Chapter 7\" />
     <Folder Include="Chapter 8\" />
@@ -80,8 +94,14 @@
     <Folder Include="Chapter 9\" />
     <Folder Include="KACE\" />
     <Folder Include="Chapter10\" />
+    <Folder Include="Chapter 11\" />
+    <Folder Include="Chapter 12\" />
+    <Folder Include="Ch14\" />
+    <Folder Include="Machine Learning\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Chapter 12\simple_server\index.html" />
+    <Content Include="Chapter 12\simple_server\serve.sh" />
     <Content Include="fear.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

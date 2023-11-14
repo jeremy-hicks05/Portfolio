@@ -195,7 +195,7 @@ export class CategoryService
     return this.http.get<ApiResult<Category>>(url, { params });
   }
 
-  isDupeApprovalState(item: Category): Observable<boolean> {
+  isDupeCategory(item: Category): Observable<boolean> {
     var url = this.getUrl("api/Categories/IsDupeCategory");
     return this.http.post<boolean>(url, item);
   }

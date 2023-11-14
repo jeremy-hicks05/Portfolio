@@ -256,6 +256,27 @@ namespace MTAIntranetAngular.Utility
             MyMail.Send(MyMsg);
         }
 
+        public static void SendProcessFailure(string processName, string serverName)
+        {
+            SmtpClient MyMail = new SmtpClient();
+            MailMessage MyMsg = new MailMessage();
+            MyMail.Host = "smtp.office365.com";
+            MyMail.Port = 587;
+            MyMail.EnableSsl = true;
+            MyMsg.Priority = MailPriority.Normal;
+            MyMsg.To.Add("jhicks@mtaflint.org");
+            MyMsg.Subject = processName + " is not running on server " + serverName;
+            MyMsg.SubjectEncoding = Encoding.UTF8;
+            MyMsg.IsBodyHtml = true;
+            MyMsg.From = SetMailAddress();
+            MyMsg.BodyEncoding = Encoding.UTF8;
+            MyMsg.Body = "Please start process " + processName + " on server " + serverName;
+            MyMail.UseDefaultCredentials = false;
+            NetworkCredential MyCredentials = SetCredentials();
+            MyMail.Credentials = MyCredentials;
+            MyMail.Send(MyMsg);
+        }
+
         private static NetworkCredential SetCredentials()
         {
             return new NetworkCredential("intranet@mtaflint.org", "$mtainet23!");

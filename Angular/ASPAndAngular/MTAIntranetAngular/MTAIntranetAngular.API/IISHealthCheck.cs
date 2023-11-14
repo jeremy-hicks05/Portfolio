@@ -59,7 +59,7 @@ namespace HealthCheck.API
                     default:
                         var err =
                             $"ICMP to {fullUri} failed";
-                        EmailConfiguration.SendServerFailure("EAM Test");
+                        EmailConfiguration.SendServerFailure(Host);
 
                         //Process.Start("cmd.exe", "SHUTDOWN /r /f /m \\" + "192.168.122.60");
 
@@ -82,7 +82,7 @@ namespace HealthCheck.API
             {
                 var err =
                     $"ICMP to {fullUri} failed {e.Message}";
-                EmailConfiguration.SendServerFailure("EAM Test");
+                EmailConfiguration.SendServerFailure(Host);
 
                 //Process.Start("cmd.exe", "SHUTDOWN /r /f /m \\" + "192.168.122.60");
 

@@ -36,6 +36,8 @@ namespace MTAIntranetAngular.API
                     .AddCheck("Sched Srv", new ICMPHealthCheck("FLTAS015", 100))
                     .AddCheck("EAM Test", new IISHealthCheck("http://mtatrapezetest", "eam"))
                     .AddCheck("EAM Prod", new IISHealthCheck("http://mtatrapezeprod", "eam"))
+                    .AddCheck("Notepad Process", new ProcessHealthCheck("notepad", "192.168.122.69"))
+                    .AddCheck("MDT Server", new ProcessHealthCheck("MDTServer2", "192.168.122.49"))
                     .AddCheck("SendEmailRemindersAngular", new ServiceCheck("SendEmailRemindersAngular", "mtadev"))
                     //.AddCheck("EMailReminderService", new ServiceCheck("MyFirstService.Demo", "mtadev"))
                     //.AddCheck("EAM Max Queue Production", new ServiceCheck("EAM_MAXQ_52120", "192.168.122.70"))
