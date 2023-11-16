@@ -44,12 +44,6 @@ namespace HealthCheck.API
                         // Send Email Error about process
                         EmailConfiguration.SendProcessFailure(ProcessName, Host);
 
-                        //ProcessStartInfo info = new ProcessStartInfo("C:\\PsTools");
-                        //info.FileName = @"C:\PsTools\psexec.exe";
-                        //info.Arguments = @"\\" + Host + @" -i C:\WINDOWS\notepad.exe";
-                        //info.RedirectStandardOutput = true;
-                        //info.UseShellExecute = false;
-                        //Process p = Process.Start(info);
                         return HealthCheckResult.Unhealthy(err);
                 }
             }

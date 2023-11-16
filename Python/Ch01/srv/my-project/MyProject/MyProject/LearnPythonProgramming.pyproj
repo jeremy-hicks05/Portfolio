@@ -78,6 +78,7 @@
     <Compile Include="KACE\KACE_API.py" />
     <Compile Include="Machine Learning\adaline.py" />
     <Compile Include="Machine Learning\adalineSGD.py" />
+    <Compile Include="Machine Learning\Ch04\missingValues.py" />
     <Compile Include="Machine Learning\irisData.py" />
     <Compile Include="Machine Learning\logisticRegressionGD.py" />
     <Compile Include="Machine Learning\perceptron.py" />
@@ -98,6 +99,7 @@
     <Folder Include="Chapter 12\" />
     <Folder Include="Ch14\" />
     <Folder Include="Machine Learning\" />
+    <Folder Include="Machine Learning\Ch04\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Chapter 12\simple_server\index.html" />

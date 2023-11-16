@@ -51,42 +51,22 @@ namespace MTAIntranetAngular.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            //builder.Services.AddCors(options =>
-            //options.AddPolicy(name: "AngularPolicy",
-            //cfg =>
-            //{
-            //    cfg.AllowAnyHeader();
-            //    cfg.AllowAnyMethod();
-            //    cfg.AllowAnyOrigin();
-            //    //cfg.WithOrigins(builder.Configuration["AllowedCORS"]);
-            //}));
-
             // SignalR
             builder.Services.AddSignalR();
 
             builder.Services.AddDbContext<MtaticketsContext>(options =>
                 options.UseSqlServer(MTADevConnection));
-            //,ServiceLifetime.Transient);
+
+            builder.Services.AddDbContext<MtaresourceMonitoringContext>(options =>
+                options.UseSqlServer(MTADevConnection));
 
             builder.Services.AddGraphQLServer()
-                //.AddAuthorization()
                 .AddQueryType<Query>()
                 .AddMutationType<Mutation>()
                 .AddFiltering()
                 .AddSorting();
 
             var app = builder.Build();
-
-            // ADDED
-            //FileExtensionContentTypeProvider provider =
-            //    new FileExtensionContentTypeProvider();
-            //provider.Mappings[".webmanifest"] = "application/majifest+json";
-
-            //app.UseStaticFiles(new StaticFileOptions()
-            //{
-            //    ContentTypeProvider = provider
-            //});
-            // ADDED
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -107,7 +87,6 @@ namespace MTAIntranetAngular.API
                 "https://mtadev.mta-flint.net/mtaintranet#",
                 "https://mtadev.mta-flint.net:50443/"
                 )
-                //.AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()
@@ -128,9 +107,6 @@ namespace MTAIntranetAngular.API
             });
 
             app.UseAuthorization();
-
-            // ADDED 
-            //app.UseCors("AngularPolicy");
 
             app.MapControllers();
 
