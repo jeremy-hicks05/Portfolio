@@ -14,9 +14,11 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System.Diagnostics;
 using System.Security.Policy;
 using static HotChocolate.ErrorCodes;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MTAIntranetAngular.API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class WebsitesController : ControllerBase
@@ -28,13 +30,12 @@ namespace MTAIntranetAngular.API.Controllers
             _context = context;
         }
 
-        // GET: api/Websites
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Website>>> GetWebsites()
+        [Route("Monitor")]
+        public async Task<ActionResult<IEnumerable<Website>>> Monitor()
         {
             foreach (Website w in _context.Websites)
             {
-                Uri serverUri = new Uri(w.ServerName);
+                Uri serverUri = new Uri("http://" + w.ServerName);
 
                 // needs UriKind arg, or UriFormatException is thrown
                 Uri relativeUri = new Uri(w.WebsiteName, UriKind.Relative);
@@ -52,14 +53,16 @@ namespace MTAIntranetAngular.API.Controllers
                                 $"ICMP to {w.WebsiteName} succees.";
                             w.PreviousState = w.CurrentState;
                             w.CurrentState = "Healthy";
-                            _context.SaveChanges();
+                            w.LastCheck = DateTime.Now;
+                            //_context.SaveChanges();
                             break;
                         default:
                             var err =
                                 $"ICMP to {w.WebsiteName} failed";
                             w.PreviousState = w.CurrentState;
                             w.CurrentState = "Unhealthy";
-                            _context.SaveChanges();
+                            w.LastCheck = DateTime.Now;
+                            //_context.SaveChanges();
                             break;
                     }
                 }
@@ -69,33 +72,71 @@ namespace MTAIntranetAngular.API.Controllers
                         $"ICMP to {w.WebsiteName} failed {e.Message}";
                     w.PreviousState = w.CurrentState;
                     w.CurrentState = "Unhealthy";
-                    _context.SaveChanges();
+                    w.LastCheck = DateTime.Now;
+                    //_context.SaveChanges();
                 }
                 if (w.PreviousState == "Unknown" &&
                     w.CurrentState == "Unhealthy")
                 {
                     // failed to initially connect
-                    EmailConfiguration.SendServerFailure(w.WebsiteName ?? "Unknown");
+                    EmailConfiguration.SendWebsiteFailure(
+                        w.ServerName,
+                        w.WebsiteName ?? "Unknown");
+                    w.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
                 else if (w.PreviousState == "Unknown" &&
                     w.CurrentState == "Healthy")
                 {
                     // successful initial connection
-                    EmailConfiguration.SendServerFailure(w.WebsiteName ?? "Unknown");
+                    EmailConfiguration.SendWebsiteInitSuccess(
+                        w.ServerName,
+                        w.WebsiteName ?? "Unknown");
+                    w.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
                 else if (w.PreviousState == "Healthy" &&
                     w.CurrentState == "Unhealthy")
                 {
                     // website failure
-                    EmailConfiguration.SendServerFailure(w.WebsiteName ?? "Unknown");
+                    EmailConfiguration.SendWebsiteFailure(
+                        w.ServerName,
+                        w.WebsiteName ?? "Unknown");
+                    w.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
                 else if (w.PreviousState == "Unhealthy" &&
                     w.CurrentState == "Healthy")
                 {
                     // send successful restoration message
-                    EmailConfiguration.SendServerFailure(w.WebsiteName ?? "Unknown");
+                    EmailConfiguration.SendWebsiteFailure(
+                        w.ServerName,
+                        w.WebsiteName ?? "Unknown");
+                    w.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
+                }
+                else if (w.TimeInterval != 0 &&
+                    w.PreviousState == "Unhealthy" &&
+                    w.CurrentState == "Unhealthy" &&
+                    (w.LastEmailsent.Value
+                        .AddMinutes(Convert.ToDouble(w.TimeInterval))
+                        <= DateTime.Now))
+                {
+                    // process failure reminder
+                    EmailConfiguration.SendWebsiteFailure(
+                        w.ServerName,
+                        w.WebsiteName ?? "Unknown");
+                    w.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
             }
+            return await _context.Websites.ToListAsync();
+        }
+
+        // GET: api/Websites
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Website>>> GetWebsites()
+        {
             return await _context.Websites.ToListAsync();
         }
 

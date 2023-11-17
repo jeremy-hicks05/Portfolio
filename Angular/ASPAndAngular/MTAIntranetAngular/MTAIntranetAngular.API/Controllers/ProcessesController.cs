@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using MTAIntranetAngular.API;
+using MTAIntranetAngular.API.Data;
 using MTAIntranetAngular.API.Data.Models;
 using MTAIntranetAngular.Utility;
 
 namespace MTAIntranetAngular.API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class ProcessesController : ControllerBase
@@ -24,9 +26,8 @@ namespace MTAIntranetAngular.API.Controllers
             _context = context;
         }
 
-        // GET: api/Processes
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Process>>> GetProcesses()
+        [Route("Monitor")]
+        public async Task<ActionResult<IEnumerable<Process>>> Monitor()
         {
             foreach (Process p in _context.Processes)
             {
@@ -40,6 +41,7 @@ namespace MTAIntranetAngular.API.Controllers
                                 "Success";
                             p.PreviousState = p.CurrentState;
                             p.CurrentState = "Healthy";
+                            p.LastCheck = DateTime.Now;
                             _context.SaveChanges();
                             break;
                         default:
@@ -47,6 +49,7 @@ namespace MTAIntranetAngular.API.Controllers
                                 $"Process {p.ProcessName} not running on {p.ServerName}";
                             p.PreviousState = p.CurrentState;
                             p.CurrentState = "Unhealthy";
+                            p.LastCheck = DateTime.Now;
                             _context.SaveChanges();
                             break;
                     }
@@ -57,33 +60,71 @@ namespace MTAIntranetAngular.API.Controllers
                         $"Process {p.ProcessName} not running on {p.ServerName}";
                     p.PreviousState = p.CurrentState;
                     p.CurrentState = "Unhealthy";
+                    p.LastCheck = DateTime.Now;
                     _context.SaveChanges();
                 }
                 if (p.PreviousState == "Unknown" &&
                     p.CurrentState == "Unhealthy")
                 {
                     // failed initial connection
-                    EmailConfiguration.SendServerFailure(p.ProcessName ?? "Unknown");
+                    EmailConfiguration.SendProcessFailure(
+                        p.ServerName,
+                        p.ProcessName ?? "Unknown");
+                    p.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
                 else if (p.PreviousState == "Unknown" &&
                     p.CurrentState == "Healthy")
                 {
                     // successful initial connection
-                    EmailConfiguration.SendServerFailure(p.ProcessName ?? "Unknown");
+                    EmailConfiguration.SendProcessInitSuccess(
+                        p.ServerName,
+                        p.ProcessName ?? "Unknown");
+                    p.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
                 else if (p.PreviousState == "Healthy" &&
                     p.CurrentState == "Unhealthy")
                 {
                     // process failure
-                    EmailConfiguration.SendServerFailure(p.ProcessName ?? "Unknown");
+                    EmailConfiguration.SendProcessFailure(
+                        p.ServerName,
+                        p.ProcessName ?? "Unknown");
+                    p.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
                 else if (p.PreviousState == "Unhealthy" &&
                     p.CurrentState == "Healthy")
                 {
                     // successful restoration
-                    EmailConfiguration.SendServerFailure(p.ProcessName ?? "Unknown");
+                    EmailConfiguration.SendProcessRestored(
+                        p.ServerName,
+                        p.ProcessName ?? "Unknown");
+                    p.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
+                }
+                else if (p.TimeInterval != 0 &&
+                    p.PreviousState == "Unhealthy" &&
+                    p.CurrentState == "Unhealthy" &&
+                    (p.LastEmailsent.Value
+                        .AddMinutes(Convert.ToDouble(p.TimeInterval))
+                        <= DateTime.Now))
+                {
+                    // process failure reminder
+                    EmailConfiguration.SendProcessFailure(
+                        p.ServerName,
+                        p.ProcessName ?? "Unknown");
+                    p.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
             }
+            return await _context.Processes.ToListAsync();
+        }
+
+        // GET: api/Processes
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Process>>> GetProcesses()
+        {
             return await _context.Processes.ToListAsync();
         }
 

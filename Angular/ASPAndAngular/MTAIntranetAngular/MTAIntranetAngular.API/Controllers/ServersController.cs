@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using HealthCheck.API;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ using MTAIntranetAngular.Utility;
 
 namespace MTAIntranetAngular.API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class ServersController : ControllerBase
@@ -25,15 +27,9 @@ namespace MTAIntranetAngular.API.Controllers
             _context = context;
         }
 
-        // GET: api/Servers
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Server>>> GetServers()
+        [Route("Monitor")]
+        public async Task<ActionResult<IEnumerable<Server>>> Monitor()
         {
-            // check status of each and every server
-
-            // if previous status was 'Healthy'
-            // and current status is 'Unhealthy'
-            // send email notification
             foreach (Server s in _context.Servers)
             {
                 try
@@ -47,6 +43,7 @@ namespace MTAIntranetAngular.API.Controllers
                                 $"ICMP to {s.ServerName} took {reply.RoundtripTime} ms.";
                             s.PreviousState = s.CurrentState;
                             s.CurrentState = "Healthy";
+                            s.LastCheck = DateTime.Now;
                             _context.SaveChanges();
                             break;
                         default:
@@ -54,6 +51,7 @@ namespace MTAIntranetAngular.API.Controllers
                                 $"ICMP to {s.ServerName} failed: {reply.Status}";
                             s.PreviousState = s.CurrentState;
                             s.CurrentState = "Unhealthy";
+                            s.LastCheck = DateTime.Now;
                             _context.SaveChanges();
                             break;
                     }
@@ -64,32 +62,65 @@ namespace MTAIntranetAngular.API.Controllers
                         $"ICMP to {s.ServerName} failed {e.Message}";
                     s.PreviousState = s.CurrentState;
                     s.CurrentState = "Unhealthy";
+                    s.LastCheck = DateTime.Now;
                     _context.SaveChanges();
                 }
-                if (s.PreviousState == "Unknown" && 
+                if (s.PreviousState == "Unknown" &&
                     s.CurrentState == "Unhealthy")
                 {
-                    EmailConfiguration.SendServerFailure(s.ServerName ?? "Unknown");
+                    EmailConfiguration.SendServerFailure(
+                        s.ServerName ?? "Unknown");
+                    s.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
                 else if (s.PreviousState == "Unknown" &&
                     s.CurrentState == "Healthy")
                 {
-                    EmailConfiguration.SendServerFailure(s.ServerName ?? "Unknown");
+                    EmailConfiguration.SendServerInitSuccess(
+                        s.ServerName ?? "Unknown");
+                    s.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
                 else if (s.PreviousState == "Healthy" &&
                     s.CurrentState == "Unhealthy")
                 {
                     // server failure
-                    EmailConfiguration.SendServerFailure(s.ServerName ?? "Unknown");
+                    EmailConfiguration.SendServerFailure(
+                        s.ServerName ?? "Unknown");
+                    s.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
                 else if (s.PreviousState == "Unhealthy" &&
                     s.CurrentState == "Healthy")
                 {
                     // successful restoration
-                    EmailConfiguration.SendServerFailure(s.ServerName ?? "Unknown");
+                    EmailConfiguration.SendServerRestored(
+                        s.ServerName ?? "Unknown");
+                    s.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
+                }
+                else if (s.TimeInterval != 0 &&
+                    s.PreviousState == "Unhealthy" &&
+                    s.CurrentState == "Unhealthy" &&
+                    (s.LastEmailsent.Value
+                        .AddMinutes(Convert.ToDouble(s.TimeInterval))
+                        <= DateTime.Now))
+                {
+                    // process failure reminder
+                    EmailConfiguration.SendServerFailure(
+                        s.ServerName ?? "Unknown");
+                    s.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
             }
 
+            return await _context.Servers.ToListAsync();
+        }
+
+        // GET: api/Servers
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Server>>> GetServers()
+        {
             return await _context.Servers.ToListAsync();
         }
 

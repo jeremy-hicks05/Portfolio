@@ -31,7 +31,7 @@ public partial class MtaresourceMonitoringContext : DbContext
     {
         modelBuilder.Entity<Process>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Process__3214EC2711FA906A");
+            entity.HasKey(e => e.Id).HasName("PK__Process__3214EC27973F7EC1");
 
             entity.ToTable("Process");
 
@@ -42,6 +42,7 @@ public partial class MtaresourceMonitoringContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false);
             entity.Property(e => e.LastCheck).HasColumnType("datetime");
+            entity.Property(e => e.LastEmailsent).HasColumnType("datetime");
             entity.Property(e => e.PreviousState)
                 .HasMaxLength(10)
                 .IsUnicode(false);
@@ -58,7 +59,7 @@ public partial class MtaresourceMonitoringContext : DbContext
 
         modelBuilder.Entity<Server>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Server__3214EC279ED53C9F");
+            entity.HasKey(e => e.Id).HasName("PK__Server__3214EC272BF546B8");
 
             entity.ToTable("Server");
 
@@ -69,6 +70,7 @@ public partial class MtaresourceMonitoringContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false);
             entity.Property(e => e.LastCheck).HasColumnType("datetime");
+            entity.Property(e => e.LastEmailsent).HasColumnType("datetime");
             entity.Property(e => e.PreviousState)
                 .HasMaxLength(10)
                 .IsUnicode(false);
@@ -77,13 +79,12 @@ public partial class MtaresourceMonitoringContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.ServerName)
                 .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("ServerName");
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Service>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Service__3214EC272829C8CB");
+            entity.HasKey(e => e.Id).HasName("PK__Service__3214EC274CCAC818");
 
             entity.ToTable("Service");
 
@@ -94,6 +95,7 @@ public partial class MtaresourceMonitoringContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false);
             entity.Property(e => e.LastCheck).HasColumnType("datetime");
+            entity.Property(e => e.LastEmailsent).HasColumnType("datetime");
             entity.Property(e => e.PreviousState)
                 .HasMaxLength(10)
                 .IsUnicode(false);
@@ -110,7 +112,7 @@ public partial class MtaresourceMonitoringContext : DbContext
 
         modelBuilder.Entity<Website>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Website__3214EC270BE5056B");
+            entity.HasKey(e => e.Id).HasName("PK__Website__3214EC27CB0029B6");
 
             entity.ToTable("Website");
 
@@ -121,6 +123,7 @@ public partial class MtaresourceMonitoringContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false);
             entity.Property(e => e.LastCheck).HasColumnType("datetime");
+            entity.Property(e => e.LastEmailsent).HasColumnType("datetime");
             entity.Property(e => e.PreviousState)
                 .HasMaxLength(10)
                 .IsUnicode(false);

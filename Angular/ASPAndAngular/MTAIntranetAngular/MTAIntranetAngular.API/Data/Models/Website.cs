@@ -18,4 +18,8 @@ public partial class Website
     public string? CurrentState { get; set; }
 
     public DateTime? LastCheck { get; set; }
+
+    public DateTime? LastEmailsent { get; set; }
+
+    public int? TimeInterval { get; set; }
 }

@@ -235,6 +235,28 @@ namespace MTAIntranetAngular.Utility
             MyMail.Send(MyMsg);
         }
 
+        // servers, services, processes, and website health checks
+        public static void SendServerInitSuccess(string serverName)
+        {
+            SmtpClient MyMail = new SmtpClient();
+            MailMessage MyMsg = new MailMessage();
+            MyMail.Host = "smtp.office365.com";
+            MyMail.Port = 587;
+            MyMail.EnableSsl = true;
+            MyMsg.Priority = MailPriority.Normal;
+            MyMsg.To.Add("jhicks@mtaflint.org");
+            MyMsg.Subject = serverName + " connected and monitoring...";
+            MyMsg.SubjectEncoding = Encoding.UTF8;
+            MyMsg.IsBodyHtml = true;
+            MyMsg.From = SetMailAddress();
+            MyMsg.BodyEncoding = Encoding.UTF8;
+            MyMsg.Body = "Connection to " + serverName + " successful.";
+            MyMail.UseDefaultCredentials = false;
+            NetworkCredential MyCredentials = SetCredentials();
+            MyMail.Credentials = MyCredentials;
+            MyMail.Send(MyMsg);
+        }
+
         public static void SendServerFailure(string serverName)
         {
             SmtpClient MyMail = new SmtpClient();
@@ -244,7 +266,7 @@ namespace MTAIntranetAngular.Utility
             MyMail.EnableSsl = true;
             MyMsg.Priority = MailPriority.Normal;
             MyMsg.To.Add("jhicks@mtaflint.org");
-            MyMsg.Subject = serverName + " is down";
+            MyMsg.Subject = serverName + " is not responding";
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
@@ -256,7 +278,118 @@ namespace MTAIntranetAngular.Utility
             MyMail.Send(MyMsg);
         }
 
-        public static void SendProcessFailure(string processName, string serverName)
+        public static void SendServerRestored(string serverName)
+        {
+            SmtpClient MyMail = new SmtpClient();
+            MailMessage MyMsg = new MailMessage();
+            MyMail.Host = "smtp.office365.com";
+            MyMail.Port = 587;
+            MyMail.EnableSsl = true;
+            MyMsg.Priority = MailPriority.Normal;
+            MyMsg.To.Add("jhicks@mtaflint.org");
+            MyMsg.Subject = serverName + " has been restored.";
+            MyMsg.SubjectEncoding = Encoding.UTF8;
+            MyMsg.IsBodyHtml = true;
+            MyMsg.From = SetMailAddress();
+            MyMsg.BodyEncoding = Encoding.UTF8;
+            MyMsg.Body = "Please confirm that " + serverName + " has been restored.";
+            MyMail.UseDefaultCredentials = false;
+            NetworkCredential MyCredentials = SetCredentials();
+            MyMail.Credentials = MyCredentials;
+            MyMail.Send(MyMsg);
+        }
+
+        public static void SendServiceInitSuccess(string serverName, string serviceName)
+        {
+            SmtpClient MyMail = new SmtpClient();
+            MailMessage MyMsg = new MailMessage();
+            MyMail.Host = "smtp.office365.com";
+            MyMail.Port = 587;
+            MyMail.EnableSsl = true;
+            MyMsg.Priority = MailPriority.Normal;
+            MyMsg.To.Add("jhicks@mtaflint.org");
+            MyMsg.Subject = "Service " + serviceName + " on server " + serverName +
+                " connected and monitoring...";
+            MyMsg.SubjectEncoding = Encoding.UTF8;
+            MyMsg.IsBodyHtml = true;
+            MyMsg.From = SetMailAddress();
+            MyMsg.BodyEncoding = Encoding.UTF8;
+            MyMsg.Body = "Sevice " + serviceName + " on "
+                + serverName + " connection successful.";
+            MyMail.UseDefaultCredentials = false;
+            NetworkCredential MyCredentials = SetCredentials();
+            MyMail.Credentials = MyCredentials;
+            MyMail.Send(MyMsg);
+        }
+        public static void SendServiceFailure(string serverName, string serviceName)
+        {
+            SmtpClient MyMail = new SmtpClient();
+            MailMessage MyMsg = new MailMessage();
+            MyMail.Host = "smtp.office365.com";
+            MyMail.Port = 587;
+            MyMail.EnableSsl = true;
+            MyMsg.Priority = MailPriority.Normal;
+            MyMsg.To.Add("jhicks@mtaflint.org");
+            MyMsg.Subject = "Service " + serviceName + " on server " + serverName + 
+                " is not responding.";
+            MyMsg.SubjectEncoding = Encoding.UTF8;
+            MyMsg.IsBodyHtml = true;
+            MyMsg.From = SetMailAddress();
+            MyMsg.BodyEncoding = Encoding.UTF8;
+            MyMsg.Body = "Please restore sevice " + serviceName + " on " 
+                + serverName;
+            MyMail.UseDefaultCredentials = false;
+            NetworkCredential MyCredentials = SetCredentials();
+            MyMail.Credentials = MyCredentials;
+            MyMail.Send(MyMsg);
+        }
+
+        public static void SendServiceRestored(string serverName, string serviceName)
+        {
+            SmtpClient MyMail = new SmtpClient();
+            MailMessage MyMsg = new MailMessage();
+            MyMail.Host = "smtp.office365.com";
+            MyMail.Port = 587;
+            MyMail.EnableSsl = true;
+            MyMsg.Priority = MailPriority.Normal;
+            MyMsg.To.Add("jhicks@mtaflint.org");
+            MyMsg.Subject = "Service " + serviceName + " on server " + serverName +
+                " has been restored.";
+            MyMsg.SubjectEncoding = Encoding.UTF8;
+            MyMsg.IsBodyHtml = true;
+            MyMsg.From = SetMailAddress();
+            MyMsg.BodyEncoding = Encoding.UTF8;
+            MyMsg.Body = "Please confirm sevice " + serviceName + " is running on "
+                + serverName;
+            MyMail.UseDefaultCredentials = false;
+            NetworkCredential MyCredentials = SetCredentials();
+            MyMail.Credentials = MyCredentials;
+            MyMail.Send(MyMsg);
+        }
+
+        public static void SendProcessInitSuccess(string serverName, string processName)
+        {
+            SmtpClient MyMail = new SmtpClient();
+            MailMessage MyMsg = new MailMessage();
+            MyMail.Host = "smtp.office365.com";
+            MyMail.Port = 587;
+            MyMail.EnableSsl = true;
+            MyMsg.Priority = MailPriority.Normal;
+            MyMsg.To.Add("jhicks@mtaflint.org");
+            MyMsg.Subject = processName + " connected and monitoring on server " + serverName + "...";
+            MyMsg.SubjectEncoding = Encoding.UTF8;
+            MyMsg.IsBodyHtml = true;
+            MyMsg.From = SetMailAddress();
+            MyMsg.BodyEncoding = Encoding.UTF8;
+            MyMsg.Body = "Process " + processName +
+                " on server " + serverName + " connection successful.";
+            MyMail.UseDefaultCredentials = false;
+            NetworkCredential MyCredentials = SetCredentials();
+            MyMail.Credentials = MyCredentials;
+            MyMail.Send(MyMsg);
+        }
+
+        public static void SendProcessFailure(string serverName, string processName)
         {
             SmtpClient MyMail = new SmtpClient();
             MailMessage MyMsg = new MailMessage();
@@ -270,7 +403,96 @@ namespace MTAIntranetAngular.Utility
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
             MyMsg.BodyEncoding = Encoding.UTF8;
-            MyMsg.Body = "Please start process " + processName + " on server " + serverName;
+            MyMsg.Body = "Please start process " + processName + 
+                " on server " + serverName;
+            MyMail.UseDefaultCredentials = false;
+            NetworkCredential MyCredentials = SetCredentials();
+            MyMail.Credentials = MyCredentials;
+            MyMail.Send(MyMsg);
+        }
+
+        public static void SendProcessRestored(string serverName, string processName)
+        {
+            SmtpClient MyMail = new SmtpClient();
+            MailMessage MyMsg = new MailMessage();
+            MyMail.Host = "smtp.office365.com";
+            MyMail.Port = 587;
+            MyMail.EnableSsl = true;
+            MyMsg.Priority = MailPriority.Normal;
+            MyMsg.To.Add("jhicks@mtaflint.org");
+            MyMsg.Subject = processName + " has been restored on server " + serverName;
+            MyMsg.SubjectEncoding = Encoding.UTF8;
+            MyMsg.IsBodyHtml = true;
+            MyMsg.From = SetMailAddress();
+            MyMsg.BodyEncoding = Encoding.UTF8;
+            MyMsg.Body = "Please confirm process " + processName +
+                " is running on server " + serverName;
+            MyMail.UseDefaultCredentials = false;
+            NetworkCredential MyCredentials = SetCredentials();
+            MyMail.Credentials = MyCredentials;
+            MyMail.Send(MyMsg);
+        }
+
+        public static void SendWebsiteInitSuccess(string serverName, string websiteName)
+        {
+            SmtpClient MyMail = new SmtpClient();
+            MailMessage MyMsg = new MailMessage();
+            MyMail.Host = "smtp.office365.com";
+            MyMail.Port = 587;
+            MyMail.EnableSsl = true;
+            MyMsg.Priority = MailPriority.Normal;
+            MyMsg.To.Add("jhicks@mtaflint.org");
+            MyMsg.Subject = websiteName + " connected and monitoring on " + serverName + "...";
+            MyMsg.SubjectEncoding = Encoding.UTF8;
+            MyMsg.IsBodyHtml = true;
+            MyMsg.From = SetMailAddress();
+            MyMsg.BodyEncoding = Encoding.UTF8;
+            MyMsg.Body = "Website " + websiteName +
+                " on server " + serverName + " connection successful.";
+            MyMail.UseDefaultCredentials = false;
+            NetworkCredential MyCredentials = SetCredentials();
+            MyMail.Credentials = MyCredentials;
+            MyMail.Send(MyMsg);
+        }
+
+        public static void SendWebsiteFailure(string serverName, string websiteName)
+        {
+            SmtpClient MyMail = new SmtpClient();
+            MailMessage MyMsg = new MailMessage();
+            MyMail.Host = "smtp.office365.com";
+            MyMail.Port = 587;
+            MyMail.EnableSsl = true;
+            MyMsg.Priority = MailPriority.Normal;
+            MyMsg.To.Add("jhicks@mtaflint.org");
+            MyMsg.Subject = websiteName + " is not responding on server " + serverName;
+            MyMsg.SubjectEncoding = Encoding.UTF8;
+            MyMsg.IsBodyHtml = true;
+            MyMsg.From = SetMailAddress();
+            MyMsg.BodyEncoding = Encoding.UTF8;
+            MyMsg.Body = "Please restore website " + websiteName + 
+                " on server " + serverName;
+            MyMail.UseDefaultCredentials = false;
+            NetworkCredential MyCredentials = SetCredentials();
+            MyMail.Credentials = MyCredentials;
+            MyMail.Send(MyMsg);
+        }
+
+        public static void SendWebsiteRestored(string serverName, string websiteName)
+        {
+            SmtpClient MyMail = new SmtpClient();
+            MailMessage MyMsg = new MailMessage();
+            MyMail.Host = "smtp.office365.com";
+            MyMail.Port = 587;
+            MyMail.EnableSsl = true;
+            MyMsg.Priority = MailPriority.Normal;
+            MyMsg.To.Add("jhicks@mtaflint.org");
+            MyMsg.Subject = websiteName + " has been restored on server " + serverName;
+            MyMsg.SubjectEncoding = Encoding.UTF8;
+            MyMsg.IsBodyHtml = true;
+            MyMsg.From = SetMailAddress();
+            MyMsg.BodyEncoding = Encoding.UTF8;
+            MyMsg.Body = "Please confirm website " + websiteName +
+                " has been restored on server " + serverName;
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.ServiceProcess;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ using MTAIntranetAngular.Utility;
 
 namespace MTAIntranetAngular.API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class ServicesController : ControllerBase
@@ -25,9 +27,8 @@ namespace MTAIntranetAngular.API.Controllers
             _context = context;
         }
 
-        // GET: api/Services
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Service>>> GetServices()
+        [Route("Monitor")]
+        public async Task<ActionResult<IEnumerable<Service>>> Monitor()
         {
             foreach (Service s in _context.Services)
             {
@@ -38,32 +39,38 @@ namespace MTAIntranetAngular.API.Controllers
                     case ServiceControllerStatus.Running:
                         s.PreviousState = s.CurrentState;
                         s.CurrentState = "Healthy";
+                        s.LastCheck = DateTime.Now;
                         _context.SaveChanges();
                         break;
                     case ServiceControllerStatus.Stopped:
                         s.PreviousState = s.CurrentState;
                         s.CurrentState = "Unhealthy";
+                        s.LastCheck = DateTime.Now;
                         _context.SaveChanges();
                         break;
-                        //sc.Start();
+                    //sc.Start();
                     case ServiceControllerStatus.Paused:
                         s.PreviousState = s.CurrentState;
                         s.CurrentState = "Unhealthy";
+                        s.LastCheck = DateTime.Now;
                         _context.SaveChanges();
                         break;
                     case ServiceControllerStatus.StopPending:
                         s.PreviousState = s.CurrentState;
                         s.CurrentState = "Unhealthy";
+                        s.LastCheck = DateTime.Now;
                         _context.SaveChanges();
                         break;
                     case ServiceControllerStatus.StartPending:
                         s.PreviousState = s.CurrentState;
                         s.CurrentState = "Unhealthy";
+                        s.LastCheck = DateTime.Now;
                         _context.SaveChanges();
                         break;
                     default:
                         s.PreviousState = s.CurrentState;
                         s.CurrentState = "Unhealthy";
+                        s.LastCheck = DateTime.Now;
                         _context.SaveChanges();
                         break;
                 }
@@ -71,27 +78,64 @@ namespace MTAIntranetAngular.API.Controllers
                     s.CurrentState == "Unhealthy")
                 {
                     // failed initial connection
-                    EmailConfiguration.SendServerFailure(s.ServiceName ?? "Unknown");
+                    EmailConfiguration.SendServiceFailure(
+                        s.ServerName,
+                        s.ServiceName ?? "Unknown");
+                    s.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
                 else if (s.PreviousState == "Unknown" &&
                     s.CurrentState == "Healthy")
                 {
                     // successful initial connection
-                    EmailConfiguration.SendServerFailure(s.ServiceName ?? "Unknown");
+                    EmailConfiguration.SendServiceInitSuccess(
+                        s.ServerName,
+                        s.ServiceName ?? "Unknown");
+                    s.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
                 else if (s.PreviousState == "Healthy" &&
                     s.CurrentState == "Unhealthy")
                 {
                     // service failure
-                    EmailConfiguration.SendServerFailure(s.ServiceName ?? "Unknown");
+                    EmailConfiguration.SendServiceFailure(
+                        s.ServerName,
+                        s.ServiceName);
+                    s.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
                 else if (s.PreviousState == "Unhealthy" &&
                     s.CurrentState == "Healthy")
                 {
                     // send successful restoration message
-                    EmailConfiguration.SendServerFailure(s.ServiceName ?? "Unknown");
+                    EmailConfiguration.SendServiceRestored(
+                        s.ServerName,
+                        s.ServiceName);
+                    s.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
+                }
+                else if (s.TimeInterval != 0 &&
+                    s.PreviousState == "Unhealthy" &&
+                    s.CurrentState == "Unhealthy" &&
+                    (s.LastEmailsent.Value
+                        .AddMinutes(Convert.ToDouble(s.TimeInterval))
+                        <= DateTime.Now))
+                {
+                    // process failure reminder
+                    EmailConfiguration.SendServiceFailure(
+                        s.ServerName,
+                        s.ServiceName);
+                    s.LastEmailsent = DateTime.Now;
+                    _context.SaveChanges();
                 }
             }
+            return await _context.Services.ToListAsync();
+        }
+
+        // GET: api/Services
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Service>>> GetServices()
+        {
             return await _context.Services.ToListAsync();
         }
 
