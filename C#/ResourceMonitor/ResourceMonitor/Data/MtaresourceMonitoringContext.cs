@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using MTAIntranetAngular.API.Data.Models;
 
-namespace MTAIntranetAngular.API.Data;
+namespace ResourceMonitor.Data;
 
 public partial class MtaresourceMonitoringContext : DbContext
 {
@@ -25,13 +24,14 @@ public partial class MtaresourceMonitoringContext : DbContext
     public virtual DbSet<Website> Websites { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=mtadev;Database=MTAResourceMonitoring;Trusted_Connection=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Process>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Process__3214EC27E8E02B8E");
+            entity.HasKey(e => e.Id).HasName("PK__Process__3214EC278479F0CF");
 
             entity.ToTable("Process");
 
@@ -57,7 +57,7 @@ public partial class MtaresourceMonitoringContext : DbContext
 
         modelBuilder.Entity<Server>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Server__3214EC273222FDCD");
+            entity.HasKey(e => e.Id).HasName("PK__Server__3214EC27C89EE375");
 
             entity.ToTable("Server");
 
@@ -80,7 +80,7 @@ public partial class MtaresourceMonitoringContext : DbContext
 
         modelBuilder.Entity<Service>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Service__3214EC275D05BBA5");
+            entity.HasKey(e => e.Id).HasName("PK__Service__3214EC27775ACB52");
 
             entity.ToTable("Service");
 
@@ -106,7 +106,7 @@ public partial class MtaresourceMonitoringContext : DbContext
 
         modelBuilder.Entity<Website>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Website__3214EC27E0A1942A");
+            entity.HasKey(e => e.Id).HasName("PK__Website__3214EC278DD6EA1A");
 
             entity.ToTable("Website");
 

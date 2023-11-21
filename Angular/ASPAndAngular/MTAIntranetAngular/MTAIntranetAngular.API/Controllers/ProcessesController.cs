@@ -37,12 +37,12 @@ namespace MTAIntranetAngular.API.Controllers
                     switch (ipByName.Length > 0)
                     {
                         case true:
-                            var msg =
-                                "Success";
+                            //var msg =
+                            //    "Success";
                             p.PreviousState = p.CurrentState;
                             p.CurrentState = "Healthy";
                             p.LastCheck = DateTime.Now;
-                            _context.SaveChanges();
+                            //_context.SaveChanges();
                             break;
                         default:
                             var err =
@@ -50,74 +50,65 @@ namespace MTAIntranetAngular.API.Controllers
                             p.PreviousState = p.CurrentState;
                             p.CurrentState = "Unhealthy";
                             p.LastCheck = DateTime.Now;
-                            _context.SaveChanges();
+                            //_context.SaveChanges();
                             break;
                     }
                 }
-                catch (Exception e)
+                catch
                 {
                     var err =
                         $"Process {p.ProcessName} not running on {p.ServerName}";
                     p.PreviousState = p.CurrentState;
                     p.CurrentState = "Unhealthy";
                     p.LastCheck = DateTime.Now;
-                    _context.SaveChanges();
+                    //_context.SaveChanges();
                 }
                 if (p.PreviousState == "Unknown" &&
                     p.CurrentState == "Unhealthy")
                 {
                     // failed initial connection
-                    EmailConfiguration.SendProcessFailure(
-                        p.ServerName,
-                        p.ProcessName ?? "Unknown");
+                    EmailConfiguration.SendProcessFailure(p);
                     p.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
+                    //_context.SaveChanges();
                 }
                 else if (p.PreviousState == "Unknown" &&
                     p.CurrentState == "Healthy")
                 {
                     // successful initial connection
-                    EmailConfiguration.SendProcessInitSuccess(
-                        p.ServerName,
-                        p.ProcessName ?? "Unknown");
+                    EmailConfiguration.SendProcessInitSuccess(p);
                     p.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
+                    //_context.SaveChanges();
                 }
                 else if (p.PreviousState == "Healthy" &&
                     p.CurrentState == "Unhealthy")
                 {
                     // process failure
-                    EmailConfiguration.SendProcessFailure(
-                        p.ServerName,
-                        p.ProcessName ?? "Unknown");
+                    EmailConfiguration.SendProcessFailure(p);
                     p.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
+                    //_context.SaveChanges();
                 }
                 else if (p.PreviousState == "Unhealthy" &&
                     p.CurrentState == "Healthy")
                 {
                     // successful restoration
-                    EmailConfiguration.SendProcessRestored(
-                        p.ServerName,
-                        p.ProcessName ?? "Unknown");
+                    EmailConfiguration.SendProcessRestored(p);
                     p.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
+                    //_context.SaveChanges();
                 }
                 else if (p.TimeInterval != 0 &&
                     p.PreviousState == "Unhealthy" &&
                     p.CurrentState == "Unhealthy" &&
-                    (p.LastEmailsent.Value
+                    (p.LastEmailsent
                         .AddMinutes(Convert.ToDouble(p.TimeInterval))
                         <= DateTime.Now))
                 {
                     // process failure reminder
-                    EmailConfiguration.SendProcessFailure(
-                        p.ServerName,
-                        p.ProcessName ?? "Unknown");
+                    EmailConfiguration.SendProcessFailure(p);
                     p.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
+                    //_context.SaveChanges();
                 }
             }
+            _context.SaveChanges();
             return await _context.Processes.ToListAsync();
         }
 

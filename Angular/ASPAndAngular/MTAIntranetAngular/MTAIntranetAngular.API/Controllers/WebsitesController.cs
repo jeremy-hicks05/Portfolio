@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MTAIntranetAngular.API;
+using MTAIntranetAngular.API.Data;
 using MTAIntranetAngular.API.Data.Models;
 using MTAIntranetAngular.Utility;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -38,7 +38,7 @@ namespace MTAIntranetAngular.API.Controllers
                 Uri serverUri = new Uri("http://" + w.ServerName);
 
                 // needs UriKind arg, or UriFormatException is thrown
-                Uri relativeUri = new Uri(w.WebsiteName, UriKind.Relative);
+                Uri relativeUri = new Uri(w.WebsiteName ?? "null", UriKind.Relative);
 
                 // Uri(Uri, Uri) is the preferred constructor in this case
                 Uri fullUri = new Uri(serverUri, relativeUri);
@@ -79,57 +79,47 @@ namespace MTAIntranetAngular.API.Controllers
                     w.CurrentState == "Unhealthy")
                 {
                     // failed to initially connect
-                    EmailConfiguration.SendWebsiteFailure(
-                        w.ServerName,
-                        w.WebsiteName ?? "Unknown");
+                    EmailConfiguration.SendWebsiteFailure(w);
                     w.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
+                    //_context.SaveChanges();
                 }
                 else if (w.PreviousState == "Unknown" &&
                     w.CurrentState == "Healthy")
                 {
                     // successful initial connection
-                    EmailConfiguration.SendWebsiteInitSuccess(
-                        w.ServerName,
-                        w.WebsiteName ?? "Unknown");
+                    EmailConfiguration.SendWebsiteInitSuccess(w);
                     w.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
+                    //_context.SaveChanges();
                 }
                 else if (w.PreviousState == "Healthy" &&
                     w.CurrentState == "Unhealthy")
                 {
                     // website failure
-                    EmailConfiguration.SendWebsiteFailure(
-                        w.ServerName,
-                        w.WebsiteName ?? "Unknown");
+                    EmailConfiguration.SendWebsiteFailure(w);
                     w.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
+                    //_context.SaveChanges();
                 }
                 else if (w.PreviousState == "Unhealthy" &&
                     w.CurrentState == "Healthy")
                 {
                     // send successful restoration message
-                    EmailConfiguration.SendWebsiteFailure(
-                        w.ServerName,
-                        w.WebsiteName ?? "Unknown");
+                    EmailConfiguration.SendWebsiteRestored(w);
                     w.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
+                    //_context.SaveChanges();
                 }
                 else if (w.TimeInterval != 0 &&
                     w.PreviousState == "Unhealthy" &&
                     w.CurrentState == "Unhealthy" &&
-                    (w.LastEmailsent.Value
-                        .AddMinutes(Convert.ToDouble(w.TimeInterval))
+                    (w.LastEmailsent.AddMinutes(Convert.ToDouble(w.TimeInterval))
                         <= DateTime.Now))
                 {
                     // process failure reminder
-                    EmailConfiguration.SendWebsiteFailure(
-                        w.ServerName,
-                        w.WebsiteName ?? "Unknown");
+                    EmailConfiguration.SendWebsiteFailure(w);
                     w.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
+                    //_context.SaveChanges();
                 }
             }
+            _context.SaveChanges();
             return await _context.Websites.ToListAsync();
         }
 

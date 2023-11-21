@@ -35,7 +35,7 @@ namespace MTAIntranetAngular.API.Controllers
                 try
                 {
                     using var ping = new Ping();
-                    var reply = await ping.SendPingAsync(s.ServerName);
+                    var reply = await ping.SendPingAsync(s.ServerName ?? "noServerName");
                     switch (reply.Status)
                     {
                         case IPStatus.Success:
@@ -44,7 +44,6 @@ namespace MTAIntranetAngular.API.Controllers
                             s.PreviousState = s.CurrentState;
                             s.CurrentState = "Healthy";
                             s.LastCheck = DateTime.Now;
-                            _context.SaveChanges();
                             break;
                         default:
                             var err =
@@ -52,7 +51,6 @@ namespace MTAIntranetAngular.API.Controllers
                             s.PreviousState = s.CurrentState;
                             s.CurrentState = "Unhealthy";
                             s.LastCheck = DateTime.Now;
-                            _context.SaveChanges();
                             break;
                     }
                 }
@@ -63,57 +61,45 @@ namespace MTAIntranetAngular.API.Controllers
                     s.PreviousState = s.CurrentState;
                     s.CurrentState = "Unhealthy";
                     s.LastCheck = DateTime.Now;
-                    _context.SaveChanges();
                 }
                 if (s.PreviousState == "Unknown" &&
                     s.CurrentState == "Unhealthy")
                 {
-                    EmailConfiguration.SendServerFailure(
-                        s.ServerName ?? "Unknown");
+                    EmailConfiguration.SendServerFailure(s);
                     s.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
                 }
                 else if (s.PreviousState == "Unknown" &&
                     s.CurrentState == "Healthy")
                 {
-                    EmailConfiguration.SendServerInitSuccess(
-                        s.ServerName ?? "Unknown");
+                    EmailConfiguration.SendServerInitSuccess(s);
                     s.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
                 }
                 else if (s.PreviousState == "Healthy" &&
                     s.CurrentState == "Unhealthy")
                 {
                     // server failure
-                    EmailConfiguration.SendServerFailure(
-                        s.ServerName ?? "Unknown");
+                    EmailConfiguration.SendServerFailure(s);
                     s.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
                 }
                 else if (s.PreviousState == "Unhealthy" &&
                     s.CurrentState == "Healthy")
                 {
                     // successful restoration
-                    EmailConfiguration.SendServerRestored(
-                        s.ServerName ?? "Unknown");
+                    EmailConfiguration.SendServerRestored(s);
                     s.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
                 }
                 else if (s.TimeInterval != 0 &&
                     s.PreviousState == "Unhealthy" &&
                     s.CurrentState == "Unhealthy" &&
-                    (s.LastEmailsent.Value
-                        .AddMinutes(Convert.ToDouble(s.TimeInterval))
+                    (s.LastEmailsent.AddMinutes(Convert.ToDouble(s.TimeInterval))
                         <= DateTime.Now))
                 {
                     // process failure reminder
-                    EmailConfiguration.SendServerFailure(
-                        s.ServerName ?? "Unknown");
+                    EmailConfiguration.SendServerFailure(s);
                     s.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
                 }
             }
-
+            _context.SaveChanges();
             return await _context.Servers.ToListAsync();
         }
 

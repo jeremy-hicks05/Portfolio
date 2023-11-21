@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MTAIntranetAngular.API.Data.GraphQL;
+using MTAIntranetAngular.API.Data;
 using System.Net;
 using System.Text.Json.Serialization;
 

@@ -6,6 +6,8 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using Microsoft.EntityFrameworkCore;
 using MTAIntranetAngular.API.Data.Models;
+using System.Diagnostics;
+using System;
 
 namespace MTAIntranetAngular.Utility
 {
@@ -37,22 +39,30 @@ namespace MTAIntranetAngular.Utility
                 MyMail.EnableSsl = true;
                 MyMsg.Priority = MailPriority.Normal;
                 MyMsg.To.Add(new MailAddress(recipientsArray[i].Trim('\'')));
-                MyMsg.Subject = "Ticket Approval Request: " + ticket.SubType.Name + " " + ticket.Category.Name + " ticket from Intranet: " + ticket.DateEntered.ToString("MM/dd/yyyy hh:mm tt");
+                MyMsg.Subject = "Ticket Approval Request: " + 
+                    (ticket.SubType != null ? ticket.SubType.Name : "Null Subtype") + " " + 
+                    (ticket.Category != null ? ticket.Category.Name : "Null Category") + 
+                    " ticket from Intranet: " + 
+                    ticket.DateEntered.ToString("MM/dd/yyyy hh:mm tt");
                 MyMsg.SubjectEncoding = Encoding.UTF8;
                 MyMsg.IsBodyHtml = true;
                 MyMsg.From = SetMailAddress();
                 MyMsg.BodyEncoding = Encoding.UTF8;
                 MyMsg.Body = ticket.Summary + "<br />" +
                     //"https://mtadev.mta-flint.net/Tickets/" + ticket.TicketId + "<br />" +
-                    @"https://mtadev.mta-flint.net:8443/mtaIntranet#/ticket/" + ticket.TicketId + "<br />" +
-                    "Impact: " + ticket.Impact.Description + "<br />" +
-                    "Approval State: " + ticket.ApprovalState.Name + "<br />" +
+                    @"https://mtadev.mta-flint.net/mtaIntranet#/ticket/" + ticket.TicketId + "<br />" +
+                    "Impact: " + 
+                    (ticket.Impact != null ? ticket.Impact.Description : "Null Impact") + "<br />" +
+                    "Approval State: " + 
+                    (ticket.ApprovalState != null ? ticket.ApprovalState.Name: "Null Approval State") + "<br />" +
                     "Entered by User: " + ticket.EnteredByUser + "<br />" +
-                    "Ticket Type: " + ticket.Category.Name + "<br />" +
-                    "Ticket SubType: " + ticket.SubType.Name + "<br />";
+                    "Ticket Type: " + 
+                    (ticket.Category != null ? ticket.Category.Name : "Null Category") + "<br />" +
+                    "Ticket SubType: " + 
+                    (ticket.SubType != null ? ticket.SubType.Name : "Null Subtype") + "<br />";
 
                 //MyMsg.Body += "<a href=https://mtadev.mta-flint.net/Tickets/ApproveTicket/" + ticket.TicketId + ">Approve / Reject Ticket</a>";
-                MyMsg.Body += @"<a href=https://mtadev.mta-flint.net:8443/mtaIntranet#/ticket/" + ticket.TicketId + ">View Ticket</a>";
+                MyMsg.Body += @"<a href=https://mtadev.mta-flint.net/mtaIntranet#/ticket/" + ticket.TicketId + ">View Ticket</a>";
 
                 MyMail.UseDefaultCredentials = false;
                 NetworkCredential MyCredentials = SetCredentials();
@@ -86,19 +96,27 @@ namespace MTAIntranetAngular.Utility
                 MyMail.EnableSsl = true;
                 MyMsg.Priority = MailPriority.Normal;
                 MyMsg.To.Add(new MailAddress(recipientsArray[i].Trim('\'')));
-                MyMsg.Subject = "Notice: " + ticket.SubType.Name + " " + ticket.Category.Name + " ticket from Intranet: " + ticket.DateEntered.ToString("MM/dd/yyyy hh:mm tt");
+                MyMsg.Subject = "Notice: " + 
+                    (ticket.SubType != null ? ticket.SubType.Name : "Null Subtype") + " " + 
+                    (ticket.Category != null ? ticket.Category.Name : "Null Category") + 
+                    " ticket from Intranet: " + 
+                    ticket.DateEntered.ToString("MM/dd/yyyy hh:mm tt");
                 MyMsg.SubjectEncoding = Encoding.UTF8;
                 MyMsg.IsBodyHtml = true;
                 MyMsg.From = SetMailAddress();
                 MyMsg.BodyEncoding = Encoding.UTF8;
                 MyMsg.Body = ticket.Summary + "<br />" +
                     //"https://mtadev.mta-flint.net/Tickets/" + ticket.TicketId + "<br />" +
-                    @"https://mtadev.mta-flint.net:8443/mtaIntranet#/ticket/" + ticket.TicketId + "<br />" +
-                    "Impact: " + ticket.Impact.Description + "<br />" +
-                    "Approval State: " + ticket.ApprovalState.Name + "<br />" +
+                    @"https://mtadev.mta-flint.net/mtaIntranet#/ticket/" + ticket.TicketId + "<br />" +
+                    "Impact: " + 
+                    (ticket.Impact != null ? ticket.Impact.Description: "Null Impact") + "<br />" +
+                    "Approval State: " + 
+                    (ticket.ApprovalState != null ? ticket.ApprovalState.Name : "Null ApprovalState") + "<br />" +
                     "Entered by User: " + ticket.EnteredByUser + "<br />" +
-                    "Ticket Type: " + ticket.Category.Name + "<br />" +
-                    "Ticket SubType: " + ticket.SubType.Name + "<br />";
+                    "Ticket Type: " + 
+                    (ticket.Category != null ? ticket.Category.Name : "Null Category") + "<br />" +
+                    "Ticket SubType: " + 
+                    (ticket.SubType != null ? ticket.SubType.Name : "Null Subtype") + "<br />";
 
                 MyMail.UseDefaultCredentials = false;
                 NetworkCredential MyCredentials = SetCredentials();
@@ -106,65 +124,65 @@ namespace MTAIntranetAngular.Utility
                 MyMail.Send(MyMsg);
             }
         }
-        private static string GetManagerEmailFromDisplayName(string userName)
-        {
-            string managerEmail = "";
+        //private static string GetManagerEmailFromDisplayName(string userName)
+        //{
+        //    string managerEmail = "";
 
-            string domainName = "MTA-FLINT.NET";
+        //    string domainName = "MTA-FLINT.NET";
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                using (var de = new DirectoryEntry("LDAP://" + domainName))
-                {
-                    using (var adSearch = new DirectorySearcher(de))
-                    {
-                        // Get user from active directory.
-                        adSearch.Filter = "(sAMAccountName=" + userName.Trim().ToLower(CultureInfo.CurrentCulture) + ")";
-                        adSearch.PropertiesToLoad.Add("manager");
-                        var adSearchResult = adSearch.FindOne();
-                        if (adSearchResult == null)
-                        {
-                            return userName + " not found - found ";
-                        }
-                        else
-                        {
-                            managerEmail = GetUsersManagersEmail(adSearchResult.Properties["manager"][0]!.ToString()!.Split(',')[0].Remove(0, 3)); ;
-                        }
-                    }
-                }
-            }
-            return managerEmail;
-        }
+        //    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        //    {
+        //        using (var de = new DirectoryEntry("LDAP://" + domainName))
+        //        {
+        //            using (var adSearch = new DirectorySearcher(de))
+        //            {
+        //                // Get user from active directory.
+        //                adSearch.Filter = "(sAMAccountName=" + userName.Trim().ToLower(CultureInfo.CurrentCulture) + ")";
+        //                adSearch.PropertiesToLoad.Add("manager");
+        //                var adSearchResult = adSearch.FindOne();
+        //                if (adSearchResult == null)
+        //                {
+        //                    return userName + " not found - found ";
+        //                }
+        //                else
+        //                {
+        //                    managerEmail = GetUsersManagersEmail(adSearchResult.Properties["manager"][0]!.ToString()!.Split(',')[0].Remove(0, 3)); ;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return managerEmail;
+        //}
 
-        public static string GetUsersManagersEmail(string userDisplayName)
-        {
-            string response = "";
-            string domainName = "MTA-FLINT.NET";
+        //public static string GetUsersManagersEmail(string userDisplayName)
+        //{
+        //    string response = "";
+        //    string domainName = "MTA-FLINT.NET";
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                using (var de = new DirectoryEntry("LDAP://" + domainName))
-                {
-                    using (var adSearch = new DirectorySearcher(de))
-                    {
-                        // Get user from active directory.
-                        adSearch.Filter = "(displayName=" + userDisplayName.Trim().ToLower(CultureInfo.CurrentCulture) + ")";
-                        var adSearchResult = adSearch.FindOne();
-                        if (adSearchResult == null)
-                        {
-                            return userDisplayName + " not found - found ";
-                        }
-                        else
-                        {
-                            var entry = adSearchResult.GetDirectoryEntry();
+        //    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        //    {
+        //        using (var de = new DirectoryEntry("LDAP://" + domainName))
+        //        {
+        //            using (var adSearch = new DirectorySearcher(de))
+        //            {
+        //                // Get user from active directory.
+        //                adSearch.Filter = "(displayName=" + userDisplayName.Trim().ToLower(CultureInfo.CurrentCulture) + ")";
+        //                var adSearchResult = adSearch.FindOne();
+        //                if (adSearchResult == null)
+        //                {
+        //                    return userDisplayName + " not found - found ";
+        //                }
+        //                else
+        //                {
+        //                    var entry = adSearchResult.GetDirectoryEntry();
 
-                            response += entry.Properties["mail"][0];
-                        }
-                    }
-                }
-            }
-            return response;
-        }
+        //                    response += entry.Properties["mail"][0];
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return response;
+        //}
 
         public static void SendEmailToKACE(Ticket ticket)
         {
@@ -175,15 +193,21 @@ namespace MTAIntranetAngular.Utility
             MyMail.EnableSsl = true;
             MyMsg.Priority = MailPriority.Normal;
             MyMsg.To.Add("helpdesk@mtaflint.org");
-            MyMsg.Subject = ticket.SubType.Name + " " + ticket.Category.Name + " ticket from Intranet: " + ticket.DateEntered.ToString("MM/dd/yyyy hh:mm tt");
+            MyMsg.Subject = 
+                (ticket.SubType != null ? ticket.SubType.Name : "Null Subtype") + " " + 
+                (ticket.Category != null ? ticket.Category.Name : "Null Category") + " ticket from Intranet: " + 
+                ticket.DateEntered.ToString("MM/dd/yyyy hh:mm tt");
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
             MyMsg.BodyEncoding = Encoding.UTF8;
             MyMsg.Body =
-                "@category=" + ticket.Category.Name + " <br />" +
-                "@cc_list=" + ticket.SubType.Cclist + " <br />" +
-                "@impact=" + ticket.Impact.Description + " <br />" +
+                "@category=" + 
+                (ticket.Category != null ? ticket.Category.Name : "Null Category") + " <br />" +
+                "@cc_list=" + 
+                (ticket.SubType != null ? ticket.SubType.Cclist : "Null CCList") + " <br />" +
+                "@impact=" + 
+                (ticket.Impact != null ? ticket.Impact.Description : "Null Impact") + " <br />" +
                 "@submitter=" + ((ticket.ApprovedBy == "NA" || ticket.ApprovedBy == null) ? ticket.EnteredByUser[10..] : ticket.ApprovedBy[10..]) + " <br />" +
                 ticket.Summary.Trim() + " <br />";
             MyMail.UseDefaultCredentials = false;
@@ -211,8 +235,10 @@ namespace MTAIntranetAngular.Utility
             //{
             //    MyMsg.To.Add(email);
             //}
-            MyMsg.Subject = "Ticket " + ticket.ApprovalState.Name + ": " + 
-                ticket.SubType.Name + " " + ticket.Category.Name + 
+            MyMsg.Subject = "Ticket " + 
+                (ticket.ApprovalState != null ? ticket.ApprovalState.Name : "Null ApprovalState") + ": " + 
+                (ticket.SubType != null ? ticket.SubType.Name : "Null Subtype") + " " + 
+                (ticket.Category != null ? ticket.Category.Name : "Null Category") + 
                 " ticket from Intranet: " + 
                 ticket.DateEntered.ToString("MM/dd/yyyy hh:mm tt");
             MyMsg.SubjectEncoding = Encoding.UTF8;
@@ -221,14 +247,14 @@ namespace MTAIntranetAngular.Utility
             MyMsg.BodyEncoding = Encoding.UTF8;
             MyMsg.Body =
                 //"https://mtadev.mta-flint.net/Tickets/" + ticket.TicketId + "<br />" +
-                @"https://mtadev.mta-flint.net:8443/mtaIntranet#/ticket/" + ticket.TicketId + "<br />" +
-                "Category: " + ticket.Category.Name + " <br />" +
-                "Impact: " + ticket.Impact.Description + " <br />" +
-                "SubType: " + ticket.SubType.Name + " <br />" +
-                "Description: " + ticket.SubType.Description + " <br />" +
-                (ticket.ApprovalState.Name == "Approved" ? 
+                @"https://mtadev.mta-flint.net/mtaIntranet#/ticket/" + ticket.TicketId + "<br />" +
+                "Category: " + (ticket.Category != null ? ticket.Category.Name : "Null Category") + " <br />" +
+                "Impact: " + (ticket.Impact != null ? ticket.Impact.Description : "Null Impact") + " <br />" +
+                "SubType: " + (ticket.SubType != null ? ticket.SubType.Name : "Null Subtype") + " <br />" +
+                "Description: " + (ticket.SubType != null ? ticket.SubType.Description : "Null Subtype") + " <br />" +
+                ((ticket.ApprovalState != null ? ticket.ApprovalState.Name : "Null ApprovalState") == "Approved" ? 
                 "Approved "
-                : "Reason for rejection: " + ticket.ReasonForRejection);
+                : "Reason for rejection: ") + ticket.ReasonForRejection;
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;
@@ -236,7 +262,7 @@ namespace MTAIntranetAngular.Utility
         }
 
         // servers, services, processes, and website health checks
-        public static void SendServerInitSuccess(string serverName)
+        public static void SendServerInitSuccess(Server server)
         {
             SmtpClient MyMail = new SmtpClient();
             MailMessage MyMsg = new MailMessage();
@@ -245,19 +271,20 @@ namespace MTAIntranetAngular.Utility
             MyMail.EnableSsl = true;
             MyMsg.Priority = MailPriority.Normal;
             MyMsg.To.Add("jhicks@mtaflint.org");
-            MyMsg.Subject = serverName + " connected and monitoring...";
+            MyMsg.To.Add(server.Recipients ?? "jhicks@mtaflint.org");
+            MyMsg.Subject = "Server " + (server.ServerName ?? "noServerName") + " connected and monitoring...";
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
             MyMsg.BodyEncoding = Encoding.UTF8;
-            MyMsg.Body = "Connection to " + serverName + " successful.";
+            MyMsg.Body = "Connection to " + (server.ServerName ?? "noServerName") + " successful.";
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;
             MyMail.Send(MyMsg);
         }
 
-        public static void SendServerFailure(string serverName)
+        public static void SendServerFailure(Server server)
         {
             SmtpClient MyMail = new SmtpClient();
             MailMessage MyMsg = new MailMessage();
@@ -266,19 +293,20 @@ namespace MTAIntranetAngular.Utility
             MyMail.EnableSsl = true;
             MyMsg.Priority = MailPriority.Normal;
             MyMsg.To.Add("jhicks@mtaflint.org");
-            MyMsg.Subject = serverName + " is not responding";
+            MyMsg.To.Add(server.Recipients ?? "jhicks@mtaflint.org");
+            MyMsg.Subject = "Server " + (server.ServerName ?? "noServerName") + " is not responding";
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
             MyMsg.BodyEncoding = Encoding.UTF8;
-            MyMsg.Body = "Please resolve the problem with " + serverName;
+            MyMsg.Body = "Please resolve the problem with " + (server.ServerName ?? "noServerName");
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;
             MyMail.Send(MyMsg);
         }
 
-        public static void SendServerRestored(string serverName)
+        public static void SendServerRestored(Server server)
         {
             SmtpClient MyMail = new SmtpClient();
             MailMessage MyMsg = new MailMessage();
@@ -287,19 +315,20 @@ namespace MTAIntranetAngular.Utility
             MyMail.EnableSsl = true;
             MyMsg.Priority = MailPriority.Normal;
             MyMsg.To.Add("jhicks@mtaflint.org");
-            MyMsg.Subject = serverName + " has been restored.";
+            MyMsg.To.Add(server.Recipients ?? "jhicks@mtaflint.org");
+            MyMsg.Subject = "Server " + (server.ServerName ?? "noServerName") + " has been restored.";
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
             MyMsg.BodyEncoding = Encoding.UTF8;
-            MyMsg.Body = "Please confirm that " + serverName + " has been restored.";
+            MyMsg.Body = "Please confirm that " + (server.ServerName ?? "noServerName") + " has been restored.";
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;
             MyMail.Send(MyMsg);
         }
 
-        public static void SendServiceInitSuccess(string serverName, string serviceName)
+        public static void SendServiceInitSuccess(Service service)
         {
             SmtpClient MyMail = new SmtpClient();
             MailMessage MyMsg = new MailMessage();
@@ -308,20 +337,26 @@ namespace MTAIntranetAngular.Utility
             MyMail.EnableSsl = true;
             MyMsg.Priority = MailPriority.Normal;
             MyMsg.To.Add("jhicks@mtaflint.org");
-            MyMsg.Subject = "Service " + serviceName + " on server " + serverName +
+            MyMsg.To.Add(service.Recipients ?? "jhicks@mtaflint.org");
+            MyMsg.Subject = "Service " + 
+                (service.ServiceName ?? "NoServiceName") + 
+                " on server " + 
+                (service.ServerName ?? "NoServerName") +
                 " connected and monitoring...";
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
             MyMsg.BodyEncoding = Encoding.UTF8;
-            MyMsg.Body = "Sevice " + serviceName + " on "
-                + serverName + " connection successful.";
+            MyMsg.Body = "Sevice " + 
+                (service.ServiceName ?? "NoServiceName") + " on " + 
+                (service.ServerName ?? "NoServerName") + 
+                " connection successful.";
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;
             MyMail.Send(MyMsg);
         }
-        public static void SendServiceFailure(string serverName, string serviceName)
+        public static void SendServiceFailure(Service service)
         {
             SmtpClient MyMail = new SmtpClient();
             MailMessage MyMsg = new MailMessage();
@@ -330,21 +365,26 @@ namespace MTAIntranetAngular.Utility
             MyMail.EnableSsl = true;
             MyMsg.Priority = MailPriority.Normal;
             MyMsg.To.Add("jhicks@mtaflint.org");
-            MyMsg.Subject = "Service " + serviceName + " on server " + serverName + 
+            MyMsg.To.Add(service.Recipients ?? "jhicks@mtaflint.org");
+            MyMsg.Subject = "Service " + 
+                (service.ServiceName ?? "NoServiceName") + 
+                " on server " +
+                (service.ServerName ?? "NoServerName") + 
                 " is not responding.";
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
             MyMsg.BodyEncoding = Encoding.UTF8;
-            MyMsg.Body = "Please restore sevice " + serviceName + " on " 
-                + serverName;
+            MyMsg.Body = "Please restore sevice " + 
+                (service.ServerName ?? "NoServerName") + " on " + 
+                (service.ServerName ?? "NoServerName");
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;
             MyMail.Send(MyMsg);
         }
 
-        public static void SendServiceRestored(string serverName, string serviceName)
+        public static void SendServiceRestored(Service service)
         {
             SmtpClient MyMail = new SmtpClient();
             MailMessage MyMsg = new MailMessage();
@@ -353,21 +393,25 @@ namespace MTAIntranetAngular.Utility
             MyMail.EnableSsl = true;
             MyMsg.Priority = MailPriority.Normal;
             MyMsg.To.Add("jhicks@mtaflint.org");
-            MyMsg.Subject = "Service " + serviceName + " on server " + serverName +
+            MyMsg.To.Add(service.Recipients ?? "jhicks@mtaflint.org");
+            MyMsg.Subject = "Service " +
+                (service.ServiceName ?? "NoServiceName") + " on server " +
+                (service.ServerName ?? "NoServerName") +
                 " has been restored.";
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
             MyMsg.BodyEncoding = Encoding.UTF8;
-            MyMsg.Body = "Please confirm sevice " + serviceName + " is running on "
-                + serverName;
+            MyMsg.Body = "Please confirm sevice " +
+                (service.ServiceName ?? "NoServiceName") + " is running on " +
+                (service.ServerName ?? "NoServerName");
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;
             MyMail.Send(MyMsg);
         }
 
-        public static void SendProcessInitSuccess(string serverName, string processName)
+        public static void SendProcessInitSuccess(API.Data.Models.Process process)
         {
             SmtpClient MyMail = new SmtpClient();
             MailMessage MyMsg = new MailMessage();
@@ -376,20 +420,27 @@ namespace MTAIntranetAngular.Utility
             MyMail.EnableSsl = true;
             MyMsg.Priority = MailPriority.Normal;
             MyMsg.To.Add("jhicks@mtaflint.org");
-            MyMsg.Subject = processName + " connected and monitoring on server " + serverName + "...";
+            MyMsg.To.Add(process.Recipients ?? "jhicks@mtaflint.org");
+            MyMsg.Subject = "Process " +
+                (process.ProcessName ?? "NoProcessName") + 
+                " connected and monitoring on server " +
+                (process.ServerName ?? "NoServerName") + "...";
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
             MyMsg.BodyEncoding = Encoding.UTF8;
-            MyMsg.Body = "Process " + processName +
-                " on server " + serverName + " connection successful.";
+            MyMsg.Body = "Process " + 
+                (process.ProcessName ?? "NoProcessName") +
+                " on server " + 
+                (process.ServerName ?? "NoServerName") + 
+                " connection successful.";
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;
             MyMail.Send(MyMsg);
         }
 
-        public static void SendProcessFailure(string serverName, string processName)
+        public static void SendProcessFailure(API.Data.Models.Process process)
         {
             SmtpClient MyMail = new SmtpClient();
             MailMessage MyMsg = new MailMessage();
@@ -398,20 +449,26 @@ namespace MTAIntranetAngular.Utility
             MyMail.EnableSsl = true;
             MyMsg.Priority = MailPriority.Normal;
             MyMsg.To.Add("jhicks@mtaflint.org");
-            MyMsg.Subject = processName + " is not running on server " + serverName;
+            MyMsg.To.Add(process.Recipients ?? "jhicks@mtaflint.org");
+            MyMsg.Subject = "Process " + 
+                (process.ProcessName ?? "NoProcessName") + 
+                " is not running on server " +
+                (process.ServerName ?? "NoServerName");
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
             MyMsg.BodyEncoding = Encoding.UTF8;
-            MyMsg.Body = "Please start process " + processName + 
-                " on server " + serverName;
+            MyMsg.Body = "Please start process " + 
+                (process.ProcessName ?? "NoProcessName") + 
+                " on server " + 
+                (process.ServerName ?? "NoServerName");
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;
             MyMail.Send(MyMsg);
         }
 
-        public static void SendProcessRestored(string serverName, string processName)
+        public static void SendProcessRestored(API.Data.Models.Process process)
         {
             SmtpClient MyMail = new SmtpClient();
             MailMessage MyMsg = new MailMessage();
@@ -420,20 +477,26 @@ namespace MTAIntranetAngular.Utility
             MyMail.EnableSsl = true;
             MyMsg.Priority = MailPriority.Normal;
             MyMsg.To.Add("jhicks@mtaflint.org");
-            MyMsg.Subject = processName + " has been restored on server " + serverName;
+            MyMsg.To.Add(process.Recipients ?? "jhicks@mtaflint.org");
+            MyMsg.Subject = "Process " +
+                (process.ProcessName ?? "NoProcessName") + 
+                " has been restored on server " +
+                (process.ServerName ?? "NoServerName");
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
             MyMsg.BodyEncoding = Encoding.UTF8;
-            MyMsg.Body = "Please confirm process " + processName +
-                " is running on server " + serverName;
+            MyMsg.Body = "Please confirm process " +
+                (process.ProcessName ?? "NoProcessName") +
+                " is running on server " +
+                (process.ServerName ?? "NoServerName");
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;
             MyMail.Send(MyMsg);
         }
 
-        public static void SendWebsiteInitSuccess(string serverName, string websiteName)
+        public static void SendWebsiteInitSuccess(Website website)
         {
             SmtpClient MyMail = new SmtpClient();
             MailMessage MyMsg = new MailMessage();
@@ -442,20 +505,27 @@ namespace MTAIntranetAngular.Utility
             MyMail.EnableSsl = true;
             MyMsg.Priority = MailPriority.Normal;
             MyMsg.To.Add("jhicks@mtaflint.org");
-            MyMsg.Subject = websiteName + " connected and monitoring on " + serverName + "...";
+            MyMsg.To.Add(website.Recipients ?? "jhicks@mtaflint.org");
+            MyMsg.Subject = "Website " + 
+                (website.WebsiteName ?? "NoWebsiteName") + 
+                " connected and monitoring on " +
+                (website.ServerName ?? "NoServerName") + "...";
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
             MyMsg.BodyEncoding = Encoding.UTF8;
-            MyMsg.Body = "Website " + websiteName +
-                " on server " + serverName + " connection successful.";
+            MyMsg.Body = "Website " +
+                (website.WebsiteName ?? "NoWebsiteName") +
+                " on server " +
+                (website.ServerName ?? "NoServerName") + 
+                " connection successful.";
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;
             MyMail.Send(MyMsg);
         }
 
-        public static void SendWebsiteFailure(string serverName, string websiteName)
+        public static void SendWebsiteFailure(Website website)
         {
             SmtpClient MyMail = new SmtpClient();
             MailMessage MyMsg = new MailMessage();
@@ -464,20 +534,26 @@ namespace MTAIntranetAngular.Utility
             MyMail.EnableSsl = true;
             MyMsg.Priority = MailPriority.Normal;
             MyMsg.To.Add("jhicks@mtaflint.org");
-            MyMsg.Subject = websiteName + " is not responding on server " + serverName;
+            MyMsg.To.Add(website.Recipients ?? "jhicks@mtaflint.org");
+            MyMsg.Subject = "Website " + 
+                (website.WebsiteName ?? "NoWebsiteName") 
+                + " is not responding on server " +
+                (website.ServerName ?? "NoServerName");
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
             MyMsg.BodyEncoding = Encoding.UTF8;
-            MyMsg.Body = "Please restore website " + websiteName + 
-                " on server " + serverName;
+            MyMsg.Body = "Please restore website " + 
+                (website.WebsiteName ?? "NoWebsiteName") + 
+                " on server " +
+                (website.ServerName ?? "NoServerName");
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;
             MyMail.Send(MyMsg);
         }
 
-        public static void SendWebsiteRestored(string serverName, string websiteName)
+        public static void SendWebsiteRestored(Website website)
         {
             SmtpClient MyMail = new SmtpClient();
             MailMessage MyMsg = new MailMessage();
@@ -486,13 +562,19 @@ namespace MTAIntranetAngular.Utility
             MyMail.EnableSsl = true;
             MyMsg.Priority = MailPriority.Normal;
             MyMsg.To.Add("jhicks@mtaflint.org");
-            MyMsg.Subject = websiteName + " has been restored on server " + serverName;
+            MyMsg.To.Add(website.Recipients ?? "jhicks@mtaflint.org");
+            MyMsg.Subject = "Website " +
+                (website.WebsiteName ?? "NoWebsiteName") + 
+                " has been restored on server " +
+                (website.ServerName ?? "NoServerName");
             MyMsg.SubjectEncoding = Encoding.UTF8;
             MyMsg.IsBodyHtml = true;
             MyMsg.From = SetMailAddress();
             MyMsg.BodyEncoding = Encoding.UTF8;
-            MyMsg.Body = "Please confirm website " + websiteName +
-                " has been restored on server " + serverName;
+            MyMsg.Body = "Please confirm website " +
+                (website.WebsiteName ?? "NoWebsiteName") +
+                " has been restored on server " +
+                (website.ServerName ?? "NoServerName");
             MyMail.UseDefaultCredentials = false;
             NetworkCredential MyCredentials = SetCredentials();
             MyMail.Credentials = MyCredentials;

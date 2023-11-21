@@ -34,7 +34,7 @@ namespace HealthCheck.API
                     default:
                         var err =
                             $"ICMP to {Host} failed: {reply.Status}";
-                        EmailConfiguration.SendServerFailure(Host);
+                        //EmailConfiguration.SendServerFailure(Host);
                         return HealthCheckResult.Unhealthy(err);
                 }
             }
@@ -42,7 +42,7 @@ namespace HealthCheck.API
             {
                 var err =
                     $"ICMP to {Host} failed {e.Message}";
-                EmailConfiguration.SendServerFailure(Host);
+                //EmailConfiguration.SendServerFailure(Host);
                 return HealthCheckResult.Unhealthy(err);
             }
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using MTAIntranetAngular.API;
+using MTAIntranetAngular.API.Data;
 using MTAIntranetAngular.API.Data.Models;
 using MTAIntranetAngular.Utility;
 
@@ -30,104 +31,101 @@ namespace MTAIntranetAngular.API.Controllers
         [Route("Monitor")]
         public async Task<ActionResult<IEnumerable<Service>>> Monitor()
         {
-            foreach (Service s in _context.Services)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                ServiceController sc = new ServiceController(s.ServiceName, s.ServerName);
+                foreach (Service s in _context.Services)
+                {
+                    if (s.ServiceName != null && s.ServerName != null)
+                    {
+                        ServiceController sc = new ServiceController(s.ServiceName, s.ServerName);
 
-                switch (sc.Status)
-                {
-                    case ServiceControllerStatus.Running:
-                        s.PreviousState = s.CurrentState;
-                        s.CurrentState = "Healthy";
-                        s.LastCheck = DateTime.Now;
-                        _context.SaveChanges();
-                        break;
-                    case ServiceControllerStatus.Stopped:
-                        s.PreviousState = s.CurrentState;
-                        s.CurrentState = "Unhealthy";
-                        s.LastCheck = DateTime.Now;
-                        _context.SaveChanges();
-                        break;
-                    //sc.Start();
-                    case ServiceControllerStatus.Paused:
-                        s.PreviousState = s.CurrentState;
-                        s.CurrentState = "Unhealthy";
-                        s.LastCheck = DateTime.Now;
-                        _context.SaveChanges();
-                        break;
-                    case ServiceControllerStatus.StopPending:
-                        s.PreviousState = s.CurrentState;
-                        s.CurrentState = "Unhealthy";
-                        s.LastCheck = DateTime.Now;
-                        _context.SaveChanges();
-                        break;
-                    case ServiceControllerStatus.StartPending:
-                        s.PreviousState = s.CurrentState;
-                        s.CurrentState = "Unhealthy";
-                        s.LastCheck = DateTime.Now;
-                        _context.SaveChanges();
-                        break;
-                    default:
-                        s.PreviousState = s.CurrentState;
-                        s.CurrentState = "Unhealthy";
-                        s.LastCheck = DateTime.Now;
-                        _context.SaveChanges();
-                        break;
+                        switch (sc.Status)
+                        {
+                            case ServiceControllerStatus.Running:
+                                s.PreviousState = s.CurrentState;
+                                s.CurrentState = "Healthy";
+                                s.LastCheck = DateTime.Now;
+                                //_context.SaveChanges();
+                                break;
+                            case ServiceControllerStatus.Stopped:
+                                s.PreviousState = s.CurrentState;
+                                s.CurrentState = "Unhealthy";
+                                s.LastCheck = DateTime.Now;
+                                //_context.SaveChanges();
+                                break;
+                            //sc.Start();
+                            case ServiceControllerStatus.Paused:
+                                s.PreviousState = s.CurrentState;
+                                s.CurrentState = "Unhealthy";
+                                s.LastCheck = DateTime.Now;
+                                //_context.SaveChanges();
+                                break;
+                            case ServiceControllerStatus.StopPending:
+                                s.PreviousState = s.CurrentState;
+                                s.CurrentState = "Unhealthy";
+                                s.LastCheck = DateTime.Now;
+                                //_context.SaveChanges();
+                                break;
+                            case ServiceControllerStatus.StartPending:
+                                s.PreviousState = s.CurrentState;
+                                s.CurrentState = "Unhealthy";
+                                s.LastCheck = DateTime.Now;
+                                //_context.SaveChanges();
+                                break;
+                            default:
+                                s.PreviousState = s.CurrentState;
+                                s.CurrentState = "Unhealthy";
+                                s.LastCheck = DateTime.Now;
+                                //_context.SaveChanges();
+                                break;
+                        }
+
+                        if (s.PreviousState == "Unknown" &&
+                            s.CurrentState == "Unhealthy")
+                        {
+                            // failed initial connection
+                            EmailConfiguration.SendServiceFailure(s);
+                            s.LastEmailsent = DateTime.Now;
+                            //_context.SaveChanges();
+                        }
+                        else if (s.PreviousState == "Unknown" &&
+                            s.CurrentState == "Healthy")
+                        {
+                            // successful initial connection
+                            EmailConfiguration.SendServiceInitSuccess(s);
+                            s.LastEmailsent = DateTime.Now;
+                            //_context.SaveChanges();
+                        }
+                        else if (s.PreviousState == "Healthy" &&
+                            s.CurrentState == "Unhealthy")
+                        {
+                            // service failure
+                            EmailConfiguration.SendServiceFailure(s);
+                            s.LastEmailsent = DateTime.Now;
+                            //_context.SaveChanges();
+                        }
+                        else if (s.PreviousState == "Unhealthy" &&
+                            s.CurrentState == "Healthy")
+                        {
+                            // send successful restoration message
+                            EmailConfiguration.SendServiceRestored(s);
+                            s.LastEmailsent = DateTime.Now;
+                            //_context.SaveChanges();
+                        }
+                        else if (s.TimeInterval != 0 &&
+                            s.PreviousState == "Unhealthy" &&
+                            s.CurrentState == "Unhealthy" &&
+                            (s.LastEmailsent.AddMinutes(Convert.ToDouble(s.TimeInterval))
+                                <= DateTime.Now))
+                        {
+                            // process failure reminder
+                            EmailConfiguration.SendServiceFailure(s);
+                            s.LastEmailsent = DateTime.Now;
+                            //_context.SaveChanges();
+                        }
+                    }
                 }
-                if (s.PreviousState == "Unknown" &&
-                    s.CurrentState == "Unhealthy")
-                {
-                    // failed initial connection
-                    EmailConfiguration.SendServiceFailure(
-                        s.ServerName,
-                        s.ServiceName ?? "Unknown");
-                    s.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
-                }
-                else if (s.PreviousState == "Unknown" &&
-                    s.CurrentState == "Healthy")
-                {
-                    // successful initial connection
-                    EmailConfiguration.SendServiceInitSuccess(
-                        s.ServerName,
-                        s.ServiceName ?? "Unknown");
-                    s.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
-                }
-                else if (s.PreviousState == "Healthy" &&
-                    s.CurrentState == "Unhealthy")
-                {
-                    // service failure
-                    EmailConfiguration.SendServiceFailure(
-                        s.ServerName,
-                        s.ServiceName);
-                    s.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
-                }
-                else if (s.PreviousState == "Unhealthy" &&
-                    s.CurrentState == "Healthy")
-                {
-                    // send successful restoration message
-                    EmailConfiguration.SendServiceRestored(
-                        s.ServerName,
-                        s.ServiceName);
-                    s.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
-                }
-                else if (s.TimeInterval != 0 &&
-                    s.PreviousState == "Unhealthy" &&
-                    s.CurrentState == "Unhealthy" &&
-                    (s.LastEmailsent.Value
-                        .AddMinutes(Convert.ToDouble(s.TimeInterval))
-                        <= DateTime.Now))
-                {
-                    // process failure reminder
-                    EmailConfiguration.SendServiceFailure(
-                        s.ServerName,
-                        s.ServiceName);
-                    s.LastEmailsent = DateTime.Now;
-                    _context.SaveChanges();
-                }
+                _context.SaveChanges();
             }
             return await _context.Services.ToListAsync();
         }

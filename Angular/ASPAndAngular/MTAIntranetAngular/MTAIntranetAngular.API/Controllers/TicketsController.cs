@@ -41,7 +41,7 @@ namespace MTAIntranetAngular.API.Controllers
                 .AsNoTracking()
                 .Include(t => t.Category)
                 .Include(t => t.SubType)
-                .Include(t => t.SubType.Category)
+                .Include(t => t.SubType!.Category)
                 .Include(t => t.ApprovalState)
                 .Include(t => t.Impact),
                 pageIndex,
@@ -64,7 +64,7 @@ namespace MTAIntranetAngular.API.Controllers
                 .AsNoTracking()
                 .Include(t => t.Category)
                 .Include(t => t.SubType)
-                .Include(t => t.SubType.Category)
+                .Include(t => t.SubType!.Category)
                 .Include(t => t.ApprovalState)
                 .Include(t => t.Impact)
                 .FirstOrDefaultAsync(t => t.TicketId == id);
@@ -253,7 +253,7 @@ namespace MTAIntranetAngular.API.Controllers
                 .Include(t => t.Impact)
                 .Include(t => t.ApprovalState)
                 .Include(t => t.Category)
-                .Where(t => t.ApprovalState.Name == "Needs Approval"))
+                .Where(t => t.ApprovalState!.Name == "Needs Approval"))
             {
                 EmailConfiguration.SendApprovalRequestToManager(ticket);
             }

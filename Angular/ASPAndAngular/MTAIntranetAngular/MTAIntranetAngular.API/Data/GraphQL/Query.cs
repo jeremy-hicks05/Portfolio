@@ -175,10 +175,10 @@ namespace MTAIntranetAngular.API.Data.GraphQL
                 DateLastUpdated = c.DateLastUpdated,
                 ReasonForRejection = c.ReasonForRejection,
                 Summary = c.Summary,
-                CategoryName = c.Category.Name,
-                SubTypeName = c.SubType.Name,
-                ImpactName = c.Impact.Description,
-                ApprovalStateName = c.ApprovalState.Name
+                CategoryName = (c.Category != null ? c.Category.Name : "Null Category"),
+                SubTypeName = (c.SubType != null ? c.SubType.Name : "Null Category"),
+                ImpactName = (c.Impact != null ? c.Impact.Description: "Null Impact"),
+                ApprovalStateName = (c.ApprovalState != null ? c.ApprovalState.Name: "Null Approval State")
             }),
             pageIndex,
             pageSize,
@@ -211,7 +211,7 @@ namespace MTAIntranetAngular.API.Data.GraphQL
                 Cclist = c.Cclist,
                 Name = c.Name,
                 Description = c.Description,
-                CategoryName = c.Category.Name
+                CategoryName = c.Category!.Name
             }),
             pageIndex,
             pageSize,
