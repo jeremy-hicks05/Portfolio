@@ -1,14 +1,14 @@
 <div class="ticket-edit">
     <h1>{{title}}</h1>
     <p *ngIf="this.id && !ticket"><em>Loading…</em></p>
-    <form [formGroup]="form">
+    <form style="width:50%" [formGroup]="form">
         <!-- <mat-form-field>
-        <mat-label>Ticket ID:</mat-label>
-        <input matInput formControlName="ticketId" required
-               placeholder="Type a Ticket ID">
-    </mat-form-field> -->
+            <mat-label>Ticket ID:</mat-label>
+            <input matInput formControlName="ticketId" required
+                   placeholder="Type a Ticket ID">
+        </mat-form-field> -->
         <!-- Category -->
-        <mat-form-field *ngIf="categories">
+        <mat-form-field>
             <mat-label>Select a Category...</mat-label>
             <mat-select (selectionChange)="loadSubTypesFromCategory($event)" id="categoryId" formControlName="categoryId">
                 <mat-option *ngFor="let category of categories" [value]="category.categoryId">
@@ -31,8 +31,46 @@
                 Sub Type is required.
             </mat-error>
         </mat-form-field>
+        <!--NEW MANAGER START-->
+        <!--First Name-->
+        <mat-form-field
+        [class.cdk-visually-hidden]="(form.controls['categoryId'].value != 21) ||
+            (form.controls['categoryId'].value == 21 &&
+                form.controls['subTypeId'].value == '')">
+            <mat-label>First Name:</mat-label>
+            <input matInput formControlName="firstName" required
+                   placeholder="Enter First Name">
+            <mat-error *ngIf="this.form.controls['firstName'].errors?.['required']">
+                First Name is required.
+            </mat-error>
+        </mat-form-field>
+        <!--Last Name-->
+        <mat-form-field [class.cdk-visually-hidden]="(form.controls['categoryId'].value != 21) ||
+            (form.controls['categoryId'].value == 21 &&
+                form.controls['subTypeId'].value == '')">
+            <mat-label>Last Name:</mat-label>
+            <input matInput formControlName="lastName" required
+                   placeholder="Enter Last Name">
+            <mat-error *ngIf="this.form.controls['lastName'].errors?.['required']">
+                Last Name is required.
+            </mat-error>
+        </mat-form-field>
+        <!--Start Date-->
+        <mat-form-field [class.cdk-visually-hidden]="(form.controls['categoryId'].value != 21) ||
+            (form.controls['categoryId'].value == 21 &&
+                form.controls['subTypeId'].value == '')">
+            <mat-label>Start Date:</mat-label>
+            <input formControlName="startDate" matInput [matDatepicker]="picker" />
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker required></mat-datepicker>
+            <mat-error *ngIf="this.form.controls['startDate'].errors?.['required']">
+                Start Date is required.
+            </mat-error>
+        </mat-form-field>
+        <!--NEW MANAGER END-->
         <!-- Impact -->
-        <mat-form-field *ngIf="impacts">
+        <mat-form-field>
             <mat-label>Select an Impact...</mat-label>
             <mat-select id="impactId" formControlName="impactId">
                 <mat-option *ngFor="let impact of impacts" [value]="impact.impactId">
@@ -43,12 +81,21 @@
                 Impact is required.
             </mat-error>
         </mat-form-field>
+        <!--Summary-->
         <mat-form-field>
             <mat-label>Summary:</mat-label>
             <input matInput formControlName="summary" required
                    placeholder="Type a Summary">
             <mat-error *ngIf="this.form.controls['summary'].errors?.['required']">
                 Summary is required.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="this.id">
+            <mat-label>Entered By:</mat-label>
+            <input matInput formControlName="enteredByUser" required
+                   placeholder="Entered By User">
+            <mat-error *ngIf="this.form.controls['enteredByUser'].errors?.['required']">
+                User is required.
             </mat-error>
         </mat-form-field>
         <mat-form-field *ngIf="(form.controls['approvalStateId'].value == 2
@@ -65,24 +112,26 @@
                [hidden]="form.controls['approvalStateId'].value != 2 || !form.valid || !id"
                [disabled]="form.controls['approvalStateId'].value !=2 || !form.valid || !id" value="NA">
 
+        <input *ngIf="!this.id" formControlName="enteredByUser" required hidden>
+
         <input formControlName="approvalStateId" required hidden>
         <input formControlName="approvedBy" required hidden>
         <input formControlName="dateEntered" required hidden>
         <input formControlName="dateLastUpdated" required hidden>
-        <input formControlName="enteredByUser" required hidden>
+
         <div>
             <button style="margin:5px" mat-flat-button color="primary"
                     (click)="onSubmit()" [disabled]="!form.valid">
                 {{ this.id ? "Save" : "Create" }}
             </button>
             <button style="margin:5px;background-color:darkgreen;color:white"
-                [hidden]="form.controls['approvalStateId'].value != 2 || !form.valid || !id" mat-flat-button
-                (click)=approve()>
+                    [hidden]="form.controls['approvalStateId'].value != 2 || !form.valid || !id" mat-flat-button
+                    (click)=approve()>
                 Approve
             </button>
             <button style="margin:5px;background-color:darkred;color:white"
-                [hidden]="!form.valid || form.controls['approvalStateId'].value != 2 || !id" mat-flat-button
-                (click)=reject()>
+                    [hidden]="!form.valid || form.controls['approvalStateId'].value != 2 || !id" mat-flat-button
+                    (click)=reject()>
                 Reject
             </button>
             <button mat-flat-button color="secondary"
@@ -91,4 +140,16 @@
             </button>
         </div>
     </form>
+    <!-- <div *ngIf="form.controls['categoryId'].value == 21 && form.controls['subTypeId'].value != ''">Manager will require:</div> -->
+    <!-- <ul *ngIf="form.controls['categoryId'].value == 21 && form.controls['subTypeId'].value != ''"> -->
+        <!-- <li>Windows Account</li>
+        <li>PC Setup</li>
+        <li>Email</li>
+        <li>Distribution Lists</li>
+        <!--Finance CFO --
+        <li>Kronos Login</li>
+        <li>Sage</li>
+        <li>ProjectWise</li>
+        <li>Genfare Link</li> -->
+    <!-- </ul> -->
 </div>

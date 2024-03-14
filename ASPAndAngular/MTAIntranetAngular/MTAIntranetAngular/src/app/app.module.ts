@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular-material.module';
 
 import { CategoriesComponent } from './categories/categories.component';
+import { FieldsComponent } from './fields/fields.component';
 import { TicketsComponent } from './tickets/tickets.component';
 import { ImpactsComponent } from './impacts/impacts.component';
 import { TicketSubTypesComponent } from './ticket-sub-types/ticket-sub-types.component';
@@ -37,6 +38,10 @@ import {
 
 import { DatePipe } from '@angular/common';
 
+import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
+import { InMemoryCache } from '@apollo/client/core';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,6 +49,7 @@ import { DatePipe } from '@angular/common';
     NavMenuComponent,
     HealthCheckComponent,
     CategoriesComponent,
+    FieldsComponent,
     TicketsComponent,
     ImpactsComponent,
     TicketSubTypesComponent,
@@ -55,6 +61,7 @@ import { DatePipe } from '@angular/common';
     TicketSubTypeEditComponent
   ],
   imports: [
+    ApolloModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
@@ -80,9 +87,27 @@ import { DatePipe } from '@angular/common';
     {
       provide: ConnectionServiceOptionsToken,
       useValue: <ConnectionServiceOptions>{
-        heartbeatUrl: environment.baseUrl + '/api/heartbeat',
+        heartbeatUrl: environment.baseUrl + 'api/heartbeat',
 
       }
+    },
+    {
+      provide: APOLLO_OPTIONS,
+      useFactory: (httpLink: HttpLink) => {
+        return {
+          cache: new InMemoryCache({
+            addTypename: false
+          }),
+          link: httpLink.create({
+            uri: environment.baseUrl + 'api/graphql',
+          }),
+          defaultOptions: {
+            watchQuery: { fetchPolicy: 'no-cache' },
+            query: { fetchPolicy: 'no-cache' }
+          }
+        };
+      },
+      deps: [HttpLink],
     }],
   bootstrap: [AppComponent]
 })

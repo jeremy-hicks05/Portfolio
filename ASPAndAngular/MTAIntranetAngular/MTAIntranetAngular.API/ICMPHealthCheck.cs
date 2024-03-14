@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+using MTAIntranetAngular.Utility;
 using System.Net.NetworkInformation;
 
 namespace HealthCheck.API
@@ -26,20 +27,22 @@ namespace HealthCheck.API
                 {
                     case IPStatus.Success:
                         var msg =
-                            $"ICMP to {Host} took {reply.RoundtripTime} ms.";
+                            $"PING/ICMP to {Host} took {reply.RoundtripTime} ms.";
                         return (reply.RoundtripTime > HealthyRoundtripTime)
                         ? HealthCheckResult.Degraded(msg)
                         : HealthCheckResult.Healthy(msg);
                     default:
                         var err =
-                            $"ICMP to {Host} failed: {reply.Status}";
+                            $"PING/ICMP to {Host} failed: {reply.Status}";
+                        //EmailConfiguration.SendServerFailure(Host);
                         return HealthCheckResult.Unhealthy(err);
                 }
             }
             catch (Exception e)
             {
                 var err =
-                    $"ICMP to {Host} failed {e.Message}";
+                    $"PING/ICMP to {Host} failed {e.Message}";
+                //EmailConfiguration.SendServerFailure(Host);
                 return HealthCheckResult.Unhealthy(err);
             }
         }

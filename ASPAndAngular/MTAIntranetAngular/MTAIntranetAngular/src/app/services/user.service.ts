@@ -13,12 +13,12 @@ export class UserService {
 
   // get user windows name from API
   //get(): Observable<string> {
-  //  var userName = this.http.get(this.url + "/api/User", { responseType: 'text' })
+  //  var userName = this.http.get(this.url + "api/User", { responseType: 'text' })
   //  return userName;
   //}
 
   //hasRole(role: string): Observable<string> {
-  // var userHasRole = this.http.get(this.url + "/api/User/HasRole/" + role, { responseType: 'text' })
+  // var userHasRole = this.http.get(this.url + "api/User/HasRole/" + role, { responseType: 'text' })
   //  return userHasRole;
   //}
 }

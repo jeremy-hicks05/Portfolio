@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jhicks\\Source\\Repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj": {}
+    "C:\\Users\\jhicks\\source\\repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jhicks\\Source\\Repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj": {
+    "C:\\Users\\jhicks\\source\\repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jhicks\\Source\\Repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj",
+        "projectUniqueName": "C:\\Users\\jhicks\\source\\repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj",
         "projectName": "MTAIntranetAngular.API",
-        "projectPath": "C:\\Users\\jhicks\\Source\\Repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj",
+        "projectPath": "C:\\Users\\jhicks\\source\\repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\MTAIntranetAngular.API.csproj",
         "packagesPath": "C:\\Users\\jhicks\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jhicks\\Source\\Repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\obj\\",
+        "outputPath": "C:\\Users\\jhicks\\source\\repos\\jeremy-hicks05\\Portfolio\\Angular\\ASPAndAngular\\MTAIntranetAngular\\MTAIntranetAngular.API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\jhicks\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -31,6 +31,7 @@
           }
         },
         "warningProperties": {
+          "allWarningsAsErrors": true,
           "warnAsError": [
             "NU1605"
           ]
@@ -40,31 +41,47 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "HotChocolate.AspNetCore": {
+              "target": "Package",
+              "version": "[13.7.0, )"
+            },
+            "HotChocolate.AspNetCore.Authorization": {
+              "target": "Package",
+              "version": "[13.7.0, )"
+            },
+            "HotChocolate.Data.EntityFramework": {
+              "target": "Package",
+              "version": "[13.7.0, )"
+            },
+            "Microsoft.AspNet.WebApi.Client": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.Negotiate": {
               "target": "Package",
-              "version": "[7.0.11, )"
+              "version": "[7.0.14, )"
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
-              "version": "[7.0.10, )"
+              "version": "[7.0.14, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[7.0.10, )"
+              "version": "[7.0.14, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[7.0.10, )"
+              "version": "[7.0.14, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[7.0.10, )"
+              "version": "[7.0.14, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
-              "version": "[7.0.9, )"
+              "version": "[7.0.12, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -74,13 +91,13 @@
               "target": "Package",
               "version": "[6.5.0, )"
             },
-            "System.DirectoryServices": {
-              "target": "Package",
-              "version": "[7.0.1, )"
-            },
             "System.Linq.Dynamic.Core": {
               "target": "Package",
-              "version": "[1.3.4, )"
+              "version": "[1.3.5, )"
+            },
+            "System.Net.Http": {
+              "target": "Package",
+              "version": "[4.3.4, )"
             },
             "System.ServiceProcess.ServiceController": {
               "target": "Package",
@@ -106,7 +123,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.404\\RuntimeIdentifierGraph.json"
         }
       }
     }

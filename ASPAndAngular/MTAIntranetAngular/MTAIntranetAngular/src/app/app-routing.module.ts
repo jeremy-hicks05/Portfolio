@@ -5,6 +5,7 @@ import { TicketsComponent } from './tickets/tickets.component';
 import { TicketEditComponent } from './tickets/ticket-edit.component';
 import { HealthCheckComponent } from './health-check/health-check.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { FieldsComponent } from './fields/fields.component';
 import { CategoryEditComponent } from './categories/category-edit.component';
 import { ImpactsComponent } from './impacts/impacts.component';
 import { ImpactEditComponent } from './impacts/impact-edit.component';
@@ -32,7 +33,8 @@ const routes: Routes = [
   { path: 'ticketSubTypes', component: TicketSubTypesComponent },
   { path: 'ticketSubType/:id', component: TicketSubTypeEditComponent },
   { path: 'ticketSubType', component: TicketSubTypeEditComponent },
-  { path: 'health-check', component: HealthCheckComponent }
+  { path: 'health-check', component: HealthCheckComponent },
+  { path: 'fields', component: FieldsComponent },
 ];
 
 @NgModule({

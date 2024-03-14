@@ -67,13 +67,19 @@ export class TicketEditComponent implements OnInit {
         this.activatedRoute.snapshot.paramMap.get('id') ?
           new FormControl('', Validators.required) :
           new FormControl({ value: '', disabled: true }, Validators.required),
-      impactId: new FormControl('', Validators.required),
+      impactId: new FormControl({ value: '', disabled: false }, Validators.required),
       summary: new FormControl('', Validators.required),
       //reasonForRejection: new FormControl({value: 'NA', disabled: true}, Validators.required),
       reasonForRejection:
         this.activatedRoute.snapshot.paramMap.get('id') ?
           new FormControl({ value: '', disabled: false }) :
           new FormControl({ value: 'NA', disabled: true }),
+      firstName:
+        new FormControl({ value: '', disabled: false }),
+      lastName:
+        new FormControl({ value: '', disabled: false }),
+      startDate:
+        new FormControl(),
       approvalStateId:
         this.activatedRoute.snapshot.paramMap.get('id') ?
           new FormControl({ value: '', disabled: true }, Validators.required) :
@@ -118,7 +124,7 @@ export class TicketEditComponent implements OnInit {
       // EDIT MODE
 
       // fetch the ticket from the server
-      var url = environment.baseUrl + '/api/Tickets/' + this.id;
+      var url = environment.baseUrl + 'api/Tickets/' + this.id;
       this.http.get<Ticket>(url).subscribe(result => {
         this.ticket = result;
         this.title = "Edit Ticket # - " + this.ticket.ticketId;
@@ -140,7 +146,7 @@ export class TicketEditComponent implements OnInit {
   }
 
   loadApprovalStates() {
-    var url = environment.baseUrl + '/api/ApprovalStates';
+    var url = environment.baseUrl + 'api/ApprovalStates';
     var params = new HttpParams();
 
     this.http.get<any>(url, { params }).subscribe(result => {
@@ -149,7 +155,7 @@ export class TicketEditComponent implements OnInit {
   }
 
   setApprovalState(event: any) {
-    var url = environment.baseUrl + '/api/TicketSubTypes/' + event.value;
+    var url = environment.baseUrl + 'api/TicketSubTypes/' + event.value;
 
     var params = new HttpParams();
 
@@ -161,7 +167,7 @@ export class TicketEditComponent implements OnInit {
   }
 
   loadCategories() {
-    var url = environment.baseUrl + '/api/Categories';
+    var url = environment.baseUrl + 'api/Categories';
     var params = new HttpParams();
 
     this.http.get<any>(url, { params }).subscribe(result => {
@@ -170,7 +176,7 @@ export class TicketEditComponent implements OnInit {
   }
 
   loadImpacts() {
-    var url = environment.baseUrl + '/api/Impacts';
+    var url = environment.baseUrl + 'api/Impacts';
     var params = new HttpParams();
 
     this.http.get<any>(url, { params }).subscribe(result => {
@@ -178,8 +184,12 @@ export class TicketEditComponent implements OnInit {
     }, error => console.error(error));
   }
 
+  setImpact(impactId: number) {
+    this.form.controls['impactId'].setValue(impactId);
+  }
+
   loadSubTypes() {
-    var url = environment.baseUrl + '/api/TicketSubTypes';
+    var url = environment.baseUrl + 'api/TicketSubTypes';
     var params = new HttpParams();
 
     this.http.get<any>(url, { params }).subscribe(result => {
@@ -190,12 +200,21 @@ export class TicketEditComponent implements OnInit {
   loadSubTypesFromCategory(event: any) {
     this.form.controls['subTypeId'].enable();
     this.form.controls['subTypeId'].setValue("");
-    var url = environment.baseUrl + '/api/TicketSubTypes/filter/' + event.value;
+    this.form.controls['impactId'].enable();
+    var url = environment.baseUrl + 'api/TicketSubTypes/filter/' + event.value;
     var params = new HttpParams();
 
     this.http.get<any>(url, { params }).subscribe(result => {
       this.subTypes = result;
     }, error => console.error(error));
+
+    if (this.form.controls['categoryId'].value == 21) {
+      this.setImpact(1);
+      this.form.controls['impactId'].disable();
+    }
+    else {
+      this.setImpact(0);
+    }
   }
 
   approve() {
@@ -213,16 +232,25 @@ export class TicketEditComponent implements OnInit {
       ticket.dateLastUpdated = this.form.controls['dateLastUpdated'].value;
       ticket.enteredByUser = this.form.controls['enteredByUser'].value;
 
-      var url = environment.baseUrl + '/api/Tickets/Approve/' + ticket.ticketId;
+      var url = environment.baseUrl + 'api/Tickets/Approve/' + ticket.ticketId;
       this.http
         .put<Ticket>(url, ticket)
         .subscribe(result => {
-          console.log("Ticket " + ticket!.ticketId + " has been approved.");
+          console.log("Ticket " + result!.ticketId + " has been approved.");
 
           // go back to tickets view
+          //this.router.navigate(['/api/Tickets/SendTicketInfo/' + result?.ticketId]);
           this.router.navigate(['/tickets']);
 
         }, error => console.error(error));
+
+      //var url = environment.baseUrl + 'api/Tickets/SendTicketInfo/' + ticket.ticketId;
+      //this.http
+      //  .get<Ticket>(url)
+      //  .subscribe(result => {
+      //    console.log("Ticket info sent.");
+
+      //  }, error => console.error(error));
     }
   }
 
@@ -241,65 +269,87 @@ export class TicketEditComponent implements OnInit {
       ticket.dateLastUpdated = this.form.controls['dateLastUpdated'].value;
       ticket.enteredByUser = this.form.controls['enteredByUser'].value;
 
-      var url = environment.baseUrl + '/api/Tickets/Reject/' + ticket.ticketId;
+      var url = environment.baseUrl + 'api/Tickets/Reject/' + ticket.ticketId;
       this.http
         .put<Ticket>(url, ticket)
         .subscribe(result => {
           console.log("Ticket " + ticket!.ticketId + " has been rejected.");
 
           // go back to tickets view
+          //this.router.navigate(['api/Tickets/SendTicketInfo/' + ticket?.ticketId]);
           this.router.navigate(['/tickets']);
 
         }, error => console.error(error));
+
+      //var url = environment.baseUrl + 'api/Tickets/SendTicketInfo/' + ticket.ticketId;
+      //this.http
+      //  .get<Ticket>(url)
+      //  .subscribe(result => {
+      //    console.log("Ticket info sent.");
+
+      //  }, error => console.error(error));
     }
   }
 
   onSubmit() {
     var ticket = (this.id) ? this.ticket : <Ticket>{};
-    //var ticket = this.ticket;
-    var catId = +this.form.controls['categoryId'].value;
     if (ticket) {
-      //ticket.ticketId = +this.form.controls['ticketId'].value;
-      ticket.categoryId = catId;
+      let date: string = this.form.controls['startDate'].value + '';
+      var dateSplit = date.split(" ");
+      ticket.categoryId = +this.form.controls['categoryId'].value;
       ticket.subTypeId = +this.form.controls['subTypeId'].value;
       ticket.impactId = +this.form.controls['impactId'].value;
       ticket.summary = this.form.controls['summary'].value;
+      if (ticket.categoryId == 21) {
+        ticket.summary += "_" +
+          "Manager" + " " +
+          this.form.controls['firstName'].value + " " +
+          this.form.controls['lastName'].value + " " +
+          "starts on" + "_" +
+          dateSplit[0] + " " +
+          dateSplit[1] + " " +
+          dateSplit[2] + " " +
+          dateSplit[3];
+      }
       ticket.reasonForRejection = this.form.controls['reasonForRejection'].value;
       ticket.approvalStateId = +this.form.controls['approvalStateId'].value;
       ticket.approvedBy = this.form.controls['approvedBy'].value;
       ticket.dateEntered = this.form.controls['dateEntered'].value;
       ticket.dateLastUpdated = this.form.controls['dateLastUpdated'].value;
       ticket.enteredByUser = this.form.controls['enteredByUser'].value;
-      //ticket.approvalState = this.approvalStates![+this.form.controls['approvalStateId'].value - 1];
-      //ticket.approvalState.approvalStateId = 0;
-      //ticket.category = this.categories![catId];
-      //ticket.impact = this.impacts![+this.form.controls['impactId'].value - 1];
-      //ticket.subType = this.subTypes![+this.form.controls['subTypeId'].value - 1];
-      //ticket.subType.category = this.categories![catId];
-      //ticket.subType.categoryId = catId;
 
       if (this.id) {
         // EDIT mode
-
-        var url = environment.baseUrl + '/api/Tickets/' + ticket.ticketId;
+        var url = environment.baseUrl + 'api/Tickets/' + ticket.ticketId;
         this.http
           .put<Ticket>(url, ticket)
           .subscribe(result => {
-            console.log("Ticket " + ticket!.ticketId + " has been updated.");
+            console.log("Ticket " + result?.ticketId + " has been updated.");
 
             // go back to tickets view
+            //this.router.navigate(['/api/Tickets/SendTicketInfo/' + result?.ticketId]);
             this.router.navigate(['/tickets']);
 
           }, error => console.error(error));
+
+        //var url = environment.baseUrl + 'api/Tickets/SendTicketInfo/' + ticket.ticketId;
+        //this.http
+        //  .get<Ticket>(url)
+        //  .subscribe(result => {
+        //    console.log("Ticket info sent.");
+
+        //  }, error => console.error(error));
       }
       else {
         // ADD NEW mode
-        var url = environment.baseUrl + '/api/Tickets';
+        var url = environment.baseUrl + 'api/Tickets';
         this.http
           .post<Ticket>(url, ticket)
           .subscribe(result => {
-            console.log("Ticket " + ticket!.ticketId + " has been created.");
+            console.log("Ticket " + result.ticketId + " has been created.");
+
             // go back to tickets view
+            //this.router.navigate(['/api/Tickets/SendTicketInfo/' + result?.ticketId]);
             this.router.navigate(['/tickets']);
           }, error => console.error(error));
       }

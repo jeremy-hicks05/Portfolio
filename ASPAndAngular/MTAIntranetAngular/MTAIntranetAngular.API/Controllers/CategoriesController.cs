@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MTAIntranetAngular.API;
+using MTAIntranetAngular.API.Data.Models;
 
 namespace MTAIntranetAngular.API.Controllers
 {
@@ -26,7 +26,7 @@ namespace MTAIntranetAngular.API.Controllers
         [HttpGet]
         public async Task<ActionResult<ApiResult<Category>>> GetCategories(
             int pageIndex = 0,
-            int pageSize = 99,
+            int pageSize = 20,
             string? sortColumn = null,
             string? sortOrder = null,
             string? filterColumn = null,
@@ -92,7 +92,6 @@ namespace MTAIntranetAngular.API.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 

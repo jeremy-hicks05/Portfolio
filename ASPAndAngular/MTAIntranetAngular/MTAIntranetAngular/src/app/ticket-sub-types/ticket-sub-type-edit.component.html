@@ -66,11 +66,13 @@
 
         <!-- CCList -->
         <!-- pattern="^[[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]][,]?+$" -->
+        <!--pattern="^([\w+-.%]+@[\w.-]+\.[A-Za-z]{2,4})(,[\w+-.%]+@[\w.-]+\.[A-Za-z]{2,4})*$"-->
+        <!--pattern="^([\w+\-\.\%]+@[\w\.\-]+.[A-Za-z]{2,4})(,[\w+\-\.\%]+@[\w\.\-]+.[A-Za-z]{2,4})*$"-->
         <mat-form-field>
             <mat-label>CCList (emails separated by commas):</mat-label>
             <input matInput formControlName="cclist" required
                    placeholder="Enter a list of emails separated by commas"
-                   pattern="^([\w+-.%]+@[\w.-]+\.[A-Za-z]{2,4})(,[\w+-.%]+@[\w.-]+\.[A-Za-z]{2,4})*$">
+                   pattern="^([\w\-\.]+@[\w\.\-]+\.[A-Za-z]{2,4})(,[\w\-\.]+@[\w\.\-]+\.[A-Za-z]{2,4})*$">
             <mat-error *ngIf="this.form.controls['cclist'].errors?.['required']">
                 CC List is required.
             </mat-error>
