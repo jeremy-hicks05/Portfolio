@@ -9,6 +9,7 @@ using MTAIntranetAngular.API.Data.Models;
 using System.Diagnostics;
 using System;
 using static HotChocolate.ErrorCodes;
+using System.Configuration;
 
 namespace MTAIntranetAngular.Utility
 {
@@ -19,6 +20,13 @@ namespace MTAIntranetAngular.Utility
         public static int Port { get; set; }
         public static string? UserName { get; set; }
         public static string? Password { get; set; }
+
+        private static IConfiguration? _configuration;
+
+        public static void Configure(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         public static void SendApprovalRequestToManager(Ticket ticket)
         {
@@ -631,7 +639,8 @@ namespace MTAIntranetAngular.Utility
 
         private static NetworkCredential SetCredentials()
         {
-            return new NetworkCredential("intranet@mtaflint.org", "$mtainet23!");
+            //return new NetworkCredential("intranet@mtaflint.org", "$mtainet23!");
+            return new NetworkCredential(_configuration?["EmailUN"], _configuration?["EmailPW"]);
         }
 
         private static MailAddress SetMailAddress()

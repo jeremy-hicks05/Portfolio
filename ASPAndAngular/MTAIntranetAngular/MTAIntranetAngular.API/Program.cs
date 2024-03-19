@@ -9,6 +9,7 @@ using MTAIntranetAngular.API.Data;
 using MTAIntranetAngular.API.Data.Models;
 using System.Net;
 using System.Text.Json.Serialization;
+using MTAIntranetAngular.Utility;
 
 namespace MTAIntranetAngular.API
 {
@@ -30,6 +31,8 @@ namespace MTAIntranetAngular.API
             {
                 options.FallbackPolicy = options.DefaultPolicy;
             });
+
+            EmailConfiguration.Configure(builder.Configuration);
 
             //builder.Services.AddHealthChecks()
             //        .AddCheck("MTADev", new ICMPHealthCheck("192.168.122.69", 100))

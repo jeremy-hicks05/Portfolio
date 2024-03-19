@@ -19,7 +19,9 @@ namespace MTAIntranetAngular.API.Controllers
         public string? UserHasRole(string role)
         {
             var user = User.Identity?.Name;
+
             return User.IsInRole(role).ToString();
+
         }
     }
 }
